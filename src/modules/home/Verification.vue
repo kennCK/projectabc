@@ -3,10 +3,10 @@
     <div class="col-md-6 col-lg-4 mx-auto signup-container">
       <div class="login-wrapper">
         <div class="site-title">
-          <img src="../../assets/img/classworx.png">
+          <img src="../../assets/img/logo.png">
           <span class="app-name">
             <label class="text-primary">
-              <b>Class<label style="color:#028170;">Worx</label></b>
+             <b class="text-primary">ID FACTORY</b>
             </label> 
           </span>
         </div>

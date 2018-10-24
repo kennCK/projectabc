@@ -3,10 +3,10 @@
     <div class="col-md-6 col-lg-4 mx-auto signup-container">
       <div class="signup-wrapper">
         <div class="signup-header" style="margin-top: 50px;">
-          <img src="../../assets/img/classworx.png" v-on:click="redirect('/')">
+          <img src="../../assets/img/logo.png" v-on:click="redirect('/')">
         </div>
         <span style="width:100%;float:left;text-align:center;font-size:20px;margin-bottom:20px;">
-          Register to <b class="text-primary">CLASS</b><b class="text-green">WORX</b>
+          Register to <b class="text-primary">ID FACTORY</b>
         </span>
         <div class="signup-holder">
           <div class="login-message-holder login-spacer text-center" v-if="errorMessage != ''">
@@ -199,7 +199,7 @@ export default {
   height: 45px !important;
 }
 .btn-login-primary{
-  background: #6a0090;
+  background: #22b173;
   color: #fff;
   height: 45px !important;
 }

@@ -2,10 +2,10 @@
   <div class="col-sm-12 col-md-6 col-lg-4 mx-auto">
     <div class="login-wrapper">
       <div class="login-header" style="margin-top: 75px;">
-        <img src="../../assets/img/classworx.png" v-on:click="redirect('/')">
+        <img src="../../assets/img/logo.png" v-on:click="redirect('/')">
       </div>
       <span style="width:100%;float:left;text-align:center;font-size:20px;margin-bottom:20px;">
-        Login to <b class="text-primary">CLASS</b><b class="text-green">WORX</b>
+        Login to <b class="text-primary">ID FACTORY</b>
       </span>
       <div class="login-message-holder login-spacer" v-if="errorMessage != ''">
         <span class="text-danger"><b>Oops!</b> {{errorMessage}}</span>
@@ -173,7 +173,7 @@ export default {
 }
 
 .btn-login-primary{
-  background: #6a0090;
+  background: #22b173;
   color: #fff;
   height: 45px !important;
 }

@@ -2,8 +2,8 @@
   <div>
     <div class="system-header">
       <a class="navbar-brand" v-on:click="redirect('dashboard')">
-        <img src="../../assets/img/classworx_white.png" class="logo-brand">
-        <label class="navbar-brand hide-on-mobile"><b>Class</b>Worx</label>
+        <img src="../../assets/img/logo.png" class="logo-brand">
+        <label class="navbar-brand hide-on-mobile"><b class="text-primary">ID FACTORY</b></label>
       </a>
     </div>
     <nav class="header-navbar">
