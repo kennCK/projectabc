@@ -16,34 +16,8 @@ use Carbon\Carbon;
 
 
 use App\Account;
-use App\AccountDegree;
 use App\AccountInformation;
 use App\AccountProfile;
-use App\AccountSchool;
-use App\AccountSemester;
-use App\AccountWorkExperience;
-use App\Announcement;
-use App\AnnouncementCourse;
-use App\Answer;
-use App\Attendance;
-use App\AttendanceAccount;
-use App\Calendar;
-use App\Course;
-use App\EnrolledAccount;
-use App\GradeSetting;
-use App\Notification;
-use App\NotificationSetting;
-use App\Question;
-use App\QuestionOption;
-use App\Resource;
-use App\ResourceViewer;
-use App\School;
-use App\Semester;
-use App\Test;
-use App\Topic;
-use App\TopicComment;
-use App\TopicCommentReply;
-use App\TopicCommentStar;
 
 class ClassWorxController extends Controller
 {
@@ -466,57 +440,14 @@ class ClassWorxController extends Controller
     if(sizeof($result) > 0){
       $profile = AccountProfile::where('account_id', '=', $accountId)->orderBy('created_at', 'DESC')->get();
       $information = AccountInformation::where('account_id', '=', $accountId)->get();
-      $work = AccountWorkExperience::where('account_id', '=', $accountId)->orderBy('created_at', 'DESC')->get();
       $result[0]['profile'] = (sizeof($profile) > 0) ? $profile[0] : null;
       $result[0]['information'] = (sizeof($information) > 0) ? $information[0] : null;
-      $result[0]['degree'] = $this->retrieveAccountDegree($accountId);
-      $result[0]['work'] = (sizeof($work) > 0) ? $work : null;
       return $result[0];
     }else{
       return null;
     }
   }
 
-  public function retrieveAccountDegree($accountId){
-    $result = AccountDegree::where('account_id', '=', $accountId)->orderBy('year_started', 'DESC')->get();
-    if(sizeof($result) > 0){
-      $i = 0;
-      foreach ($result as $key) {
-        $result[$i]['edit_flag'] = false;
-        $result[$i]['current_flag'] = (intval($result[$i]['current_flag']) == 1) ? true : false; 
-        $school = School::where('id', '=', $result[$i]['school_id'])->get();
-        $result[$i]['school'] = (sizeof($school) > 0) ? $school[0] : null; 
-        $i++;
-      }
-      return $result;
-    }else{
-      return null;
-    }
-  }
-
-  public function retrieveCourseDetails($courseId){
-    $result = Course::where('id', '=', $courseId)->get();
-    return (sizeof($result) > 0) ? $result[0] : null; 
-  }
-
-  public function retrieveEnrolees($courseId){
-    $result = EnrolledAccount::where('course_id', '=', $courseId)->where('status', '=', 1)->get();
-    if(sizeof($result) > 0){
-      $i = 0;
-      foreach ($result as $key) {
-        $result[$i]['account_details'] = $this->retrieveAccountDetails($result[$i]['account_id']);
-        $i++;
-      }
-      return $result;
-    }else{
-      return null;
-    }
-  }
-
-  public function retrieveAttendance($courseId){
-    $result = Attendance::where('course_id', '=', $courseId)->orderBy('created_at', 'DESC')->get();
-    return (sizeof($result) > 0) ? $result : null;
-  }
 
 
 }

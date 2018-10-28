@@ -10,20 +10,10 @@ export default {
     type: null,
     status: null,
     profile: null,
-    schools: null,
-    semesters: null,
-    selectedSemester: null,
-    schoolSemesters: null,
-    organization: null,
-    course: null,
     notifications: {
       data: null,
       current: null,
       prevCurrent: null
-    },
-    events: {
-      data: null,
-      current: null
     }
   },
   timer: {
@@ -34,10 +24,6 @@ export default {
     timer: null,
     speed: 1000
   },
-  reports: {
-    description: null,
-    course_id: null
-  },
   google: {
     code: null
   },
@@ -47,30 +33,18 @@ export default {
     verifyingToken: false
   },
   currentPath: false,
-  setUser(userID, username, type, status, profile, schools, semesters, schoolSemesters, activeSemester, organization, course){
+  setUser(userID, username, type, status, profile){
     if(userID === null){
       username = null
       type = null
       status = null
       profile = null
-      schools = null
-      semesters = null
-      schoolSemesters = null
-      activeSemester = null
-      organization = null
-      course = null
     }
     this.user.userID = userID * 1
     this.user.username = username
     this.user.type = type
     this.user.status = status
     this.user.profile = profile
-    this.user.schools = schools
-    this.user.semesters = semesters
-    this.user.selectedSemester = activeSemester
-    this.user.schoolSemesters = schoolSemesters
-    this.user.organization = organization
-    this.user.course = course
     localStorage.setItem('account_id', this.user.userID)
   },
   setToken(token){
@@ -106,26 +80,10 @@ export default {
         }
         vue.APIRequest('accounts/retrieve', parameter).then(response => {
           let profile = response.data[0].account_profile
-          let schools = response.data[0].schools
-          let semesters = response.data[0].my_semesters
-          let schoolSemesters = response.data[0].school_semesters
-          let activeSemester = response.data[0].active_semester_details
-          let organization = response.data[0].active_organization
-          let course = response.data[0].active_course
-          this.setUser(userInfo.id, userInfo.username, userInfo.account_type, userInfo.status, profile, schools, semesters, schoolSemesters, activeSemester, organization, course)
-          if(response.data[0].account_information === null || response.data[0].account_degree === null){
-            ROUTER.push('account_settings')
-          }else{
-            ROUTER.push('/discussions')
-            // if(userInfo.account_type === 'STUDENT'){
-            //   ROUTER.push('/guide/fs')
-            // }else{
-            //   ROUTER.push('/guide/ft')
-            // }
-          }
+          this.setUser(userInfo.id, userInfo.username, userInfo.account_type, userInfo.status, profile)
+          ROUTER.push('/dashboard')
         })
-        this.retrieveNotifications(userInfo.id)
-        this.retrieveEvents(userInfo.id)
+        // this.retrieveNotifications(userInfo.id)
         if(callback){
           callback(userInfo)
         }
@@ -152,13 +110,7 @@ export default {
         }
         vue.APIRequest('accounts/retrieve', parameter).then(response => {
           let profile = response.data[0].account_profile
-          let schools = response.data[0].schools
-          let semesters = response.data[0].my_semesters
-          let schoolSemesters = response.data[0].school_semesters
-          let activeSemester = response.data[0].active_semester_details
-          let organization = response.data[0].active_organization
-          let course = response.data[0].active_course
-          this.setUser(userInfo.id, userInfo.username, userInfo.account_type, userInfo.status, profile, schools, semesters, schoolSemesters, activeSemester, organization, course)
+          this.setUser(userInfo.id, userInfo.username, userInfo.account_type, userInfo.status, profile)
         }).done(response => {
           this.tokenData.verifyingToken = false
           let location = window.location.href
@@ -168,8 +120,7 @@ export default {
             window.location.href = location
           }
         })
-        this.retrieveNotifications(userInfo.id)
-        this.retrieveEvents(userInfo.id)
+        // this.retrieveNotifications(userInfo.id)
       }, (response) => {
         this.setToken(null)
         this.tokenData.verifyingToken = false
@@ -213,28 +164,6 @@ export default {
       }
     })
   },
-  retrieveEvents(accountId){
-    let vue = new Vue()
-    let parameter = {
-      condition: [{
-        value: accountId,
-        column: 'account_id',
-        clause: '='
-      }],
-      sort: {
-        created_at: 'DESC'
-      }
-    }
-    vue.APIRequest('event_tickets/retrieve_my_tickets', parameter).then(response => {
-      if(response.data.length > 0){
-        this.user.events.data = response.data
-        this.user.events.current = response.event_current
-      }else{
-        this.user.events.data = null
-        this.user.events.current = null
-      }
-    })
-  },
   startNotifTimer(accountId){
     if(this.notifTimer.timer === null){
       this.notifTimer.timer = window.setInterval(() => {
@@ -262,9 +191,5 @@ export default {
       sound.play()
       this.user.notifications.prevCurrent = this.user.notifications.current
     }
-  },
-  setReports(description, courseId){
-    this.reports.description = description
-    this.reports.course_id = courseId
   }
 }
