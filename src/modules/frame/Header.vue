@@ -2,8 +2,8 @@
   <div>
     <div class="system-header">
       <a class="navbar-brand" v-on:click="redirect('dashboard')">
-        <img src="../../assets/img/logo.png" class="logo-brand">
-        <label class="navbar-brand hide-on-mobile"><b class="text-primary">ID FACTORY</b></label>
+        <img src="../../assets/img/logo_white.png" class="logo-brand">
+        <label class="navbar-brand hide-on-mobile"><b class="text-white">ID FACTORY</b></label>
       </a>
     </div>
     <nav class="header-navbar">
@@ -12,33 +12,6 @@
       </span>
       <span class="left-menu-icons">
         <label class="account-type  hide-on-mobile" v-bind:class="{'bg-warning': user.type === 'TEACHER', 'bg-green': user.type === 'STUDENT', 'bg-gray': user.type === 'ADMIN'}" v-if="user !== null">{{user.type}}</label>
-        <label class="account-type bg-green  hide-on-mobile" v-if="user.schools !== null">
-          {{user.schools.school_abbreviation}}
-        </label>
-        <div class="dropdown semester-selector">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-if="user.selectedSemester !== null && user.selectedSemester.semester_details.description.length > 15">
-            {{user.selectedSemester.semester_details.description.substr(0, 14) + ' ...'}}
-          </button>
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-if="user.selectedSemester !== null && user.selectedSemester.semester_details.description.length < 15">
-            {{user.selectedSemester.semester_details.description}}
-          </button>
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-if="user.selectedSemester === null  && user.type === 'TEACHER'">
-            Select Semester
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="user.selectedSemester === null && user.type === 'TEACHER'">
-            <h6 class="dropdown-header">Select Semester</h6>
-            <span class="dropdown-item" v-for="item, index in user.semesters" v-if="user.semesters !== null" v-on:click="setSemester(index)">
-              <label style="padding-left: 27px;">{{item.semester_details.description.substr(0, 25)}}</label>
-            </span>
-          </div>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <h6 class="dropdown-header">Switch Semester</h6>
-            <span class="dropdown-item" v-for="item, index in user.semesters" v-if="user.semesters !== null && user.selectedSemester !== null" v-on:click="setSemester(index)">
-              <label v-if="user.selectedSemester.semester_details.id === item.semester_details.id"><i class="fa fa-check text-green" ></i>{{item.semester_details.description.substr(0, 25)}}</label>
-              <label style="padding-left: 27px;" v-else>{{item.semester_details.description.substr(0, 25)}}</label>
-            </span>
-          </div>
-        </div>
       </span>
       <span class="right-menu-icons">
           <div class="dropdown"> 
@@ -80,13 +53,6 @@
                   <i class="fa fa-handshake-o"></i>
                   <label>Terms and Conditions</label>
                 </span>
-                <span class="dropdown-item dropdown-item-menu-title">
-                  <label>Organizations</label>
-                </span>
-                 <span class="dropdown-item" v-on:click="redirect('/create_organization')">
-                  <i class="fa fa-users"></i>
-                  <label>Create Organization</label>
-                </span>
                 <span class="dropdown-item" v-on:click="logOut()">
                   <i class="fas fa-sign-out-alt"></i>
                     <label>Logout</label>
@@ -95,7 +61,7 @@
             </span>
         </div>
 
-        <div class="dropdown"> 
+        <div class="dropdown" v-if="user.notifications !== null"> 
             <span class="nav-item" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('notif'), updateNotif(user.notifications.data[0])" v-bind:onkeypress="makeActive('')" v-if="user.notifications.data !== null">
               <span>
                 <i class="fa fa-bell"></i>
@@ -112,25 +78,6 @@
                 </span>
               </span>
             </span>
-        </div>
-
-        <div class="dropdown"> 
-          <span class="nav-item" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="eventTickets" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('event')" v-bind:onkeypress="makeActive('')" v-if="user.events.data !== null">
-            <span>
-              <i class="fa fa-ticket"></i>
-              <label class="notifications" v-if="parseInt(user.events.current) > 0">{{user.events.current}}</label>
-            </span>
-            <span class="dropdown-menu dropdown-menu-right dropdown-menu-notification" aria-labelledby="eventTickets">
-              <span class="notification-header">
-                Event Tickets
-              </span>
-              <span class="notification-item" v-for="item, index in user.events.data" v-if="user.events.data !== null" v-on:click="redirect('/tickets/' + item.code)">
-                <span class="notification-title">{{item.event.title + ' on ' + item.event.view_date}}</span>
-                <span class="notification-description">Start at {{item.event.view_start_time}} to {{item.event.view_end_time}} in {{item.event.venue}}</span>
-                <span class="notification-date">Posted on {{item.created_at}}</span>
-              </span>
-            </span>
-          </span>
         </div>
 
       </span>
@@ -331,14 +278,14 @@ body{
     height: 50px;
     font-size: 24px;
     width: 18%;
-    background: #3f0050;
+    background: #028170;
     text-align: center;
     position: fixed;
     z-index: 6000;
   }
   
   .header-navbar{
-    background: #6a0090;
+    background: #22b173;
     height: 50px;
     float: left;
     width: 82%;
@@ -380,7 +327,7 @@ body{
 
   .header-navbar-nav:hover{
     cursor: pointer;
-    background: #3f0050 ;
+    background: #22b173 ;
   }
 
 
@@ -445,7 +392,7 @@ body{
 }
 
 .nav-item:hover{
-  background: #3f0050 ;
+  background: #22b173 ;
   cursor: pointer;
 }
 
@@ -521,7 +468,7 @@ body{
   display: inline-block;
   float: left;
   font-weight: 550;
-  color: #3f0050;
+  color: #22b173;
   margin-top: 20px;
 }
 .dropdown-item-button{
@@ -560,11 +507,11 @@ body{
 }
 .navbar-menu-toggler-md:hover{
   cursor: pointer;
-  background: #3f0050;
+  background: #22b173;
 }
 
 .active-menu{
-  background: #3f0050;
+  background: #22b173;
 }
 
 
@@ -579,7 +526,7 @@ body{
   float: left;
   width: 100%;
   height: 80px;
-  color: #3f0050;
+  color: #22b173;
 }
 .profile-image-holder{
   width: 100%;

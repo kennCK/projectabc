@@ -50,9 +50,7 @@ export default {
       password: null,
       errorMessage: '',
       user: AUTH.user,
-      tokenData: AUTH.tokenData,
-      branchesEmployees: [],
-      branches: []
+      tokenData: AUTH.tokenData
     }
   },
   methods: {
@@ -65,7 +63,7 @@ export default {
           ROUTER.push('/account_settings')
         }, (response, status) => {
           $('#loading').css({'display': 'none'})
-          this.errorMessage = (status === 401) ? 'Username and Password did not matched.' : 'Cannot log in? Contact us through email: support@classworx.co'
+          this.errorMessage = (status === 401) ? 'Username and Password did not matched.' : 'Cannot log in? Contact us through email: support@idfactories.com'
         })
       }else{
         this.errorMessage = 'Please fill up all the required fields.'

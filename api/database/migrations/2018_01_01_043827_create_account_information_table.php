@@ -13,8 +13,7 @@ class CreateAccountInformationTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('account_information');
-        Schema::create('account_information', function (Blueprint $table) {
+        Schema::create('account_informations', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('account_id');
             $table->string('first_name',100)->nullable();
@@ -36,6 +35,6 @@ class CreateAccountInformationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('account_information');
+        Schema::dropIfExists('account_informations');
     }
 }

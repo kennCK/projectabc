@@ -29,25 +29,6 @@
               <span class="input-group-addon" id="addon-2"><i class="fa fa-key"></i></span>
               <input type="password" class="form-control form-control-login" placeholder="Confirm Password" aria-describedby="addon-2" v-model="cpassword">
             </div>
-<!--             <div class="input-group login-spacer">
-              <span class="input-group-addon" id="addon-1" style="width: 70px;">School</span>
-              <select class="form-control form-control-login" v-model="schoolIndex">
-                <option v-bind:value="index" v-for="item, index in schools">{{item.name + ' - ' + item.address}}</option>
-              </select>
-            </div> -->
-            <div class="input-group login-spacer">
-              <span class="input-group-addon account-type" id="addon-1" style="width: 70px;">Account Type</span>
-              <select class="form-control form-control-login" v-model="type">
-                <option value="STUDENT">Student</option>
-                <option value="TEACHER">Teacher</option>
-              </select>
-            </div>
-<!--              <div class="form-check">
-              <label class="form-check-label">
-                <input type="checkbox" class="form-check-input">
-                I agree the terms and conditions
-              </label>
-            </div> -->
             <button class="btn btn-login-primary btn-block btn-login login-spacer" v-on:click="signUp()">Signup</button>
             <button class="btn btn-login-danger btn-block btn-login login-spacer" v-on:click="redirect('/login')">Back to Login</button>  
           </div>
@@ -71,7 +52,7 @@ export default {
       email: '',
       password: '',
       cpassword: '',
-      type: null,
+      type: 'USER',
       errorMessage: '',
       user: AUTH.user,
       tokenData: AUTH.tokenData,
@@ -134,21 +115,7 @@ export default {
       AUTH.authenticate(this.username, this.password, (response) => {
         ROUTER.push('dashboard')
       }, (response, status) => {
-        this.errorMessage = (status === 401) ? 'Your username and password did not matched.' : 'Cannot log in? Contact us through email: support@classworx.co'
-      })
-    },
-    getSchools(){
-      let parameter = {
-        'sort': {
-          'name': 'ASC'
-        }
-      }
-      this.APIRequest('schools/retrieve', parameter).then(response => {
-        if(response.data.length > 0){
-          this.schools = response.data
-        }else{
-          this.schools = null
-        }
+        this.errorMessage = (status === 401) ? 'Your username and password did not matched.' : 'Cannot log in? Contact us through email: support@idfactories.com'
       })
     }
   }

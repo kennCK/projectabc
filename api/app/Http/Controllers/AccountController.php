@@ -104,5 +104,30 @@ class AccountController extends ClassWorxController
         return true;
     }
 
+    public function retrieve(Request $request){
+      $data = $request->all();
+      $this->model = new Account();
+      $result = $this->retrieveDB($data);
+
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $accountId = $result[$i]['id'];
+          $activeSemesterId = $result[$i]['active_semester'];
+          $result[$i]['account_information_flag'] = false;
+          $result[$i]['account_profile_flag'] = false;
+          $accountInfoResult = AccountInformation::where('account_id', '=', $result[$i]['id'])->get();
+          $accountProfileResult = AccountProfile::where('account_id', '=', $result[$i]['id'])->orderBy('created_at', 'DESC')->get();
+          $result[$i]['account_information'] = (sizeof($accountInfoResult) > 0) ? $accountInfoResult[0] : null;
+          $result[$i]['account_profile'] = (sizeof($accountProfileResult) > 0) ? $accountProfileResult[0] : null;
+          $i++;
+        }
+        return response()->json(array('data' => $result));
+      }else{
+        return $this->response();
+      }
+    }
+
+
 
 }

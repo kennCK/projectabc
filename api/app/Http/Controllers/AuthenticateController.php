@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 use App\UserAuth;
 use App\Account;
-use App\NotificationSetting;
 use App\LoginLogger;
 use App\Jobs\Email;
 
@@ -63,17 +62,17 @@ class AuthenticateController extends Controller
     }
     // if no errors are encountered we can return a JWT
     if(sizeof($result) > 0){
-      $notifResult = NotificationSetting::where('account_id', '=', $result[0]['id'])->get();
-      if(sizeof($notifResult) > 0){
-        if($notifResult[0]['email'] === "ON"){
-          // Notify via email
-          dispatch(new Email($result[0], 'login'));
-        }else if($notifResult[0]['sms'] === "ON"){
-          // Notify via SMS
-        }else if($notifResult[0]['fb_messenger'] === "ON"){
-          // Notify via FB Messenger
-        }
-      }
+      // $notifResult = NotificationSetting::where('account_id', '=', $result[0]['id'])->get();
+      // if(sizeof($notifResult) > 0){
+      //   if($notifResult[0]['email'] === "ON"){
+      //     // Notify via email
+      //     dispatch(new Email($result[0], 'login'));
+      //   }else if($notifResult[0]['sms'] === "ON"){
+      //     // Notify via SMS
+      //   }else if($notifResult[0]['fb_messenger'] === "ON"){
+      //     // Notify via FB Messenger
+      //   }
+      // }
         
     }else{
       //

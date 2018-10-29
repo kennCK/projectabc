@@ -69,32 +69,9 @@ export default {
       activeItem: '',
       activeSubItem: '',
       menu: [
-      // {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
-      // {id: 2, users: 'TEACHER', parent_id: 0, description: 'Guide', icon: 'fa fa-info', path: 'guide/ft'},
-      // {id: 3, users: 'STUDENT', parent_id: 0, description: 'Guide', icon: 'fa fa-info', path: 'guide/fs'},
-      {id: 4, users: 'ALL', parent_id: 0, description: 'Discussions', icon: 'fas fa-comments', path: 'discussions'},
-      {id: 5, users: 'ADMIN', parent_id: 0, description: 'Reported Users', icon: 'fas fa-eye', path: 'discussion_reports'},
-      {id: 20, users: 'TEACHER', parent_id: 0, description: 'Semesters', icon: 'fa fa-sitemap', path: 'semesters'},
-      {id: 21, users: 'TEACHER', parent_id: 0, description: 'Courses', icon: 'fa fa-code-fork', path: 'courses'},
-      // {id: 23, users: 'TEACHER', parent_id: 0, description: 'Announcements', icon: 'far fa-paper-plane', path: 'announcements/ft'},
-      // {id: 24, users: 'TEACHER', parent_id: 0, description: 'Attendance', icon: 'far fa-clock-o', path: 'attendance/ft'},
-      // {id: 25, users: 'TEACHER', parent_id: 0, description: 'Calendar', icon: 'fa fa-calendar', path: 'calendar/default'},
-      // {id: 25, users: 'TEACHER', parent_id: 0, description: 'Discussions', icon: 'fa fa-bullhorn', path: 'discussions/default'},
-      // {id: 26, users: 'TEACHER', parent_id: 0, description: 'Tests', icon: 'fa fa-file-text-o', path: 'tests/ft/default'},
-      // {id: 27, users: 'TEACHER', parent_id: 0, description: 'Resources', icon: 'fa fa-files-o', path: 'resources/ft/default'},
-      // {id: 30, users: 'STUDENT', parent_id: 0, description: ' My Announcements', icon: 'far fa-paper-plane', path: 'announcements/fs'},
-      {id: 31, users: 'STUDENT', parent_id: 0, description: 'My Courses', icon: 'fa fa-clipboard', path: 'courses/en'},
-      // {id: 32, users: 'STUDENT', parent_id: 0, description: 'My Tests', icon: 'fa fa-file-text-o', path: 'tests/fs/default'},
-      // {id: 33, users: 'STUDENT', parent_id: 0, description: 'My Resources', icon: 'fa fa-file-text-o', path: 'resources/fs'},
-      // {id: 90, users: 'STUDENT', parent_id: 0, description: 'Reports', icon: 'fa fa-line-chart', path: 'reports/fs'},
-      // {id: 91, users: 'TEACHER', parent_id: 0, description: 'Reports', icon: 'fa fa-line-chart', path: 'reports/ft'},
-      // {id: 90, users: 'ALL', parent_id: 0, description: 'Planner', icon: 'fas fa-tasks', path: 'planner'},
-      // {id: 91, users: 'ALL', parent_id: 0, description: 'Calendar', icon: 'fa fa-calendar', path: 'calendar'},
-      {id: 100, users: 'ALL', parent_id: 0, description: 'Organizations', icon: 'fas fa-users', path: 'organizations'},
-      {id: 110, users: 'ALL', parent_id: 0, description: 'Marketplace', icon: 'fas fa-shopping-cart', path: 'marketplace'},
-      {id: 120, users: 'ALL', parent_id: 0, description: 'Messenger', icon: 'fas fa-envelope', path: 'messenger'},
-      {id: 150, users: 'ALL', parent_id: 0, description: 'Account Settings', icon: 'fa fa-cog', path: 'account_settings'},
-      {id: 200, users: 'ADMIN', parent_id: 0, description: 'Accounts', icon: 'fa fa-users', path: 'accounts'}
+      {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
+      {id: 2, users: 'ALL', parent_id: 0, description: 'Template', icon: 'fas fa-file', path: 'template'},
+      {id: 3, users: 'ADMIN', parent_id: 0, description: 'Employees', icon: 'fas fa-users', path: 'employees'}
       ],
       toggleSidebar: 'fa fa-toggle-on',
       toggleSidebarFlag: true,
@@ -215,7 +192,7 @@ export default {
 }
 .header i{
   font-size: 24px;
-  color: #3f0050;
+  color: #22b173;
   }/*-- toggle-sidebar i --*/
 .header i:hover{
   cursor: pointer;
