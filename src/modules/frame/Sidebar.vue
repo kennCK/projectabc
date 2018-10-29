@@ -196,7 +196,7 @@ export default {
   }/*-- toggle-sidebar i --*/
 .header i:hover{
   cursor: pointer;
-  color: #6a0090;
+  color: #028170;
 }
 
 .profile-photo{
