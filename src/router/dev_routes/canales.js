@@ -71,6 +71,22 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/employees',
+    name: 'employees',
+    component: resolve => require(['modules/employee/Employees.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/template',
+    name: 'template',
+    component: resolve => require(['modules/editor/Template.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

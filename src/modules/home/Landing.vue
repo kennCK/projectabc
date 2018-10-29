@@ -4,7 +4,6 @@
     <landing-snetwork></landing-snetwork>
     <landing-classroom></landing-classroom>
     <landing-organization></landing-organization>
-		<landing-features></landing-features>
 	</div>
 </template>
 <script>

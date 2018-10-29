@@ -35,7 +35,7 @@ export default {
 	width: 100%;
 	float: left;
 	height: 500px;
-	background: #23002c;
+	background: #028170;
 }
 .text{
   width: 40%;
