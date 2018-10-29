@@ -1,9 +1,26 @@
 <template>
-	<div class="employee-holder">
-		<create></create>
-    <list></list>
-	</div>
+  <div class="list-holder">
+    <table class="table">
+      <thead>
+        <tr>
+          <td>Picture</td>
+          <td>Name</td>
+          <td>Picture</td>
+          <td>Picture</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Picture</td>
+          <td>Name</td>
+          <td>Picture</td>
+          <td>Picture</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
+
 <script>
 import ROUTER from '../../router'
 import AUTH from '../../services/auth'
@@ -19,10 +36,7 @@ export default {
       errorMessage: null
     }
   },
-  components: {
-    'create': require('modules/employee/Create.vue'),
-    'list': require('modules/employee/List.vue')
-  },
+  props: ['params'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
@@ -37,9 +51,9 @@ export default {
 }
 </script>
 <style scoped>
-.employee-holder{
-	width: 100%;
-	float: left;
-	height: 100%;
+.list-holder{
+  margin-top: 25px;
+  width: 100%;
+  float: left;
 }
 </style>

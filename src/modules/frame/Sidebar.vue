@@ -71,7 +71,8 @@ export default {
       menu: [
       {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
       {id: 2, users: 'ALL', parent_id: 0, description: 'ID Templates', icon: 'fas fa-file', path: 'templates'},
-      {id: 3, users: 'ADMIN', parent_id: 0, description: 'Employees', icon: 'fas fa-users', path: 'employees'}
+      {id: 3, users: 'ALL', parent_id: 0, description: 'Employees', icon: 'fas fa-users', path: 'employees'},
+      {id: 4, users: 'ALL', parent_id: 0, description: 'Billings', icon: 'fas fa-credit-card', path: 'billings'}
       ],
       toggleSidebar: 'fa fa-toggle-on',
       toggleSidebarFlag: true,
