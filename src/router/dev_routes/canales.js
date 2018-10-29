@@ -81,9 +81,9 @@ export default{
     }
   },
   {
-    path: '/template',
-    name: 'template',
-    component: resolve => require(['modules/editor/Template.vue'], resolve),
+    path: '/templates',
+    name: 'templates',
+    component: resolve => require(['modules/editor/Templates.vue'], resolve),
     meta: {
       tokenRequired: true
     }
