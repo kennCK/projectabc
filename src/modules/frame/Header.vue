@@ -327,7 +327,7 @@ body{
 
   .header-navbar-nav:hover{
     cursor: pointer;
-    background: #22b173 ;
+    background: #028170;
   }
 
 
@@ -392,7 +392,7 @@ body{
 }
 
 .nav-item:hover{
-  background: #22b173 ;
+  background: #028170;
   cursor: pointer;
 }
 
@@ -424,7 +424,7 @@ body{
 .dropdown-item i{
   font-size: 14px !important;
   padding-right: 10px !important;
-  color: #FCCD04 !important;
+  color: #028170 !important;
 }
 .dropdown-item label{
   font-size: 14px !important;
