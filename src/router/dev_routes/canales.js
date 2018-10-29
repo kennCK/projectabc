@@ -87,6 +87,14 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/billings',
+    name: 'billings',
+    component: resolve => require(['modules/billing/Billings.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
