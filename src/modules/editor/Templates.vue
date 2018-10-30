@@ -1,6 +1,7 @@
 <template>
 	<div class="employee-holder">
 		<create></create>
+    <list></list>
 	</div>
 </template>
 <script>
@@ -19,7 +20,8 @@ export default {
     }
   },
   components: {
-    'create': require('modules/editor/Create.vue')
+    'create': require('modules/editor/Create.vue'),
+    'list': require('modules/editor/List.vue')
   },
   methods: {
     redirect(parameter){

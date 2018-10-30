@@ -2,10 +2,12 @@
 	<div class="cw-banner">
     <div class="text text-white">
       <span class="title">
-        <h1>Built for Students and Teachers.</h1>
+        <h1>First Automated ID Printing in the Philippines.</h1>
       </span>
       <span class="description">
-        <h4>CLASSWORX is an online management platform that improves the connectivity between students and teachers and it's easy to use.</h4>
+        <h4>
+          
+        </h4>
       </span>
     </div>
     <div class="image">

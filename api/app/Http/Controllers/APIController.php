@@ -19,7 +19,7 @@ use App\Account;
 use App\AccountInformation;
 use App\AccountProfile;
 
-class ClassWorxController extends Controller
+class APIController extends Controller
 {
   /*
     Author: Kennette Canales

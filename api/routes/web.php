@@ -139,4 +139,12 @@ Route::post('/account_profiles/delete', "AccountProfileController@delete");
 Route::get('/account_profiles/test', 'AccountProfileController@test');
 
 
+//Templates
+Route::post('/templates/create', "TemplateController@create");
+Route::post('/templates/retrieve', "TemplateController@retrieve");
+Route::post('/templates/update', "TemplateController@update");
+Route::post('/templates/delete', "TemplateController@delete");
+Route::get('/templates/test', 'TemplateController@test');
+
+
 

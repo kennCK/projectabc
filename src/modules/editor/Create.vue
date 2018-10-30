@@ -5,7 +5,7 @@
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
-            <h5 class="modal-title" id="exampleModalLabel">Add Event</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Editor</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true" class="text-white">&times;</span>
             </button>
@@ -16,25 +16,16 @@
             </span>
             <br v-if="errorMessage !== null">
             <br>
-<!--             <div class="featured-image">
-              <span class="options" v-on:click="addFeaturedImage()" v-if="featuredFile === null" title="Click to add">
-                <i class="fa fa-plus-circle"></i>
-                <label>Add Featured Image</label>
-                <input type="file" id="addFeaturedImage" name="file" accept="image/*"  @change="setUpFileUploadFeaturedImage($event)">
-              </span>
-              <span class="options" v-on:click="addFeaturedImage()" v-else title="Click to change">
-                <img :src="featuredFileUrl">
-                <input type="file" id="addFeaturedImage" name="file" accept="image/*"  @change="setUpFileUploadFeaturedImage($event)">
-              </span>
-            </div> -->
             <div class="form-group">
               <label for="exampleInputEmail1">Title</label>
-              <input type="text" class="form-control" placeholder="Type title here...">
+              <input type="text" class="form-control" placeholder="Type title here..." v-model="title">
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Additional Details</label>
-              <textarea class="form-control"  placeholder="Type additional details here..." rows="5">
-              </textarea> 
+              <select class="form-control" v-model="settings">
+                <option value="front">Front Only</option>
+                <option value="front_and_back">Front and Back</option>
+              </select>
             </div>
 
           </div>
@@ -55,12 +46,15 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    console.log(this.user)
   },
   data(){
     return {
       user: AUTH.user,
       config: CONFIG,
-      errorMessage: null
+      errorMessage: null,
+      title: null,
+      settings: null
     }
   },
   props: ['params'],
@@ -70,9 +64,23 @@ export default {
     },
     submit(){
       if(this.validate()){
+        let parameter = {
+          account_id: this.user.userID,
+          title: this.title,
+          settings: this.settings
+        }
+        this.APIRequest('templates/create', parameter).then(response => {
+          if(response.data > 0){
+            // Success
+          }
+        })
       }
     },
     validate(){
+      if(this.title !== null || this.title !== '' || this.settings !== null || this.settings !== ''){
+        return true
+      }
+      return false
     }
   }
 }
