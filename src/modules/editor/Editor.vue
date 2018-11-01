@@ -13,33 +13,38 @@
             <span v-if="errorMessage !== null" class="text-danger text-center">
                 <label><b>Opps! </b>{{errorMessage}}</label>
             </span>
-            <br v-if="errorMessage !== null">
-            <br>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Title</label>
-              <input type="text" class="form-control" placeholder="Type title here...">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Additional Details</label>
-              <select class="form-control">
-                <option value="front">Front Only</option>
-                <option value="front_and_back">Front and Back</option>
-              </select>
-            </div>
-
-
-            <div class="form-group">
-              <label for="exampleInputEmail1">Orientation</label>
-              <select class="form-control">
-                <option value="portrait">Portrait</option>
-                <option value="landscape">Landscape</option>
-              </select>
-            </div>
-
+            <span class="editor-holder">
+              <span class="tools">
+                <ul>
+                  <li>T</li>
+                  <li>
+                    <i class="far fa-clone"></i>
+                  </li>
+                  <li>
+                    <i class="fas fa-font"></i>
+                  </li>
+                  <li>
+                    <i class="fas fa-palette"></i>
+                  </li>
+                  <li>
+                    <i class="fas fa-search-plus"></i>
+                  </li>
+                  <li>
+                    <i class="fas fa-search-minus"></i>
+                  </li>
+                </ul>
+                
+              </span>
+              <span class="preview">
+                <span class="card-holder">
+                  
+                </span>
+              </span>
+            </span>
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" @click="close()">Cancel</button>
-              <button type="button" class="btn btn-primary" @click="submit()">Submit</button>
+              <button type="button" class="btn btn-primary" @click="submit()">Save</button>
           </div>
         </div>
       </div>
@@ -47,6 +52,49 @@
   </div>
 </template>
 <style scoped>
+.editor-holder{
+  width: 100%;
+  float: left;
+  height: 55vh;
+}
+.tools{
+  width: 5%;
+  float: left;
+  height: 55vh;
+  border-right: solid 1px #eee;
+}
+.preview{
+  width: 95%;
+  float: left;
+  height: 55vh;
+}
+ul{
+  list-style: none;
+  width: 100%;
+  float: left;
+  padding: 0px;
+  margin: 0px;
+}
+ul li{
+  width: 100%;
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-bottom: solid 1px #028170;
+}
+ul li:hover{
+  cursor: pointer;
+  background: #028170;
+  color: #fff;
+}
+.card-holder{
+  width: 204px;
+  height: 324px;
+  left: 35%;
+  position: absolute;
+  border: solid 1px #ddd;
+}
 </style>
 <script>
 import ROUTER from '../../router'
