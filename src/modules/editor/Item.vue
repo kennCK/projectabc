@@ -17,6 +17,7 @@
       </span>
     </div>
     <update></update>
+    <editor></editor>
   </div>
 </template>
 <style scoped>
@@ -88,7 +89,8 @@ export default {
     }
   },
   components: {
-    'update': require('modules/editor/Update.vue')
+    'update': require('modules/editor/Update.vue'),
+    'editor': require('modules/editor/Editor.vue')
   },
   props: {
     item: Object
@@ -107,7 +109,15 @@ export default {
         })
       }, 50)
     },
-    editor(){
+    editor(item){
+      this.$children[1].params = item
+      setTimeout(() => {
+        $('#templateEditorModal').modal({
+          backdrop: 'static',
+          show: true,
+          keyboard: false
+        })
+      }, 50)
     }
   }
 }
