@@ -38,49 +38,7 @@
     </div>
   </div>
 </template>
-<script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-export default {
-  mounted(){
-  },
-  data(){
-    return {
-      username: null,
-      password: null,
-      errorMessage: '',
-      user: AUTH.user,
-      tokenData: AUTH.tokenData
-    }
-  },
-  methods: {
-    logIn(){
-      if(this.username !== null && this.username !== '' && this.password !== null && this.password !== ''){
-        $('#loading').css({'display': 'block'})
-        AUTH.authenticate(this.username, this.password, (response) => {
-          this.errorMessage = null
-          $('#loading').css({'display': 'none'})
-          ROUTER.push('/account_settings')
-        }, (response, status) => {
-          $('#loading').css({'display': 'none'})
-          this.errorMessage = (status === 401) ? 'Username and Password did not matched.' : 'Cannot log in? Contact us through email: support@idfactories.com'
-        })
-      }else{
-        this.errorMessage = 'Please fill up all the required fields.'
-      }
-    },
-    redirect(parameter){
-      ROUTER.push(parameter)
-    },
-    request(parameter){
-      this.APIRequest(parameter, {}).then(response => {
-      })
-    }
-  }
-}
-</script>
-<style>
-
+<style scoped>
 .login-wrapper{
   width: 80%;
   margin: 0 10% 50px 10%;
@@ -238,3 +196,44 @@ export default {
   }
 }
 </style>
+<script>
+import ROUTER from '../../router'
+import AUTH from '../../services/auth'
+export default {
+  mounted(){
+  },
+  data(){
+    return {
+      username: null,
+      password: null,
+      errorMessage: '',
+      user: AUTH.user,
+      tokenData: AUTH.tokenData
+    }
+  },
+  methods: {
+    logIn(){
+      if(this.username !== null && this.username !== '' && this.password !== null && this.password !== ''){
+        $('#loading').css({'display': 'block'})
+        AUTH.authenticate(this.username, this.password, (response) => {
+          this.errorMessage = null
+          $('#loading').css({'display': 'none'})
+          ROUTER.push('/account_settings')
+        }, (response, status) => {
+          $('#loading').css({'display': 'none'})
+          this.errorMessage = (status === 401) ? 'Username and Password did not matched.' : 'Cannot log in? Contact us through email: support@idfactories.com'
+        })
+      }else{
+        this.errorMessage = 'Please fill up all the required fields.'
+      }
+    },
+    redirect(parameter){
+      ROUTER.push(parameter)
+    },
+    request(parameter){
+      this.APIRequest(parameter, {}).then(response => {
+      })
+    }
+  }
+}
+</script>
