@@ -5,7 +5,7 @@
         <div class="modal-content">
           <div class="modal-header bg-primary">
             <h5 class="modal-title" id="exampleModalLabel">Update Settings</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" @click="close()" aria-label="Close">
               <span aria-hidden="true" class="text-white">&times;</span>
             </button>
           </div>
@@ -38,7 +38,7 @@
 
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#updateTemplateModal">Cancel</button>
+              <button type="button" class="btn btn-danger" @click="close()">Cancel</button>
               <button type="button" class="btn btn-primary" @click="update()">Submit</button>
           </div>
         </div>
@@ -124,6 +124,10 @@ export default {
         return true
       }
       return false
+    },
+    close(){
+      this.params = null
+      $('#updateTemplateModal').modal('hide')
     }
   }
 }

@@ -100,7 +100,11 @@ export default {
     update(item){
       this.$children[0].params = item
       setTimeout(() => {
-        $('#updateTemplateModal').modal('show')
+        $('#updateTemplateModal').modal({
+          backdrop: 'static',
+          show: true,
+          keyboard: false
+        })
       }, 50)
     },
     editor(){
