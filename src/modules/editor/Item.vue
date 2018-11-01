@@ -27,6 +27,7 @@
   border: solid 1px #eee;
   border-radius: 5px;
   margin-right: 1%;
+  margin-top: 10px;
 }
 .header{
   width: 100%;
