@@ -30,10 +30,10 @@
                     <i class="fas fa-search-minus"></i>
                   </li>
                 </ul>
-                
               </span>
               <span class="preview">
                 <span class="card-holder">
+                  <span v-for="item, index in objects"></span>
                 </span>
                 <span class="object-settings">
                   <division v-if="selected === 'division'"></division>
@@ -119,7 +119,8 @@ export default {
       config: CONFIG,
       errorMessage: null,
       item: null,
-      selected: 'text'
+      selected: 'text',
+      objects: null
     }
   },
   components: {

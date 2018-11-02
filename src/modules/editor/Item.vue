@@ -11,6 +11,7 @@
           
         </span>
         <ul>
+          <li>Templates</li>
           <li v-on:click="editor(item)">Editor</li>
           <li v-on:click="update(item)">Settings</li>
         </ul>

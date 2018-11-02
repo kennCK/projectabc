@@ -3,7 +3,6 @@
     <div class="item">
       <span class="header">
         <label>Text</label>
-        <i class="fa fa-close pull-right"></i>
       </span>
       <span class="settings">
 
