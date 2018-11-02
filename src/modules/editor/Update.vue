@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="modal fade" id="updateTemplateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="params !== null">
+    <div class="modal fade" id="updateTemplateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="item !== null">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
@@ -17,11 +17,11 @@
             <br>
             <div class="form-group">
               <label for="exampleInputEmail1">Title</label>
-              <input type="text" class="form-control" placeholder="Type title here..." v-model="params.title">
+              <input type="text" class="form-control" placeholder="Type title here..." v-model="item.title">
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Additional Details</label>
-              <select class="form-control" v-model="params.settings">
+              <select class="form-control" v-model="item.settings">
                 <option value="front">Front Only</option>
                 <option value="front_and_back">Front and Back</option>
               </select>
@@ -30,7 +30,7 @@
 
             <div class="form-group">
               <label for="exampleInputEmail1">Orientation</label>
-              <select class="form-control" v-model="params.orientation">
+              <select class="form-control" v-model="item.orientation">
                 <option value="portrait">Portrait</option>
                 <option value="landscape">Landscape</option>
               </select>
@@ -101,7 +101,7 @@ export default {
       title: null,
       settings: null,
       orientation: null,
-      params: null
+      item: null
     }
   },
   methods: {
@@ -110,7 +110,7 @@ export default {
     },
     update(){
       if(this.validate()){
-        this.APIRequest('templates/update', this.params).then(response => {
+        this.APIRequest('templates/update', this.item).then(response => {
           if(response.data > 0){
             $('#updateTemplateModal').modal('hide')
             this.$parent.retrieve()
@@ -119,14 +119,14 @@ export default {
       }
     },
     validate(){
-      let i = this.params
+      let i = this.item
       if(i.title !== null || i.title !== '' || i.settings !== null || i.settings !== '' || i.orientation !== null || i.orientation !== ''){
         return true
       }
       return false
     },
     close(){
-      this.params = null
+      this.item = null
       $('#updateTemplateModal').modal('hide')
     }
   }

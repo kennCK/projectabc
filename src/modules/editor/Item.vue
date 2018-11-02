@@ -100,7 +100,7 @@ export default {
       ROUTER.push(parameter)
     },
     update(item){
-      this.$children[0].params = item
+      this.$children[0].item = item
       setTimeout(() => {
         $('#updateTemplateModal').modal({
           backdrop: 'static',
@@ -110,7 +110,7 @@ export default {
       }, 50)
     },
     editor(item){
-      this.$children[1].params = item
+      this.$children[1].item = item
       setTimeout(() => {
         $('#templateEditorModal').modal({
           backdrop: 'static',

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="modal fade" id="templateEditorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="params !== null">
+    <div class="modal fade" id="templateEditorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="item !== null">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
-            <h5 class="modal-title" id="exampleModalLabel">{{params.title}}</h5>
+            <h5 class="modal-title" id="exampleModalLabel">{{item.title}}</h5>
             <button type="button" class="close" @click="close()" aria-label="Close">
               <span aria-hidden="true" class="text-white">&times;</span>
             </button>
@@ -16,15 +16,12 @@
             <span class="editor-holder">
               <span class="tools">
                 <ul>
-                  <li>T</li>
-                  <li>
+                  <li @click="setObject('text')">T</li>
+                  <li @click="setObject('division')">
                     <i class="far fa-clone"></i>
                   </li>
-                  <li>
-                    <i class="fas fa-font"></i>
-                  </li>
-                  <li>
-                    <i class="fas fa-palette"></i>
+                  <li @click="setObject('photo')">
+                    <i class="fa fa-picture-o"></i>
                   </li>
                   <li>
                     <i class="fas fa-search-plus"></i>
@@ -37,7 +34,11 @@
               </span>
               <span class="preview">
                 <span class="card-holder">
-                  
+                </span>
+                <span class="object-settings">
+                  <division v-if="selected === 'division'"></division>
+                  <photo v-if="selected === 'photo'"></photo>
+                  <c-text v-if="selected === 'text'"></c-text>
                 </span>
               </span>
             </span>
@@ -95,6 +96,14 @@ ul li:hover{
   position: absolute;
   border: solid 1px #ddd;
 }
+.object-settings{
+  width: 200px;
+  min-height: 10px;
+  overflow-y: hidden;
+  position: absolute;
+  border: solid 1px #ddd;
+  right: 10px;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -108,17 +117,26 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      errorMessage: null
+      errorMessage: null,
+      item: null,
+      selected: 'text'
     }
   },
-  props: ['params'],
+  components: {
+    'division': require('modules/editor/Div.vue'),
+    'photo': require('modules/editor/Photo.vue'),
+    'c-text': require('modules/editor/Text.vue')
+  },
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
     close(){
-      this.params = null
+      this.item = null
       $('#templateEditorModal').modal('hide')
+    },
+    setObject(object){
+      this.selected = object
     }
   }
 }
