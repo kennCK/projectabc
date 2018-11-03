@@ -170,6 +170,35 @@
             <input type="text" class="form-control" v-model="object.attributes.zIndex">
           </span>
         </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Height
+          </span>
+          <span class="input">
+            <input type="text" class="form-control" v-model="object.attributes.height">
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Width
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="object.attributes.width">
+              <option v-for="i in 100" v-bind:value="i + '%'">{{i + '%'}}</option>
+            </select>
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Line Height
+          </span>
+          <span class="input">
+            <input type="text" class="form-control" v-model="object.attributes.lineHeight">
+          </span>
+        </span>
         
       </span>
     </div>

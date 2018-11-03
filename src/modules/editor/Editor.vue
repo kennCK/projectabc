@@ -16,11 +16,11 @@
             <span class="editor-holder">
               <span class="tools">
                 <ul>
-                  <li @click="setObject('text')">T</li>
-                  <li @click="setObject('division')">
+                  <li @click="addObject('text')">T</li>
+                  <li @click="addObject('division')">
                     <i class="far fa-clone"></i>
                   </li>
-                  <li @click="setObject('photo')">
+                  <li @click="addObject('photo')">
                     <i class="fa fa-picture-o"></i>
                   </li>
                   <li>
@@ -32,12 +32,18 @@
                 </ul>
               </span>
               <span class="preview">
+                <span class="layers">
+                  <span class="header">Layers</span>
+                  <span class="layers-holder">
+                    <span class="item" v-bind:class="{'layer-selected': item.selected === true}" v-for="item, index in objects" v-if="objects !== null" @click="setSelectedObject(item, index)" >{{item.type}}</span>
+                  </span>
+                </span>
                 <span class="card-holder">
-                  <span v-for="item, index in objects" v-bind:class="item.type" v-bind:style="item.attributes" @click="setSelectedObject(item)">
+                  <span v-for="item, index in objects" v-bind:class="{'text': item.type === 'text', 'division': item.type === 'division', 'photo': item.type === 'photo', 'object-selected': item.selected === true}" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">
                     <label v-if="item.type === 'text'">{{item.content}}</label>
                   </span>
                 </span>
-                <span class="object-settings">
+                <span class="object-settings" v-if="selected !== null">
                   <division v-if="selected !== null && selected.type === 'division'" :object="selected"></division>
                   <photo v-if="selected !== null && selected.type === 'photo'" :object="selected"></photo>
                   <c-text v-if="selected !== null && selected.type === 'text'" :object="selected"></c-text>
@@ -91,6 +97,41 @@ ul li:hover{
   background: #028170;
   color: #fff;
 }
+.layers{
+  width: 150px;
+  height: 200px;
+  overflow-y: hidden;
+  position: absolute;
+  border: solid 1px #ddd;
+  left: 8%;
+}
+
+.layers .header{
+  height: 30px;
+  width: 100%;
+  float: left;
+  text-align: center;
+  line-height: 30px;
+  border-bottom: solid 1px #eee;
+}
+.layers .layers-holder{
+  min-height: 170px;
+  max-height: 170px;
+  float: left;
+  width: 100%;
+  overflow-y: scroll;
+}
+.layers-holder .item{
+  width: 100%;
+  height: 30px;
+  float: left;
+  padding-left: 5px;
+  border-bottom: solid 1px #eee;
+  line-height: 30px;
+}
+.layers-holder .item:hover{
+  cursor: pointer;
+}
 .card-holder{
   width: 204px;
   height: 324px;
@@ -111,6 +152,16 @@ ul li:hover{
   position: absolute;
   cursor: move;
 }
+.text{
+  background: rgba(250, 250, 250, 0) !important;
+}
+.object-selected{
+  border: dashed 1px #22b173;
+}
+.layer-selected{
+  background: #22b173;
+  color: #fff;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -126,12 +177,12 @@ export default {
       config: CONFIG,
       errorMessage: null,
       item: null,
-      selected: null,
-      objects: [{
+      newDivision: {
         id: '',
         content: null,
         settings: 'static',
         type: 'division',
+        selected: false,
         attributes: {
           height: '50px',
           width: '100%',
@@ -144,11 +195,13 @@ export default {
           borderRadius: '0%',
           zIndex: 1
         }
-      }, {
+      },
+      newPhoto: {
         id: '',
         content: null,
         settings: 'static',
         type: 'photo',
+        selected: false,
         attributes: {
           height: '50px',
           width: '100%',
@@ -161,11 +214,13 @@ export default {
           borderRadius: '0%',
           zIndex: 2
         }
-      }, {
+      },
+      newText: {
         id: '',
         content: 'TEXT',
         settings: 'static',
         type: 'text',
+        selected: false,
         attributes: {
           height: '50px',
           width: '100%',
@@ -180,9 +235,13 @@ export default {
           borderRadius: '0%',
           textAlign: 'center',
           fontWeight: '500',
-          zIndex: 3
+          zIndex: 3,
+          lineHeight: '50px'
         }
-      }]
+      },
+      prevIndex: null,
+      selected: null,
+      objects: null
     }
   },
   components: {
@@ -198,7 +257,94 @@ export default {
       this.item = null
       $('#templateEditorModal').modal('hide')
     },
-    setSelectedObject(object){
+    addObject(type){
+      if(this.objects === null){
+        this.objects = []
+      }else{
+        //
+      }
+      let object = null
+      if(type === 'text'){
+        object = {
+          id: '',
+          content: 'TEXT',
+          settings: 'static',
+          type: 'text',
+          selected: false,
+          attributes: {
+            height: '50px',
+            width: '100%',
+            fontFamily: 'Arial',
+            fontSize: '100%',
+            background: '#fff',
+            color: '#028170',
+            top: '40%',
+            bottom: '0%',
+            left: '0%',
+            right: '0%',
+            borderRadius: '0%',
+            textAlign: 'center',
+            fontWeight: '500',
+            zIndex: 3,
+            lineHeight: '50px'
+          }
+        }
+      }else if(type === 'division'){
+        object = {
+          id: '',
+          content: null,
+          settings: 'static',
+          type: 'division',
+          selected: false,
+          attributes: {
+            height: '50px',
+            width: '100%',
+            background: '#028170',
+            color: '#028170',
+            top: '40%',
+            bottom: '0%',
+            left: '0%',
+            right: '0%',
+            borderRadius: '0%',
+            zIndex: 1
+          }
+        }
+      }else if(type === 'photo'){
+        object = {
+          id: '',
+          content: null,
+          settings: 'static',
+          type: 'photo',
+          selected: false,
+          attributes: {
+            height: '50px',
+            width: '100%',
+            background: '#028170',
+            color: '#028170',
+            top: '40%',
+            bottom: '0%',
+            left: '0%',
+            right: '0%',
+            borderRadius: '0%',
+            zIndex: 2
+          }
+        }
+      }
+      this.objects.push(object)
+      this.setSelectedObject(this.objects[this.objects.length - 1], this.objects.length - 1)
+    },
+    setSelectedObject(object, index){
+      console.log(this.objects)
+      if(this.prevIndex === null){
+        this.prevIndex = index
+        this.objects[this.prevIndex].selected = true
+      }else{
+        if(this.prevIndex !== index){
+          this.objects[this.prevIndex].selected = false
+          this.objects[index].selected = true
+          this.prevIndex = index
+        }
+      }
       this.selected = object
     }
   }
