@@ -33,10 +33,10 @@
               </span>
               <span class="preview">
                 <span class="card-holder">
-                  <span v-for="item, index in objects"></span>
+                  <span class="division" v-bind:style="division"></span>
                 </span>
                 <span class="object-settings">
-                  <division v-if="selected === 'division'"></division>
+                  <division v-if="selected === 'division'" :attributes="division"></division>
                   <photo v-if="selected === 'photo'"></photo>
                   <c-text v-if="selected === 'text'"></c-text>
                 </span>
@@ -104,6 +104,11 @@ ul li:hover{
   border: solid 1px #ddd;
   right: 10px;
 }
+
+.division{
+  position: absolute;
+  cursor: move;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -120,7 +125,19 @@ export default {
       errorMessage: null,
       item: null,
       selected: 'text',
-      objects: null
+      objects: null,
+      division: {
+        height: '50px',
+        width: '100%',
+        background: '#028170',
+        color: '#028170',
+        settings: 'static',
+        top: '40%',
+        bottom: '0%',
+        left: '0%',
+        right: '0%',
+        id: ''
+      }
     }
   },
   components: {
