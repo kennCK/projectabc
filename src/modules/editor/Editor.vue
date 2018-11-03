@@ -33,12 +33,14 @@
               </span>
               <span class="preview">
                 <span class="card-holder">
+                  <span class="text" v-bind:style="text">{{text.content}}</span>
+                  <span class="photo" v-bind:style="photo"></span>
                   <span class="division" v-bind:style="division"></span>
                 </span>
                 <span class="object-settings">
                   <division v-if="selected === 'division'" :attributes="division"></division>
-                  <photo v-if="selected === 'photo'"></photo>
-                  <c-text v-if="selected === 'text'"></c-text>
+                  <photo v-if="selected === 'photo'" :attributes="photo"></photo>
+                  <c-text v-if="selected === 'text'" :attributes="text"></c-text>
                 </span>
               </span>
             </span>
@@ -97,7 +99,7 @@ ul li:hover{
   border: solid 1px #ddd;
 }
 .object-settings{
-  width: 200px;
+  width: 225px;
   min-height: 10px;
   overflow-y: hidden;
   position: absolute;
@@ -105,7 +107,7 @@ ul li:hover{
   right: 10px;
 }
 
-.division{
+.division, .text, .photo{
   position: absolute;
   cursor: move;
 }
@@ -137,7 +139,39 @@ export default {
         left: '0%',
         right: '0%',
         id: '',
-        borderRadius: '0%'
+        borderRadius: '0%',
+        zIndex: 1
+      },
+      photo: {
+        height: '50px',
+        width: '100%',
+        background: '#028170',
+        color: '#028170',
+        settings: 'static',
+        top: '40%',
+        bottom: '0%',
+        left: '0%',
+        right: '0%',
+        id: '',
+        borderRadius: '0%',
+        zIndex: 2
+      },
+      text: {
+        fontStyle: 'Arial',
+        fontSize: '100%',
+        background: '#fff',
+        color: '#028170',
+        settings: 'static',
+        top: '40%',
+        bottom: '0%',
+        left: '0%',
+        right: '0%',
+        id: '',
+        borderRadius: '0%',
+        content: 'TEXT',
+        textAlign: 'center',
+        fontWeight: '500',
+        zIndex: 3
       }
     }
   },

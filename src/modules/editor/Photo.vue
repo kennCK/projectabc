@@ -8,12 +8,25 @@
         
         <span class="item-setting">
           <span class="title">
-            Content
+            Id
           </span>
           <span class="input">
-            <input type="file" class="form-control">
+            <input type="text" class="form-control" v-model="attributes.id">
           </span>
         </span>
+
+
+        <span class="item-setting">
+          <span class="title">
+            Setting
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="attributes.settings">
+              <option value="static">Static</option>
+              <option value="dynamic">Dynamic</option>
+            </select>
+          </span>
+        </span>   
 
 
         <span class="item-setting">
@@ -21,7 +34,7 @@
             Height
           </span>
           <span class="input">
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" v-model="attributes.height">
           </span>
         </span>
 
@@ -30,7 +43,7 @@
             Width
           </span>
           <span class="input">
-            <select class="form-control">
+            <select class="form-control" v-model="attributes.width">
               <option v-for="i in 100" v-bind:value="i + '%'">{{i + '%'}}</option>
             </select>
           </span>
@@ -38,36 +51,89 @@
 
         <span class="item-setting">
           <span class="title">
-            Setting
+            Background
           </span>
           <span class="input">
-            <select class="form-control">
-              <option>Static</option>
-              <option>Dynamic</option>
-            </select>
+            <input  class="form-control" v-bind:style="{color: (attributes.background === 'white' || attributes.background === '#fff' || attributes.background === '#ffffff') ? '#000' : '#ffffff', background: (attributes.background === '' || attributes.background === null) ? '#028170' : attributes.background}" type="text" v-model="attributes.background">
           </span>
-        </span>   
+        </span>
+
 
         <span class="item-setting">
           <span class="title">
-            Position
+            Color
           </span>
           <span class="input">
-            <select class="form-control">
-              <option>Static</option>
-              <option>Dynamic</option>
+            <input  class="form-control" v-bind:style="{color: (attributes.color === 'white' || attributes.color === '#fff' || attributes.color === '#ffffff') ? '#000' : '#ffffff', background: (attributes.color === '' || attributes.color === null) ? '#028170' : attributes.color}" type="text" v-model="attributes.color">
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Top
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="attributes.top">
+              <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
             </select>
           </span>
         </span>
 
-         <span class="item-setting">
+
+        <span class="item-setting">
           <span class="title">
-            Id
+            Bottom
           </span>
           <span class="input">
-            <input type="text" class="form-control">
+            <select class="form-control" v-model="attributes.bottom">
+              <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
+            </select>
           </span>
-        </span>  
+        </span>
+
+
+        <span class="item-setting">
+          <span class="title">
+            Left
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="attributes.left">
+              <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
+            </select>
+          </span>
+        </span>
+
+
+        <span class="item-setting">
+          <span class="title">
+            Right
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="attributes.right">
+              <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
+            </select>
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Radius
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="attributes.borderRadius">
+              <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
+            </select>
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Z-Index
+          </span>
+          <span class="input">
+            <input type="text" class="form-control" v-model="attributes.zIndex">
+          </span>
+        </span>
         
       </span>
     </div>
@@ -92,10 +158,11 @@
   line-height: 30px;
 }
 .settings{
-  min-height: 10px;
+  min-height: 100px;
+  max-height: 300px;
   float: left;
   width: 100%;
-  overflow-y: hidden;
+  overflow-y: scroll;
 }
 .item-setting{
   width: 100%;
@@ -140,6 +207,7 @@ export default {
       errorMessage: null
     }
   },
+  props: ['attributes'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)

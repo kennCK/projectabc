@@ -13,7 +13,20 @@
           <span class="input">
             <input type="text" class="form-control" v-model="attributes.id">
           </span>
-        </span> 
+        </span>
+
+
+        <span class="item-setting">
+          <span class="title">
+            Setting
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="attributes.settings">
+              <option value="static">Static</option>
+              <option value="dynamic">Dynamic</option>
+            </select>
+          </span>
+        </span>   
 
 
         <span class="item-setting">
@@ -54,18 +67,6 @@
             <input  class="form-control" v-bind:style="{color: (attributes.color === 'white' || attributes.color === '#fff' || attributes.color === '#ffffff') ? '#000' : '#ffffff', background: (attributes.color === '' || attributes.color === null) ? '#028170' : attributes.color}" type="text" v-model="attributes.color">
           </span>
         </span>
-
-        <span class="item-setting">
-          <span class="title">
-            Setting
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="attributes.settings">
-              <option value="static">Static</option>
-              <option value="dynamic">Dynamic</option>
-            </select>
-          </span>
-        </span>   
 
         <span class="item-setting">
           <span class="title">
@@ -124,6 +125,15 @@
             </select>
           </span>
         </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Z-Index
+          </span>
+          <span class="input">
+            <input type="text" class="form-control" v-model="attributes.zIndex">
+          </span>
+        </span>
         
       </span>
     </div>
@@ -148,10 +158,11 @@
   line-height: 30px;
 }
 .settings{
-  min-height: 10px;
+  min-height: 100px;
+  max-height: 300px;
   float: left;
   width: 100%;
-  overflow-y: hidden;
+  overflow-y: scroll;
 }
 .item-setting{
   width: 100%;
