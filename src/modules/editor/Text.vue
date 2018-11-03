@@ -11,7 +11,7 @@
             Id
           </span>
           <span class="input">
-            <input type="text" class="form-control" v-model="attributes.id">
+            <input type="text" class="form-control" v-model="object.id">
           </span>
         </span>
 
@@ -20,7 +20,7 @@
             Content
           </span>
           <span class="input">
-            <input type="text" class="form-control" v-model="attributes.content">
+            <input type="text" class="form-control" v-model="object.content">
           </span>
         </span>
 
@@ -30,7 +30,7 @@
             Setting
           </span>
           <span class="input">
-            <select class="form-control" v-model="attributes.settings">
+            <select class="form-control" v-model="object.settings">
               <option value="static">Static</option>
               <option value="dynamic">Dynamic</option>
             </select>
@@ -43,7 +43,11 @@
             Style
           </span>
           <span class="input">
-            <input type="text" class="form-control" v-model="attributes.fontStyle">
+            <select class="form-control" v-model="object.attributes.fontFamily">
+              <option value="Arial">Arial</option>
+              <option value="Helvetica">Helvetica</option>
+              <option value="Times New Roman">Times New Roman</option>
+            </select>
           </span>
         </span>
 
@@ -52,7 +56,7 @@
             Size
           </span>
           <span class="input">
-            <input type="text" class="form-control" v-model="attributes.fontSize">
+            <input type="text" class="form-control" v-model="object.attributes.fontSize">
           </span>
         </span>
 
@@ -61,7 +65,7 @@
             Background
           </span>
           <span class="input">
-            <input  class="form-control" v-bind:style="{color: (attributes.background === 'white' || attributes.background === '#fff' || attributes.background === '#ffffff') ? '#000' : '#ffffff', background: (attributes.background === '' || attributes.background === null) ? '#028170' : attributes.background}" type="text" v-model="attributes.background">
+            <input  class="form-control" v-bind:style="{color: (object.attributes.background === 'white' || object.attributes.background === '#fff' || object.attributes.background === '#ffffff') ? '#000' : '#ffffff', background: (object.attributes.background === '' || object.attributes.background === null) ? '#028170' : object.attributes.background}" type="text" v-model="object.attributes.background">
           </span>
         </span>
 
@@ -71,7 +75,7 @@
             Color
           </span>
           <span class="input">
-            <input  class="form-control" v-bind:style="{color: (attributes.color === 'white' || attributes.color === '#fff' || attributes.color === '#ffffff') ? '#000' : '#ffffff', background: (attributes.color === '' || attributes.color === null) ? '#028170' : attributes.color}" type="text" v-model="attributes.color">
+            <input  class="form-control" v-bind:style="{color: (object.attributes.color === 'white' || object.attributes.color === '#fff' || object.attributes.color === '#ffffff') ? '#000' : '#ffffff', background: (object.attributes.color === '' || object.attributes.color === null) ? '#028170' : object.attributes.color}" type="text" v-model="object.attributes.color">
           </span>
         </span>
 
@@ -80,7 +84,7 @@
             Top
           </span>
           <span class="input">
-            <select class="form-control" v-model="attributes.top">
+            <select class="form-control" v-model="object.attributes.top">
               <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
             </select>
           </span>
@@ -92,7 +96,7 @@
             Bottom
           </span>
           <span class="input">
-            <select class="form-control" v-model="attributes.bottom">
+            <select class="form-control" v-model="object.attributes.bottom">
               <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
             </select>
           </span>
@@ -104,7 +108,7 @@
             Left
           </span>
           <span class="input">
-            <select class="form-control" v-model="attributes.left">
+            <select class="form-control" v-model="object.attributes.left">
               <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
             </select>
           </span>
@@ -116,7 +120,7 @@
             Right
           </span>
           <span class="input">
-            <select class="form-control" v-model="attributes.right">
+            <select class="form-control" v-model="object.attributes.right">
               <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
             </select>
           </span>
@@ -127,7 +131,7 @@
             Radius
           </span>
           <span class="input">
-            <select class="form-control" v-model="attributes.borderRadius">
+            <select class="form-control" v-model="object.attributes.borderRadius">
               <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
             </select>
           </span>
@@ -138,7 +142,7 @@
             Align
           </span>
           <span class="input">
-            <select class="form-control" v-model="attributes.textAlign">
+            <select class="form-control" v-model="object.attributes.textAlign">
               <option value="center">Center</option>
               <option value="justify">Justify</option>
               <option value="left">Left</option>
@@ -152,7 +156,7 @@
             Bold
           </span>
           <span class="input">
-            <select class="form-control" v-model="attributes.fontWeight">
+            <select class="form-control" v-model="object.attributes.fontWeight">
               <option v-for="i in 9" v-bind:value="350 + (i * 50)">{{350 + (i * 50)}}</option>
             </select>
           </span>
@@ -163,7 +167,7 @@
             Z-Index
           </span>
           <span class="input">
-            <input type="text" class="form-control" v-model="attributes.zIndex">
+            <input type="text" class="form-control" v-model="object.attributes.zIndex">
           </span>
         </span>
         
@@ -239,7 +243,7 @@ export default {
       errorMessage: null
     }
   },
-  props: ['attributes'],
+  props: ['object'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)

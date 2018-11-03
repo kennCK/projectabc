@@ -33,14 +33,14 @@
               </span>
               <span class="preview">
                 <span class="card-holder">
-                  <span class="text" v-bind:style="text">{{text.content}}</span>
-                  <span class="photo" v-bind:style="photo"></span>
-                  <span class="division" v-bind:style="division"></span>
+                  <span v-for="item, index in objects" v-bind:class="item.type" v-bind:style="item.attributes" @click="setSelectedObject(item)">
+                    <label v-if="item.type === 'text'">{{item.content}}</label>
+                  </span>
                 </span>
                 <span class="object-settings">
-                  <division v-if="selected === 'division'" :attributes="division"></division>
-                  <photo v-if="selected === 'photo'" :attributes="photo"></photo>
-                  <c-text v-if="selected === 'text'" :attributes="text"></c-text>
+                  <division v-if="selected !== null && selected.type === 'division'" :object="selected"></division>
+                  <photo v-if="selected !== null && selected.type === 'photo'" :object="selected"></photo>
+                  <c-text v-if="selected !== null && selected.type === 'text'" :object="selected"></c-text>
                 </span>
               </span>
             </span>
@@ -126,53 +126,63 @@ export default {
       config: CONFIG,
       errorMessage: null,
       item: null,
-      selected: 'text',
-      objects: null,
-      division: {
-        height: '50px',
-        width: '100%',
-        background: '#028170',
-        color: '#028170',
-        settings: 'static',
-        top: '40%',
-        bottom: '0%',
-        left: '0%',
-        right: '0%',
+      selected: null,
+      objects: [{
         id: '',
-        borderRadius: '0%',
-        zIndex: 1
-      },
-      photo: {
-        height: '50px',
-        width: '100%',
-        background: '#028170',
-        color: '#028170',
+        content: null,
         settings: 'static',
-        top: '40%',
-        bottom: '0%',
-        left: '0%',
-        right: '0%',
+        type: 'division',
+        attributes: {
+          height: '50px',
+          width: '100%',
+          background: '#028170',
+          color: '#028170',
+          top: '40%',
+          bottom: '0%',
+          left: '0%',
+          right: '0%',
+          borderRadius: '0%',
+          zIndex: 1
+        }
+      }, {
         id: '',
-        borderRadius: '0%',
-        zIndex: 2
-      },
-      text: {
-        fontStyle: 'Arial',
-        fontSize: '100%',
-        background: '#fff',
-        color: '#028170',
+        content: null,
         settings: 'static',
-        top: '40%',
-        bottom: '0%',
-        left: '0%',
-        right: '0%',
+        type: 'photo',
+        attributes: {
+          height: '50px',
+          width: '100%',
+          background: '#028170',
+          color: '#028170',
+          top: '40%',
+          bottom: '0%',
+          left: '0%',
+          right: '0%',
+          borderRadius: '0%',
+          zIndex: 2
+        }
+      }, {
         id: '',
-        borderRadius: '0%',
         content: 'TEXT',
-        textAlign: 'center',
-        fontWeight: '500',
-        zIndex: 3
-      }
+        settings: 'static',
+        type: 'text',
+        attributes: {
+          height: '50px',
+          width: '100%',
+          fontFamily: 'Arial',
+          fontSize: '100%',
+          background: '#fff',
+          color: '#028170',
+          top: '40%',
+          bottom: '0%',
+          left: '0%',
+          right: '0%',
+          borderRadius: '0%',
+          textAlign: 'center',
+          fontWeight: '500',
+          zIndex: 3
+        }
+      }]
     }
   },
   components: {
@@ -188,7 +198,7 @@ export default {
       this.item = null
       $('#templateEditorModal').modal('hide')
     },
-    setObject(object){
+    setSelectedObject(object){
       this.selected = object
     }
   }
