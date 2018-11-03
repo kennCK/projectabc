@@ -8,6 +8,16 @@
         
         <span class="item-setting">
           <span class="title">
+            Id
+          </span>
+          <span class="input">
+            <input type="text" class="form-control" v-model="attributes.id">
+          </span>
+        </span> 
+
+
+        <span class="item-setting">
+          <span class="title">
             Height
           </span>
           <span class="input">
@@ -104,14 +114,16 @@
           </span>
         </span>
 
-         <span class="item-setting">
+        <span class="item-setting">
           <span class="title">
-            Id
+            Radius
           </span>
           <span class="input">
-            <input type="text" class="form-control" v-model="attributes.id">
+            <select class="form-control" v-model="attributes.borderRadius">
+              <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
+            </select>
           </span>
-        </span>  
+        </span>
         
       </span>
     </div>
