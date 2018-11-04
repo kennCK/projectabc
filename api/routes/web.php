@@ -50,9 +50,9 @@ Route::get('storage/logo/{filename}', function ($filename)
     return $response;
 });
 
-Route::get('storage/event_feautured_image/{filename}', function ($filename)
+Route::get('storage/image/{filename}', function ($filename)
 {
-    $path = storage_path('/app/eventFeaturedImages/' . $filename);
+    $path = storage_path('/app/images/' . $filename);
 
     if (!File::exists($path)) {
         abort(404);
@@ -67,22 +67,6 @@ Route::get('storage/event_feautured_image/{filename}', function ($filename)
     return $response;
 });
 
-Route::get('storage/qr_code/{filename}', function ($filename)
-{
-    $path = storage_path('/app/qrCodes/' . $filename);
-
-    if (!File::exists($path)) {
-        abort(404);
-    }
-
-    $file = File::get($path);
-    $type = File::mimeType($path);
-
-    $response = Response::make($file, 200);
-    $response->header("Content-Type", $type);
-
-    return $response;
-});
 
 Route::get('/cache', function () {
     $exitCode = Artisan::call('config:cache');

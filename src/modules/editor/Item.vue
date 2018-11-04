@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="item" v-if="item !== null" v-on:click="makeActive()">
-      <span class="header">
+    <div v-bind:class="{'make-active': item !== null && item.active === true}" class="item" v-if="item !== null" v-on:click="makeActive()">
+      <span v-bind:class="{'make-active-header': item.active === true}" class="header">
         <b>
           {{item.title}}
         </b>
@@ -10,7 +10,7 @@
         <span class="preview">
           <span v-for="obj, innerIndex in item.objects" v-bind:class="{'text': obj.type === 'text', 'division': obj.type === 'division', 'photo': obj.type === 'photo', 'object-selected': obj.selected === true}" v-bind:style="obj.attributes" v-if="item.objects !== null">
             <label v-if="obj.type === 'text'">{{obj.content}}</label>
-            <img :src="obj.content" v-if="obj.type === 'photo' && obj.content !== null" height="100%" width="
+            <img :src="config.BACKEND_URL + obj.content" v-if="obj.type === 'photo' && obj.content !== null" height="100%" width="
             100%">
           </span>
         </span>
@@ -39,6 +39,9 @@
   cursor: pointer;
   border: solid 1px #22b173;
 }
+.make-active{
+  border: solid 1px #22b173;
+}
 .header{
   width: 100%;
   float: left;
@@ -46,7 +49,10 @@
   text-align: center;
   line-height: 50px;
   border-bottom: solid 1px #eee;
-
+}
+.make-active-header{
+  background: #22b173;
+  color: #fff;
 }
 .body{
   width: 100%;
@@ -77,7 +83,7 @@ ul{
   list-style: none;
   bottom: 0;
   height: 40px;
-  background: #028170;
+  background: #22b173;
   position: absolute;
   transition: 1s;
 }
@@ -87,12 +93,12 @@ ul li{
   height: 40px;
   text-align: center;
   line-height: 40px;
-  border-left: solid 1px #22b173;
+  border-left: solid 1px #028170;
   color: #fff;
 }
 ul li:hover{
   cursor: pointer;
-  background: #22b173;
+  background: #028170;
 }
 </style>
 <script>

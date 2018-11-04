@@ -44,7 +44,7 @@
                 <span class="card-holder">
                   <span v-for="item, index in objects" v-bind:class="{'text': item.type === 'text', 'division': item.type === 'division', 'photo': item.type === 'photo', 'object-selected': item.selected === true}" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">
                     <label v-if="item.type === 'text'">{{item.content}}</label>
-                    <img :src="item.content" v-if="item.type === 'photo' && item.content !== null" height="100%" width="
+                    <img :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo' && item.content !== null && item.content.includes('storage')" height="100%" width="
                     100%">
                   </span>
                 </span>
@@ -264,16 +264,16 @@ export default {
           template_id: this.item.id,
           new: true,
           name: null,
-          content: null,
+          content: '/storage/image/default.png',
           settings: 'static',
           type: 'photo',
           selected: false,
           attributes: {
-            height: '50px',
-            width: '100%',
+            height: '35%',
+            width: '60%',
             background: '#028170',
             color: '#028170',
-            top: '40%',
+            top: '10%',
             bottom: '0%',
             left: '0%',
             right: '0%',
