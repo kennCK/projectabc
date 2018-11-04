@@ -2,7 +2,7 @@
 	<div class="template-holder">
 		<create></create>
     <div class="template-list">
-      <item v-for="item, index in data" v-if="data !==null" :item="item" :key="item.id"></item>
+      <item v-for="item, index in data" v-if="data !==null" :item="item" :key="item.id" :index="index"></item>
     </div>
 	</div>
 </template>
@@ -31,7 +31,8 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      data: null
+      data: null,
+      prevIndex: null
     }
   },
   components: {
@@ -63,6 +64,21 @@ export default {
           this.data = null
         }
       })
+    },
+    makeActive(index){
+      if(this.prevIndex === null){
+        this.prevIndex = index
+        this.data[index].active = true
+      }else{
+        if(this.prevIndex !== index){
+          this.data[this.prevIndex].active = false
+          this.data[index].active = true
+          this.prevIndex = index
+        }else{
+          this.data[this.prevIndex].active = false
+          this.prevIndex = null
+        }
+      }
     }
   }
 }

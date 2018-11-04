@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="item" v-if="item !== null">
+    <div class="item" v-if="item !== null" v-on:click="makeActive()">
       <span class="header">
         <b>
           {{item.title}}
@@ -8,11 +8,14 @@
       </span>
       <span class="body">
         <span class="preview">
-          
+          <span v-for="obj, innerIndex in item.objects" v-bind:class="{'text': obj.type === 'text', 'division': obj.type === 'division', 'photo': obj.type === 'photo', 'object-selected': obj.selected === true}" v-bind:style="obj.attributes" v-if="item.objects !== null">
+            <label v-if="obj.type === 'text'">{{obj.content}}</label>
+            <img :src="obj.content" v-if="obj.type === 'photo' && obj.content !== null" height="100%" width="
+            100%">
+          </span>
         </span>
-        <ul>
-          <li>Templates</li>
-          <li v-on:click="editor(item)">Editor</li>
+        <ul v-if="item.active === true">
+          <li v-on:click="editor(item)" style="border-left: 0px;">Editor</li>
           <li v-on:click="update(item)">Settings</li>
         </ul>
       </span>
@@ -27,9 +30,14 @@
   height: 400px;
   float: left;
   border: solid 1px #eee;
-  border-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   margin-right: 1%;
-  margin-top: 10px;
+  margin-bottom: 25px;
+}
+.item:hover{
+  cursor: pointer;
+  border: solid 1px #22b173;
 }
 .header{
   width: 100%;
@@ -47,33 +55,44 @@
   position: relative;
 }
 .preview{
-  position: absolute;
   height: 350px;
+  position: absolute;
   width: 100%;
   float: left;
-  z-index: 0;
+
+}
+
+.division, .text, .photo{
+  position: absolute;
+}
+.text, .photo{
+  background: rgba(250, 250, 250, 0) !important;
 }
 ul{
   padding: 0px;
   margin: 0px;
   width: 100%;
   float: left;
-  z-index: 1;
-  position: absolute;
+  z-index: 30;
   list-style: none;
   bottom: 0;
+  height: 40px;
+  background: #028170;
+  position: absolute;
+  transition: 1s;
 }
 ul li{
-  width: 100%;
+  width: 50%;
   float: left;
   height: 40px;
   text-align: center;
   line-height: 40px;
-  border-top: solid 1px #eee;
+  border-left: solid 1px #22b173;
+  color: #fff;
 }
 ul li:hover{
   cursor: pointer;
-  background: #eee;
+  background: #22b173;
 }
 </style>
 <script>
@@ -86,17 +105,19 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      errorMessage: null
+      errorMessage: null,
+      prevId: null
     }
   },
   components: {
     'update': require('modules/editor/Update.vue'),
     'editor': require('modules/editor/Editor.vue')
   },
-  props: {
-    item: Object
-  },
+  props: ['item', 'index'],
   methods: {
+    makeActive(){
+      this.$parent.makeActive(this.index)
+    },
     redirect(parameter){
       ROUTER.push(parameter)
     },

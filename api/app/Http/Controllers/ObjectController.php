@@ -22,7 +22,7 @@ class ObjectController extends APIController
       $objects = $data['objects'];
       if(sizeof($objects) > 0){
         for ($i = 0; $i < sizeof($objects); $i++) {
-          if($objects[$i]['new'] == false){
+          if($objects[$i]['new'] == 'false'){
             // update
             $this->model = new Object();
             $objectId = $objects[$i]['id'];
@@ -32,7 +32,7 @@ class ObjectController extends APIController
               'content'     => $objects[$i]['content'],
               'type'        => $objects[$i]['type']
             );
-            $this->updatDB($objectUpdate);
+            $this->updateDB($objectUpdate);
 
             if($this->response['data'] == true){
               $j = 0;
@@ -50,20 +50,19 @@ class ObjectController extends APIController
             }
           }else{
             // create
-            $this->model = new Object();
-            $objectInsert = array(
-              'template_id' => $objects[$i]['template_id'],
-              'name'        => $objects[$i]['name'],
-              'content'     => $objects[$i]['content'],
-              'type'        => $objects[$i]['type']
-            );
-            $this->insertDB($objectInsert);
-            if($this->response['data'] > 0){
+            $objModel = new Object();
+            $objModel->template_id = $objects[$i]['template_id'];
+            $objModel->name = $objects[$i]['name'];
+            $objModel->content = $objects[$i]['content'];
+            $objModel->type = $objects[$i]['type'];
+            $objModel->created_at = Carbon::now();
+            $objModel->save();
+            if($objModel->id > 0){
               $attributes = $objects[$i]['attributes'];
               foreach ($attributes as $key => $value) {
                 $attrbModel = new Attribute();
                 $attrbModel->payload = 'object';
-                $attrbModel->payload_value = $this->response['data'];
+                $attrbModel->payload_value = $objModel->id;
                 $attrbModel->attribute = $key;
                 $attrbModel->value = $value;
                 $attrbModel->created_at = Carbon::now();

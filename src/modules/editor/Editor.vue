@@ -182,68 +182,6 @@ export default {
       config: CONFIG,
       errorMessage: null,
       item: null,
-      newDivision: {
-        id: '',
-        content: null,
-        settings: 'static',
-        type: 'division',
-        selected: false,
-        attributes: {
-          height: '50px',
-          width: '100%',
-          background: '#028170',
-          color: '#028170',
-          top: '40%',
-          bottom: '0%',
-          left: '0%',
-          right: '0%',
-          borderRadius: '0%',
-          zIndex: 1
-        }
-      },
-      newPhoto: {
-        id: '',
-        content: null,
-        settings: 'static',
-        type: 'photo',
-        selected: false,
-        attributes: {
-          height: '50px',
-          width: '100%',
-          background: '#028170',
-          color: '#028170',
-          top: '40%',
-          bottom: '0%',
-          left: '0%',
-          right: '0%',
-          borderRadius: '0%',
-          zIndex: 2
-        }
-      },
-      newText: {
-        id: '',
-        content: 'TEXT',
-        settings: 'static',
-        type: 'text',
-        selected: false,
-        attributes: {
-          height: '50px',
-          width: '100%',
-          fontFamily: 'Arial',
-          fontSize: '100%',
-          background: '#fff',
-          color: '#028170',
-          top: '40%',
-          bottom: '0%',
-          left: '0%',
-          right: '0%',
-          borderRadius: '0%',
-          textAlign: 'center',
-          fontWeight: '500',
-          zIndex: 3,
-          lineHeight: '50px'
-        }
-      },
       prevIndex: null,
       selected: null,
       objects: null
@@ -261,6 +199,7 @@ export default {
     close(){
       this.item = null
       $('#templateEditorModal').modal('hide')
+      ROUTER.go('/')
     },
     addObject(type){
       if(this.objects === null){
@@ -376,8 +315,12 @@ export default {
         this.APIRequest('objects/retrieve', parameter).then(response => {
           if(response.data.length > 0){
             this.objects = response.data
+            this.prevIndex = null
+            this.setSelectedObject(this.objects[0], 0)
           }else{
             this.objects = null
+            this.prevIndex = null
+            this.selected = null
           }
         })
       }
