@@ -11,7 +11,7 @@
             Id
           </span>
           <span class="input">
-            <input type="text" class="form-control" v-model="object.id">
+            <input type="text" class="form-control" v-model="object.name">
           </span>
         </span>
 

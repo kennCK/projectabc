@@ -11,7 +11,7 @@
             Id
           </span>
           <span class="input">
-            <input type="text" class="form-control" v-model="object.id">
+            <input type="text" class="form-control" v-model="object.name">
           </span>
         </span>
 
@@ -20,7 +20,10 @@
             Content
           </span>
           <span class="input">
-            <input type="file" class="form-control">
+            <span class="file" @click="addImage()">
+              <label>Click to upload</label>
+              <input type="file" class="form-control" id="photoImage"   @change="setUpFileUpload($event)" accept="image/*">
+            </span>
           </span>
         </span>
 
@@ -202,6 +205,23 @@
   margin-top: 1px !important;
   margin-bottom: 1px !important;
 }
+.input .file{
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  float: left;
+  border-left: solid 1px #ddd;
+  border-right: solid 1px #ddd;
+  padding-left: 10px;
+}
+.input .file:hover, .input .file label:hover{
+  cursor: pointer;
+  background: #22b173;
+  color: #fff;
+}
+.file input{
+  display: none;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -213,13 +233,34 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      errorMessage: null
+      errorMessage: null,
+      fileUpload: null
     }
   },
   props: ['object'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    addImage(){
+      $('#photoImage')[0].click()
+    },
+    createFile(file){
+      let fileReader = new FileReader()
+      fileReader.readAsDataURL(event.target.files[0])
+      fileReader.onload = (e) => {
+        this.object.content = e.target.result
+        console.log(this.object.content)
+      }
+    },
+    setUpFileUpload(event){
+      let files = event.target.files || event.dataTransfer.files
+      if(!files.length){
+        return false
+      }else{
+        this.fileUpload = files[0]
+        this.createFile(files[0])
+      }
     }
   }
 }

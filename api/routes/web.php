@@ -147,4 +147,26 @@ Route::post('/templates/delete', "TemplateController@delete");
 Route::get('/templates/test', 'TemplateController@test');
 
 
+//Objects
+Route::post('/objects/create', "ObjectController@create");
+Route::post('/objects/retrieve', "ObjectController@retrieve");
+Route::post('/objects/update', "ObjectController@update");
+Route::post('/objects/delete', "ObjectController@delete");
+Route::get('/objects/test', 'ObjectController@test');
+
+//Attributes
+Route::post('/attributes/create', "AttributeController@create");
+Route::post('/attributes/retrieve', "AttributeController@retrieve");
+Route::post('/attributes/update', "AttributeController@update");
+Route::post('/attributes/delete', "AttributeController@delete");
+Route::get('/attributes/test', 'AttributeController@test');
+
+//Contents
+Route::post('/contents/create', "ContentController@create");
+Route::post('/contents/retrieve', "ContentController@retrieve");
+Route::post('/contents/update', "ContentController@update");
+Route::post('/contents/delete', "ContentController@delete");
+Route::get('/contents/test', 'ContentController@test');
+
+
 

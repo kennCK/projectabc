@@ -23,6 +23,9 @@
                   <li @click="addObject('photo')">
                     <i class="fa fa-picture-o"></i>
                   </li>
+                  <li @click="unSelected()">
+                    <i class="fas fa-close"></i>
+                  </li>
                   <li>
                     <i class="fas fa-search-plus"></i>
                   </li>
@@ -41,6 +44,8 @@
                 <span class="card-holder">
                   <span v-for="item, index in objects" v-bind:class="{'text': item.type === 'text', 'division': item.type === 'division', 'photo': item.type === 'photo', 'object-selected': item.selected === true}" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">
                     <label v-if="item.type === 'text'">{{item.content}}</label>
+                    <img :src="item.content" v-if="item.type === 'photo' && item.content !== null" height="100%" width="
+                    100%">
                   </span>
                 </span>
                 <span class="object-settings" v-if="selected !== null">
@@ -53,7 +58,7 @@
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" @click="close()">Cancel</button>
-              <button type="button" class="btn btn-primary" @click="submit()">Save</button>
+              <button type="button" class="btn btn-primary" @click="save()">Save</button>
           </div>
         </div>
       </div>
@@ -152,7 +157,7 @@ ul li:hover{
   position: absolute;
   cursor: move;
 }
-.text{
+.text, .photo{
   background: rgba(250, 250, 250, 0) !important;
 }
 .object-selected{
@@ -266,7 +271,9 @@ export default {
       let object = null
       if(type === 'text'){
         object = {
-          id: '',
+          template_id: this.item.id,
+          new: true,
+          name: null,
           content: 'TEXT',
           settings: 'static',
           type: 'text',
@@ -276,6 +283,8 @@ export default {
             width: '100%',
             fontFamily: 'Arial',
             fontSize: '100%',
+            fontStyle: 'normal',
+            textDecoration: 'normal',
             background: '#fff',
             color: '#028170',
             top: '40%',
@@ -291,7 +300,9 @@ export default {
         }
       }else if(type === 'division'){
         object = {
-          id: '',
+          template_id: this.item.id,
+          new: true,
+          name: null,
           content: null,
           settings: 'static',
           type: 'division',
@@ -311,7 +322,9 @@ export default {
         }
       }else if(type === 'photo'){
         object = {
-          id: '',
+          template_id: this.item.id,
+          new: true,
+          name: null,
           content: null,
           settings: 'static',
           type: 'photo',
@@ -334,7 +347,6 @@ export default {
       this.setSelectedObject(this.objects[this.objects.length - 1], this.objects.length - 1)
     },
     setSelectedObject(object, index){
-      console.log(this.objects)
       if(this.prevIndex === null){
         this.prevIndex = index
         this.objects[this.prevIndex].selected = true
@@ -346,6 +358,41 @@ export default {
         }
       }
       this.selected = object
+    },
+    unSelected(){
+      this.objects[this.prevIndex].selected = false
+      this.prevIndex = null
+      this.selected = null
+    },
+    retrieve(){
+      if(this.item !== null){
+        let parameter = {
+          condition: [{
+            value: this.item.id,
+            column: 'template_id',
+            clause: '='
+          }]
+        }
+        this.APIRequest('objects/retrieve', parameter).then(response => {
+          if(response.data.length > 0){
+            this.objects = response.data
+          }else{
+            this.objects = null
+          }
+        })
+      }
+    },
+    save(){
+      let parameter = {
+        'objects': this.objects
+      }
+      this.APIRequest('objects/create', parameter).then(response => {
+        if(response.data === true){
+          this.retrieve()
+        }else{
+          // error
+        }
+      })
     }
   }
 }

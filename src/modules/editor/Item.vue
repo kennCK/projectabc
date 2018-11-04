@@ -112,6 +112,7 @@ export default {
     },
     editor(item){
       this.$children[1].item = item
+      this.$children[1].retrieve()
       setTimeout(() => {
         $('#templateEditorModal').modal({
           backdrop: 'static',

@@ -11,7 +11,7 @@
             Id
           </span>
           <span class="input">
-            <input type="text" class="form-control" v-model="object.id">
+            <input type="text" class="form-control" v-model="object.name">
           </span>
         </span>
 
@@ -37,10 +37,9 @@
           </span>
         </span>   
 
-
         <span class="item-setting">
           <span class="title">
-            Style
+            Family
           </span>
           <span class="input">
             <select class="form-control" v-model="object.attributes.fontFamily">
@@ -59,6 +58,46 @@
             <input type="text" class="form-control" v-model="object.attributes.fontSize">
           </span>
         </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Style
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="object.attributes.fontStyle">
+              <option value="normal">Normal</option>
+              <option value="italic">Italic</option>
+              <option value="oblique">Oblique</option>
+            </select>
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Decoration
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="object.attributes.textDecoration">
+              <option value="normal">Normal</option>
+              <option value="overline">Overline</option>
+              <option value="line-through">Line-through</option>
+              <option value="underline">Underline</option>
+            </select>
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Bold
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="object.attributes.fontWeight">
+              <option v-for="i in 9" v-bind:value="350 + (i * 50)">{{350 + (i * 50)}}</option>
+            </select>
+          </span>
+        </span>
+
+
 
         <span class="item-setting">
           <span class="title">
@@ -147,17 +186,6 @@
               <option value="justify">Justify</option>
               <option value="left">Left</option>
               <option value="right">Right</option>
-            </select>
-          </span>
-        </span>
-
-        <span class="item-setting">
-          <span class="title">
-            Bold
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.fontWeight">
-              <option v-for="i in 9" v-bind:value="350 + (i * 50)">{{350 + (i * 50)}}</option>
             </select>
           </span>
         </span>
