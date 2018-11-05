@@ -57,7 +57,7 @@
             </span>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-danger" @click="close()">Cancel</button>
+              <button type="button" class="btn btn-danger" @click="close()">Close</button>
               <button type="button" class="btn btn-primary" @click="save()">Save</button>
           </div>
         </div>

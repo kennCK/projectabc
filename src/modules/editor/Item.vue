@@ -26,10 +26,10 @@
 </template>
 <style scoped>
 .item{
-  width: 24%;
-  height: 400px;
+  width: 204px;
+  height: 374px;
   float: left;
-  border: solid 1px #eee;
+  border: solid 1px #ddd;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   margin-right: 1%;
@@ -48,7 +48,7 @@
   height: 50px;
   text-align: center;
   line-height: 50px;
-  border-bottom: solid 1px #eee;
+  border-bottom: solid 1px #ddd;
 }
 .make-active-header{
   background: #22b173;
@@ -57,11 +57,11 @@
 .body{
   width: 100%;
   float: left;
-  height: 350px;
+  height: 324px;
   position: relative;
 }
 .preview{
-  height: 350px;
+  height: 324px;
   position: absolute;
   width: 100%;
   float: left;
