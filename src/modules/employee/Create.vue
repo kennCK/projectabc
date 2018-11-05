@@ -216,6 +216,7 @@ export default {
             this.newEntry.back_template = null
             this.newEntry.account_id = null
             this.newEntry.columns = null
+            this.$parent.retrieve()
             $('#createEmployeeModal').modal('hide')
           }
         })

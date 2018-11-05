@@ -18,11 +18,15 @@
         <ul v-if="item.active === true">
           <li style="border-left: 0px;">Edit</li>
           <li>
-            <div class="dropdown">
-              <label id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <label @click="showComments(item.id)" class="menu">
+              Comments
+            </label>
+            <div class="overlay" v-bind:class="{'first-overlay': parseInt(item.counter) === 0,'second-overlay': parseInt(item.counter) === 1,'third-overlay': parseInt(item.counter) === 2, 'fourth-overlay': parseInt(item.counter) === 3}" v-bind:id="'overlay-' + item.id">
+              <div class="header">
                 Comments
-              </label>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <i class="pull-right fa fa-close" @click="hideComments(item.id)"></i>
+              </div>
+              <div class="contents">
                 <comments :payloadValue="item.id" :payload="'employees'"></comments>
               </div>
             </div>
@@ -106,24 +110,57 @@ ul li{
   border-left: solid 1px #028170;
   color: #fff;
 }
-ul li label{
+ul li .menu{
   width: 100%;
   float: left;
   line-height: 40px;
 }
-ul li:hover, ul li label:hover{
+ul li:hover, ul li .menu:hover{
   cursor: pointer;
   background: #028170;
 }
-.dropdown{
-  margin: 0px !important;
-  padding: 0px !important;
-}
-.dropdown-menu{
-  height: 350px !important;
-  width: 600px !important;
+.overlay{
+  position: absolute; 
+  height: 350px;
+  width: 600px;
+  background: #fff;
   border: solid 1px #22b173 !important;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  margin-top: -350px;
+  display: none;
+  cursor: default;
+}
+.first-overlay{
+  margin-left: -103px;
+}
+.second-overlay{
+  margin-left: -103px;
+}
+.third-overlay{
+  margin-left: -500px; 
+}
+.fourth-overlay{
+  margin-left: -500px;
+}
+.overlay .header{
+  height: 50px;
+  width: 100%;
+  float: left;
+  line-height: 50px;
+  background: #22b173;
+}
+.overlay .header i{
+  color: #fff;
+  padding-right: 10px;
+  line-height: 50px;
+}
+.overlay .contents{
   overflow-y: scroll;
+  height: 295px;
+  width: 100%;
+  float: left;
+  color: #555;
 }
 </style>
 <script>
@@ -152,6 +189,12 @@ export default {
     },
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    showComments(id){
+      $('#overlay-' + id).css({'display': 'block'})
+    },
+    hideComments(id){
+      $('#overlay-' + id).css({'display': 'none'})
     }
   }
 }

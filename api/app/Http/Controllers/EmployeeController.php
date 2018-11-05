@@ -107,6 +107,7 @@ class EmployeeController extends APIController
       $result = $this->response['data'];
       if(sizeof($result) > 0){
         $i = 0;
+        $counter = 0;
         foreach ($result as $key) {
           $id = $result[$i]['id'];
           $this->response['data'][$i]['front_objects'] = $this->getObjects($result[$i]['front_template'], $id);
@@ -114,7 +115,12 @@ class EmployeeController extends APIController
           $this->response['data'][$i]['front_template_details'] = $this->getTemplate($result[$i]['front_template']);
           $this->response['data'][$i]['back_template_details'] = $this->getTemplate($result[$i]['back_template']);
           $this->response['data'][$i]['active'] = false;
-         $i++; 
+          $this->response['data'][$i]['counter'] = $counter;
+          $counter++;
+          $i++;
+          if($counter == 4){
+            $counter = 0;
+          } 
         }
       }
       return $this->response();

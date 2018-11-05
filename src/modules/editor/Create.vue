@@ -23,8 +23,8 @@
             <div class="form-group">
               <label for="exampleInputEmail1">Additional Details</label>
               <select class="form-control" v-model="settings">
-                <option value="front">Front Only</option>
-                <option value="front_and_back">Front and Back</option>
+                <option value="front">Front</option>
+                <option value="back">Back</option>
               </select>
             </div>
 
@@ -39,7 +39,7 @@
 
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#createEventModal">Cancel</button>
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#createTemplateModal">Cancel</button>
               <button type="button" class="btn btn-primary" @click="submit()">Submit</button>
           </div>
         </div>
