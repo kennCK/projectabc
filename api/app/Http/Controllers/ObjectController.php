@@ -24,13 +24,15 @@ class ObjectController extends APIController
         for ($i = 0; $i < sizeof($objects); $i++) {
           if($objects[$i]['new'] == 'false'){
             // update
+
             $this->model = new Object();
             $objectId = $objects[$i]['id'];
             $objectUpdate = array(
               'id'  => $objectId,
               'name'        => $objects[$i]['name'],
               'content'     => $objects[$i]['content'],
-              'type'        => $objects[$i]['type']
+              'type'        => $objects[$i]['type'],
+              'settings'    => $objects[$i]['settings']
             );
             $this->updateDB($objectUpdate);
 
@@ -50,11 +52,13 @@ class ObjectController extends APIController
             }
           }else{
             // create
+
             $objModel = new Object();
             $objModel->template_id = $objects[$i]['template_id'];
             $objModel->name = $objects[$i]['name'];
             $objModel->content = $objects[$i]['content'];
             $objModel->type = $objects[$i]['type'];
+            $objModel->settings = $objects[$i]['settings'];
             $objModel->created_at = Carbon::now();
             $objModel->save();
             if($objModel->id > 0){
@@ -94,6 +98,29 @@ class ObjectController extends APIController
           )
         );
       }
+    }
+
+    public function upload(Request $request){
+
+      $data = $request->all();
+      
+      $url = null;
+      if(isset($data['file_url'])){
+        $date = Carbon::now()->toDateString();
+        $time = str_replace(':', '_',Carbon::now()->toTimeString());
+        $ext = $request->file('file')->extension();
+        $filename = $data['template_id'].'_'.$data['account_id'].'_'.$date.'_'.$time.'.'.$ext;
+        $result = $request->file('file')->storeAs('images', $filename);
+        $url = '/storage/image/'.$filename;
+      }else{
+        $url = null;
+      }
+
+      return response()->json(array(
+        'data'  => $url,
+        'error' => null,
+        'timestamps' => Carbon::now()
+      ));
     }
 
     public function retrieve(Request $request){

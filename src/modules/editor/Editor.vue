@@ -42,10 +42,13 @@
                   </span>
                 </span>
                 <span class="card-holder">
-                  <span v-for="item, index in objects" v-bind:class="{'text': item.type === 'text', 'division': item.type === 'division', 'photo': item.type === 'photo', 'object-selected': item.selected === true}" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">
-                    <label v-if="item.type === 'text'">{{item.content}}</label>
-                    <img :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo' && item.content !== null && item.content.includes('storage')" height="100%" width="
-                    100%">
+                  <span v-for="item, index in objects">
+                    <span class="division" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'division'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">
+                    </span>
+                    <span class="text" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'text'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">
+                      <label>{{item.content}}</label>
+                    </span>
+                    <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)">
                   </span>
                 </span>
                 <span class="object-settings" v-if="selected !== null">
@@ -327,13 +330,11 @@ export default {
     },
     save(){
       let parameter = {
-        'objects': this.objects
+        objects: this.objects
       }
-      this.APIRequest('objects/create', parameter).then(response => {
+      this.APIRequest('objects/create', parameter).done(response => {
         if(response.data === true){
           this.retrieve()
-        }else{
-          // error
         }
       })
     }

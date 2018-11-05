@@ -234,7 +234,7 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      fileUpload: null
+      file: null
     }
   },
   props: ['object'],
@@ -248,19 +248,30 @@ export default {
     createFile(file){
       let fileReader = new FileReader()
       fileReader.readAsDataURL(event.target.files[0])
-      fileReader.onload = (e) => {
-        this.object.content = e.target.result
-        console.log(this.object.content)
-      }
+      this.upload()
     },
     setUpFileUpload(event){
       let files = event.target.files || event.dataTransfer.files
       if(!files.length){
         return false
       }else{
-        this.fileUpload = files[0]
+        this.file = files[0]
         this.createFile(files[0])
       }
+    },
+    upload(){
+      let formData = new FormData()
+      formData.append('file', this.file)
+      formData.append('file_url', this.file.name)
+      formData.append('account_id', this.user.userID)
+      formData.append('template_id', this.object.template_id)
+      $('#loading').css({'display': 'block'})
+      axios.post(this.config.BACKEND_URL + '/objects/upload', formData).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data !== null){
+          this.object.content = response.data.data
+        }
+      })
     }
   }
 }

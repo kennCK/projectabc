@@ -129,6 +129,7 @@ Route::post('/templates/retrieve', "TemplateController@retrieve");
 Route::post('/templates/update', "TemplateController@update");
 Route::post('/templates/delete', "TemplateController@delete");
 Route::get('/templates/test', 'TemplateController@test');
+Route::post('/templates/retrieve_templates_only', 'TemplateController@retriveTemplateOnly');
 
 
 //Objects
@@ -137,6 +138,7 @@ Route::post('/objects/retrieve', "ObjectController@retrieve");
 Route::post('/objects/update', "ObjectController@update");
 Route::post('/objects/delete', "ObjectController@delete");
 Route::get('/objects/test', 'ObjectController@test');
+Route::post('/objects/upload', 'ObjectController@upload');
 
 //Attributes
 Route::post('/attributes/create', "AttributeController@create");

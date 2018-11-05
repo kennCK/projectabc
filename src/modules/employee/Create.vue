@@ -1,12 +1,12 @@
 <template>
   <div>
-    <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#createEmployeeModal"><i class="fa fa-plus"></i> New Employee</button>
+    <button class="btn btn-primary pull-right" @click="modal()"><i class="fa fa-plus"></i> New Employee</button>
     <div class="modal fade" id="createEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
             <h5 class="modal-title" id="exampleModalLabel">Add Event</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" @click="hideModal()" aria-label="Close">
               <span aria-hidden="true" class="text-white">&times;</span>
             </button>
           </div>
@@ -16,30 +16,43 @@
             </span>
             <br v-if="errorMessage !== null">
             <br>
-<!--             <div class="featured-image">
-              <span class="options" v-on:click="addFeaturedImage()" v-if="featuredFile === null" title="Click to add">
-                <i class="fa fa-plus-circle"></i>
-                <label>Add Featured Image</label>
-                <input type="file" id="addFeaturedImage" name="file" accept="image/*"  @change="setUpFileUploadFeaturedImage($event)">
-              </span>
-              <span class="options" v-on:click="addFeaturedImage()" v-else title="Click to change">
-                <img :src="featuredFileUrl">
-                <input type="file" id="addFeaturedImage" name="file" accept="image/*"  @change="setUpFileUploadFeaturedImage($event)">
-              </span>
-            </div> -->
             <div class="form-group">
-              <label for="exampleInputEmail1">Title</label>
-              <input type="text" class="form-control" placeholder="Type title here...">
+              <label for="exampleInputEmail1">Front Template</label>
+              <select v-model="newEntry.front_template" class="form-control">
+                <option v-for="item, index in templates" v-if="templates !== null && item.settings === 'front'" v-bind:value="item.id">{{item.title}}</option>
+              </select>
             </div>
+
             <div class="form-group">
-              <label for="exampleInputEmail1">Additional Details</label>
-              <textarea class="form-control"  placeholder="Type additional details here..." rows="5">
-              </textarea> 
+              <label for="exampleInputEmail1">Back Template</label>
+              <select v-model="newEntry.back_template" class="form-control">
+                <option v-for="item, index in templates" v-if="templates !== null && item.settings === 'back'" v-bind:value="item.id">{{item.title}}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <button class="btn btn-primary" @click="addNewColumn()"><i class="fa fa-plus"></i> New Column</button>
+            </div>
+
+            <div class="input-group" v-for="item, index in columns" v-if="columns !== null">
+              <span class="input-group-addon">Type</span>
+              <select v-model="item.type" class="form-control">
+                <option value="text">Text</option>
+                <option value="image">Image</option>
+              </select>
+
+              <span class="input-group-addon">Name</span>
+              <input type="text" class="form-control" placeholder="*first_name" v-model="item.column">
+
+              <span class="input-group-addon">Value</span>
+              <input type="text" class="form-control" placeholder="Type value here..." v-model="item.value">
+              
+              <button class="btn btn-danger" style="margin-top: 5px; margin-left: 5px;" @click="removeColumn(index)"><i class="fa fa-trash"></i></button>
             </div>
 
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#createEventModal">Cancel</button>
+              <button type="button" class="btn btn-danger" @click="hideModal()">Close</button>
               <button type="button" class="btn btn-primary" @click="submit()">Submit</button>
           </div>
         </div>
@@ -47,23 +60,40 @@
     </div>
   </div>
 </template>
+<style scoped>
 
+.form-control{
+  height: 45px !important;
+}
+.input-group{
+  margin-bottom: 10px !important;
+}
+.input-group-addon{
+  width: 100px !important;
+  background: #22b173 !important;
+  color: #fff !important;
+}
+</style>
 <script>
 import ROUTER from '../../router'
 import AUTH from '../../services/auth'
 import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
-  mounted(){
-  },
   data(){
     return {
       user: AUTH.user,
       config: CONFIG,
-      errorMessage: null
+      errorMessage: null,
+      templates: null,
+      newEntry: {
+        front_template: null,
+        back_template: null,
+        account_id: null
+      },
+      columns: null
     }
   },
-  props: ['params'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
@@ -73,46 +103,50 @@ export default {
       }
     },
     validate(){
+    },
+    modal(){
+      this.retrieveTemplates()
+    },
+    hideModal(){
+      $('#createEmployeeModal').modal('hide')
+    },
+    retrieveTemplates(){
+      let parameter = {
+        condition: [{
+          value: this.user.userID,
+          column: 'account_id',
+          clause: '='
+        }]
+      }
+      this.APIRequest('templates/retrieve_templates_only', parameter).then(response => {
+        if(response.data.length > 0){
+          this.templates = response.data
+          $('#createEmployeeModal').modal({
+            backdrop: 'static',
+            show: true,
+            keyboard: false
+          })
+        }
+      })
+    },
+    addNewColumn(){
+      let object = {
+        employee_id: null,
+        type: 'text',
+        column: null,
+        value: null,
+        new: true
+      }
+      if(this.columns === null){
+        this.columns = []
+      }else{
+        //
+      }
+      this.columns.push(object)
+    },
+    removeColumn(index){
+      this.columns.splice(index, 1)
     }
   }
 }
 </script>
-<style scoped>
-.featured-image{
-	width: 100%;
-	float: left;
-	height: 200px;
-	margin-bottom: 10px;
-}
-
-.featured-image .options{
-	width: 100%;
-	float: left;
-	text-align: center;
-	height: 200px;
-	border: solid 1px #ddd;
-	overflow-y: hidden;
-}
-.options input{
-	display: none;
-}
-.options:hover{
-	cursor: pointer;
-}
-.options i{
-	font-size: 40px;
-	width: 100%;
-	float: left;
-	margin-top: 75px;
-}
-
-.options label{
-	width: 100%;
-	float: left;
-}
-.options img{
-	width: 100%;
-	float: left;
-	height: auto;
-}
-</style>

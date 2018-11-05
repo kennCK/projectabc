@@ -28,6 +28,13 @@ class TemplateController extends APIController
       return $this->response();
     }
 
+    public function retriveTemplateOnly(Request $request){
+      $data = $request->all();
+      $this->model = new Template();
+      $this->retrieveDB($data);
+      return $this->response();
+    }
+    
     public function getObjects($id){
       $result = Object::where('template_id', '=', $id)->get();
       if(sizeof($result) > 0){

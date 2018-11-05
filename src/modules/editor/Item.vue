@@ -8,10 +8,13 @@
       </span>
       <span class="body">
         <span class="preview">
-          <span v-for="obj, innerIndex in item.objects" v-bind:class="{'text': obj.type === 'text', 'division': obj.type === 'division', 'photo': obj.type === 'photo', 'object-selected': obj.selected === true}" v-bind:style="obj.attributes" v-if="item.objects !== null">
-            <label v-if="obj.type === 'text'">{{obj.content}}</label>
-            <img :src="config.BACKEND_URL + obj.content" v-if="obj.type === 'photo' && obj.content !== null" height="100%" width="
-            100%">
+          <span v-for="obj, innerIndex in item.objects" v-if="item.objects !== null">
+              <span class="division" v-if="obj.type === 'division'" v-bind:style="obj.attributes">
+              </span>
+              <span class="text" v-if="obj.type === 'text'" v-bind:style="obj.attributes">
+                <label>{{obj.content}}</label>
+              </span>
+              <img class="photo" :src="config.BACKEND_URL + obj.content" v-if="obj.type === 'photo'" :style="obj.attributes">
           </span>
         </span>
         <ul v-if="item.active === true">
