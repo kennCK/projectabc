@@ -17,7 +17,18 @@
         </span>
         <ul v-if="item.active === true">
           <li style="border-left: 0px;">Edit</li>
-          <li>Comments</li>
+          <li>
+            <div class="dropdown">
+              <label class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Comments
+              </label>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </div>
+          </li>
         </ul>
       </span>
     </div>

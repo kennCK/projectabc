@@ -76,9 +76,6 @@ export default {
           this.data[this.prevIndex].active = false
           this.data[index].active = true
           this.prevIndex = index
-        }else{
-          this.data[this.prevIndex].active = false
-          this.prevIndex = null
         }
       }
     }

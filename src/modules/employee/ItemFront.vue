@@ -17,7 +17,16 @@
         </span>
         <ul v-if="item.active === true">
           <li style="border-left: 0px;">Edit</li>
-          <li>Comments</li>
+          <li>
+            <div class="dropdown">
+              <label id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Comments
+              </label>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <comments :payloadValue="item.id" :payload="'employees'"></comments>
+              </div>
+            </div>
+          </li>
         </ul>
       </span>
     </div>
@@ -97,9 +106,24 @@ ul li{
   border-left: solid 1px #028170;
   color: #fff;
 }
-ul li:hover{
+ul li label{
+  width: 100%;
+  float: left;
+  line-height: 40px;
+}
+ul li:hover, ul li label:hover{
   cursor: pointer;
   background: #028170;
+}
+.dropdown{
+  margin: 0px !important;
+  padding: 0px !important;
+}
+.dropdown-menu{
+  height: 350px !important;
+  width: 600px !important;
+  border: solid 1px #22b173 !important;
+  overflow-y: scroll;
 }
 </style>
 <script>
@@ -118,7 +142,8 @@ export default {
   },
   components: {
     'update': require('modules/editor/Update.vue'),
-    'editor': require('modules/editor/Editor.vue')
+    'editor': require('modules/editor/Editor.vue'),
+    'comments': require('modules/comment/Comments.vue')
   },
   props: ['item', 'index'],
   methods: {

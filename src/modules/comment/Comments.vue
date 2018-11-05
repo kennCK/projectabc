@@ -33,101 +33,10 @@
       <span class="new-comment">
         <img v-bind:src="config.BACKEND_URL + user.profile.profile_url" v-if="user.profile !== null">
         <i class="fa fa-user-circle" v-else></i>
-        <input type="text" class="form-control" placeholder="Write a comment..." v-model="newCommentInput" @keyup.enter="comment(id)"/>
+        <input type="text" class="form-control" placeholder="Write a comment..." v-model="newCommentInput" @keyup.enter="comment()"/>
       </span>
     </span>
 </template>
-<script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-import CONFIG from '../../config.js'
-import axios from 'axios'
-export default {
-  mounted(){
-    this.retrieve()
-  },
-  data(){
-    return {
-      user: AUTH.user,
-      config: CONFIG,
-      errorMessage: null,
-      newCommentInput: null,
-      newReplyInput: null,
-      item: null,
-      prevNewCommentIndex: null
-    }
-  },
-  props: ['id'],
-  methods: {
-    redirect(parameter){
-      ROUTER.push(parameter)
-    },
-    retrieve(){
-      let parameter = {
-        condition: [{
-          column: 'payload_value',
-          clause: '=',
-          value: this.id
-        }, {
-          column: 'payload',
-          clause: '=',
-          value: 'event'
-        }]
-      }
-      this.APIRequest('comments/retrieve', parameter).then(response => {
-        if(response.data.length > 0){
-          this.item = response.data
-        }else{
-          this.item = null
-        }
-      })
-    },
-    comment(id){
-      if(this.newCommentInput !== '' || this.newCommentInput !== null){
-        let parameter = {
-          payload: 'event',
-          payload_value: id,
-          account_id: this.user.userID,
-          text: this.newCommentInput
-        }
-        this.APIRequest('comments/create', parameter).then(response => {
-          if(response.data > 0){
-            this.prevNewCommentIndex = null
-            this.retrieve()
-          }
-        })
-      }
-    },
-    reply(id){
-      if(this.newReplyInput !== '' || this.newReplyInput !== null){
-        let parameter = {
-          comment_id: id,
-          account_id: this.user.userID,
-          text: this.newReplyInput
-        }
-        this.APIRequest('comment_replies/create', parameter).then(response => {
-          if(response.data > 0){
-            this.prevNewCommentIndex = null
-            this.retrieve()
-          }
-        })
-      }
-    },
-    newReply(index){
-      if(this.prevNewCommentIndex === null){
-        this.item[index].new_reply_flag = true
-        this.prevNewCommentIndex = index
-      }else{
-        if(this.prevNewCommentIndex !== index){
-          this.item[this.prevNewCommentIndex].new_reply_flag = false
-          this.item[index].new_reply_flag = true
-          this.prevNewCommentIndex = index
-        }
-      }
-    }
-  }
-}
-</script>
 <style scoped>
 .post-item-comment{
   width: 100%;
@@ -268,3 +177,95 @@ export default {
   float: left;
 }
 </style>
+<script>
+import ROUTER from '../../router'
+import AUTH from '../../services/auth'
+import CONFIG from '../../config.js'
+import axios from 'axios'
+export default {
+  mounted(){
+    this.retrieve()
+  },
+  data(){
+    return {
+      user: AUTH.user,
+      config: CONFIG,
+      errorMessage: null,
+      newCommentInput: null,
+      newReplyInput: null,
+      item: null,
+      prevNewCommentIndex: null
+    }
+  },
+  props: ['payloadValue', 'payload'],
+  methods: {
+    redirect(parameter){
+      ROUTER.push(parameter)
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          column: 'payload_value',
+          clause: '=',
+          value: this.payloadValue
+        }, {
+          column: 'payload',
+          clause: '=',
+          value: this.payload
+        }]
+      }
+      this.APIRequest('comments/retrieve', parameter).then(response => {
+        if(response.data.length > 0){
+          this.item = response.data
+        }else{
+          this.item = null
+        }
+      })
+    },
+    comment(){
+      if(this.newCommentInput !== '' || this.newCommentInput !== null){
+        let parameter = {
+          payload: this.payload,
+          payload_value: this.payloadValue,
+          account_id: this.user.userID,
+          text: this.newCommentInput
+        }
+        this.APIRequest('comments/create', parameter).then(response => {
+          if(response.data > 0){
+            this.prevNewCommentIndex = null
+            this.newCommentInput = null
+            this.retrieve()
+          }
+        })
+      }
+    },
+    reply(id){
+      if(this.newReplyInput !== '' || this.newReplyInput !== null){
+        let parameter = {
+          comment_id: id,
+          account_id: this.user.userID,
+          text: this.newReplyInput
+        }
+        this.APIRequest('comment_replies/create', parameter).then(response => {
+          if(response.data > 0){
+            this.prevNewCommentIndex = null
+            this.retrieve()
+          }
+        })
+      }
+    },
+    newReply(index){
+      if(this.prevNewCommentIndex === null){
+        this.item[index].new_reply_flag = true
+        this.prevNewCommentIndex = index
+      }else{
+        if(this.prevNewCommentIndex !== index){
+          this.item[this.prevNewCommentIndex].new_reply_flag = false
+          this.item[index].new_reply_flag = true
+          this.prevNewCommentIndex = index
+        }
+      }
+    }
+  }
+}
+</script>
