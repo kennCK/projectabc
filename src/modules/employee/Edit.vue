@@ -1,11 +1,10 @@
 <template>
   <div>
-    <button class="btn btn-primary pull-right" @click="modal()"><i class="fa fa-plus"></i> New Employee</button>
-    <div class="modal fade" id="createEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
-            <h5 class="modal-title" id="exampleModalLabel">Add Employee</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Edit Employee</h5>
             <button type="button" class="close" @click="hideModal()" aria-label="Close">
               <span aria-hidden="true" class="text-white">&times;</span>
             </button>
@@ -64,7 +63,7 @@
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" @click="hideModal()">Close</button>
-              <button type="button" class="btn btn-primary" @click="submit()">Submit</button>
+              <button type="button" class="btn btn-primary" @click="update()">Submit</button>
           </div>
         </div>
       </div>
@@ -123,6 +122,7 @@ export default {
       fileIndex: null
     }
   },
+  props: ['item'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
@@ -131,7 +131,7 @@ export default {
       this.retrieveTemplates()
     },
     hideModal(){
-      $('#createEmployeeModal').modal('hide')
+      $('#editEmployeeModal').modal('hide')
     },
     retrieveTemplates(){
       let parameter = {
@@ -144,7 +144,7 @@ export default {
       this.APIRequest('templates/retrieve_templates_only', parameter).then(response => {
         if(response.data.length > 0){
           this.templates = response.data
-          $('#createEmployeeModal').modal({
+          $('#editEmployeeModal').modal({
             backdrop: 'static',
             show: true,
             keyboard: false
@@ -201,7 +201,7 @@ export default {
         }
       })
     },
-    submit(){
+    update(){
       this.newEntry.account_id = this.user.userID
       if(this.validateColumns()){
         this.newEntry.columns = this.columns

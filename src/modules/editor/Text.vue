@@ -91,7 +91,7 @@
           </span>
           <span class="input">
             <select class="form-control" v-model="object.attributes.textDecoration">
-              <option value="normal">Normal</option>
+              <option value="default">Normal</option>
               <option value="overline">Overline</option>
               <option value="line-through">Line-through</option>
               <option value="underline">Underline</option>

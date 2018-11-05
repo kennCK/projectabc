@@ -9,6 +9,7 @@ use App\AccountImage;
 use App\Template;
 use App\Object;
 use App\Attribute;
+use App\Comment;
 use Carbon\Carbon;
 class EmployeeController extends APIController
 {
@@ -29,7 +30,8 @@ class EmployeeController extends APIController
         $employeeInsert = array(
           'front_template'  => $employee['front_template'],
           'back_template'   => $employee['back_template'],
-          'account_id'      => $employee['account_id']
+          'account_id'      => $employee['account_id'],
+          'status'          => $employee['status']
         );
         $this->insertDB($employeeInsert);
         $employeeId = $this->response['data'];
@@ -114,6 +116,7 @@ class EmployeeController extends APIController
           $this->response['data'][$i]['back_objects'] = $this->getObjects($result[$i]['back_template'], $id);
           $this->response['data'][$i]['front_template_details'] = $this->getTemplate($result[$i]['front_template']);
           $this->response['data'][$i]['back_template_details'] = $this->getTemplate($result[$i]['back_template']);
+          $this->response['data'][$i]['total_comments'] = $this->getComments($id);
           $this->response['data'][$i]['active'] = false;
           $this->response['data'][$i]['counter'] = $counter;
           $counter++;
@@ -124,6 +127,11 @@ class EmployeeController extends APIController
         }
       }
       return $this->response();
+    }
+
+    public function getComments($employeeId){
+      $result = Comment::where('payload', '=', 'employees')->where('payload_value', '=', $employeeId)->get();
+      return sizeof($result);
     }
 
     public function getTemplate($templateId){

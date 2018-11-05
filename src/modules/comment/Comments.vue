@@ -31,14 +31,18 @@
           </span>
           <span class="new-reply" v-if="commentItem.new_reply_flag === true">
             <img v-bind:src="config.BACKEND_URL + user.profile.profile_url" v-if="user.profile !== null">
-            <i class="fa fa-user-circle" v-else></i>
+            <label v-else>
+              <i class="fa fa-user-circle"></i>
+            </label>
             <input type="text" class="form-control" placeholder="Write a reply..." v-model="newReplyInput" @keyup.enter="reply(commentItem.id)"/>
           </span>
         </span>
       </span>
       <span class="new-comment">
         <img v-bind:src="config.BACKEND_URL + user.profile.profile_url" v-if="user.profile !== null">
-        <i class="fa fa-user-circle" v-else></i>
+        <label v-else>
+          <i class="fa fa-user-circle"></i>
+        </label>
         <input type="text" class="form-control" placeholder="Write a comment..." v-model="newCommentInput" @keyup.enter="comment()"/>
       </span>
     </span>
@@ -97,6 +101,12 @@
   line-height: 45px;
   margin-bottom: 0px;
 }
+.new-comment label{
+  width: 10%;
+  float: left;
+  height: 45px;
+  text-align: center;
+}
 .new-comment input{
   width: 90%;
   float: left;
@@ -145,6 +155,12 @@
   font-weight: 525;
 }
 
+.reply-header i{
+  font-size: 24px;
+  float: left;
+  line-height: 45px;
+  padding-right: 10px;
+}
 
 .comment-item-reply{
   width: 90%;
@@ -182,11 +198,16 @@
   margin-top: 5px;
   margin-left: 10px;
 }
+
+.new-reply label{
+  width: 10%;
+  float: left;
+  height: 45px;
+}
 .new-reply i{
   font-size: 24px;
-  padding-top: 5px;
-  padding-right: 10px;
   float: left;
+  line-height: 45px;
 }
 .new-reply input{
   width: 90%;

@@ -2,9 +2,30 @@
   <div>
     <div v-bind:class="{'make-active': item !== null && item.active === true}" class="item" v-if="item !== null" v-on:click="makeActive()">
       <span v-bind:class="{'make-active-header': item.active === true}" class="header">
-        <b>
-          {{item.front_template_details.title}}
-        </b>
+        <ul class="menu">
+          <li>
+            <span class="badge badge-danger" v-if="parseInt(item.total_comments) > 0">{{item.total_comments}}</span>
+          </li>
+          <li>
+            <i v-bind:class="{'gray': item.status === 'not_verified', 'green': item.status === 'verified'}" class="fas fa-check"></i>
+          </li>
+          <li>
+            <i v-bind:class="{'gray': item.status !== 'printed', 'green': item.status === 'printed'}" class="fas fa-print"></i>
+          </li>
+          <li style="border-right: 0px;">
+            <div class="dropdown">
+              <label id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-cog"></i>
+              </label>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <span class="dropdown-item disabled">Settings</span>
+                  <span class="dropdown-item" v-if="item.status === 'not_verified'" @click="updateStatus('verified', item.id)">Verified</span>
+                  <span class="dropdown-item" v-if="item.status === 'verified' || item.status === 'printed'" @click="updateStatus('not_verified', item.id)">Need Verification</span>
+                  <span class="dropdown-item" @click="editProfile()">Edit Profile</span>
+              </div>
+            </div>
+          </li>
+        </ul>
       </span>
       <span class="body">
         <span class="preview">
@@ -15,11 +36,12 @@
               <img class="photo" :src="config.BACKEND_URL + obj.content" v-if="obj.type === 'photo'" :style="obj.attributes">
           </span>
         </span>
-        <ul v-if="item.active === true">
-          <li style="border-left: 0px;">Edit</li>
+        <ul v-if="item.active === true" class="footer">
+          <li style="border-left: 0px;">Editor</li>
           <li>
             <label @click="showComments(item.id)" class="menu">
               Comments
+              <span class="badge badge-danger" v-if="parseInt(item.total_comments) > 0">{{item.total_comments}}</span>
             </label>
             <div class="overlay" v-bind:class="{'first-overlay': parseInt(item.counter) === 0,'second-overlay': parseInt(item.counter) === 1,'third-overlay': parseInt(item.counter) === 2, 'fourth-overlay': parseInt(item.counter) === 3}" v-bind:id="'overlay-' + item.id">
               <div class="header">
@@ -36,6 +58,7 @@
     </div>
     <update></update>
     <editor></editor>
+    <edit :item="item"></edit>
   </div>
 </template>
 <style scoped>
@@ -64,9 +87,40 @@
   line-height: 50px;
   border-bottom: solid 1px #ddd;
 }
+
+.header .menu{
+  padding: 0px;
+  margin: 0px;
+  height: 50px;
+  float: left;
+  width: 100%;
+  list-style: none;
+}
+
+.menu li{
+  width: 25%;
+  float: left;
+  height: 50px;
+  border-right: solid 1px #ddd;
+}
+
+.menu li label{
+  width: 100%;
+  float: left;
+  height: 50px;
+}
+.menu li i{
+  font-size: 15px;
+}
+
+.menu li:hover{
+  cursor: pointer;
+}
+
+#dropdownMenuButton:hover{
+  cursor: pointer;
+}
 .make-active-header{
-  background: #22b173;
-  color: #fff;
 }
 .body{
   width: 100%;
@@ -88,7 +142,7 @@
 .text, .photo{
   background: rgba(250, 250, 250, 0) !important;
 }
-ul{
+.footer{
   padding: 0px;
   margin: 0px;
   width: 100%;
@@ -101,7 +155,7 @@ ul{
   position: absolute;
   transition: 1s;
 }
-ul li{
+.footer li{
   width: 50%;
   float: left;
   height: 40px;
@@ -110,12 +164,12 @@ ul li{
   border-left: solid 1px #028170;
   color: #fff;
 }
-ul li .menu{
+.footer li .menu{
   width: 100%;
   float: left;
   line-height: 40px;
 }
-ul li:hover, ul li .menu:hover{
+.footer li:hover, .footer li .menu:hover{
   cursor: pointer;
   background: #028170;
 }
@@ -162,6 +216,26 @@ ul li:hover, ul li .menu:hover{
   float: left;
   color: #555;
 }
+.gray{
+  color: #555;
+}
+.green{
+  color: #22b173;
+}
+
+.dropdown-menu{
+  padding: 0px !important;
+}
+
+.dropdown-item{
+  height: 35px !important;
+  line-height: 35px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+.dropdown-item:hover{
+  background: #eee;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -180,7 +254,8 @@ export default {
   components: {
     'update': require('modules/editor/Update.vue'),
     'editor': require('modules/editor/Editor.vue'),
-    'comments': require('modules/comment/Comments.vue')
+    'comments': require('modules/comment/Comments.vue'),
+    'edit': require('modules/employee/Edit.vue')
   },
   props: ['item', 'index'],
   methods: {
@@ -195,6 +270,23 @@ export default {
     },
     hideComments(id){
       $('#overlay-' + id).css({'display': 'none'})
+    },
+    retrieve(){
+      this.$parent.retrieve()
+    },
+    editProfile(){
+      $('#editEmployeeModal').modal('show')
+    },
+    updateStatus(status, id){
+      let parameter = {
+        id: id,
+        status: status
+      }
+      this.APIRequest('employees/update', parameter).then(response => {
+        if(response.data === true){
+          this.$parent.retrieve()
+        }
+      })
     }
   }
 }
