@@ -43,12 +43,6 @@ export default {
     redirect(parameter){
       ROUTER.push(parameter)
     },
-    submit(){
-      if(this.validate()){
-      }
-    },
-    validate(){
-    },
     retrieve(){
       let parameter = {
         condition: [{

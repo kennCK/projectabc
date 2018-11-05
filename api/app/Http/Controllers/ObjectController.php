@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Object;
 use App\Attribute;
+use App\AccountImage;
 use Carbon\Carbon;
 class ObjectController extends APIController
 {
@@ -112,6 +113,11 @@ class ObjectController extends APIController
         $filename = $data['template_id'].'_'.$data['account_id'].'_'.$date.'_'.$time.'.'.$ext;
         $result = $request->file('file')->storeAs('images', $filename);
         $url = '/storage/image/'.$filename;
+        $account = new AccountImage();
+        $account->account_id = $data['account_id'];
+        $account->url = $url;
+        $account->created_at = Carbon::now();
+        $account->save();
       }else{
         $url = null;
       }

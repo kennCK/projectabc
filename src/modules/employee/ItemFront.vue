@@ -3,12 +3,12 @@
     <div v-bind:class="{'make-active': item !== null && item.active === true}" class="item" v-if="item !== null" v-on:click="makeActive()">
       <span v-bind:class="{'make-active-header': item.active === true}" class="header">
         <b>
-          {{item.title}}
+          {{item.front_template_details.title}}
         </b>
       </span>
       <span class="body">
         <span class="preview">
-          <span v-for="obj, innerIndex in item.objects" v-if="item.objects !== null">
+          <span v-for="obj, innerIndex in item.front_objects" v-if="item.front_objects !== null">
               <span class="division" v-if="obj.type === 'division'" v-bind:style="obj.attributes">
               </span>
               <label class="text" v-if="obj.type === 'text'" v-bind:style="obj.attributes">{{obj.content}}</label>
@@ -16,8 +16,8 @@
           </span>
         </span>
         <ul v-if="item.active === true">
-          <li v-on:click="editor(item)" style="border-left: 0px;">Editor</li>
-          <li v-on:click="update(item)">Settings</li>
+          <li style="border-left: 0px;">Edit</li>
+          <li>Comments</li>
         </ul>
       </span>
     </div>
@@ -127,27 +127,6 @@ export default {
     },
     redirect(parameter){
       ROUTER.push(parameter)
-    },
-    update(item){
-      this.$children[0].item = item
-      setTimeout(() => {
-        $('#updateTemplateModal').modal({
-          backdrop: 'static',
-          show: true,
-          keyboard: false
-        })
-      }, 50)
-    },
-    editor(item){
-      this.$children[1].item = item
-      this.$children[1].retrieve()
-      setTimeout(() => {
-        $('#templateEditorModal').modal({
-          backdrop: 'static',
-          show: true,
-          keyboard: false
-        })
-      }, 50)
     }
   }
 }

@@ -74,6 +74,19 @@
 
         <span class="item-setting">
           <span class="title">
+            Transform
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="object.attributes.textTransform">
+              <option value="uppercase">Uppercase</option>
+              <option value="lowercase">Lowercase</option>
+              <option value="capitalize">Capitalize</option>
+            </select>
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
             Decoration
           </span>
           <span class="input">

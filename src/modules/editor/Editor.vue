@@ -45,9 +45,7 @@
                   <span v-for="item, index in objects">
                     <span class="division" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'division'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">
                     </span>
-                    <span class="text" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'text'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">
-                      <label>{{item.content}}</label>
-                    </span>
+                    <label class="text" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'text'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">{{item.content}}</label>
                     <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)">
                   </span>
                 </span>
@@ -237,7 +235,8 @@ export default {
             textAlign: 'center',
             fontWeight: '500',
             zIndex: 3,
-            lineHeight: '50px'
+            lineHeight: '50px',
+            textTransform: 'uppercase'
           }
         }
       }else if(type === 'division'){

@@ -34,20 +34,31 @@
               <button class="btn btn-primary" @click="addNewColumn()"><i class="fa fa-plus"></i> New Column</button>
             </div>
 
-            <div class="input-group" v-for="item, index in columns" v-if="columns !== null">
-              <span class="input-group-addon">Type</span>
-              <select v-model="item.type" class="form-control">
-                <option value="text">Text</option>
-                <option value="image">Image</option>
-              </select>
+            <div v-for="item, index in columns" v-if="columns !== null">
+              <div class="input-group">
+                <span class="input-group-addon">Type</span>
+                <select v-model="item.type" class="form-control" style="width: 0px !important;">
+                  <option value="text">Text</option>
+                  <option value="image">Image</option>
+                </select>
 
-              <span class="input-group-addon">Name</span>
-              <input type="text" class="form-control" placeholder="*first_name" v-model="item.column">
+                <span class="input-group-addon">Name</span>
+                <input type="text" class="form-control" placeholder="*first_name" v-model="item.column">
 
-              <span class="input-group-addon">Value</span>
-              <input type="text" class="form-control" placeholder="Type value here..." v-model="item.value">
-              
-              <button class="btn btn-danger" style="margin-top: 5px; margin-left: 5px;" @click="removeColumn(index)"><i class="fa fa-trash"></i></button>
+                <span class="input-group-addon">Value</span>
+
+                <span v-if="item.type === 'image'" class="form-control upload-image" @click="addImage('image' + index, index)">
+                  <label>Click to add image</label>
+                  <input type="file" class="form-control" v-bind:id="'image' + index" @change="setUpFileUpload($event)" accept="image/*">
+                </span>
+                
+                <input type="text" class="form-control" placeholder="Type value here..." v-model="item.value" v-if="item.type !== 'image'">
+                
+                <button class="btn btn-danger" style="margin-top: 5px; margin-left: 5px;" @click="removeColumn(index)"><i class="fa fa-trash"></i></button>
+              </div>
+              <div class="input-group preview" v-if="item.type === 'image' && item.value !== null">
+                <img :src="config.BACKEND_URL + item.value" height="100%">
+              </div>        
             </div>
 
           </div>
@@ -73,6 +84,20 @@
   background: #22b173 !important;
   color: #fff !important;
 }
+.upload-image{
+  height: 45px;
+}
+.upload-image:hover{
+  cursor: pointer;
+}
+.upload-image input{
+  display: none;
+}
+.preview{
+  height: 100px;
+  width: 100%;
+  float: left;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -89,20 +114,17 @@ export default {
       newEntry: {
         front_template: null,
         back_template: null,
-        account_id: null
+        account_id: null,
+        columns: null
       },
-      columns: null
+      columns: null,
+      file: null,
+      fileIndex: null
     }
   },
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
-    },
-    submit(){
-      if(this.validate()){
-      }
-    },
-    validate(){
     },
     modal(){
       this.retrieveTemplates()
@@ -134,8 +156,7 @@ export default {
         employee_id: null,
         type: 'text',
         column: null,
-        value: null,
-        new: true
+        value: null
       }
       if(this.columns === null){
         this.columns = []
@@ -146,6 +167,62 @@ export default {
     },
     removeColumn(index){
       this.columns.splice(index, 1)
+    },
+    addImage(id, index){
+      $('#' + id)[0].click()
+      this.fileIndex = index
+    },
+    createFile(file){
+      let fileReader = new FileReader()
+      fileReader.readAsDataURL(event.target.files[0])
+      this.upload()
+    },
+    setUpFileUpload(event){
+      let files = event.target.files || event.dataTransfer.files
+      if(!files.length){
+        return false
+      }else{
+        this.file = files[0]
+        this.createFile(files[0])
+      }
+    },
+    upload(){
+      let formData = new FormData()
+      formData.append('file', this.file)
+      formData.append('file_url', this.file.name)
+      formData.append('account_id', this.user.userID)
+      $('#loading').css({'display': 'block'})
+      axios.post(this.config.BACKEND_URL + '/employees/upload', formData).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data !== null){
+          this.columns[this.fileIndex].value = response.data.data
+          this.fileIndex = null
+        }
+      })
+    },
+    submit(){
+      this.newEntry.account_id = this.user.userID
+      if(this.validateColumns()){
+        this.newEntry.columns = this.columns
+        let parameter = {
+          employee: this.newEntry
+        }
+        $('#loading').css({'display': 'block'})
+        this.APIRequest('employees/create', parameter).then(response => {
+          $('#loading').css({'display': 'none'})
+          if(response.data !== null){
+            this.columns = null
+            this.newEntry.front_template = null
+            this.newEntry.back_template = null
+            this.newEntry.account_id = null
+            this.newEntry.columns = null
+            $('#createEmployeeModal').modal('hide')
+          }
+        })
+      }
+    },
+    validateColumns(){
+      return true
     }
   }
 }

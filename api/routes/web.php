@@ -154,5 +154,20 @@ Route::post('/contents/update', "ContentController@update");
 Route::post('/contents/delete', "ContentController@delete");
 Route::get('/contents/test', 'ContentController@test');
 
+//Employees
+Route::post('/employees/create', "EmployeeController@create");
+Route::post('/employees/retrieve', "EmployeeController@retrieve");
+Route::post('/employees/update', "EmployeeController@update");
+Route::post('/employees/delete', "EmployeeController@delete");
+Route::get('/employees/test', 'EmployeeController@test');
+Route::post('/employees/upload', "EmployeeController@upload");
+
+//Employee Columns
+Route::post('/employee_columns/create', "EmployeeColumnController@create");
+Route::post('/employee_columns/retrieve', "EmployeeColumnController@retrieve");
+Route::post('/employee_columns/update', "EmployeeColumnController@update");
+Route::post('/employee_columns/delete', "EmployeeColumnController@delete");
+Route::get('/employee_columns/test', 'EmployeeColumnController@test');
+
 
 
