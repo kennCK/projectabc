@@ -170,4 +170,19 @@ Route::post('/employee_columns/delete', "EmployeeColumnController@delete");
 Route::get('/employee_columns/test', 'EmployeeColumnController@test');
 
 
+//Comments
+Route::post('/comments/create', "CommentController@create");
+Route::post('/comments/retrieve', "CommentController@retrieve");
+Route::post('/comments/update', "CommentController@update");
+Route::post('/comments/delete', "CommentController@delete");
+Route::get('/comments/test', 'CommentController@test');
+
+//Comment Replies
+Route::post('/comment_replies/create', "CommentReplyController@create");
+Route::post('/comment_replies/retrieve', "CommentReplyController@retrieve");
+Route::post('/comment_replies/update', "CommentReplyController@update");
+Route::post('/comment_replies/delete', "CommentReplyController@delete");
+Route::get('/comment_replies/test', 'CommentReplyController@test');
+
+
 
