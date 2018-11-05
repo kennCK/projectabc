@@ -32,7 +32,7 @@
   border: solid 1px #ddd;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  margin-right: 1%;
+  margin-right: 25px;
   margin-bottom: 25px;
 }
 .item:hover{
