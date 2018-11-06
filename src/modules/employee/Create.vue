@@ -18,45 +18,50 @@
             <br>
             <div class="form-group">
               <label for="exampleInputEmail1">Front Template</label>
-              <select v-model="newEntry.front_template" class="form-control">
+              <select v-model="newEntry.front_template" class="form-control" @change="reset()">
                 <option v-for="item, index in templates" v-if="templates !== null && item.settings === 'front'" v-bind:value="item.id">{{item.title}}</option>
               </select>
             </div>
 
             <div class="form-group">
               <label for="exampleInputEmail1">Back Template</label>
-              <select v-model="newEntry.back_template" class="form-control">
+              <select v-model="newEntry.back_template" class="form-control" @change="reset()">
                 <option v-for="item, index in templates" v-if="templates !== null && item.settings === 'back'" v-bind:value="item.id">{{item.title}}</option>
               </select>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" v-if="sync === false">
+              <button class="btn btn-primary" @click="getColumns()"><i class="fa fa-sync"></i> Sync</button>
+            </div>
+
+            <div class="form-group" v-if="sync === true">
               <button class="btn btn-primary" @click="addNewColumn()"><i class="fa fa-plus"></i> New Column</button>
             </div>
 
             <div v-for="item, index in columns" v-if="columns !== null">
               <div class="input-group">
-                <span class="input-group-addon">Type</span>
+<!--                 <span class="input-group-addon">Type</span>
                 <select v-model="item.type" class="form-control" style="width: 0px !important;">
                   <option value="text">Text</option>
-                  <option value="image">Image</option>
-                </select>
+                  <option value="photo">Image</option>
+                </select> -->
 
                 <span class="input-group-addon">Name</span>
-                <input type="text" class="form-control" placeholder="*first_name" v-model="item.column">
+                <input type="text" class="form-control" placeholder="*first_name" v-model="item.column" disabled v-if="item.delete === false">
+                <input type="text" class="form-control" placeholder="*first_name" v-model="item.column" v-if="item.delete === true">
 
                 <span class="input-group-addon">Value</span>
 
-                <span v-if="item.type === 'image'" class="form-control upload-image" @click="addImage('image' + index, index)">
+                <span v-if="item.type === 'photo'" class="form-control upload-image" @click="addImage('image' + index, index)">
                   <label>Click to add image</label>
                   <input type="file" class="form-control" v-bind:id="'image' + index" @change="setUpFileUpload($event)" accept="image/*">
                 </span>
                 
-                <input type="text" class="form-control" placeholder="Type value here..." v-model="item.value" v-if="item.type !== 'image'">
+                <input type="text" class="form-control" placeholder="Type value here..." v-model="item.value" v-if="item.type !== 'photo'">
                 
-                <button class="btn btn-danger" style="margin-top: 5px; margin-left: 5px;" @click="removeColumn(index)"><i class="fa fa-trash"></i></button>
+                <button class="btn btn-danger" style="margin-top: 5px; margin-left: 5px;" @click="removeColumn(index)" v-if="item.delete === true"><i class="fa fa-trash"></i></button>
               </div>
-              <div class="input-group preview" v-if="item.type === 'image' && item.value !== null">
+              <div class="input-group preview" v-if="item.type === 'photo' && item.value !== null">
                 <img :src="config.BACKEND_URL + item.value" height="100%">
               </div>        
             </div>
@@ -120,7 +125,8 @@ export default {
       },
       columns: null,
       file: null,
-      fileIndex: null
+      fileIndex: null,
+      sync: false
     }
   },
   methods: {
@@ -152,12 +158,30 @@ export default {
         }
       })
     },
+    reset(){
+      this.sync = false
+    },
+    getColumns(){
+      let parameter = {
+        front: this.newEntry.front_template,
+        back: this.newEntry.back_template
+      }
+      this.APIRequest('objects/retrieve_dynamic_without_attributes', parameter).done(response => {
+        this.sync = true
+        if(response.data.length > 0){
+          this.columns = response.data
+        }else{
+          this.columns = null
+        }
+      })
+    },
     addNewColumn(){
       let object = {
         employee_id: null,
         type: 'text',
         column: null,
-        value: null
+        value: null,
+        delete: true
       }
       if(this.columns === null){
         this.columns = []

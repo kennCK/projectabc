@@ -17,6 +17,8 @@ class ObjectController extends APIController
       );
     }
 
+    private $completeName = array('c_name', 'complete_name');
+    private $syncColumns = [];
 
     public function create(Request $request){
       $data = $request->all();
@@ -143,6 +145,76 @@ class ObjectController extends APIController
         }
       }
       return $this->response();
+    }
+
+    public function retrieveDynamicWithoutAttributes(Request $request){
+      $data = $request->all();
+      $front = $data['front'];
+      $back = $data['back'];
+      $frontResult = Object::where('template_id', '=', $front)->where('settings', '=', 'dynamic')->orderBy('name', 'asc')->get();
+      $backResult = Object::where('template_id', '=', $back)->where('settings', '=', 'dynamic')->orderBy('name', 'asc')->get();
+      
+      if(sizeof($frontResult) > 0){
+        $i = 0;
+        foreach ($frontResult as $key) {
+          $this->getColumnDecoder($frontResult[$i]);
+          $i++; 
+        }
+      }
+      if(sizeof($backResult) > 0){
+        $i = 0;
+        foreach ($backResult as $key) {
+          $this->getColumnDecoder($backResult[$i]);
+          $i++; 
+        }
+      }
+      return response()->json(array(
+        'data'  => $this->syncColumns,
+        'error' => null,
+        'timestamps'  => Carbon::now()
+      ));
+    }
+
+    public function getColumnDecoder($object){
+      if(in_array($object['name'], $this->completeName)){
+        $array = array(
+          'template_id' => null,
+          'type'        => $object['type'],
+          'column'      => 'first_name',
+          'value'       => null,
+          'delete'      => false
+        );
+        $this->syncColumns[] = $array; 
+
+        $array = array(
+          'template_id' => null,
+          'type'        => $object['type'],
+          'column'      => 'middle_name',
+          'value'       => null,
+          'delete'      => false
+        );
+        $this->syncColumns[] = $array; 
+
+        $array = array(
+          'template_id' => null,
+          'type'        => $object['type'],
+          'column'      => 'last_name',
+          'value'       => null,
+          'delete'      => false
+        );
+        $this->syncColumns[] = $array; 
+
+      }else{
+        $array = array(
+          'template_id' => null,
+          'type'        => $object['type'],
+          'column'      => $object['name'],
+          'value'       => null,
+          'delete'      => false
+        );
+
+        $this->syncColumns[] = $array; 
+      }
     }
 
     public function getAttributes($id){

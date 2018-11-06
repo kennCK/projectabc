@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="modal fade" id="editEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div id="editProfile">
+    <div class="modal fade" id="editEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="data !== null">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
@@ -17,14 +17,14 @@
             <br>
             <div class="form-group">
               <label for="exampleInputEmail1">Front Template</label>
-              <select v-model="newEntry.front_template" class="form-control">
+              <select v-model="data.front_template" class="form-control">
                 <option v-for="item, index in templates" v-if="templates !== null && item.settings === 'front'" v-bind:value="item.id">{{item.title}}</option>
               </select>
             </div>
 
             <div class="form-group">
               <label for="exampleInputEmail1">Back Template</label>
-              <select v-model="newEntry.back_template" class="form-control">
+              <select v-model="data.back_template" class="form-control">
                 <option v-for="item, index in templates" v-if="templates !== null && item.settings === 'back'" v-bind:value="item.id">{{item.title}}</option>
               </select>
             </div>
@@ -33,29 +33,30 @@
               <button class="btn btn-primary" @click="addNewColumn()"><i class="fa fa-plus"></i> New Column</button>
             </div>
 
-            <div v-for="item, index in columns" v-if="columns !== null">
+            <div v-for="item, index in data.columns" v-if="data.columns !== null">
               <div class="input-group">
-                <span class="input-group-addon">Type</span>
+<!--                 <span class="input-group-addon">Type</span>
                 <select v-model="item.type" class="form-control" style="width: 0px !important;">
                   <option value="text">Text</option>
-                  <option value="image">Image</option>
-                </select>
+                  <option value="photo">Image</option>
+                </select> -->
 
                 <span class="input-group-addon">Name</span>
-                <input type="text" class="form-control" placeholder="*first_name" v-model="item.column">
+                <input type="text" class="form-control" placeholder="*first_name" v-model="item.column" disabled v-if="item.new === false">
+                <input type="text" class="form-control" placeholder="*first_name" v-model="item.column" v-if="item.new === true">
 
                 <span class="input-group-addon">Value</span>
 
-                <span v-if="item.type === 'image'" class="form-control upload-image" @click="addImage('image' + index, index)">
+                <span v-if="item.type === 'photo'" class="form-control upload-image" @click="addImage('image' + index, index)">
                   <label>Click to add image</label>
                   <input type="file" class="form-control" v-bind:id="'image' + index" @change="setUpFileUpload($event)" accept="image/*">
                 </span>
                 
-                <input type="text" class="form-control" placeholder="Type value here..." v-model="item.value" v-if="item.type !== 'image'">
+                <input type="text" class="form-control" placeholder="Type value here..." v-model="item.value" v-if="item.type !== 'photo'">
                 
-                <button class="btn btn-danger" style="margin-top: 5px; margin-left: 5px;" @click="removeColumn(index)"><i class="fa fa-trash"></i></button>
+                <button class="btn btn-danger" style="margin-top: 5px; margin-left: 5px;" @click="removeColumn(index)" v-if="item.new === true"><i class="fa fa-trash"></i></button>
               </div>
-              <div class="input-group preview" v-if="item.type === 'image' && item.value !== null">
+              <div class="input-group preview" v-if="item.type === 'photo' && item.value !== null">
                 <img :src="config.BACKEND_URL + item.value" height="100%">
               </div>        
             </div>
@@ -63,7 +64,7 @@
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" @click="hideModal()">Close</button>
-              <button type="button" class="btn btn-primary" @click="update()">Submit</button>
+              <button type="button" class="btn btn-primary" @click="update()">Update</button>
           </div>
         </div>
       </div>
@@ -110,28 +111,40 @@ export default {
       config: CONFIG,
       errorMessage: null,
       templates: null,
-      newEntry: {
-        front_template: null,
-        back_template: null,
-        account_id: null,
-        columns: null,
-        status: 'not_verified'
-      },
-      columns: null,
+      data: null,
       file: null,
-      fileIndex: null
+      fileIndex: null,
+      id: null
     }
   },
-  props: ['item'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
     modal(){
-      this.retrieveTemplates()
+      this.retrieve()
     },
     hideModal(){
+      this.data = null
       $('#editEmployeeModal').modal('hide')
+      this.$parent.retrieve()
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.id,
+          column: 'id',
+          clause: '='
+        }]
+      }
+      this.APIRequest('employees/retrieve_on_update', parameter).done(response => {
+        if(response.data.length > 0){
+          this.data = response.data[0]
+        }else{
+          this.data = null
+        }
+        this.retrieveTemplates()
+      })
     },
     retrieveTemplates(){
       let parameter = {
@@ -157,17 +170,18 @@ export default {
         employee_id: null,
         type: 'text',
         column: null,
-        value: null
+        value: null,
+        new: true
       }
-      if(this.columns === null){
-        this.columns = []
+      if(this.data.columns === null){
+        this.data.columns = []
       }else{
         //
       }
-      this.columns.push(object)
+      this.data.columns.push(object)
     },
     removeColumn(index){
-      this.columns.splice(index, 1)
+      this.data.columns.splice(index, 1)
     },
     addImage(id, index){
       $('#' + id)[0].click()
@@ -196,30 +210,20 @@ export default {
       axios.post(this.config.BACKEND_URL + '/employees/upload', formData).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data !== null){
-          this.columns[this.fileIndex].value = response.data.data
+          this.data.columns[this.fileIndex].value = response.data.data
           this.fileIndex = null
         }
       })
     },
     update(){
-      this.newEntry.account_id = this.user.userID
       if(this.validateColumns()){
-        this.newEntry.columns = this.columns
-        let parameter = {
-          employee: this.newEntry
-        }
         $('#loading').css({'display': 'block'})
-        this.APIRequest('employees/create', parameter).then(response => {
+        let parameter = {
+          'employee': this.data
+        }
+        this.APIRequest('employees/update', parameter).then(response => {
           $('#loading').css({'display': 'none'})
-          if(response.data !== null){
-            this.columns = null
-            this.newEntry.front_template = null
-            this.newEntry.back_template = null
-            this.newEntry.account_id = null
-            this.newEntry.columns = null
-            this.$parent.retrieve()
-            $('#createEmployeeModal').modal('hide')
-          }
+          this.hideModal()
         })
       }
     },

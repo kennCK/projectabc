@@ -139,6 +139,7 @@ Route::post('/objects/update', "ObjectController@update");
 Route::post('/objects/delete', "ObjectController@delete");
 Route::get('/objects/test', 'ObjectController@test');
 Route::post('/objects/upload', 'ObjectController@upload');
+Route::post('/objects/retrieve_dynamic_without_attributes', 'ObjectController@retrieveDynamicWithoutAttributes');
 
 //Attributes
 Route::post('/attributes/create', "AttributeController@create");
@@ -161,6 +162,7 @@ Route::post('/employees/update', "EmployeeController@update");
 Route::post('/employees/delete', "EmployeeController@delete");
 Route::get('/employees/test', 'EmployeeController@test');
 Route::post('/employees/upload', "EmployeeController@upload");
+Route::post('/employees/retrieve_on_update', "EmployeeController@retrieveOnUpdate");
 
 //Employee Columns
 Route::post('/employee_columns/create', "EmployeeColumnController@create");

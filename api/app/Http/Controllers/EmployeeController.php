@@ -74,6 +74,69 @@ class EmployeeController extends APIController
       );
     }
 
+    public function update(Request $request){
+      $data = $request->all();
+      $employee = $data['employee'];
+      if($employee != null){
+        $this->model = new Employee();
+        $employeeUpdate = array(
+          'id'              => $employee['id'],
+          'front_template'  => $employee['front_template'],
+          'account_id'      => $employee['account_id'],
+          'status'          => $employee['status']
+        );
+        $this->updateDB($employeeUpdate);
+        if($this->response['data'] == true){
+          $columns = $employee['columns'];
+          if($columns != null){
+            for ($i = 0; $i < sizeof($columns); $i++) { 
+              if($columns[$i]['new'] == 'false'){
+                //update
+                $columnUpdate = array(
+                  'type'  => $columns[$i]['type'],
+                  'column'  => $columns[$i]['column'],
+                  'value'  => $columns[$i]['value'],
+                  'updated_at'  => Carbon::now()
+                );
+                EmployeeColumn::where('id', '=', $columns[$i]['id'])->update($columnUpdate);
+              }else{
+                //create
+                $colModel = new EmployeeColumn();
+                $colModel->employee_id = $employee['id'];
+                $colModel->type = $columns[$i]['type'];
+                $colModel->column = $columns[$i]['column'];
+                $colModel->value = $columns[$i]['value'];
+                $colModel->created_at = Carbon::now();
+                $colModel->save();
+              }
+            }
+          }else{
+            return response()->json(
+              array(
+                'data'  => null,
+                'error' => 'Empty',
+                'timestamps' => Carbon::now()
+              )
+            );
+          }
+          return response()->json(
+            array(
+              'data'  => true,
+              'error' => 'Empty',
+              'timestamps' => Carbon::now()
+            )
+          );
+        } 
+      }
+      return response()->json(
+        array(
+          'data'  => null,
+          'error' => 'Empty',
+          'timestamps' => Carbon::now()
+        )
+      );
+    }
+
     public function upload(Request $request){
 
       $data = $request->all();
@@ -127,6 +190,33 @@ class EmployeeController extends APIController
         }
       }
       return $this->response();
+    }
+
+    public function retrieveOnUpdate(Request $request){
+       $data = $request->all();
+      $this->model = new Employee();
+      $this->retrieveDB($data);
+      $result = $this->response['data'];
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $this->response['data'][$i]['columns'] = $this->getColumns($result[$i]['id']);
+          $i++;
+        }
+      }
+      return $this->response();
+    }
+
+    public function getColumns($id){
+      $result = EmployeeColumn::where('employee_id', '=', $id)->orderBy('column', 'asc')->get();
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $result[$i]['new'] = false;
+          $i++;
+        }
+      }
+      return (sizeof($result) > 0) ? $result : null;
     }
 
     public function getComments($employeeId){

@@ -21,7 +21,7 @@
                   <span class="dropdown-item disabled">Settings</span>
                   <span class="dropdown-item" v-if="item.status === 'not_verified'" @click="updateStatus('verified', item.id)">Verified</span>
                   <span class="dropdown-item" v-if="item.status === 'verified' || item.status === 'printed'" @click="updateStatus('not_verified', item.id)">Need Verification</span>
-                  <span class="dropdown-item" @click="editProfile()">Edit Profile</span>
+                  <span class="dropdown-item" @click="editProfile(item.id)">Edit Profile</span>
               </div>
             </div>
           </li>
@@ -58,7 +58,7 @@
     </div>
     <update></update>
     <editor></editor>
-    <edit :item="item"></edit>
+    <edit></edit>
   </div>
 </template>
 <style scoped>
@@ -274,8 +274,13 @@ export default {
     retrieve(){
       this.$parent.retrieve()
     },
-    editProfile(){
-      $('#editEmployeeModal').modal('show')
+    editProfile(id){
+      for (var i = 0; i < this.$children.length; i++) {
+        if(this.$children[i].$el.id === 'editProfile'){
+          this.$children[i].id = id
+          this.$children[i].modal()
+        }
+      }
     },
     updateStatus(status, id){
       let parameter = {
