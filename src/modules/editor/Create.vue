@@ -28,7 +28,6 @@
               </select>
             </div>
 
-
             <div class="form-group">
               <label for="exampleInputEmail1">Orientation</label>
               <select class="form-control" v-model="orientation">
