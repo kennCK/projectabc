@@ -22,8 +22,8 @@
             <div class="form-group">
               <label for="exampleInputEmail1">Additional Details</label>
               <select class="form-control" v-model="item.settings">
-                <option value="front">Front Only</option>
-                <option value="front_and_back">Front and Back</option>
+                <option value="front">Front</option>
+                <option value="back">Back</option>
               </select>
             </div>
 
