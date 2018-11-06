@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\Jobs\Email;
-class AccountController extends ClassWorxController
+class AccountController extends APIController
 {
     function __construct(){  
       $this->model = new Account();

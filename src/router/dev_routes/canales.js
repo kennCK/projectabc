@@ -89,6 +89,14 @@ export default{
     }
   },
   {
+    path: '/images',
+    name: 'images',
+    component: resolve => require(['modules/image/Images.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
     path: '/billings',
     name: 'billings',
     component: resolve => require(['modules/billing/Billings.vue'], resolve),

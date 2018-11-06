@@ -1,12 +1,11 @@
 <template>
   <div>
-    <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#createTemplateModal"><i class="fa fa-plus"></i> New Template</button>
-    <div class="modal fade" id="createTemplateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="updateTemplateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="item !== null">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
-            <h5 class="modal-title" id="exampleModalLabel">New Template</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <h5 class="modal-title" id="exampleModalLabel">Update Settings</h5>
+            <button type="button" class="close" @click="close()" aria-label="Close">
               <span aria-hidden="true" class="text-white">&times;</span>
             </button>
           </div>
@@ -18,19 +17,20 @@
             <br>
             <div class="form-group">
               <label for="exampleInputEmail1">Title</label>
-              <input type="text" class="form-control" placeholder="Type title here..." v-model="title">
+              <input type="text" class="form-control" placeholder="Type title here..." v-model="item.title">
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Additional Details</label>
-              <select class="form-control" v-model="settings">
+              <select class="form-control" v-model="item.settings">
                 <option value="front">Front</option>
                 <option value="back">Back</option>
               </select>
             </div>
 
+
             <div class="form-group">
               <label for="exampleInputEmail1">Orientation</label>
-              <select class="form-control" v-model="orientation">
+              <select class="form-control" v-model="item.orientation">
                 <option value="portrait">Portrait</option>
                 <option value="landscape">Landscape</option>
               </select>
@@ -38,8 +38,8 @@
 
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#createTemplateModal">Cancel</button>
-              <button type="button" class="btn btn-primary" @click="submit()">Submit</button>
+              <button type="button" class="btn btn-danger" @click="close()">Cancel</button>
+              <button type="button" class="btn btn-primary" @click="update()">Submit</button>
           </div>
         </div>
       </div>
@@ -47,6 +47,43 @@
   </div>
 </template>
 <style scoped>
+.featured-image{
+  width: 100%;
+  float: left;
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+.featured-image .options{
+  width: 100%;
+  float: left;
+  text-align: center;
+  height: 200px;
+  border: solid 1px #ddd;
+  overflow-y: hidden;
+}
+.options input{
+  display: none;
+}
+.options:hover{
+  cursor: pointer;
+}
+.options i{
+  font-size: 40px;
+  width: 100%;
+  float: left;
+  margin-top: 75px;
+}
+
+.options label{
+  width: 100%;
+  float: left;
+}
+.options img{
+  width: 100%;
+  float: left;
+  height: auto;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -63,35 +100,34 @@ export default {
       errorMessage: null,
       title: null,
       settings: null,
-      orientation: null
+      orientation: null,
+      item: null
     }
   },
-  props: ['params'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
-    submit(){
+    update(){
       if(this.validate()){
-        let parameter = {
-          account_id: this.user.userID,
-          title: this.title,
-          settings: this.settings,
-          orientation: this.orientation
-        }
-        this.APIRequest('templates/create', parameter).then(response => {
+        this.APIRequest('templates/update', this.item).then(response => {
           if(response.data > 0){
-            $('#createTemplateModal').modal('hide')
+            $('#updateTemplateModal').modal('hide')
             this.$parent.retrieve()
           }
         })
       }
     },
     validate(){
-      if(this.title !== null || this.title !== '' || this.settings !== null || this.settings !== '' || this.orientation !== null || this.orientation !== ''){
+      let i = this.item
+      if(i.title !== null || i.title !== '' || i.settings !== null || i.settings !== '' || i.orientation !== null || i.orientation !== ''){
         return true
       }
       return false
+    },
+    close(){
+      this.item = null
+      $('#updateTemplateModal').modal('hide')
     }
   }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\AccountProfile;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-class AccountProfileController extends ClassWorxController
+class AccountProfileController extends APIController
 {
     function __construct(){
         $this->model = new AccountProfile();

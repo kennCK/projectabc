@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\AccountInformation;
-class AccountInformationController extends ClassWorxController
+class AccountInformationController extends APIController
 {
     function __construct(){  
         $this->model = new AccountInformation();

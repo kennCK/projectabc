@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateAccountsTableChangeId extends Migration
+class UpdateObjectsTableChangeContentType1 extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class UpdateAccountsTableChangeId extends Migration
      */
     public function up()
     {
-        Schema::table('accounts', function (Blueprint $table) {
-            $table->string('code', 32)->after('id');
+        Schema::table('objects', function (Blueprint $table) {
+            $table->longText('content')->nullable()->change();
         });
     }
 
@@ -25,7 +25,7 @@ class UpdateAccountsTableChangeId extends Migration
      */
     public function down()
     {
-        Schema::table('accounts', function (Blueprint $table) {
+        Schema::table('objects', function (Blueprint $table) {
             //
         });
     }
