@@ -221,7 +221,7 @@ export default {
         let parameter = {
           'employee': this.data
         }
-        this.APIRequest('employees/update', parameter).then(response => {
+        this.APIRequest('employees/update_by_profile', parameter).then(response => {
           $('#loading').css({'display': 'none'})
           this.hideModal()
         })

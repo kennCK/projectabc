@@ -159,6 +159,7 @@ Route::get('/contents/test', 'ContentController@test');
 Route::post('/employees/create', "EmployeeController@create");
 Route::post('/employees/retrieve', "EmployeeController@retrieve");
 Route::post('/employees/update', "EmployeeController@update");
+Route::post('/employees/update_by_profile', "EmployeeController@updateByProfile");
 Route::post('/employees/delete', "EmployeeController@delete");
 Route::get('/employees/test', 'EmployeeController@test');
 Route::post('/employees/upload', "EmployeeController@upload");

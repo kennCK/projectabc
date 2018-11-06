@@ -74,7 +74,7 @@ class EmployeeController extends APIController
       );
     }
 
-    public function update(Request $request){
+    public function updateByProfile(Request $request){
       $data = $request->all();
       $employee = $data['employee'];
       if($employee != null){
