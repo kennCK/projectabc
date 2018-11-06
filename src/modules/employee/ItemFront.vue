@@ -9,7 +9,7 @@
           <li>
             <i v-bind:class="{'gray': item.status === 'not_verified', 'green': item.status === 'verified'}" class="fas fa-check"></i>
           </li>
-          <li>
+          <li @click="print()">
             <i v-bind:class="{'gray': item.status !== 'printed', 'green': item.status === 'printed'}" class="fas fa-print"></i>
           </li>
           <li style="border-right: 0px;">
@@ -59,6 +59,7 @@
     <update></update>
     <editor></editor>
     <edit></edit>
+    <print></print>
   </div>
 </template>
 <style scoped>
@@ -255,7 +256,8 @@ export default {
     'update': require('modules/editor/Update.vue'),
     'editor': require('modules/editor/Editor.vue'),
     'comments': require('modules/comment/Comments.vue'),
-    'edit': require('modules/employee/Edit.vue')
+    'edit': require('modules/employee/Edit.vue'),
+    'print': require('modules/print/Print.vue')
   },
   props: ['item', 'index'],
   methods: {
@@ -292,6 +294,15 @@ export default {
           this.$parent.retrieve()
         }
       })
+    },
+    print(){
+      for (var i = 0; i < this.$children.length; i++) {
+        if(this.$children[i].$el.id === 'printer'){
+          this.$children[i].item = this.item
+          this.$children[i].objects = this.item.front_objects
+          this.$children[i].modal()
+        }
+      }
     }
   }
 }
