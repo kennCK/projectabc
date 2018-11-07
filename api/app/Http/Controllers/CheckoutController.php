@@ -19,8 +19,14 @@ class CheckoutController extends APIController
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
-          $this->response['data'][$i]['template'] = $this->getTemplateDetails($result[$i]['payload_value']);
-          $this->response['data'][$i]['objects'] = $this->getObjects($result[$i]['payload_value']);
+          $payload = $result[$i]['payload'];
+          $payloadValue = $result[$i]['payload_value'];
+          if($payload == 'template'){
+            $this->response['data'][$i]['template'] = $this->getTemplateDetails($payloadValue);
+            $this->response['data'][$i]['objects'] = $this->getObjects($payloadValue);
+          }else if($payload == 'employee'){
+            $this->response['data'][$i]['employee'] = $this->getEmployee($payloadValue);
+          }
           $subTotal += $result[$i]['price'];
           $i++;
         }

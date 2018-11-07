@@ -34,6 +34,7 @@
                   </label>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <span class="dropdown-item disabled">Settings</span>
+                      <span class="dropdown-item" v-if="item.status === 'verified' && item.checkout === null" @click="addToCart(item.id)">Add to Cart</span>
                       <span class="dropdown-item" v-if="item.status === 'not_verified'" @click="updateStatus('verified', item.id)">Verified</span>
                       <span class="dropdown-item" v-if="item.status === 'verified' || item.status === 'printed'" @click="updateStatus('not_verified', item.id)">Need Verification</span>
                       <span class="dropdown-item" @click="editProfile(item.id)">Edit Profile</span>
@@ -284,6 +285,21 @@ export default {
       }
       this.APIRequest('employees/update', parameter).then(response => {
         if(response.data === true){
+          this.retrieve()
+        }
+      })
+    },
+    addToCart(id){
+      let parameter = {
+        account_id: this.user.userID,
+        payload: 'employee',
+        payload_value: id,
+        status: 'added',
+        price: 0
+      }
+      this.APIRequest('checkouts/create', parameter).then(response => {
+        if(response.data > 0){
+          AUTH.checkAuthentication(null)
           this.retrieve()
         }
       })

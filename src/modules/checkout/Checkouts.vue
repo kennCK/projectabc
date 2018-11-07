@@ -6,16 +6,25 @@
           Cart Items
         </span>
         <span class="item" v-for="item, index in data">
-          <span class="objects-holder">
+          <span class="objects-holder" v-if="item.payload === 'template'">
             <objects :objects="item.objects" v-if="item.objects !== null"></objects>
           </span>
-          <span class="details">
+          <span class="details" v-if="item.payload === 'template'">
               <label style="margin-top: 10px;">
                 <b>{{item.template.title}}</b>
                 <i class="fa fa-trash pull-right text-danger delete" style="font-size: 24px; padding-right: 25px;" @click="remove(item.id)"></i>
               </label>
               <label>Price Php {{item.template.price}}</label>
               <label>Cetegory: {{item.template.categories}}</label>
+          </span>
+          <span class="two-objects-holder" v-if="item.payload === 'employee'">
+            <objects :objects="item.employee.front_objects" v-if="item.employee.front_objects !== null"></objects>
+            <objects :objects="item.employee.back_objects" v-if="item.employee.back_objects !== null"></objects>
+          </span>
+          <span class="two-details" v-if="item.payload === 'employee'">
+              <label style="margin-top: 10px;">
+                <i class="fa fa-trash pull-right text-danger delete" style="font-size: 24px; padding-right: 25px;" @click="remove(item.id)"></i>
+              </label>
           </span>
         </span>
       </span>
@@ -80,7 +89,15 @@
   float: left;
   width: 70%;
 }
-.details label{
+.two-objects-holder{
+  float: left;
+  width: 80%;
+}
+.two-details{
+  float: left;
+  width: 20%;
+}
+.details label, .two-details label{
   width: 100%;
   float: left;
 }
