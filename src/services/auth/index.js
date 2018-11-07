@@ -10,7 +10,7 @@ export default {
     type: null,
     status: null,
     profile: null,
-    cart: null,
+    cart: 0,
     notifications: {
       data: null,
       current: null,
@@ -40,7 +40,7 @@ export default {
       type = null
       status = null
       profile = null
-      checkout = null
+      checkout = 0
     }
     this.user.userID = userID * 1
     this.user.username = username

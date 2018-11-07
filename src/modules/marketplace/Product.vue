@@ -154,6 +154,7 @@ export default {
       this.APIRequest('checkouts/create', parameter).then(response => {
         if(response.data > 0){
           AUTH.checkAuthentication(null)
+          this.$parent.retrieve()
         }
       })
     }

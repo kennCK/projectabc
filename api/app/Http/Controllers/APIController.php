@@ -20,6 +20,7 @@ use App\AccountInformation;
 use App\AccountProfile;
 use App\CustomObject;
 use App\Attribute;
+use App\Template;
 class APIController extends Controller
 {
   /*
@@ -447,6 +448,11 @@ class APIController extends Controller
     }else{
       return null;
     }
+  }
+
+  public function getTemplateDetails($templateId){
+    $result = Template::where('id', '=', $templateId)->get();
+    return (sizeof($result) > 0) ? $result[0] : null;     
   }
 
   public function getObjects($id){

@@ -79,10 +79,10 @@
               </span>
             </span>
         </div>
-        <span class="nav-item" v-if="user.checkout !== null" @click="redirect('/checkout')">
+        <span class="nav-item" v-if="user.checkout > 0" @click="redirect('/checkout')">
           <span>
             <i class="fa fa-shopping-cart"></i>
-            <label class="badge badge-danger" style="margin-left: -15px;">{{user.checkout.length}}</label>
+            <label class="badge badge-danger" style="margin-left: -15px;">{{user.checkout}}</label>
           </span>
         </span>
 

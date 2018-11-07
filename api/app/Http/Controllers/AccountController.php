@@ -121,7 +121,7 @@ class AccountController extends APIController
           $checkout = Checkout::where('account_id', '=', $accountId)->where('status', '=', 'added')->get();
           $result[$i]['account_information'] = (sizeof($accountInfoResult) > 0) ? $accountInfoResult[0] : null;
           $result[$i]['account_profile'] = (sizeof($accountProfileResult) > 0) ? $accountProfileResult[0] : null;
-          $result[$i]['checkout'] = (sizeof($checkout) > 0) ? $checkout : null;
+          $result[$i]['checkout'] = sizeof($checkout);
           $i++;
         }
         return response()->json(array('data' => $result));
