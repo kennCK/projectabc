@@ -4,7 +4,7 @@
       <div class="input-group">
         <span class="input-group-addon input-group-title">Marketplace</span>
         <span class="input-group-addon">Search</span>
-        <input type="text" class="form-control" placeholder="Type something to find here...">
+        <input type="text" class="form-control" placeholder="Search here...">
 
         <span class="input-group-addon" style="margin-left: 20px;">Categories</span>
         <select class="form-control">
@@ -81,8 +81,8 @@ export default {
     retrieve(){
       let parameter = {
         condition: [{
-          value: this.user.userID,
-          column: 'account_id',
+          value: 'marketplace',
+          column: 'status',
           clause: '='
         }]
       }

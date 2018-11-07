@@ -36,6 +36,22 @@
               </select>
             </div>
 
+            <div class="form-group" v-if="user.type === 'ADMIN'">
+              <label for="exampleInputEmail1">Status</label>
+              <select class="form-control" v-model="status">
+                <option value="personal">Personal</option>
+                <option value="marketplace">Marketplace</option>
+              </select>
+            </div>
+
+            <div class="form-group" v-if="user.type === 'ADMIN'">
+              <label for="exampleInputEmail1">Category</label>
+              <select class="form-control" v-model="category">
+                <option value="office">Office</option>
+                <option value="school">School</option>
+              </select>
+            </div>
+
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#createTemplateModal">Cancel</button>
@@ -63,7 +79,9 @@ export default {
       errorMessage: null,
       title: null,
       settings: null,
-      orientation: null
+      orientation: null,
+      status: 'personal',
+      category: 'personal'
     }
   },
   props: ['params'],
@@ -77,7 +95,9 @@ export default {
           account_id: this.user.userID,
           title: this.title,
           settings: this.settings,
-          orientation: this.orientation
+          orientation: this.orientation,
+          status: this.status,
+          categories: this.category
         }
         this.APIRequest('templates/create', parameter).then(response => {
           if(response.data > 0){

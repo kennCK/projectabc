@@ -1,8 +1,8 @@
 <template>
 	<div class="template-holder">
 		<create></create>
-    <div class="template-list">
-      <item v-for="item, index in data" v-if="data !==null" :item="item" :key="item.id" :index="index"></item>
+    <div class="template-list" v-if="data !==null">
+      <item v-for="item, index in data" :item="item" :key="item.id" :index="index"></item>
     </div>
     <marketplace></marketplace>
 	</div>
@@ -16,6 +16,7 @@
   width: 100%;
   float: left;
   margin-top: 25px;
+  margin-bottom: 50px;
 }
 </style>
 <script>
