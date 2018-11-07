@@ -7,7 +7,7 @@ use App\Employee;
 use App\EmployeeColumn;
 use App\AccountImage;
 use App\Template;
-use App\Object;
+use App\CustomObject;
 use App\Attribute;
 use App\Comment;
 use Carbon\Carbon;
@@ -230,7 +230,7 @@ class EmployeeController extends APIController
     }
 
     public function getObjects($templateId, $employeeId){
-      $result = Object::where('template_id', '=', $templateId)->get();
+      $result = CustomObject::where('template_id', '=', $templateId)->get();
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {

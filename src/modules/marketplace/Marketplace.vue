@@ -2,7 +2,7 @@
   <div class="template-holder">
     <div class="filter">
       <div class="input-group">
-        <span class="input-group-addon bg-primary" style="width: 200px !important; background: #22b173 !important;">Marketplace</span>
+        <span class="input-group-addon input-group-title">Marketplace</span>
         <span class="input-group-addon">Search</span>
         <input type="text" class="form-control" placeholder="Type something to find here...">
 
@@ -24,8 +24,9 @@
   float: left;
 }
 .filter{
-  width: 100%;
+  width: 75%;
   float: left;
+  margin-right: 25%;
   height: 50px;
 }
 
@@ -38,6 +39,11 @@
 .input-group-addon{
   width: 100px !important;
   background: #22b173 !important;
+  color: #fff !important;
+}
+.input-group-title{
+  width: 100px !important;
+  background: #028170 !important;
   color: #fff !important;
 }
 

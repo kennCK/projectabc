@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Template;
-use App\Object;
+use App\CustomObject;
 use App\Attribute;
 class TemplateController extends APIController
 {
@@ -36,7 +36,7 @@ class TemplateController extends APIController
     }
     
     public function getObjects($id){
-      $result = Object::where('template_id', '=', $id)->get();
+      $result = CustomObject::where('template_id', '=', $id)->get();
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
