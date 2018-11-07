@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="item" v-if="item !== null">
+    <div class="item" v-if="objects !== null">
       <span class="body">
         <span class="preview">
-          <span v-for="obj, innerIndex in item.front_objects" v-if="item.front_objects !== null">
+          <span v-for="obj, innerIndex in objects" v-if="objects !== null">
               <span class="division" v-if="obj.type === 'division'" v-bind:style="obj.attributes">
               </span>
               <label class="text" v-if="obj.type === 'text'" v-bind:style="obj.attributes">{{obj.content}}</label>
@@ -61,7 +61,7 @@ export default {
       prevId: null
     }
   },
-  props: ['item', 'index'],
+  props: ['objects'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)

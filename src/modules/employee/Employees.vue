@@ -24,7 +24,7 @@
               <li>
                 <i v-bind:class="{'gray': item.status === 'not_verified', 'green': item.status === 'verified'}" class="fas fa-check"></i>
               </li>
-              <li @click="print()">
+              <li @click="print(item)">
                 <i v-bind:class="{'gray': item.status !== 'printed', 'green': item.status === 'printed'}" class="fas fa-print"></i>
               </li>
               <li style="border-right: 0px;">
@@ -45,11 +45,11 @@
           </span>
 
           <span class="items">
-            <item-front :item="item" :key="item.id" :index="index" v-if="item.front_objects !== null">
-            </item-front>
+            <item :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null">
+            </item>
 
-            <item-back :item="item" :key="item.id + 'b'" :index="index" v-if="item.back_objects !== null">
-            </item-back>
+            <item :objects="item.back_objects" :key="item.id + 'b'" v-if="item.back_objects !== null">
+            </item>
           </span>
         </span>
       </div>
@@ -120,11 +120,7 @@
 .menu li i{
   font-size: 15px;
 }
-.menu .green label:hover{
-  cursor: pointer;
-}
-
-.menu li:hover{
+.menu li:hover, .menu li .option{
   cursor: pointer;
 }
 .items{
@@ -184,6 +180,7 @@
   float: left;
   line-height: 50px;
   background: #22b173;
+  color: #fff;
 }
 .overlay .header i{
   color: #fff;
@@ -218,8 +215,7 @@ export default {
   },
   components: {
     'create': require('modules/employee/Create.vue'),
-    'item-front': require('modules/employee/ItemFront.vue'),
-    'item-back': require('modules/employee/ItemBack.vue'),
+    'item': require('modules/employee/Item.vue'),
     'update': require('modules/editor/Update.vue'),
     'editor': require('modules/editor/Editor.vue'),
     'comments': require('modules/comment/Comments.vue'),
@@ -264,11 +260,11 @@ export default {
     hideComments(id){
       $('#overlay-' + id).css({'display': 'none'})
     },
-    print(){
+    print(item){
       for (var i = 0; i < this.$children.length; i++) {
         if(this.$children[i].$el.id === 'printer'){
-          this.$children[i].item = this.item
-          this.$children[i].objects = this.item.front_objects
+          console.log('Hi')
+          this.$children[i].item = item
           this.$children[i].modal()
         }
       }
@@ -288,7 +284,7 @@ export default {
       }
       this.APIRequest('employees/update', parameter).then(response => {
         if(response.data === true){
-          this.$parent.retrieve()
+          this.retrieve()
         }
       })
     }
