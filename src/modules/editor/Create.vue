@@ -52,6 +52,11 @@
               </select>
             </div>
 
+            <div class="form-group" v-if="user.type === 'ADMIN'">
+              <label for="exampleInputEmail1">Price</label>
+              <input type="text" class="form-control" placeholder="PHP 0.00" v-model="price">
+            </div>
+
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#createTemplateModal">Cancel</button>
@@ -81,7 +86,8 @@ export default {
       settings: null,
       orientation: null,
       status: 'personal',
-      category: 'personal'
+      category: 'personal',
+      price: 0
     }
   },
   props: ['params'],
@@ -97,7 +103,8 @@ export default {
           settings: this.settings,
           orientation: this.orientation,
           status: this.status,
-          categories: this.category
+          categories: this.category,
+          price: this.price
         }
         this.APIRequest('templates/create', parameter).then(response => {
           if(response.data > 0){

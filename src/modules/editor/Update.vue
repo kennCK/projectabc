@@ -36,6 +36,27 @@
               </select>
             </div>
 
+            <div class="form-group" v-if="user.type === 'ADMIN'">
+              <label for="exampleInputEmail1">Status</label>
+              <select class="form-control" v-model="item.status">
+                <option value="personal">Personal</option>
+                <option value="marketplace">Marketplace</option>
+              </select>
+            </div>
+
+            <div class="form-group" v-if="user.type === 'ADMIN'">
+              <label for="exampleInputEmail1">Category</label>
+              <select class="form-control" v-model="item.categories">
+                <option value="office">Office</option>
+                <option value="school">School</option>
+              </select>
+            </div>
+
+            <div class="form-group" v-if="user.type === 'ADMIN'">
+              <label for="exampleInputEmail1">Price</label>
+              <input type="text" class="form-control" placeholder="PHP 0.00" v-model="item.price">
+            </div>
+
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" @click="close()">Cancel</button>

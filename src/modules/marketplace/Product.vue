@@ -14,7 +14,7 @@
         <ul v-if="item.active === true">
           <li>
             <label class="title">Add to Cart</label>
-            <label class="price pull-right">PHP 50.00</label>
+            <label class="price pull-right">PHP {{item.price}}</label>
           </li>
         </ul>
       </span>
