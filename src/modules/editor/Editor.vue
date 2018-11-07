@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="editor">
     <div class="modal fade" id="templateEditorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="item !== null">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
@@ -199,8 +199,8 @@ export default {
     },
     close(){
       this.item = null
+      this.$parent.retrieve()
       $('#templateEditorModal').modal('hide')
-      ROUTER.go('/')
     },
     addObject(type){
       if(this.objects === null){

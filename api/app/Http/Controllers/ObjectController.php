@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Object;
+use App\CustomObject;
 use App\Attribute;
 use App\AccountImage;
 use Carbon\Carbon;
 class ObjectController extends APIController
 {
     function __construct(){
-      $this->model = new Object();
+      $this->model = new CustomObject();
 
       $this->notRequired = array(
         'name', 'content'
@@ -28,7 +28,7 @@ class ObjectController extends APIController
           if($objects[$i]['new'] == 'false'){
             // update
 
-            $this->model = new Object();
+            $this->model = new CustomObject();
             $objectId = $objects[$i]['id'];
             $objectUpdate = array(
               'id'  => $objectId,
@@ -56,7 +56,7 @@ class ObjectController extends APIController
           }else{
             // create
 
-            $objModel = new Object();
+            $objModel = new CustomObject();
             $objModel->template_id = $objects[$i]['template_id'];
             $objModel->name = $objects[$i]['name'];
             $objModel->content = $objects[$i]['content'];
@@ -133,7 +133,7 @@ class ObjectController extends APIController
 
     public function retrieve(Request $request){
       $data = $request->all();
-      $this->model = new Object();
+      $this->model = new CustomObject();
       $this->retrieveDB($data);
       $result = $this->response['data'];
       if(sizeof($result) > 0){
@@ -151,8 +151,8 @@ class ObjectController extends APIController
       $data = $request->all();
       $front = $data['front'];
       $back = $data['back'];
-      $frontResult = Object::where('template_id', '=', $front)->where('settings', '=', 'dynamic')->orderBy('name', 'asc')->get();
-      $backResult = Object::where('template_id', '=', $back)->where('settings', '=', 'dynamic')->orderBy('name', 'asc')->get();
+      $frontResult = CustomObject::where('template_id', '=', $front)->where('settings', '=', 'dynamic')->orderBy('name', 'asc')->get();
+      $backResult = CustomObject::where('template_id', '=', $back)->where('settings', '=', 'dynamic')->orderBy('name', 'asc')->get();
       
       if(sizeof($frontResult) > 0){
         $i = 0;

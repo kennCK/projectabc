@@ -19,8 +19,7 @@
         </span>
 
         <ul v-if="item.active === true">
-          <li v-on:click="show(item, 'editor')" style="border-left: 0px;">Editor</li>
-          <li v-on:click="show(item, 'updateSettings')">Settings</li>
+          <li v-on:click="show(item, 'editor')" style="border-left: 0px;">Buy Now!</li>
         </ul>
       </span>
     </div>
@@ -78,7 +77,7 @@ ul{
   transition: 1s;
 }
 ul li{
-  width: 50%;
+  width: 100%;
   float: left;
   height: 40px;
   text-align: center;
@@ -117,9 +116,6 @@ export default {
     },
     redirect(parameter){
       ROUTER.push(parameter)
-    },
-    retrieve(){
-      this.$parent.retrieve()
     },
     show(item, id){
       for (var i = 0; i < this.$children.length; i++) {

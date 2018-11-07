@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="updateSettings">
     <div class="modal fade" id="updateTemplateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="item !== null">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
