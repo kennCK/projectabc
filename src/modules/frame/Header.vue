@@ -79,7 +79,7 @@
               </span>
             </span>
         </div>
-        <span class="nav-item" v-if="user.checkout !== null">
+        <span class="nav-item" v-if="user.checkout !== null" @click="redirect('/checkout')">
           <span>
             <i class="fa fa-shopping-cart"></i>
             <label class="badge badge-danger" style="margin-left: -15px;">{{user.checkout.length}}</label>
@@ -113,128 +113,6 @@
    </div>
   </div>
 </template>
-<script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-import CONFIG from '../../config.js'
-export default {
-  mounted(){
-  },
-  data(){
-    return{
-      user: AUTH.user,
-      tokenData: AUTH.tokenData,
-      settingFlag: false,
-      menuFlag: false,
-      notifFlag: false,
-      config: CONFIG,
-      confirmation: {
-        message: null,
-        action: null
-      },
-      accountNotif: null
-    }
-  },
-  methods: {
-    makeActive(icon){
-      if(icon === 'dropdown'){
-        this.settingFlag = true
-        this.menuFlag = false
-        this.notifFlag = false
-      }else if(icon === 'sidebar'){
-        this.settingFlag = false
-        this.menuFlag = true
-        this.notifFlag = false
-      }else if(icon === 'notif'){
-        this.settingFlag = false
-        this.menuFlag = false
-        this.notifFlag = true
-      }else{
-        this.settingFlag = false
-        this.menuFlag = false
-        this.notifFlag = false
-      }
-    },
-    logOut(){
-      AUTH.deaunthenticate()
-    },
-    redirect(parameter){
-      if(AUTH.timer.interval === null){
-        this.confirmation.message = null
-        ROUTER.push(parameter)
-      }else{
-        this.confirmation.message = 'You have an ongoing examination. You are not allowed to cancel the examination.'
-        $('#timerHeaderModal').modal('show')
-      }
-    },
-    display(){
-    },
-    setSemester(index){
-      let semesters = this.user.semesters[index]
-      let parameter = {
-        'id': this.user.userID,
-        'active_semester': semesters.id
-      }
-      this.APIRequest('accounts/update_active_semester', parameter).then(response => {
-        if(response.data === true){
-          ROUTER.go('/')
-        }
-      })
-    },
-    executeNotifItem(item){
-      if(item.payload === 'redirect'){
-        this.redirect('/' + item.url)
-      }else if(item.payload === 'api_call'){
-        let parameter = {
-          'condition': [{
-            'clause': '=',
-            'column': 'id',
-            'value': this.user.userID
-          }]
-        }
-        this.APIRequest(item.url, parameter).then(response => {
-          // alert here
-        })
-      }
-    },
-    updateNotif(item){
-      if(parseInt(this.user.notifications.current) > 0){
-        if(item.course_id !== null && item.account_id === null){
-          let parameter = {
-            'account_id': this.user.userID,
-            'status': 'ac_viewed'
-          }
-          this.APIRequest('notifications/create', parameter).then(response => {
-            if(response.data > 0){
-              AUTH.retrieveNotifications(this.user.userID)
-            }
-          })
-        }else{
-          let parameter = {
-            'id': item.id,
-            'status': 'viewed'
-          }
-          this.APIRequest('notifications/update', parameter).then(response => {
-            if(response.data === true){
-              AUTH.retrieveNotifications(this.user.userID)
-            }
-          })
-        }
-      }
-    },
-    redirectGuide(){
-      if(this.user.type === 'STUDENT'){
-        this.redirect('/guide/fs')
-      }else if(this.user.type === 'TEACHER'){
-        this.redirect('/guide/ft')
-      }
-    },
-    openModal(id){
-      $(id).modal('show')
-    }
-  }
-}
-</script>
 <style scoped>
 
 /*
@@ -787,3 +665,125 @@ body{
     }
   }
 </style>
+<script>
+import ROUTER from '../../router'
+import AUTH from '../../services/auth'
+import CONFIG from '../../config.js'
+export default {
+  mounted(){
+  },
+  data(){
+    return{
+      user: AUTH.user,
+      tokenData: AUTH.tokenData,
+      settingFlag: false,
+      menuFlag: false,
+      notifFlag: false,
+      config: CONFIG,
+      confirmation: {
+        message: null,
+        action: null
+      },
+      accountNotif: null
+    }
+  },
+  methods: {
+    makeActive(icon){
+      if(icon === 'dropdown'){
+        this.settingFlag = true
+        this.menuFlag = false
+        this.notifFlag = false
+      }else if(icon === 'sidebar'){
+        this.settingFlag = false
+        this.menuFlag = true
+        this.notifFlag = false
+      }else if(icon === 'notif'){
+        this.settingFlag = false
+        this.menuFlag = false
+        this.notifFlag = true
+      }else{
+        this.settingFlag = false
+        this.menuFlag = false
+        this.notifFlag = false
+      }
+    },
+    logOut(){
+      AUTH.deaunthenticate()
+    },
+    redirect(parameter){
+      if(AUTH.timer.interval === null){
+        this.confirmation.message = null
+        ROUTER.push(parameter)
+      }else{
+        this.confirmation.message = 'You have an ongoing examination. You are not allowed to cancel the examination.'
+        $('#timerHeaderModal').modal('show')
+      }
+    },
+    display(){
+    },
+    setSemester(index){
+      let semesters = this.user.semesters[index]
+      let parameter = {
+        'id': this.user.userID,
+        'active_semester': semesters.id
+      }
+      this.APIRequest('accounts/update_active_semester', parameter).then(response => {
+        if(response.data === true){
+          ROUTER.go('/')
+        }
+      })
+    },
+    executeNotifItem(item){
+      if(item.payload === 'redirect'){
+        this.redirect('/' + item.url)
+      }else if(item.payload === 'api_call'){
+        let parameter = {
+          'condition': [{
+            'clause': '=',
+            'column': 'id',
+            'value': this.user.userID
+          }]
+        }
+        this.APIRequest(item.url, parameter).then(response => {
+          // alert here
+        })
+      }
+    },
+    updateNotif(item){
+      if(parseInt(this.user.notifications.current) > 0){
+        if(item.course_id !== null && item.account_id === null){
+          let parameter = {
+            'account_id': this.user.userID,
+            'status': 'ac_viewed'
+          }
+          this.APIRequest('notifications/create', parameter).then(response => {
+            if(response.data > 0){
+              AUTH.retrieveNotifications(this.user.userID)
+            }
+          })
+        }else{
+          let parameter = {
+            'id': item.id,
+            'status': 'viewed'
+          }
+          this.APIRequest('notifications/update', parameter).then(response => {
+            if(response.data === true){
+              AUTH.retrieveNotifications(this.user.userID)
+            }
+          })
+        }
+      }
+    },
+    redirectGuide(){
+      if(this.user.type === 'STUDENT'){
+        this.redirect('/guide/fs')
+      }else if(this.user.type === 'TEACHER'){
+        this.redirect('/guide/ft')
+      }
+    },
+    openModal(id){
+      $(id).modal('show')
+    }
+  }
+}
+</script>
