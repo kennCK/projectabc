@@ -12,7 +12,7 @@
         </span>
 
         <ul v-if="item.active === true">
-          <li>
+          <li @click="addToCart(item)">
             <label class="title">Add to Cart</label>
             <label class="price pull-right">PHP {{item.price}}</label>
           </li>
@@ -142,6 +142,20 @@ export default {
           }
         }
       }
+    },
+    addToCart(item){
+      let parameter = {
+        account_id: this.user.userID,
+        payload: 'template',
+        payload_value: item.id,
+        status: 'added',
+        price: item.price
+      }
+      this.APIRequest('checkouts/create', parameter).then(response => {
+        if(response.data > 0){
+          AUTH.checkAuthentication(null)
+        }
+      })
     }
   }
 }

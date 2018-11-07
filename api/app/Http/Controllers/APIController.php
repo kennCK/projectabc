@@ -18,7 +18,8 @@ use Carbon\Carbon;
 use App\Account;
 use App\AccountInformation;
 use App\AccountProfile;
-
+use App\CustomObject;
+use App\Attribute;
 class APIController extends Controller
 {
   /*
@@ -447,6 +448,34 @@ class APIController extends Controller
       return null;
     }
   }
+
+  public function getObjects($id){
+    $result = CustomObject::where('template_id', '=', $id)->get();
+    if(sizeof($result) > 0){
+      $i = 0;
+      foreach ($result as $key) {
+        $result[$i]['attributes'] = $this->getAttributes($result[$i]['id']);
+        $result[$i]['new'] = false;
+       $i++; 
+      }
+    }
+    return (sizeof($result) > 0) ? $result : null;
+  }
+
+  public function getAttributes($id){
+    $result = Attribute::where('payload', '=', 'object')->where('payload_value', '=', $id)->get();
+    $response = array();
+    if(sizeof($result) > 0){
+      $i = 0;
+      foreach ($result as $key) {
+        $response[$result[$i]['attribute']] = $result[$i]['value'];
+        $i++;
+      }
+      return $response;
+    }
+    return null;
+  }
+    
 
 
 

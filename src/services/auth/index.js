@@ -10,6 +10,7 @@ export default {
     type: null,
     status: null,
     profile: null,
+    cart: null,
     notifications: {
       data: null,
       current: null,
@@ -33,18 +34,20 @@ export default {
     verifyingToken: false
   },
   currentPath: false,
-  setUser(userID, username, type, status, profile){
+  setUser(userID, username, type, status, profile, checkout){
     if(userID === null){
       username = null
       type = null
       status = null
       profile = null
+      checkout = null
     }
     this.user.userID = userID * 1
     this.user.username = username
     this.user.type = type
     this.user.status = status
     this.user.profile = profile
+    this.user.checkout = checkout
     localStorage.setItem('account_id', this.user.userID)
   },
   setToken(token){
@@ -80,7 +83,8 @@ export default {
         }
         vue.APIRequest('accounts/retrieve', parameter).then(response => {
           let profile = response.data[0].account_profile
-          this.setUser(userInfo.id, userInfo.username, userInfo.account_type, userInfo.status, profile)
+          let checkout = response.data[0].checkout
+          this.setUser(userInfo.id, userInfo.username, userInfo.account_type, userInfo.status, profile, checkout)
           ROUTER.push('/dashboard')
         })
         // this.retrieveNotifications(userInfo.id)
@@ -110,7 +114,8 @@ export default {
         }
         vue.APIRequest('accounts/retrieve', parameter).then(response => {
           let profile = response.data[0].account_profile
-          this.setUser(userInfo.id, userInfo.username, userInfo.account_type, userInfo.status, profile)
+          let checkout = response.data[0].checkout
+          this.setUser(userInfo.id, userInfo.username, userInfo.account_type, userInfo.status, profile, checkout)
         }).done(response => {
           this.tokenData.verifyingToken = false
           let location = window.location.href

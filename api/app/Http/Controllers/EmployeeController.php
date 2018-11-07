@@ -175,8 +175,8 @@ class EmployeeController extends APIController
         $counter = 0;
         foreach ($result as $key) {
           $id = $result[$i]['id'];
-          $this->response['data'][$i]['front_objects'] = $this->getObjects($result[$i]['front_template'], $id);
-          $this->response['data'][$i]['back_objects'] = $this->getObjects($result[$i]['back_template'], $id);
+          $this->response['data'][$i]['front_objects'] = $this->getObjectsCustom($result[$i]['front_template'], $id);
+          $this->response['data'][$i]['back_objects'] = $this->getObjectsCustom($result[$i]['back_template'], $id);
           $this->response['data'][$i]['front_template_details'] = $this->getTemplate($result[$i]['front_template']);
           $this->response['data'][$i]['back_template_details'] = $this->getTemplate($result[$i]['back_template']);
           $this->response['data'][$i]['total_comments'] = $this->getComments($id);
@@ -229,7 +229,7 @@ class EmployeeController extends APIController
       return (sizeof($result) > 0) ? $result[0] : null;     
     }
 
-    public function getObjects($templateId, $employeeId){
+    public function getObjectsCustom($templateId, $employeeId){
       $result = CustomObject::where('template_id', '=', $templateId)->get();
       if(sizeof($result) > 0){
         $i = 0;
