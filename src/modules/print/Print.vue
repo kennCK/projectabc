@@ -1,7 +1,7 @@
 <template>
   <div id="printer">
-    <div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="objects !== null">
-      <div class="modal-dialog modal-sm" role="document">
+    <div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="item !== null">
+      <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
             <h5 class="modal-title" id="exampleModalLabel">Printing</h5>
@@ -11,22 +11,24 @@
           </div>
           <div class="modal-body">
             <div class="print-content">
-              <div class="holder">
-                <div class="preview">
-                  <span v-for="obj, innerIndex in objects" v-if="objects !== null">
-                      <span class="division" v-if="obj.type === 'division'" v-bind:style="obj.attributes">
-                      </span>
-                      <label class="text" v-if="obj.type === 'text'" v-bind:style="obj.attributes">{{obj.content}}</label>
-                      <img class="photo" :src="config.BACKEND_URL + obj.content" v-if="obj.type === 'photo'" :style="obj.attributes">
-                  </span>
+              <div class="holder" style="margin-right: 20px;">
+                <objects :objects="item.front_objects" v-if="item.front_objects !== null">
+                </objects>
+                <div class="display">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <label>Printing...</label>
                 </div>
+              </div>
+
+              <div class="holder">
+                <objects :objects="item.back_objects" v-if="item.back_objects !== null">
+                </objects>
                 <div class="display">
                   <i class="fas fa-spinner fa-spin"></i>
                   <label>Printing...</label>
                 </div>
               </div>
             </div>
-
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" @click="hideModal()">Cancel</button>
@@ -39,7 +41,7 @@
 </template>
 <style scoped>
 .print-content{
-  width: 204px;
+  width: 428px;
   height: 374px;
   margin: auto;
 }
@@ -47,6 +49,7 @@
   width: 204px;
   height: 374px;
   position: relative;
+  float: left;
 }
 .preview{
   height: 324px;
@@ -95,9 +98,11 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      item: null,
-      objects: null
+      item: null
     }
+  },
+  components: {
+    'objects': require('modules/object/Objects.vue')
   },
   methods: {
     redirect(parameter){
@@ -108,7 +113,6 @@ export default {
     },
     hideModal(){
       this.item = null
-      this.objects = null
       $('#printModal').modal('hide')
     }
   }
