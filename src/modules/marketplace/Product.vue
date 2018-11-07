@@ -13,7 +13,7 @@
 
         <ul v-if="item.active === true">
           <li>
-            <label class="title">Buy Now!</label>
+            <label class="title">Add to Cart</label>
             <label class="price pull-right">PHP 50.00</label>
           </li>
         </ul>
@@ -85,7 +85,7 @@ ul li .title{
 ul li .price{
   padding-right: 10px;
 }
-ul li:hover{
+ul li:hover, ul li .title:hover, ul li .price:hover{
   cursor: pointer;
   background: #028170;
 }

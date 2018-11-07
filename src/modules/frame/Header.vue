@@ -14,51 +14,51 @@
         <label class="account-type  hide-on-mobile" v-bind:class="{'bg-warning': user.type === 'TEACHER', 'bg-green': user.type === 'STUDENT', 'bg-gray': user.type === 'ADMIN'}" v-if="user !== null">{{user.type}}</label>
       </span>
       <span class="right-menu-icons">
-          <div class="dropdown"> 
-            <span class="nav-item" v-bind:class="{'active-menu': settingFlag === true}" data-toggle="dropdown" id="settings" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('dropdown')" v-bind:onkeypress="makeActive('')">
-              <span>
-                <i class="fa fa-cog"></i>
-              </span>
-              <span class="dropdown-menu dropdown-menu-right" aria-labelledby="settings">
-                <span class="dropdown-item-profile">
-                  <span class="account-picture text-center">
-                    <span class="profile-photo-header">
-                      <span class="profile-image-holder"  v-if="user.profile !== null">
-                        <img v-bind:src="config.BACKEND_URL + user.profile.profile_url">
-                      </span>
-                      <i class="fa fa-user-circle-o" v-else></i>
-                    </span>
-                  </span>
-                  <span class="account-info text-center">{{user.username}}</span>
-                </span>
-                <span class="dropdown-item dropdown-item-menu-title">
-                  <label>Profile</label>
-                </span>
-                <span class="dropdown-item" v-on:click="redirect('/account_settings')">
-                  <i class="fa fa-cog"></i>
-                  <label>Account Settings</label>
-                </span>
-                <span class="dropdown-item dropdown-item-menu-title">
-                  <label>Documents</label>
-                </span>
-                <span class="dropdown-item" @click="openModal('#guideModal')">
-                  <i class="far fa-question-circle"></i>
-                  <label>Guide</label>
-                </span>
-                <span class="dropdown-item" @click="openModal('#privacyModal')">
-                  <i class="fas fa-shield-alt"></i>
-                  <label>Privacy Policy</label>
-                </span>            
-                <span class="dropdown-item" @click="openModal('#termsAndConditionsModal')">
-                  <i class="fa fa-handshake-o"></i>
-                  <label>Terms and Conditions</label>
-                </span>
-                <span class="dropdown-item" v-on:click="logOut()">
-                  <i class="fas fa-sign-out-alt"></i>
-                    <label>Logout</label>
-                  </span>
-              </span>
+        <div class="dropdown"> 
+          <span class="nav-item" v-bind:class="{'active-menu': settingFlag === true}" data-toggle="dropdown" id="settings" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('dropdown')" v-bind:onkeypress="makeActive('')">
+            <span>
+              <i class="fa fa-cog"></i>
             </span>
+            <span class="dropdown-menu dropdown-menu-right" aria-labelledby="settings">
+              <span class="dropdown-item-profile">
+                <span class="account-picture text-center">
+                  <span class="profile-photo-header">
+                    <span class="profile-image-holder"  v-if="user.profile !== null">
+                      <img v-bind:src="config.BACKEND_URL + user.profile.profile_url">
+                    </span>
+                    <i class="fa fa-user-circle-o" v-else></i>
+                  </span>
+                </span>
+                <span class="account-info text-center">{{user.username}}</span>
+              </span>
+              <span class="dropdown-item dropdown-item-menu-title">
+                <label>Profile</label>
+              </span>
+              <span class="dropdown-item" v-on:click="redirect('/account_settings')">
+                <i class="fa fa-cog"></i>
+                <label>Account Settings</label>
+              </span>
+              <span class="dropdown-item dropdown-item-menu-title">
+                <label>Documents</label>
+              </span>
+              <span class="dropdown-item" @click="openModal('#guideModal')">
+                <i class="far fa-question-circle"></i>
+                <label>Guide</label>
+              </span>
+              <span class="dropdown-item" @click="openModal('#privacyModal')">
+                <i class="fas fa-shield-alt"></i>
+                <label>Privacy Policy</label>
+              </span>            
+              <span class="dropdown-item" @click="openModal('#termsAndConditionsModal')">
+                <i class="fa fa-handshake-o"></i>
+                <label>Terms and Conditions</label>
+              </span>
+              <span class="dropdown-item" v-on:click="logOut()">
+                <i class="fas fa-sign-out-alt"></i>
+                  <label>Logout</label>
+                </span>
+            </span>
+          </span>
         </div>
 
         <div class="dropdown" v-if="user.notifications !== null"> 
@@ -79,6 +79,12 @@
               </span>
             </span>
         </div>
+        <span class="nav-item">
+          <span>
+            <i class="fa fa-shopping-cart"></i>
+            <label class="badge badge-danger" style="margin-left: -15px;">4</label>
+          </span>
+        </span>
 
       </span>
 
