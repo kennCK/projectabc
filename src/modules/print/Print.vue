@@ -12,8 +12,8 @@
           <div class="modal-body">
             <div class="print-content">
               <div class="holder" style="margin-right: 20px;">
-                <item :objects="item.front_objects" v-if="item.front_objects !== null">
-                </item>
+                <objects :objects="item.front_objects" v-if="item.front_objects !== null">
+                </objects>
                 <div class="display">
                   <i class="fas fa-spinner fa-spin"></i>
                   <label>Printing...</label>
@@ -21,8 +21,8 @@
               </div>
 
               <div class="holder">
-                <item :objects="item.back_objects" v-if="item.back_objects !== null">
-                </item>
+                <objects :objects="item.back_objects" v-if="item.back_objects !== null">
+                </objects>
                 <div class="display">
                   <i class="fas fa-spinner fa-spin"></i>
                   <label>Printing...</label>
@@ -102,7 +102,7 @@ export default {
     }
   },
   components: {
-    'item': require('modules/employee/Item.vue')
+    'objects': require('modules/object/Objects.vue')
   },
   methods: {
     redirect(parameter){

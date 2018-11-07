@@ -4,6 +4,9 @@
     <div class="template-list">
       <item v-for="item, index in data" v-if="data !==null" :item="item" :key="item.id" :index="index"></item>
     </div>
+    <div class="template-list">
+      
+    </div>
 	</div>
 </template>
 <style scoped>

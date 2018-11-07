@@ -1,8 +1,8 @@
 <template>
 	<div class="employee-holder">
 		<create></create>
-    <div class="employee-list">
-      <div v-for="item, index in data" v-if="data !==null" >
+    <div class="employee-list" v-if="data !==null">
+      <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data" >
         <span class="holder">
           <span class="header">
             <ul class="menu">
@@ -45,11 +45,11 @@
           </span>
 
           <span class="items">
-            <item :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null">
-            </item>
+            <objects :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null">
+            </objects>
 
-            <item :objects="item.back_objects" :key="item.id + 'b'" v-if="item.back_objects !== null">
-            </item>
+            <objects :objects="item.back_objects" :key="item.id + 'b'" v-if="item.back_objects !== null">
+            </objects>
           </span>
         </span>
       </div>
@@ -215,7 +215,7 @@ export default {
   },
   components: {
     'create': require('modules/employee/Create.vue'),
-    'item': require('modules/employee/Item.vue'),
+    'objects': require('modules/object/Objects.vue'),
     'update': require('modules/editor/Update.vue'),
     'editor': require('modules/editor/Editor.vue'),
     'comments': require('modules/comment/Comments.vue'),
