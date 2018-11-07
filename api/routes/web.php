@@ -132,6 +132,7 @@ Route::get('/account_images/test', 'AccountImageController@test');
 //Templates
 Route::post('/templates/create', "TemplateController@create");
 Route::post('/templates/retrieve', "TemplateController@retrieve");
+Route::post('/templates/marketplace', "TemplateController@marketplace");
 Route::post('/templates/update', "TemplateController@update");
 Route::post('/templates/delete', "TemplateController@delete");
 Route::get('/templates/test', 'TemplateController@test');

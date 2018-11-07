@@ -8,18 +8,14 @@
       </span>
       <span class="body">
         <span class="preview">
-         <!--  <span v-for="obj, innerIndex in item.objects" v-if="item.objects !== null">
-              <span class="division" v-if="obj.type === 'division'" v-bind:style="obj.attributes">
-              </span>
-              <label class="text" v-if="obj.type === 'text'" v-bind:style="obj.attributes">{{obj.content}}</label>
-              <img class="photo" :src="config.BACKEND_URL + obj.content" v-if="obj.type === 'photo'" :style="obj.attributes">
-          </span> -->
-          <objects :objects="item.objects" v-if="item.objects !== null">
-                </objects>
+          <objects :objects="item.objects" v-if="item.objects !== null"></objects>
         </span>
 
         <ul v-if="item.active === true">
-          <li v-on:click="show(item, 'editor')" style="border-left: 0px;">Buy Now!</li>
+          <li>
+            <label class="title">Buy Now!</label>
+            <label class="price pull-right">PHP 50.00</label>
+          </li>
         </ul>
       </span>
     </div>
@@ -80,10 +76,14 @@ ul li{
   width: 100%;
   float: left;
   height: 40px;
-  text-align: center;
   line-height: 40px;
-  border-left: solid 1px #028170;
   color: #fff;
+}
+ul li .title{
+  padding-left: 10px;
+}
+ul li .price{
+  padding-right: 10px;
 }
 ul li:hover{
   cursor: pointer;
