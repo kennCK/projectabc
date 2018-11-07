@@ -111,6 +111,14 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: resolve => require(['modules/account/Update.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

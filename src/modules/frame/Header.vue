@@ -34,9 +34,9 @@
               <span class="dropdown-item dropdown-item-menu-title">
                 <label>Profile</label>
               </span>
-              <span class="dropdown-item" v-on:click="redirect('/account_settings')">
+              <span class="dropdown-item" v-on:click="redirect('/profile')">
                 <i class="fa fa-cog"></i>
-                <label>Account Settings</label>
+                <label>Your Profile</label>
               </span>
               <span class="dropdown-item dropdown-item-menu-title">
                 <label>Documents</label>

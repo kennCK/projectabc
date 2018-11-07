@@ -38,7 +38,17 @@ class AccountController extends APIController
      );
      $this->model = new Account();
      $this->insertDB($dataAccount);
+     $accountId = $this->response['data'];
+
+     $this->createDetails($accountId);
      return $this->response();
+    }
+
+    public function createDetails($accountId){
+      $info = new AccountInformation();
+      $info->account_id = $accountId;
+      $info->created_at = Carbon::now();
+      $info->save();
     }
 
     public function generateCode(){
