@@ -16,6 +16,9 @@
               </label>
               <label>Price Php {{item.template.price}}</label>
               <label>Cetegory: {{item.template.categories}}</label>
+              <label>
+                <rating :payload="'template'" :payloadValue="item.payload_value"></rating>
+              </label>
           </span>
           <span class="two-objects-holder" v-if="item.payload === 'employee'">
             <objects :objects="item.employee.front_objects" v-if="item.employee.front_objects !== null"></objects>
@@ -148,7 +151,8 @@ export default {
     }
   },
   components: {
-    'objects': require('modules/object/Objects.vue')
+    'objects': require('modules/object/Objects.vue'),
+    'rating': require('modules/rating/Ratings.vue')
   },
   methods: {
     redirect(parameter){

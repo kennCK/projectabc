@@ -208,5 +208,12 @@ Route::post('/checkouts/update', "CheckoutController@update");
 Route::post('/checkouts/delete', "CheckoutController@delete");
 Route::get('/checkouts/test', 'CheckoutController@test');
 
+//Checkouts
+Route::post('/ratings/create', "RatingController@create");
+Route::post('/ratings/retrieve', "RatingController@retrieve");
+Route::post('/ratings/update', "RatingController@update");
+Route::post('/ratings/delete', "RatingController@delete");
+Route::get('/ratings/test', 'RatingController@test');
+
 
 

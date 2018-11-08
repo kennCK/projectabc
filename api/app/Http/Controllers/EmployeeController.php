@@ -185,7 +185,7 @@ class EmployeeController extends APIController
           $this->response['data'][$i]['checkout'] = $this->getCheckout('employee', $id);
           $counter++;
           $i++;
-          if($counter == 4){
+          if($counter == 2){
             $counter = 0;
           } 
         }
