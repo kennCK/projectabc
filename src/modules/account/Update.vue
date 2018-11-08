@@ -11,6 +11,8 @@
     <div class="content">
       <profile v-if="menu[0].flag === true"></profile>
       <account v-if="menu[1].flag === true"></account>
+      <payment v-if="menu[2].flag === true"></payment>
+      <billing-information v-if="menu[3].flag === true"></billing-information>
     </div>
   </div>
 
@@ -80,14 +82,17 @@ export default {
       menu: [
         {title: 'Profile', flag: true},
         {title: 'Account', flag: false},
-        {title: 'Billing', flag: false}
+        {title: 'Payment Methods', flag: false},
+        {title: 'Billing Informations', flag: false}
       ],
       prevIndex: null
     }
   },
   components: {
     'profile': require('modules/account/Profile.vue'),
-    'account': require('modules/account/Account.vue')
+    'account': require('modules/account/Account.vue'),
+    'payment': require('modules/payment/Create.vue'),
+    'billing-information': require('modules/billing/Information.vue')
   },
   methods: {
     redirect(path){

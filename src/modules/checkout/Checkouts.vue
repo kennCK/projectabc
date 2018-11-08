@@ -3,7 +3,7 @@
     <span class="list" v-if="data !== null">
       <span class="items">
         <span class="title">
-          Cart Items
+          <b>Your Items</b>
         </span>
         <span class="item" v-for="item, index in data">
           <span class="objects-holder" v-if="item.payload === 'template'">
@@ -45,7 +45,8 @@
           <label><b>Total</b></label>
           <label class="pull-right" style="padding-right: 10px;"><b>PHP {{data[0].total}}</b></label>
         </span>
-        <button class="btn btn-warning custom-btn"> Checkout</button>
+        <button class="btn btn-primary custom-btn" @click-="redirect('/payment_method')">Add Payment Method</button>
+        <button class="btn btn-warning custom-btn"> Complete Purchase</button>
       </span>
     </span>
   </div>
