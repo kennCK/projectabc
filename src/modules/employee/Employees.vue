@@ -257,6 +257,11 @@ export default {
     },
     showComments(id){
       $('#overlay-' + id).css({'display': 'block'})
+      for (var i = 0; i < this.$children.length; i++) {
+        if(this.$children[i].$el.id === ('comment' + id)){
+          this.$children[i].retrieve()
+        }
+      }
     },
     hideComments(id){
       $('#overlay-' + id).css({'display': 'none'})

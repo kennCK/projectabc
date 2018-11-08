@@ -1,5 +1,5 @@
 <template>
-    <span class="post-item-comment">
+    <span class="post-item-comment" v-bind:id="'comment' + payloadValue">
       <span class="comment-item" v-for="commentItem, commentIndex in item" v-if="item !== null">
         <span class="comment-header">
           <img v-bind:src="config.BACKEND_URL + commentItem.account.profile.profile_url" v-if="commentItem.account.profile !== null">
@@ -222,7 +222,6 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
-    this.retrieve()
   },
   data(){
     return {
@@ -273,6 +272,7 @@ export default {
             this.prevNewCommentIndex = null
             this.newCommentInput = null
             this.retrieve()
+            this.$parent.retrieve()
           }
         })
       }
@@ -288,6 +288,7 @@ export default {
           if(response.data > 0){
             this.prevNewCommentIndex = null
             this.retrieve()
+            this.$parent.retrieve()
           }
         })
       }
