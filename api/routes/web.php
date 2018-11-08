@@ -132,7 +132,6 @@ Route::get('/account_images/test', 'AccountImageController@test');
 //Templates
 Route::post('/templates/create', "TemplateController@create");
 Route::post('/templates/retrieve', "TemplateController@retrieve");
-Route::post('/templates/marketplace', "TemplateController@marketplace");
 Route::post('/templates/update', "TemplateController@update");
 Route::post('/templates/delete', "TemplateController@delete");
 Route::get('/templates/test', 'TemplateController@test');
@@ -193,6 +192,21 @@ Route::post('/comment_replies/retrieve', "CommentReplyController@retrieve");
 Route::post('/comment_replies/update', "CommentReplyController@update");
 Route::post('/comment_replies/delete', "CommentReplyController@delete");
 Route::get('/comment_replies/test', 'CommentReplyController@test');
+
+
+//Checkouts
+Route::post('/marketplace/create', "MarketplaceController@create");
+Route::post('/marketplace/retrieve', "MarketplaceController@retrieve");
+Route::post('/marketplace/update', "MarketplaceController@update");
+Route::post('/marketplace/delete', "MarketplaceController@delete");
+Route::get('/marketplace/test', 'MarketplaceController@test');
+
+//Checkouts
+Route::post('/checkouts/create', "CheckoutController@create");
+Route::post('/checkouts/retrieve', "CheckoutController@retrieve");
+Route::post('/checkouts/update', "CheckoutController@update");
+Route::post('/checkouts/delete', "CheckoutController@delete");
+Route::get('/checkouts/test', 'CheckoutController@test');
 
 
 

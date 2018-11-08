@@ -1,5 +1,5 @@
 <template>
-  <div class="template-holder">
+  <div class="template-holder" v-if="data !== null">
     <div class="filter">
       <div class="input-group">
         <span class="input-group-addon input-group-title">Marketplace</span>
@@ -80,13 +80,9 @@ export default {
     },
     retrieve(){
       let parameter = {
-        condition: [{
-          value: 'marketplace',
-          column: 'status',
-          clause: '='
-        }]
+        account_id: this.user.userID
       }
-      this.APIRequest('templates/retrieve', parameter).then(response => {
+      this.APIRequest('marketplace/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data
         }else{

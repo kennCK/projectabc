@@ -14,51 +14,51 @@
         <label class="account-type  hide-on-mobile" v-bind:class="{'bg-warning': user.type === 'TEACHER', 'bg-green': user.type === 'STUDENT', 'bg-gray': user.type === 'ADMIN'}" v-if="user !== null">{{user.type}}</label>
       </span>
       <span class="right-menu-icons">
-          <div class="dropdown"> 
-            <span class="nav-item" v-bind:class="{'active-menu': settingFlag === true}" data-toggle="dropdown" id="settings" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('dropdown')" v-bind:onkeypress="makeActive('')">
-              <span>
-                <i class="fa fa-cog"></i>
-              </span>
-              <span class="dropdown-menu dropdown-menu-right" aria-labelledby="settings">
-                <span class="dropdown-item-profile">
-                  <span class="account-picture text-center">
-                    <span class="profile-photo-header">
-                      <span class="profile-image-holder"  v-if="user.profile !== null">
-                        <img v-bind:src="config.BACKEND_URL + user.profile.profile_url">
-                      </span>
-                      <i class="fa fa-user-circle-o" v-else></i>
-                    </span>
-                  </span>
-                  <span class="account-info text-center">{{user.username}}</span>
-                </span>
-                <span class="dropdown-item dropdown-item-menu-title">
-                  <label>Profile</label>
-                </span>
-                <span class="dropdown-item" v-on:click="redirect('/account_settings')">
-                  <i class="fa fa-cog"></i>
-                  <label>Account Settings</label>
-                </span>
-                <span class="dropdown-item dropdown-item-menu-title">
-                  <label>Documents</label>
-                </span>
-                <span class="dropdown-item" @click="openModal('#guideModal')">
-                  <i class="far fa-question-circle"></i>
-                  <label>Guide</label>
-                </span>
-                <span class="dropdown-item" @click="openModal('#privacyModal')">
-                  <i class="fas fa-shield-alt"></i>
-                  <label>Privacy Policy</label>
-                </span>            
-                <span class="dropdown-item" @click="openModal('#termsAndConditionsModal')">
-                  <i class="fa fa-handshake-o"></i>
-                  <label>Terms and Conditions</label>
-                </span>
-                <span class="dropdown-item" v-on:click="logOut()">
-                  <i class="fas fa-sign-out-alt"></i>
-                    <label>Logout</label>
-                  </span>
-              </span>
+        <div class="dropdown"> 
+          <span class="nav-item" v-bind:class="{'active-menu': settingFlag === true}" data-toggle="dropdown" id="settings" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('dropdown')" v-bind:onkeypress="makeActive('')">
+            <span>
+              <i class="fa fa-cog"></i>
             </span>
+            <span class="dropdown-menu dropdown-menu-right" aria-labelledby="settings">
+              <span class="dropdown-item-profile">
+                <span class="account-picture text-center">
+                  <span class="profile-photo-header">
+                    <span class="profile-image-holder"  v-if="user.profile !== null">
+                      <img v-bind:src="config.BACKEND_URL + user.profile.profile_url">
+                    </span>
+                    <i class="fa fa-user-circle-o" v-else></i>
+                  </span>
+                </span>
+                <span class="account-info text-center">{{user.username}}</span>
+              </span>
+              <span class="dropdown-item dropdown-item-menu-title">
+                <label>Profile</label>
+              </span>
+              <span class="dropdown-item" v-on:click="redirect('/profile')">
+                <i class="fa fa-cog"></i>
+                <label>Your Profile</label>
+              </span>
+              <span class="dropdown-item dropdown-item-menu-title">
+                <label>Documents</label>
+              </span>
+              <span class="dropdown-item" @click="openModal('#guideModal')">
+                <i class="far fa-question-circle"></i>
+                <label>Guide</label>
+              </span>
+              <span class="dropdown-item" @click="openModal('#privacyModal')">
+                <i class="fas fa-shield-alt"></i>
+                <label>Privacy Policy</label>
+              </span>            
+              <span class="dropdown-item" @click="openModal('#termsAndConditionsModal')">
+                <i class="fa fa-handshake-o"></i>
+                <label>Terms and Conditions</label>
+              </span>
+              <span class="dropdown-item" v-on:click="logOut()">
+                <i class="fas fa-sign-out-alt"></i>
+                  <label>Logout</label>
+                </span>
+            </span>
+          </span>
         </div>
 
         <div class="dropdown" v-if="user.notifications !== null"> 
@@ -79,6 +79,12 @@
               </span>
             </span>
         </div>
+        <span class="nav-item" @click="redirect('/checkout')">
+          <span>
+            <i class="fa fa-shopping-cart"></i>
+            <label class="badge badge-danger" style="margin-left: -15px;" v-if="user.checkout > 0 && user.checkout !== null">{{user.checkout}}</label>
+          </span>
+        </span>
 
       </span>
 
@@ -107,128 +113,6 @@
    </div>
   </div>
 </template>
-<script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-import CONFIG from '../../config.js'
-export default {
-  mounted(){
-  },
-  data(){
-    return{
-      user: AUTH.user,
-      tokenData: AUTH.tokenData,
-      settingFlag: false,
-      menuFlag: false,
-      notifFlag: false,
-      config: CONFIG,
-      confirmation: {
-        message: null,
-        action: null
-      },
-      accountNotif: null
-    }
-  },
-  methods: {
-    makeActive(icon){
-      if(icon === 'dropdown'){
-        this.settingFlag = true
-        this.menuFlag = false
-        this.notifFlag = false
-      }else if(icon === 'sidebar'){
-        this.settingFlag = false
-        this.menuFlag = true
-        this.notifFlag = false
-      }else if(icon === 'notif'){
-        this.settingFlag = false
-        this.menuFlag = false
-        this.notifFlag = true
-      }else{
-        this.settingFlag = false
-        this.menuFlag = false
-        this.notifFlag = false
-      }
-    },
-    logOut(){
-      AUTH.deaunthenticate()
-    },
-    redirect(parameter){
-      if(AUTH.timer.interval === null){
-        this.confirmation.message = null
-        ROUTER.push(parameter)
-      }else{
-        this.confirmation.message = 'You have an ongoing examination. You are not allowed to cancel the examination.'
-        $('#timerHeaderModal').modal('show')
-      }
-    },
-    display(){
-    },
-    setSemester(index){
-      let semesters = this.user.semesters[index]
-      let parameter = {
-        'id': this.user.userID,
-        'active_semester': semesters.id
-      }
-      this.APIRequest('accounts/update_active_semester', parameter).then(response => {
-        if(response.data === true){
-          ROUTER.go('/')
-        }
-      })
-    },
-    executeNotifItem(item){
-      if(item.payload === 'redirect'){
-        this.redirect('/' + item.url)
-      }else if(item.payload === 'api_call'){
-        let parameter = {
-          'condition': [{
-            'clause': '=',
-            'column': 'id',
-            'value': this.user.userID
-          }]
-        }
-        this.APIRequest(item.url, parameter).then(response => {
-          // alert here
-        })
-      }
-    },
-    updateNotif(item){
-      if(parseInt(this.user.notifications.current) > 0){
-        if(item.course_id !== null && item.account_id === null){
-          let parameter = {
-            'account_id': this.user.userID,
-            'status': 'ac_viewed'
-          }
-          this.APIRequest('notifications/create', parameter).then(response => {
-            if(response.data > 0){
-              AUTH.retrieveNotifications(this.user.userID)
-            }
-          })
-        }else{
-          let parameter = {
-            'id': item.id,
-            'status': 'viewed'
-          }
-          this.APIRequest('notifications/update', parameter).then(response => {
-            if(response.data === true){
-              AUTH.retrieveNotifications(this.user.userID)
-            }
-          })
-        }
-      }
-    },
-    redirectGuide(){
-      if(this.user.type === 'STUDENT'){
-        this.redirect('/guide/fs')
-      }else if(this.user.type === 'TEACHER'){
-        this.redirect('/guide/ft')
-      }
-    },
-    openModal(id){
-      $(id).modal('show')
-    }
-  }
-}
-</script>
 <style scoped>
 
 /*
@@ -781,3 +665,125 @@ body{
     }
   }
 </style>
+<script>
+import ROUTER from '../../router'
+import AUTH from '../../services/auth'
+import CONFIG from '../../config.js'
+export default {
+  mounted(){
+  },
+  data(){
+    return{
+      user: AUTH.user,
+      tokenData: AUTH.tokenData,
+      settingFlag: false,
+      menuFlag: false,
+      notifFlag: false,
+      config: CONFIG,
+      confirmation: {
+        message: null,
+        action: null
+      },
+      accountNotif: null
+    }
+  },
+  methods: {
+    makeActive(icon){
+      if(icon === 'dropdown'){
+        this.settingFlag = true
+        this.menuFlag = false
+        this.notifFlag = false
+      }else if(icon === 'sidebar'){
+        this.settingFlag = false
+        this.menuFlag = true
+        this.notifFlag = false
+      }else if(icon === 'notif'){
+        this.settingFlag = false
+        this.menuFlag = false
+        this.notifFlag = true
+      }else{
+        this.settingFlag = false
+        this.menuFlag = false
+        this.notifFlag = false
+      }
+    },
+    logOut(){
+      AUTH.deaunthenticate()
+    },
+    redirect(parameter){
+      if(AUTH.timer.interval === null){
+        this.confirmation.message = null
+        ROUTER.push(parameter)
+      }else{
+        this.confirmation.message = 'You have an ongoing examination. You are not allowed to cancel the examination.'
+        $('#timerHeaderModal').modal('show')
+      }
+    },
+    display(){
+    },
+    setSemester(index){
+      let semesters = this.user.semesters[index]
+      let parameter = {
+        'id': this.user.userID,
+        'active_semester': semesters.id
+      }
+      this.APIRequest('accounts/update_active_semester', parameter).then(response => {
+        if(response.data === true){
+          ROUTER.go('/')
+        }
+      })
+    },
+    executeNotifItem(item){
+      if(item.payload === 'redirect'){
+        this.redirect('/' + item.url)
+      }else if(item.payload === 'api_call'){
+        let parameter = {
+          'condition': [{
+            'clause': '=',
+            'column': 'id',
+            'value': this.user.userID
+          }]
+        }
+        this.APIRequest(item.url, parameter).then(response => {
+          // alert here
+        })
+      }
+    },
+    updateNotif(item){
+      if(parseInt(this.user.notifications.current) > 0){
+        if(item.course_id !== null && item.account_id === null){
+          let parameter = {
+            'account_id': this.user.userID,
+            'status': 'ac_viewed'
+          }
+          this.APIRequest('notifications/create', parameter).then(response => {
+            if(response.data > 0){
+              AUTH.retrieveNotifications(this.user.userID)
+            }
+          })
+        }else{
+          let parameter = {
+            'id': item.id,
+            'status': 'viewed'
+          }
+          this.APIRequest('notifications/update', parameter).then(response => {
+            if(response.data === true){
+              AUTH.retrieveNotifications(this.user.userID)
+            }
+          })
+        }
+      }
+    },
+    redirectGuide(){
+      if(this.user.type === 'STUDENT'){
+        this.redirect('/guide/fs')
+      }else if(this.user.type === 'TEACHER'){
+        this.redirect('/guide/ft')
+      }
+    },
+    openModal(id){
+      $(id).modal('show')
+    }
+  }
+}
+</script>

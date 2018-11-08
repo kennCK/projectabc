@@ -175,13 +175,14 @@ class EmployeeController extends APIController
         $counter = 0;
         foreach ($result as $key) {
           $id = $result[$i]['id'];
-          $this->response['data'][$i]['front_objects'] = $this->getObjects($result[$i]['front_template'], $id);
-          $this->response['data'][$i]['back_objects'] = $this->getObjects($result[$i]['back_template'], $id);
-          $this->response['data'][$i]['front_template_details'] = $this->getTemplate($result[$i]['front_template']);
-          $this->response['data'][$i]['back_template_details'] = $this->getTemplate($result[$i]['back_template']);
+          $this->response['data'][$i]['front_objects'] = $this->getObjectsCustom($result[$i]['front_template'], $id);
+          $this->response['data'][$i]['back_objects'] = $this->getObjectsCustom($result[$i]['back_template'], $id);
+          $this->response['data'][$i]['front_template_details'] = $this->getTemplateDetails($result[$i]['front_template']);
+          $this->response['data'][$i]['back_template_details'] = $this->getTemplateDetails($result[$i]['back_template']);
           $this->response['data'][$i]['total_comments'] = $this->getComments($id);
           $this->response['data'][$i]['active'] = false;
           $this->response['data'][$i]['counter'] = $counter;
+          $this->response['data'][$i]['checkout'] = $this->getCheckout('employee', $id);
           $counter++;
           $i++;
           if($counter == 4){
@@ -222,58 +223,5 @@ class EmployeeController extends APIController
     public function getComments($employeeId){
       $result = Comment::where('payload', '=', 'employees')->where('payload_value', '=', $employeeId)->get();
       return sizeof($result);
-    }
-
-    public function getTemplate($templateId){
-      $result = Template::where('id', '=', $templateId)->get();
-      return (sizeof($result) > 0) ? $result[0] : null;     
-    }
-
-    public function getObjects($templateId, $employeeId){
-      $result = CustomObject::where('template_id', '=', $templateId)->get();
-      if(sizeof($result) > 0){
-        $i = 0;
-        foreach ($result as $key) {
-          $result[$i]['attributes'] = $this->getAttributes($result[$i]['id']);
-          if($result[$i]['settings'] == 'dynamic'){
-            $result[$i]['content'] = $this->getNameDecoder($result[$i]['name'], $employeeId);
-          }else{
-            //
-          }
-          $result[$i]['new'] = false;
-          $i++; 
-        }
-      }
-      return (sizeof($result) > 0) ? $result : null;
-    }
-
-    public function getNameDecoder($name, $employeeId){
-      $response = null;
-      $cName = array('c_name', 'complete_name');
-      if(in_array($name, $cName)){
-        $response = $this->getEmployeeDetails('first_name', $employeeId).' '.$this->getEmployeeDetails('last_name', $employeeId);
-      }else{
-        $response = $this->getEmployeeDetails($name, $employeeId);
-      }
-      return $response;
-    }
-
-    public function getEmployeeDetails($column, $employeeId){
-      $result = EmployeeColumn::where('employee_id', '=', $employeeId)->where('column', '=', $column)->get();
-      return (sizeof($result) > 0) ? $result[0]['value'] : null;
-    }
-
-    public function getAttributes($id){
-      $result = Attribute::where('payload', '=', 'object')->where('payload_value', '=', $id)->get();
-      $response = array();
-      if(sizeof($result) > 0){
-        $i = 0;
-        foreach ($result as $key) {
-          $response[$result[$i]['attribute']] = $result[$i]['value'];
-          $i++;
-        }
-        return $response;
-      }
-      return null;
     }
 }

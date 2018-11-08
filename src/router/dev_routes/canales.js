@@ -103,6 +103,22 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component: resolve => require(['modules/checkout/Checkouts.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: resolve => require(['modules/account/Update.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

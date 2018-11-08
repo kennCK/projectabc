@@ -18,7 +18,12 @@ use Carbon\Carbon;
 use App\Account;
 use App\AccountInformation;
 use App\AccountProfile;
-
+use App\CustomObject;
+use App\Attribute;
+use App\Template;
+use App\Checkout;
+use App\Employee;
+use App\EmployeeColumn;
 class APIController extends Controller
 {
   /*
@@ -448,6 +453,88 @@ class APIController extends Controller
     }
   }
 
+  public function getTemplateDetails($templateId){
+    $result = Template::where('id', '=', $templateId)->get();
+    return (sizeof($result) > 0) ? $result[0] : null;     
+  }
+
+  public function getObjects($id){
+    $result = CustomObject::where('template_id', '=', $id)->get();
+    if(sizeof($result) > 0){
+      $i = 0;
+      foreach ($result as $key) {
+        $result[$i]['attributes'] = $this->getAttributes($result[$i]['id']);
+        $result[$i]['new'] = false;
+       $i++; 
+      }
+    }
+    return (sizeof($result) > 0) ? $result : null;
+  }
+
+  public function getAttributes($id){
+    $result = Attribute::where('payload', '=', 'object')->where('payload_value', '=', $id)->get();
+    $response = array();
+    if(sizeof($result) > 0){
+      $i = 0;
+      foreach ($result as $key) {
+        $response[$result[$i]['attribute']] = $result[$i]['value'];
+        $i++;
+      }
+      return $response;
+    }
+    return null;
+  }
+
+  public function getCheckout($payload, $payloadValue){
+    $result = Checkout::where('payload', '=', $payload)->where('payload_value', '=', $payloadValue)->get();
+    return (sizeof($result) > 0) ? $result[0] : null;
+  }
+
+  public function getEmployee($id){
+    $result = Employee::where('id', '=', $id)->get();
+    if(sizeof($result) > 0){
+      $result[0]['front_objects'] = $this->getObjectsCustom($result[0]['front_template'], $id);
+      $result[0]['back_objects'] = $this->getObjectsCustom($result[0]['back_template'], $id);
+      $result[0]['front_template_details'] = $this->getTemplateDetails($result[0]['front_template']);
+      $result[0]['back_template_details'] = $this->getTemplateDetails($result[0]['back_template']);
+      return $result[0];
+    }
+    return null;
+  }
+
+  public function getObjectsCustom($templateId, $employeeId){
+      $result = CustomObject::where('template_id', '=', $templateId)->get();
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $result[$i]['attributes'] = $this->getAttributes($result[$i]['id']);
+          if($result[$i]['settings'] == 'dynamic'){
+            $result[$i]['content'] = $this->getNameDecoder($result[$i]['name'], $employeeId);
+          }else{
+            //
+          }
+          $result[$i]['new'] = false;
+          $i++; 
+        }
+      }
+      return (sizeof($result) > 0) ? $result : null;
+    }
+
+    public function getNameDecoder($name, $employeeId){
+      $response = null;
+      $cName = array('c_name', 'complete_name');
+      if(in_array($name, $cName)){
+        $response = $this->getEmployeeColumn('first_name', $employeeId).' '.$this->getEmployeeColumn('last_name', $employeeId);
+      }else{
+        $response = $this->getEmployeeColumn($name, $employeeId);
+      }
+      return $response;
+    }
+
+    public function getEmployeeColumn($column, $employeeId){
+      $result = EmployeeColumn::where('employee_id', '=', $employeeId)->where('column', '=', $column)->get();
+      return (sizeof($result) > 0) ? $result[0]['value'] : null;
+    }
 
 
 }

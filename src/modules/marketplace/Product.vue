@@ -12,9 +12,9 @@
         </span>
 
         <ul v-if="item.active === true">
-          <li>
-            <label class="title">Buy Now!</label>
-            <label class="price pull-right">PHP 50.00</label>
+          <li @click="addToCart(item)">
+            <label class="title">Add to Cart</label>
+            <label class="price pull-right">PHP {{item.price}}</label>
           </li>
         </ul>
       </span>
@@ -85,7 +85,7 @@ ul li .title{
 ul li .price{
   padding-right: 10px;
 }
-ul li:hover{
+ul li:hover, ul li .title:hover, ul li .price:hover{
   cursor: pointer;
   background: #028170;
 }
@@ -142,6 +142,21 @@ export default {
           }
         }
       }
+    },
+    addToCart(item){
+      let parameter = {
+        account_id: this.user.userID,
+        payload: 'template',
+        payload_value: item.id,
+        status: 'added',
+        price: item.price
+      }
+      this.APIRequest('checkouts/create', parameter).then(response => {
+        if(response.data > 0){
+          AUTH.checkAuthentication(null)
+          this.$parent.retrieve()
+        }
+      })
     }
   }
 }

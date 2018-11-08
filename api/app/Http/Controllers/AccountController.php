@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Account;
 use App\AccountInformation;
 use App\AccountProfile;
+use App\Checkout;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +38,17 @@ class AccountController extends APIController
      );
      $this->model = new Account();
      $this->insertDB($dataAccount);
+     $accountId = $this->response['data'];
+
+     $this->createDetails($accountId);
      return $this->response();
+    }
+
+    public function createDetails($accountId){
+      $info = new AccountInformation();
+      $info->account_id = $accountId;
+      $info->created_at = Carbon::now();
+      $info->save();
     }
 
     public function generateCode(){
@@ -113,13 +124,14 @@ class AccountController extends APIController
         $i = 0;
         foreach ($result as $key) {
           $accountId = $result[$i]['id'];
-          $activeSemesterId = $result[$i]['active_semester'];
           $result[$i]['account_information_flag'] = false;
           $result[$i]['account_profile_flag'] = false;
-          $accountInfoResult = AccountInformation::where('account_id', '=', $result[$i]['id'])->get();
-          $accountProfileResult = AccountProfile::where('account_id', '=', $result[$i]['id'])->orderBy('created_at', 'DESC')->get();
+          $accountInfoResult = AccountInformation::where('account_id', '=', $accountId)->get();
+          $accountProfileResult = AccountProfile::where('account_id', '=', $accountId)->orderBy('created_at', 'DESC')->get();
+          $checkout = Checkout::where('account_id', '=', $accountId)->where('status', '=', 'added')->get();
           $result[$i]['account_information'] = (sizeof($accountInfoResult) > 0) ? $accountInfoResult[0] : null;
           $result[$i]['account_profile'] = (sizeof($accountProfileResult) > 0) ? $accountProfileResult[0] : null;
+          $result[$i]['checkout'] = sizeof($checkout);
           $i++;
         }
         return response()->json(array('data' => $result));
