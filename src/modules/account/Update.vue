@@ -74,10 +74,15 @@ import CONFIG from '../../config.js'
 export default {
   mounted(){
     if(this.parameter !== null){
+      let flag = false
       for (var i = 0; i < this.menu.length; i++) {
         if(this.parameter === this.menu[i].type){
+          flag = true
           this.makeActive(i)
         }
+      }
+      if(flag === false){
+        this.makeActive(0)
       }
     }else{
       this.makeActive(0)
@@ -91,7 +96,7 @@ export default {
       menu: [
         {title: 'Profile', flag: true, type: 'profile'},
         {title: 'Account', flag: false, type: 'account'},
-        {title: 'Payment Methods', flag: false, type: 'payment_method'},
+        {title: 'Payment Accounts', flag: false, type: 'payment_method'},
         {title: 'Billing Informations', flag: false, type: 'billing_information'}
       ],
       prevIndex: 0,

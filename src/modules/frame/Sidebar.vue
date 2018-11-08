@@ -208,8 +208,8 @@
     margin-left: -14%;
   }
   .content-holder.hidden{
-    width: 94%;
-    margin: 60px 1% 0 1%;
+    width: 92%;
+    margin: 60px 2% 0 6%;
     float: left;
   }
 }
@@ -241,7 +241,7 @@
   }
   .content-holder.hidden{
     width: 92%;
-    margin: 60px 2% 0 2%;
+    margin: 60px 2% 0 6%;
     float: left;
   }
 }
