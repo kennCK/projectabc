@@ -10,6 +10,7 @@
     </div>
     <div class="content">
       <profile v-if="menu[0].flag === true"></profile>
+      <account v-if="menu[1].flag === true"></account>
     </div>
   </div>
 
@@ -85,7 +86,8 @@ export default {
     }
   },
   components: {
-    'profile': require('modules/account/Profile.vue')
+    'profile': require('modules/account/Profile.vue'),
+    'account': require('modules/account/Account.vue')
   },
   methods: {
     redirect(path){
