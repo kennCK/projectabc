@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Account;
 use App\AccountInformation;
+use App\BillingInformation;
 use App\AccountProfile;
 use App\Checkout;
 use Illuminate\Support\Facades\Hash;
@@ -49,6 +50,11 @@ class AccountController extends APIController
       $info->account_id = $accountId;
       $info->created_at = Carbon::now();
       $info->save();
+
+      $billing = new BillingInformation();
+      $billing->account_id = $accountId;
+      $billing->created_at = Carbon::now();
+      $billing->save();
     }
 
     public function generateCode(){

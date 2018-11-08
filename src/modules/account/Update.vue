@@ -73,6 +73,15 @@ import axios from 'axios'
 import CONFIG from '../../config.js'
 export default {
   mounted(){
+    if(this.parameter !== null){
+      for (var i = 0; i < this.menu.length; i++) {
+        if(this.parameter === this.menu[i].type){
+          this.makeActive(i)
+        }
+      }
+    }else{
+      this.makeActive(0)
+    }
   },
   data(){
     return {
@@ -80,12 +89,13 @@ export default {
       tokenData: AUTH.tokenData,
       config: CONFIG,
       menu: [
-        {title: 'Profile', flag: true},
-        {title: 'Account', flag: false},
-        {title: 'Payment Methods', flag: false},
-        {title: 'Billing Informations', flag: false}
+        {title: 'Profile', flag: true, type: 'profile'},
+        {title: 'Account', flag: false, type: 'account'},
+        {title: 'Payment Methods', flag: false, type: 'payment_method'},
+        {title: 'Billing Informations', flag: false, type: 'billing_information'}
       ],
-      prevIndex: null
+      prevIndex: 0,
+      parameter: this.$route.params.parameter
     }
   },
   components: {
@@ -104,7 +114,7 @@ export default {
         this.menu[0].flag = false
         this.menu[this.prevIndex].flag = true
       }else{
-        if(this.prevIndex !== null){
+        if(this.prevIndex !== index){
           this.menu[this.prevIndex].flag = false
           this.menu[index].flag = true
           this.prevIndex = index

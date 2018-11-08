@@ -45,7 +45,7 @@
           <label><b>Total</b></label>
           <label class="pull-right" style="padding-right: 10px;"><b>PHP {{data[0].total}}</b></label>
         </span>
-        <button class="btn btn-primary custom-btn" @click-="redirect('/payment_method')">Add Payment Method</button>
+        <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')">Add Payment Method</button>
         <button class="btn btn-warning custom-btn"> Complete Purchase</button>
       </span>
     </span>
@@ -157,6 +157,7 @@ export default {
   },
   methods: {
     redirect(parameter){
+      console.log(parameter)
       ROUTER.push(parameter)
     },
     retrieve(){

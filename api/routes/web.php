@@ -129,6 +129,14 @@ Route::post('/account_images/update', "AccountImageController@update");
 Route::post('/account_images/delete', "AccountImageController@delete");
 Route::get('/account_images/test', 'AccountImageController@test');
 
+//Billing Informations
+Route::get('/billing_informations/test', 'BillingInformationController@test');
+Route::post('/billing_informations/create', 'BillingInformationController@create');
+Route::post('/billing_informations/retrieve', 'BillingInformationController@retrieve');
+Route::post('/billing_informations/update', 'BillingInformationController@update');
+Route::post('/billing_informations/delete', 'BillingInformationController@delete');
+
+
 //Templates
 Route::post('/templates/create', "TemplateController@create");
 Route::post('/templates/retrieve', "TemplateController@retrieve");

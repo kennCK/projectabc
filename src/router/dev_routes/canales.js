@@ -105,7 +105,7 @@ export default{
     }
   },
   {
-    path: '/checkout',
+    path: '/checkout/',
     name: 'checkout',
     component: resolve => require(['modules/checkout/Checkouts.vue'], resolve),
     meta: {
@@ -113,7 +113,7 @@ export default{
     }
   },
   {
-    path: '/profile',
+    path: '/profile/:parameter?',
     name: 'profile',
     component: resolve => require(['modules/account/Update.vue'], resolve),
     meta: {

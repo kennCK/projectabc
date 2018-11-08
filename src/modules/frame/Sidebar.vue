@@ -55,94 +55,6 @@
     </div>
   </div>  
 </template>
-<script>
-import AUTH from '../../services/auth'
-import CONFIG from '../../config.js'
-import ROUTER from '../../router'
-export default {
-  mounted(){
-  },
-  data(){
-    return{
-      user: AUTH.user,
-      config: CONFIG,
-      activeItem: '',
-      activeSubItem: '',
-      menu: [
-      {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
-      {id: 2, users: 'ALL', parent_id: 0, description: 'Templates', icon: 'fas fa-file', path: 'templates'},
-      {id: 3, users: 'ALL', parent_id: 0, description: 'Employees', icon: 'fas fa-users', path: 'employees'},
-      {id: 4, users: 'ALL', parent_id: 0, description: 'Images', icon: 'fas fa-image', path: 'images'},
-      {id: 5, users: 'ALL', parent_id: 0, description: 'Billings', icon: 'fas fa-credit-card', path: 'billings'}
-      ],
-      toggleSidebar: 'fa fa-toggle-on',
-      toggleSidebarFlag: true,
-      hide: '',
-      toggleOnClick: '',
-      alignAtHide: 'pull-right',
-      search: '',
-      flag: false,
-      confirmation: {
-        message: null,
-        action: null
-      }
-    }
-  },
-  methods: {
-    getMenu(){
-      let parameter = {
-        'sort': {
-          'id': 'asc'
-        }
-      }
-      this.APIRequest('modules/retrieve', parameter).then(response => {
-        this.menu = response.data
-      })
-    },
-    isActive(menuItem){
-      return this.activeItem === menuItem
-    },
-    setActive(menuItem){
-      this.activeItem = menuItem
-      var intMenu = parseInt(menuItem)
-      var intSubMenu = parseInt(this.activeSubItem)
-      this.activeSubItem = (intSubMenu < (intMenu + 10) && intSubMenu > intMenu) ? this.activeSubItem : ''
-    },
-    isSubActive(menuItem){
-      return this.activeSubItem === menuItem
-    },
-    setSubActive(menuItem){
-      this.activeSubItem = menuItem
-      this.activeItem = ''
-    },
-    navigateTo(method, toggleCondition){
-      if(AUTH.timer.interval === null){
-        this.confirmation.message = null
-        this.toggleOnClick = (toggleCondition === true) ? 'collapse' : ''
-        ROUTER.push('/' + method)
-      }else{
-        this.confirmation.message = 'You have an ongoing examination. You are not allowed to cancel the examination.'
-        $('#timerModal').modal('show')
-      }
-    },
-    changeToggleSidebarIcon(){
-      this.toggleSidebarFlag = !this.toggleSidebarFlag
-      this.hide = (this.toggleSidebarFlag === true) ? '' : 'hidden'
-      this.alignAtHide = (this.toggleSidebarFlag === false) ? 'text-center' : 'pull-right'
-      var icon = (this.toggleSidebarFlag === true) ? 'on' : 'off'
-      this.toggleSidebar = 'fa fa-toggle-' + icon
-    }
-  },
-  computed: {
-    filteredModules: function(){
-      let regex = new RegExp(this.search.toLowerCase())
-      return this.menu.filter((menu) => {
-        return menu.description.toLowerCase().match(regex)
-      })
-    }
-  }
-}
-</script>
 <style>
 
 .main-sidebar, .content-holder{  
@@ -212,13 +124,12 @@ export default {
   width: 100%;
   float: left;
   height: 80px;
-  margin-bottom: 10px;
   text-align: center;
 }
 .profile-image-holder img{
   width: 80px;
   height: 80px;
-  border-radius: 50%;
+  border-radius: 5px;
 }
 
 .profile-photo i{
@@ -474,3 +385,91 @@ export default {
   }
 }
 </style>
+<script>
+import AUTH from '../../services/auth'
+import CONFIG from '../../config.js'
+import ROUTER from '../../router'
+export default {
+  mounted(){
+  },
+  data(){
+    return{
+      user: AUTH.user,
+      config: CONFIG,
+      activeItem: '',
+      activeSubItem: '',
+      menu: [
+      {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
+      {id: 2, users: 'ALL', parent_id: 0, description: 'Templates', icon: 'fas fa-file', path: 'templates'},
+      {id: 3, users: 'ALL', parent_id: 0, description: 'Employees', icon: 'fas fa-users', path: 'employees'},
+      {id: 4, users: 'ALL', parent_id: 0, description: 'Images', icon: 'fas fa-image', path: 'images'},
+      {id: 5, users: 'ALL', parent_id: 0, description: 'Billings', icon: 'fas fa-credit-card', path: 'billings'}
+      ],
+      toggleSidebar: 'fa fa-toggle-on',
+      toggleSidebarFlag: true,
+      hide: '',
+      toggleOnClick: '',
+      alignAtHide: 'pull-right',
+      search: '',
+      flag: false,
+      confirmation: {
+        message: null,
+        action: null
+      }
+    }
+  },
+  methods: {
+    getMenu(){
+      let parameter = {
+        'sort': {
+          'id': 'asc'
+        }
+      }
+      this.APIRequest('modules/retrieve', parameter).then(response => {
+        this.menu = response.data
+      })
+    },
+    isActive(menuItem){
+      return this.activeItem === menuItem
+    },
+    setActive(menuItem){
+      this.activeItem = menuItem
+      var intMenu = parseInt(menuItem)
+      var intSubMenu = parseInt(this.activeSubItem)
+      this.activeSubItem = (intSubMenu < (intMenu + 10) && intSubMenu > intMenu) ? this.activeSubItem : ''
+    },
+    isSubActive(menuItem){
+      return this.activeSubItem === menuItem
+    },
+    setSubActive(menuItem){
+      this.activeSubItem = menuItem
+      this.activeItem = ''
+    },
+    navigateTo(method, toggleCondition){
+      if(AUTH.timer.interval === null){
+        this.confirmation.message = null
+        this.toggleOnClick = (toggleCondition === true) ? 'collapse' : ''
+        ROUTER.push('/' + method)
+      }else{
+        this.confirmation.message = 'You have an ongoing examination. You are not allowed to cancel the examination.'
+        $('#timerModal').modal('show')
+      }
+    },
+    changeToggleSidebarIcon(){
+      this.toggleSidebarFlag = !this.toggleSidebarFlag
+      this.hide = (this.toggleSidebarFlag === true) ? '' : 'hidden'
+      this.alignAtHide = (this.toggleSidebarFlag === false) ? 'text-center' : 'pull-right'
+      var icon = (this.toggleSidebarFlag === true) ? 'on' : 'off'
+      this.toggleSidebar = 'fa fa-toggle-' + icon
+    }
+  },
+  computed: {
+    filteredModules: function(){
+      let regex = new RegExp(this.search.toLowerCase())
+      return this.menu.filter((menu) => {
+        return menu.description.toLowerCase().match(regex)
+      })
+    }
+  }
+}
+</script>

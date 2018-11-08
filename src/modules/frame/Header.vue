@@ -23,7 +23,7 @@
               <span class="dropdown-item-profile">
                 <span class="account-picture text-center">
                   <span class="profile-photo-header">
-                    <span class="profile-image-holder"  v-if="user.profile !== null">
+                    <span class="profile-image-holder-header"  v-if="user.profile !== null">
                       <img v-bind:src="config.BACKEND_URL + user.profile.profile_url">
                     </span>
                     <i class="fa fa-user-circle-o" v-else></i>
@@ -356,7 +356,6 @@ body{
   float: left;
   font-weight: 550;
   color: #22b173;
-  margin-top: 20px;
 }
 .dropdown-item-button{
   height: 50px;
@@ -415,16 +414,16 @@ body{
   height: 80px;
   color: #22b173;
 }
-.profile-image-holder{
+.profile-image-holder-header{
   width: 100%;
   float: left;
   height: 80px;
   text-align: center;
 }
-.profile-image-holder img{
+.profile-image-holder-header img{
   width: 80px;
   height: 80px;
-  border-radius: 50%;
+  border-radius: 5px;
 }
 
 .profile-photo-header i{

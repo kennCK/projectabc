@@ -1,8 +1,22 @@
 <template>
   <div class="holder">
-    <span class="header">New Payment Method</span>
+    <span class="header"><i class="fa fa-paypal"></i>PayPal</span>
     <span class="content">
-      <span class="inputs" v-if="data !== null">
+      <span class="inputs">
+        <div class="form-group" style="margin-top: 25px;">
+          <label for="address">Paypal</label>
+          <input type="text" class="form-control" placeholder="Enter Nickname">
+        </div>
+
+        <button class="btn btn-primary" style="margin-bottom: 25px;" >Authorize</button>
+      
+      </span>
+      <span class="sidebar">
+      </span>
+    </span>
+    <span class="header"><i class="fa fa-credit-card"></i>Credit Card</span>
+    <span class="content">
+      <span class="inputs">
         <div class="form-group" style="margin-top: 25px;">
           <label for="address">Paypal</label>
           <input type="text" class="form-control" placeholder="Enter Nickname">
@@ -76,6 +90,18 @@
 .custom-block input{
   display: none;
 }
+@media screen and (max-width: 992px){
+  .holder{
+    width: 96%;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+  .sidebar, .inputs{
+    width: 100%;
+    margin-right: 0%;
+    margin-left: 0%;
+  }
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -84,13 +110,13 @@ import axios from 'axios'
 import CONFIG from '../../config.js'
 export default {
   mounted(){
-    this.retrieve()
   },
   data(){
     return {
       user: AUTH.user,
       tokenData: AUTH.tokenData,
-      config: CONFIG
+      config: CONFIG,
+      data: null
     }
   },
   methods: {
