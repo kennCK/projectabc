@@ -17,10 +17,38 @@
     <span class="header"><i class="fa fa-credit-card"></i>Credit Card</span>
     <span class="content">
       <span class="inputs">
-        <div class="form-group" style="margin-top: 25px;">
-          <label for="address">Paypal</label>
-          <input type="text" class="form-control" placeholder="Enter Nickname">
-        </div>
+            
+            <div :class="{complete}" class="">
+              <div class="form-group">
+                <label for="address">Card Number</label>
+                <card-number class="stripe-element card-number"
+                  ref="cardNumber"
+                  :stripe="stripeSK"
+                  @change="number = $event.complete"
+                  :options="options"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="address">Expiration</label>
+                <card-expiry class="stripe-element card-expiry"
+                  ref="cardExpiry" 
+                  :stripe="stripeSK" 
+                  @change="expiry = $event.complete"
+                  :options="options"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="address">CVC</label>
+                  <card-cvc class='stripe-element card-cvc'
+                    ref='cardCvc'
+                    :stripe="stripeSK" 
+                    @change="cvc = $event.complete" 
+                    :options="options"
+                  />
+                </div>
+            </div>
 
         <button class="btn btn-primary" style="margin-bottom: 25px;" >Authorize</button>
       
@@ -108,6 +136,11 @@ import ROUTER from '../../router'
 import AUTH from '../../services/auth'
 import axios from 'axios'
 import CONFIG from '../../config.js'
+import OPKEYS from '../../payment.js'
+import CardExpiry from '../../components/stripe/CardExpiry'
+import CardCvc from '../../components/stripe/CardCvc'
+import CardNumber from '../../components/stripe/CardNumber'
+import { Stripe } from '../../components/stripe/stripeElements'
 export default {
   mounted(){
   },
@@ -116,8 +149,20 @@ export default {
       user: AUTH.user,
       tokenData: AUTH.tokenData,
       config: CONFIG,
-      data: null
+      data: null,
+      complete: false,
+      number: false,
+      expiry: false,
+      cvc: false,
+      stripeSK: (OPKEYS.flag === false) ? OPKEYS.stripe.dev_pk : OPKEYS.stripe.live_pk,
+      options: {
+      }
     }
+  },
+  components: {
+    CardExpiry,
+    CardCvc,
+    CardNumber
   },
   methods: {
   }
