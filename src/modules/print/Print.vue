@@ -12,8 +12,10 @@
           <div class="modal-body">
             <div class="print-content">
               <div class="holder" style="margin-right: 20px;">
-                <objects :objects="item.front_objects" v-if="item.front_objects !== null">
-                </objects>
+                <span id="frontObject">
+                  <objects :objects="item.front_objects" v-if="item.front_objects !== null"></objects>
+                </span>
+                
                 <div class="display">
                   <i class="fas fa-spinner fa-spin"></i>
                   <label>Printing...</label>
@@ -21,8 +23,9 @@
               </div>
 
               <div class="holder">
-                <objects :objects="item.back_objects" v-if="item.back_objects !== null">
-                </objects>
+                <span id="backObject">
+                  <objects :objects="item.back_objects" v-if="item.back_objects !== null"></objects>
+                </span>
                 <div class="display">
                   <i class="fas fa-spinner fa-spin"></i>
                   <label>Printing...</label>
@@ -32,7 +35,7 @@
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" @click="hideModal()">Cancel</button>
-              <button type="button" class="btn btn-primary">Print</button>
+              <button type="button" class="btn btn-primary" @click="print()">Print</button>
           </div>
         </div>
       </div>
@@ -114,6 +117,14 @@ export default {
     hideModal(){
       this.item = null
       $('#printModal').modal('hide')
+    },
+    print(){
+      // let Css = require('json-to-css')
+      let printContents = document.getElementById('frontObject').innerHTML
+      let originalContents = document.body.innerHTML
+      document.body.innerHTML = printContents
+      window.print()
+      document.body.innerHTML = originalContents
     }
   }
 }

@@ -118,6 +118,32 @@
 .custom-block input{
   display: none;
 }
+
+.stripe-element{
+  height: 45px;
+  display: block;
+  width: 100%;
+  padding: .90rem .75rem;
+  font-size: 12px;
+  background-color: #fff;
+  background-image: none;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: .25rem;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.stripe-element .card-number, .stripe-element .card-expiry, .stripe-element .card-cvc{
+  padding: 0px;
+}
+
+.StripeElement{
+  padding: .90rem .75rem;
+  color: #495057;
+  line-height: 1.25;
+}
+
+
 @media screen and (max-width: 992px){
   .holder{
     width: 96%;
