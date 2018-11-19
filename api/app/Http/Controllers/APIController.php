@@ -22,6 +22,7 @@ use App\CustomObject;
 use App\Attribute;
 use App\Template;
 use App\Checkout;
+use App\CheckoutItem;
 use App\Employee;
 use App\EmployeeColumn;
 class APIController extends Controller
@@ -485,8 +486,14 @@ class APIController extends Controller
     return null;
   }
 
-  public function getCheckout($payload, $payloadValue){
-    $result = Checkout::where('payload', '=', $payload)->where('payload_value', '=', $payloadValue)->get();
+  public function getCheckout($payload, $payloadValue, $accountId){
+    $checkout = Checkout::where('account_id', '=', $accountId)->where('status', '=', 'added')->first();
+    if($checkout){
+      $item = CheckoutItem::where('payload', '=', $payload)->where('payload_value', '=', $payloadValue)->where('checkout_id', '=', $checkout->id)->first();
+      return ($item) ? $item : null;
+    }else{
+      return null;
+    }
     return (sizeof($result) > 0) ? $result[0] : null;
   }
 
