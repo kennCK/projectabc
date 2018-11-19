@@ -46,10 +46,21 @@
           <label class="pull-right" style="padding-right: 10px;"><b>PHP {{data[0].total}}</b></label>
         </span>
 
-        <span class="item" style="border-bottom: 0px;" v-if="method !== null">
-          <label>Active Payment Account</label>
+        <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
+          <label>Active Payment Method</label>
           
-          <label class="pull-right" style="padding-right: 10px;">******** {{method.last4}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
+          <label class="pull-right" style="padding-right: 10px;">******** {{method.stripe.last4}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
+        </span>
+        <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.paypal !== null">
+          <label>Active Payment Method</label>
+          
+          <label class="pull-right" style="padding-right: 10px;"> {{method.paypal.nickname}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
+        </span>
+
+        <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.payload === 'cod'">
+          <label>Active Payment Method</label>
+          
+          <label class="pull-right" style="padding-right: 10px;"> {{method.payload_value}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
         </span>
         <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')" v-if="method === null">Add Payment Method</button>
         <button class="btn btn-warning custom-btn"> Complete Purchase</button>

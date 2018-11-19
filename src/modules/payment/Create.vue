@@ -5,7 +5,25 @@
       <button class="btn btn-primary pull-right" @click="activateNewPayment()"> New Payment Method</button>
     </span>
     <span class="account-item" v-if="data !== null" v-for="item, index in data">
-      <i class="fa fa-credit-card"></i> *********{{item.last4}}
+      <label v-if="item.stripe !== null">
+        <i class="fas fa-circle text-primary" v-if="item.status === 'active'"></i>
+        <i class="far fa-circle text-primary activate-method" v-if="item.status !== 'active'" @click="activate(item.id)"></i>
+        <i class="fa fa-credit-card"></i> *********{{item.stripe.last4}}
+        <i class="fa fa-trash text-danger pull-right delete-method-icon" @click="deleteMethod(item.id)"></i>
+      </label>
+      <label v-if="item.paypal !== null">
+        <i class="fas fa-circle text-primary" v-if="item.status === 'active'"></i>
+        <i class="far fa-circle text-primary activate-method" v-if="item.status !== 'active'" @click="activate(item.id)"></i>
+        <i class="fa fa-paypal"></i> {{item.nickname}}
+        <i class="fa fa-trash text-danger pull-right delete-method-icon" @click="deleteMethod(item.id)"></i>
+      </label>
+      <label v-if="item.payload === 'cod'">
+        <i class="fas fa-circle text-primary" v-if="item.status === 'active'"></i>
+        <i class="far fa-circle text-primary activate-method" v-if="item.status !== 'active'" @click="activate(item.id)"></i>
+        {{item.payload_value}}
+        <i class="fa fa-trash text-danger pull-right delete-method-icon" @click="deleteMethod(item.id)"></i>
+      </label>
+      
     </span>
     <div v-if="data === null || newPaymentFlag === true">
       <span class="header"><i class="fa fa-credit-card"></i>Credit Card</span>
@@ -82,9 +100,24 @@
   float: left;
 }
 .account-item{
+  width: 60%;
+  float: left;
+  height: 40px;
+  margin-right: 40%;
+}
+.account-item label{
   width: 100%;
   float: left;
   line-height: 40px;
+}
+.account-item label i{
+  font-size: 24px;
+}
+.delete-method-icon{
+  padding-top: 5px;
+}
+.delete-method-icon:hover, .activate-method:hover{
+  cursor: pointer;
 }
 .content{
   width: 100%;
@@ -235,13 +268,9 @@ export default {
     },
     retrieve(){
       let parameter = {
-        condition: [{
-          value: this.user.userID,
-          column: 'account_id',
-          clause: '='
-        }]
+        account_id: this.user.userID
       }
-      this.APIRequest('stripe_cards/retrieve', parameter).then(response => {
+      this.APIRequest('payment_methods/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data
           this.newPaymentFlag = false
@@ -250,6 +279,23 @@ export default {
     },
     activateNewPayment(){
       this.newPaymentFlag = !this.newPaymentFlag
+    },
+    deleteMethod(id){
+      let parameter = {
+        id: id
+      }
+      this.APIRequest('payment_methods/delete', parameter).then(response => {
+        this.retrieve()
+      })
+    },
+    activate(id){
+      let parameter = {
+        id: id,
+        account_id: this.user.userID
+      }
+      this.APIRequest('payment_methods/update', parameter).then(response => {
+        this.retrieve()
+      })
     }
   }
 }

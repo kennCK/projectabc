@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Checkout;
 use App\StripeCard;
+use App\PaymentMethod;
 class CheckoutController extends APIController
 {
     function __construct(){
@@ -17,7 +18,7 @@ class CheckoutController extends APIController
       $result = $this->response['data'];
       $subTotal = 0;
       $tax = 0;
-      $cards = $this->getStripeCards($data['account_id']);
+      $cards = $this->getPaymentMethod($data['account_id']);
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
@@ -40,8 +41,23 @@ class CheckoutController extends APIController
       return $this->response();
     }
 
-    public function getStripeCards($accountId){
-      $result = StripeCard::where('account_id', '=', $accountId)->get();
+    public function getPaymentMethod($accountId){
+      $result = PaymentMethod::where('account_id', '=', $accountId)->where('status', '=', 'active')->get();
+      if(sizeof($result) > 0){
+        $payload = $result[0]['payload'];
+        $payloadValue = $result[0]['payload_value'];
+        $result[0]['stripe'] = null;
+        $result[0]['paypal'] = null;
+        if($payload == 'credit_card'){
+          // stripe
+          $cards = StripeCard::where('id', '=', $payloadValue)->first();
+          $result[0]['stripe'] = ($cards) ? $cards : null;
+        }else if($payload == 'paypal'){
+          // paypal
+        }else if($payload == 'cod'){
+          // cod
+        }
+      }
       return (sizeof($result) > 0) ? $result[0] : null;
     }
 }

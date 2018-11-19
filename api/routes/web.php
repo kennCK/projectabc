@@ -239,4 +239,12 @@ Route::post('/stripe_cards/delete', "StripeCardController@delete");
 Route::get('/stripe_cards/test', 'StripeCardController@test');
 
 
+//Payment Methods
+Route::post('/payment_methods/create', "PaymentMethodController@create");
+Route::post('/payment_methods/retrieve', "PaymentMethodController@retrieve");
+Route::post('/payment_methods/update', "PaymentMethodController@update");
+Route::post('/payment_methods/delete', "PaymentMethodController@delete");
+Route::get('/payment_methods/test', 'PaymentMethodController@test');
+
+
 
