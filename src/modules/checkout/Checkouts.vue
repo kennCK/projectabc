@@ -5,7 +5,7 @@
         <span class="title">
           <b>Your Items</b>
         </span>
-        <span class="item" v-for="item, index in data">
+        <span class="item" v-for="item, index in data[0].items" v-if="data[0].items !== null">
           <span class="objects-holder" v-if="item.payload === 'template'">
             <objects :objects="item.objects" v-if="item.objects !== null"></objects>
           </span>

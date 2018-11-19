@@ -299,10 +299,9 @@ export default {
         account_id: this.user.userID,
         payload: 'employee',
         payload_value: id,
-        status: 'added',
         price: 0
       }
-      this.APIRequest('checkouts/create', parameter).then(response => {
+      this.APIRequest('checkout_items/create', parameter).then(response => {
         if(response.data > 0){
           AUTH.checkAuthentication(null)
           this.retrieve()
