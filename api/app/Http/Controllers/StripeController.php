@@ -3,43 +3,46 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Stripe;
+use App\StripeWebhook;
+use App\StripeCard;
 use Carbon\Carbon;
 class StripeController extends APIController
 {
 
-    protected $stripe;
-    public function authorize(Request $request){
+    public function create(Request $request){
       $data = $request->all();
-      $this->stripe = new Stripe();
-      $checkout = $data['checkout'];
+      $stripe = new StripeWebhook();
+      $accountId = $data['account_id'];
       $source = $data['source'];
-      $account = $data['account'];
-      $customer = $this->stripe->createCustomer($account['email'], $source['id'], $account['name']);
+      $customer = $stripe->createCustomer($data['email'], $source['id'], $data['name']);
       if($customer->id){
-        $charge = $this->stripe->chargeCustomer($account['email'], $source['id'], $customer->id, (floatval($checkout['total']) * 100), "ID FACTORY BILLING FOR ID PRINTING ");
-        if($charge->status == 'succeeded'){
-          // update checkout
-          // get templates if template
-
-
-          return response()->json(
-            'data'  => true,
+        // $charge = $this->stripe->chargeCustomer($account['email'], $source['id'], $customer->id, (floatval($checkout['total']) * 100), "ID FACTORY BILLING FOR ID PRINTING ");
+        $stripeCard = new StripeCard();
+        $stripeCard->account_id = $accountId;
+        $stripeCard->brand = $source['card']['brand'];
+        $stripeCard->last4 = $source['card']['last4'];
+        $stripeCard->exp_year = $source['card']['exp_year'];
+        $stripeCard->exp_month = $source['card']['exp_month'];
+        $stripeCard->source = $source['id'];
+        $stripeCard->customer = $customer->id;
+        $stripeCard->created_at = Carbon::now();
+        $stripeCard->save();
+        
+        return response()->json(
+          array(
+            'data'  => $stripeCard->id,
             'error' => null,
             'timestamps'  => Carbon::now()
-          );
-        }else{
-          return response()->json(
-            'data'  => true,
-            'error' => 'Unable to charge.',
-            'timestamps'  => Carbon::now()
-          );
-        }
+          )
+        );
+
       }else{
         return response()->json(
-          'data'  => null,
-          'error' => 'Card is invalid',
-          'timestamps'  => Carbon::now()
+          array(
+            'data'  => 0,
+            'error' => 'Card is invalid',
+            'timestamps'  => Carbon::now()
+          )
         );
       }
     }

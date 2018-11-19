@@ -10,19 +10,19 @@ use Stripe\Refund;
 use Stripe\Coupon;
 use Stripe\Discount;
 
-class StripeWebhooks{
+class StripeWebhook{
 
     protected $pk;
     protected $sk;
-    protected $live_pk: 'pk_test_MGWJovoYWYwfmZkZ9EAWXC7y';
-    protected $live_sk: 'sk_test_pY1avuNBquSS1njcuKM62TEt';
-    protected $dev_pk: 'pk_test_0unvKSqNiOG2boLISl8xy6pU';
-    protected $dev_sk: 'sk_test_S9z3DllqwDdKXaGkgtUuA07V';
+    protected $live_pk = 'pk_test_0unvKSqNiOG2boLISl8xy6pU';
+    protected $live_sk = 'sk_test_S9z3DllqwDdKXaGkgtUuA07V';
+    protected $dev_pk = 'pk_test_0unvKSqNiOG2boLISl8xy6pU';
+    protected $dev_sk = 'sk_test_S9z3DllqwDdKXaGkgtUuA07V';
     protected $flag = false;
 
     function __construct(){
-      $this->pk = ($flag == false) ? $this->dev_pk : $this->live_pk;
-      $this->sk = ($flag == false) ? $this->dev_sk : $this->live_sk;
+      $this->pk = ($this->flag == false) ? $this->dev_pk : $this->live_pk;
+      $this->sk = ($this->flag == false) ? $this->dev_sk : $this->live_sk;
       Stripe::setApiKey($this->sk);
     }
 

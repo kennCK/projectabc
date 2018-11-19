@@ -7,6 +7,7 @@ export default {
   user: {
     userID: 0,
     username: '',
+    email: null,
     type: null,
     status: null,
     profile: null,
@@ -34,9 +35,10 @@ export default {
     verifyingToken: false
   },
   currentPath: false,
-  setUser(userID, username, type, status, profile, checkout){
+  setUser(userID, username, email, type, status, profile, checkout){
     if(userID === null){
       username = null
+      email = null
       type = null
       status = null
       profile = null
@@ -44,6 +46,7 @@ export default {
     }
     this.user.userID = userID * 1
     this.user.username = username
+    this.user.email = email
     this.user.type = type
     this.user.status = status
     this.user.profile = profile
@@ -84,7 +87,7 @@ export default {
         vue.APIRequest('accounts/retrieve', parameter).then(response => {
           let profile = response.data[0].account_profile
           let checkout = response.data[0].checkout
-          this.setUser(userInfo.id, userInfo.username, userInfo.account_type, userInfo.status, profile, checkout)
+          this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout)
           ROUTER.push('/dashboard')
         })
         // this.retrieveNotifications(userInfo.id)
@@ -115,7 +118,7 @@ export default {
         vue.APIRequest('accounts/retrieve', parameter).then(response => {
           let profile = response.data[0].account_profile
           let checkout = response.data[0].checkout
-          this.setUser(userInfo.id, userInfo.username, userInfo.account_type, userInfo.status, profile, checkout)
+          this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout)
         }).done(response => {
           this.tokenData.verifyingToken = false
           let location = window.location.href

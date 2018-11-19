@@ -223,5 +223,12 @@ Route::post('/ratings/update', "RatingController@update");
 Route::post('/ratings/delete', "RatingController@delete");
 Route::get('/ratings/test', 'RatingController@test');
 
+//Checkouts
+Route::post('/stripes/create', "StripeController@create");
+Route::post('/stripes/retrieve', "StripeController@retrieve");
+Route::post('/stripes/update', "StripeController@update");
+Route::post('/stripes/delete', "StripeController@delete");
+Route::get('/stripes/test', 'StripeController@test');
+
 
 

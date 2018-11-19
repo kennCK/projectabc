@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-        <button class="btn btn-primary" style="margin-bottom: 25px;" >Authorize</button>
+        <button class="btn btn-primary" style="margin-bottom: 25px;" @click="createCustomer()">Authorize</button>
       
       </span>
       <span class="sidebar">
@@ -191,6 +191,29 @@ export default {
     CardNumber
   },
   methods: {
+    createCustomer(){
+      $('#loading').css({'display': 'block'})
+      Stripe.createSource().then(data => {
+        if(data.error !== undefined){
+          $('#loading').css({'display': 'none'})
+          // console.log(data.error)
+          this.errorMessage = data.error.message
+        }else{
+          let parameter = {
+            email: this.user.email,
+            source: data.source,
+            account_id: this.user.userID,
+            name: 'Kennette Canales',
+            payment_keys: OPKEYS
+          }
+          this.APIRequest('stripes/create', parameter).then(response => {
+            if(response.data > 0){
+              $('#loading').css({'display': 'none'})
+            }
+          })
+        }
+      })
+    }
   }
 }
 </script>
