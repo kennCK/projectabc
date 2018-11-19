@@ -45,7 +45,13 @@
           <label><b>Total</b></label>
           <label class="pull-right" style="padding-right: 10px;"><b>PHP {{data[0].total}}</b></label>
         </span>
-        <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')">Add Payment Method</button>
+
+        <span class="item" style="border-bottom: 0px;" v-if="method !== null">
+          <label>Active Payment Account</label>
+          
+          <label class="pull-right" style="padding-right: 10px;">******** {{method.last4}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
+        </span>
+        <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')" v-if="method === null">Add Payment Method</button>
         <button class="btn btn-warning custom-btn"> Complete Purchase</button>
       </span>
     </span>
@@ -130,8 +136,17 @@
   width: 100% !important;
   height: 50px !important;
 }
+.fa-edit{
+  font-size: 24px;
+  line-height: 50px;
+  float: left;
+}
 .delete:hover{
   cursor: pointer;
+}
+.fa-edit:hover{
+  cursor: pointer;
+  color: #22b173;
 }
 </style>
 <script>
@@ -148,7 +163,8 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      data: null
+      data: null,
+      method: null
     }
   },
   components: {
@@ -166,11 +182,13 @@ export default {
           value: this.user.userID,
           column: 'account_id',
           clause: '='
-        }]
+        }],
+        account_id: this.user.userID
       }
       this.APIRequest('checkouts/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data
+          this.method = response.method
         }else{
           this.data = null
         }

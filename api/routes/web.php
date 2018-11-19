@@ -202,7 +202,7 @@ Route::post('/comment_replies/delete', "CommentReplyController@delete");
 Route::get('/comment_replies/test', 'CommentReplyController@test');
 
 
-//Checkouts
+//Marketplace
 Route::post('/marketplace/create', "MarketplaceController@create");
 Route::post('/marketplace/retrieve', "MarketplaceController@retrieve");
 Route::post('/marketplace/update', "MarketplaceController@update");
@@ -216,19 +216,27 @@ Route::post('/checkouts/update', "CheckoutController@update");
 Route::post('/checkouts/delete', "CheckoutController@delete");
 Route::get('/checkouts/test', 'CheckoutController@test');
 
-//Checkouts
+//Ratings
 Route::post('/ratings/create', "RatingController@create");
 Route::post('/ratings/retrieve', "RatingController@retrieve");
 Route::post('/ratings/update', "RatingController@update");
 Route::post('/ratings/delete', "RatingController@delete");
 Route::get('/ratings/test', 'RatingController@test');
 
-//Checkouts
+//Stripes
 Route::post('/stripes/create', "StripeController@create");
 Route::post('/stripes/retrieve', "StripeController@retrieve");
 Route::post('/stripes/update', "StripeController@update");
 Route::post('/stripes/delete', "StripeController@delete");
 Route::get('/stripes/test', 'StripeController@test');
+
+
+//Stripe Card
+Route::post('/stripe_cards/create', "StripeCardController@create");
+Route::post('/stripe_cards/retrieve', "StripeCardController@retrieve");
+Route::post('/stripe_cards/update', "StripeCardController@update");
+Route::post('/stripe_cards/delete', "StripeCardController@delete");
+Route::get('/stripe_cards/test', 'StripeCardController@test');
 
 
 

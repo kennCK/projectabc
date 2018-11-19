@@ -1,61 +1,70 @@
 <template>
-  <div class="holder">
-    <span class="header"><i class="fa fa-paypal"></i>PayPal</span>
-    <span class="content">
-      <span class="inputs">
-        <div class="form-group" style="margin-top: 25px;">
-          <label for="address">Paypal</label>
-          <input type="text" class="form-control" placeholder="Enter Nickname">
-        </div>
-
-        <button class="btn btn-primary" style="margin-bottom: 25px;" >Authorize</button>
-      
-      </span>
-      <span class="sidebar">
-      </span>
+  <div class="holder" id="paymentMethod">
+    <span class="header">
+      Payment Accounts
+      <button class="btn btn-primary pull-right" @click="activateNewPayment()"> New Payment Method</button>
     </span>
-    <span class="header"><i class="fa fa-credit-card"></i>Credit Card</span>
+    <span class="account-item" v-if="data !== null" v-for="item, index in data">
+      <i class="fa fa-credit-card"></i> *********{{item.last4}}
+    </span>
+    <div v-if="data === null || newPaymentFlag === true">
+      <span class="header"><i class="fa fa-credit-card"></i>Credit Card</span>
     <span class="content">
       <span class="inputs">
-            
-            <div :class="{complete}" class="">
-              <div class="form-group">
-                <label for="address">Card Number</label>
-                <card-number class="stripe-element card-number"
-                  ref="cardNumber"
-                  :stripe="stripeSK"
-                  @change="number = $event.complete"
-                  :options="options"
-                />
-              </div>
-
-              <div class="form-group">
-                <label for="address">Expiration</label>
-                <card-expiry class="stripe-element card-expiry"
-                  ref="cardExpiry" 
-                  :stripe="stripeSK" 
-                  @change="expiry = $event.complete"
-                  :options="options"
-                />
-              </div>
-
-              <div class="form-group">
-                <label for="address">CVC</label>
-                  <card-cvc class='stripe-element card-cvc'
-                    ref='cardCvc'
-                    :stripe="stripeSK" 
-                    @change="cvc = $event.complete" 
-                    :options="options"
-                  />
-                </div>
+          <div :class="{complete}" class="">
+            <div class="form-group">
+              <label for="address">Card Number</label>
+              <card-number class="stripe-element card-number"
+                ref="cardNumber"
+                :stripe="stripeSK"
+                @change="number = $event.complete"
+                :options="options"
+              />
             </div>
 
-        <button class="btn btn-primary" style="margin-bottom: 25px;" @click="createCustomer()">Authorize</button>
-      
+            <div class="form-group">
+              <label for="address">Expiration</label>
+              <card-expiry class="stripe-element card-expiry"
+                ref="cardExpiry" 
+                :stripe="stripeSK" 
+                @change="expiry = $event.complete"
+                :options="options"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="address">CVC</label>
+                <card-cvc class='stripe-element card-cvc'
+                  ref='cardCvc'
+                  :stripe="stripeSK" 
+                  @change="cvc = $event.complete" 
+                  :options="options"
+                />
+              </div>
+          </div>
+
+          <button class="btn btn-primary" style="margin-bottom: 25px;" @click="createCustomer()">Authorize</button>
+        
+        </span>
+        <span class="sidebar">
+        </span>
       </span>
-      <span class="sidebar">
-      </span>
-    </span>
+<!--       <span class="header"><i class="fa fa-paypal"></i>PayPal</span>
+      <span class="content">
+        <span class="inputs">
+          <div class="form-group" style="margin-top: 25px;">
+            <label for="address">Paypal</label>
+            <input type="text" class="form-control" placeholder="Enter Nickname">
+          </div>
+
+          <button class="btn btn-primary" style="margin-bottom: 25px;" >Authorize</button>
+        
+        </span>
+        <span class="sidebar">
+        </span>
+      </span> -->
+    </div>
+    
   </div>
 </template>
 <style scoped>
@@ -71,6 +80,11 @@
   font-size: 24px;
   border-bottom: solid 1px #ddd;
   float: left;
+}
+.account-item{
+  width: 100%;
+  float: left;
+  line-height: 40px;
 }
 .content{
   width: 100%;
@@ -169,6 +183,7 @@ import CardNumber from '../../components/stripe/CardNumber'
 import { Stripe } from '../../components/stripe/stripeElements'
 export default {
   mounted(){
+    this.retrieve()
   },
   data(){
     return {
@@ -182,7 +197,8 @@ export default {
       cvc: false,
       stripeSK: (OPKEYS.flag === false) ? OPKEYS.stripe.dev_pk : OPKEYS.stripe.live_pk,
       options: {
-      }
+      },
+      newPaymentFlag: false
     }
   },
   components: {
@@ -209,10 +225,31 @@ export default {
           this.APIRequest('stripes/create', parameter).then(response => {
             if(response.data > 0){
               $('#loading').css({'display': 'none'})
+              this.newPaymentFlag = false
+            }else{
+              this.newPaymentFlag = true
             }
           })
         }
       })
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.user.userID,
+          column: 'account_id',
+          clause: '='
+        }]
+      }
+      this.APIRequest('stripe_cards/retrieve', parameter).then(response => {
+        if(response.data.length > 0){
+          this.data = response.data
+          this.newPaymentFlag = false
+        }
+      })
+    },
+    activateNewPayment(){
+      this.newPaymentFlag = !this.newPaymentFlag
     }
   }
 }

@@ -34,15 +34,15 @@
         <div class="row">
           <div class="form-group left col-lg-8 col-md-8 col-sm-12">
             <label for="address">Country</label>
-<!--             <select class="form-control" v-model="data.country" v-on:change="getStates()">
+            <select class="form-control" v-model="data.country" v-on:change="getStates()">
               <option v-bind:value="item.countryCode" v-for="item in countries">{{item.name}}</option>
-            </select> -->
+            </select>
           </div>
 
           <div class="form-group right col-lg-4 col-md-4 col-sm-12">
             <label for="address">State</label>
             <select class="form-control" v-model="data.state" v-if="states !== null">
-<!--               <option v-bind:value="item.label" v-for="item, index in states" v-if="item.label !== null && item.label !== 'undefined' && item.label !== undefined">{{item.label}}</option> -->
+              <option v-bind:value="item.label" v-for="item, index in states" v-if="item.label !== null && item.label !== 'undefined' && item.label !== undefined">{{item.label}}</option>
             </select>
             <input type="text" class="form-control form-control-login" v-model="data.state" v-else placeholder="Enter State or Province">
           </div>
@@ -152,7 +152,7 @@ import ROUTER from '../../router'
 import AUTH from '../../services/auth'
 import axios from 'axios'
 import CONFIG from '../../config.js'
-// import EasyCountriesList from 'easy-countries-list'
+import EasyCountriesList from 'easy-countries-list'
 export default {
   mounted(){
     this.retrieve()
@@ -165,7 +165,7 @@ export default {
       data: null,
       errorMessage: null,
       successMessage: null,
-      // countries: EasyCountriesList.getAllCountries(),
+      countries: EasyCountriesList.getAllCountries(),
       states: null
     }
   },
@@ -181,15 +181,13 @@ export default {
       this.APIRequest('billing_informations/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data[0]
-        }else{
-          this.data = null
         }
       })
     },
     getStates(){
       let key = 'd1c4bd17024a50b0f5e08a55b902c817'
       let ID = 254
-      axios.get('https://ezcmd.com/apps/api_ezhigh/get_hierarchy/' + key + '/' + ID + '?country_code=' + this.billing.country + '&level=1').then(response => {
+      axios.get('https://ezcmd.com/apps/api_ezhigh/get_hierarchy/' + key + '/' + ID + '?country_code=' + this.data.country + '&level=1').then(response => {
         this.states = response.data
       })
     },
