@@ -63,7 +63,7 @@
           <label class="pull-right" style="padding-right: 10px;"> {{method.payload_value}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
         </span>
         <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')" v-if="method === null">Add Payment Method</button>
-        <button class="btn btn-warning custom-btn"> Complete Purchase</button>
+        <button class="btn btn-warning custom-btn" @click="update()"> Complete Purchase</button>
       </span>
     </span>
   </div>
@@ -184,7 +184,6 @@ export default {
   },
   methods: {
     redirect(parameter){
-      console.log(parameter)
       ROUTER.push(parameter)
     },
     retrieve(){
@@ -213,6 +212,23 @@ export default {
         AUTH.checkAuthentication(null)
         this.retrieve()
       })
+    },
+    update(){
+      if(this.data !== null){
+        let parameter = {
+          id: this.data[0].id,
+          payment_method_id: this.method.id,
+          sub_total: this.data[0].sub_total,
+          total: this.data[0].total,
+          tax: this.data[0].tax,
+          status: 'completed'
+        }
+        this.APIRequest('checkouts/update', parameter).then(response => {
+          if(response.data === true){
+            ROUTER.push('/thankyou')
+          }
+        })
+      }
     }
   }
 }

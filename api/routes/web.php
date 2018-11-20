@@ -212,6 +212,7 @@ Route::get('/marketplace/test', 'MarketplaceController@test');
 //Checkouts
 Route::post('/checkouts/create', "CheckoutController@create");
 Route::post('/checkouts/retrieve', "CheckoutController@retrieve");
+Route::post('/checkouts/retrieve_summary', "CheckoutController@retrieveSummary");
 Route::post('/checkouts/update', "CheckoutController@update");
 Route::post('/checkouts/delete', "CheckoutController@delete");
 Route::get('/checkouts/test', 'CheckoutController@test');
@@ -252,6 +253,21 @@ Route::post('/payment_methods/retrieve', "PaymentMethodController@retrieve");
 Route::post('/payment_methods/update', "PaymentMethodController@update");
 Route::post('/payment_methods/delete', "PaymentMethodController@delete");
 Route::get('/payment_methods/test', 'PaymentMethodController@test');
+
+
+//Pricing
+Route::post('/pricings/create', "PricingController@create");
+Route::post('/pricings/retrieve', "PricingController@retrieve");
+Route::post('/pricings/update', "PricingController@update");
+Route::post('/pricings/delete', "PricingController@delete");
+Route::get('/pricings/test', 'PricingController@test');
+
+//Clients
+Route::post('/clients/create', "ClientController@create");
+Route::post('/clients/retrieve', "ClientController@retrieve");
+Route::post('/clients/update', "ClientController@update");
+Route::post('/clients/delete', "ClientController@delete");
+Route::get('/clients/test', 'ClientController@test');
 
 
 

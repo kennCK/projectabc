@@ -113,9 +113,25 @@ export default{
     }
   },
   {
+    path: '/thankyou',
+    name: 'thankyou',
+    component: resolve => require(['modules/checkout/ThankYou.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
     path: '/profile/:parameter?',
     name: 'profile',
     component: resolve => require(['modules/account/Update.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/pricings',
+    name: 'pricings',
+    component: resolve => require(['modules/pricing/Pricings.vue'], resolve),
     meta: {
       tokenRequired: true
     }
