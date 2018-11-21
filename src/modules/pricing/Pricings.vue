@@ -1,6 +1,27 @@
 <template>
 	<div class="holder">
     <create></create>
+    <div class="results">
+      <table class="table table-bordered table-hover table-responsive" style="margin-top: 25px;">
+        <thead>
+          <tr>
+            <td>Product</td>
+            <td>Minimum</td>
+            <td>Maximum</td>
+            <td>Price</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item, index in data" v-if="data !== null" @click="editModal(item)" class="item">
+            <td>{{item.product.title}}</td>
+            <td>{{item.minimum}}</td>
+            <td>{{item.maximum}}</td>
+            <td>{{item.price}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <update></update>
 	</div>
 </template>
 <style>
@@ -10,6 +31,14 @@
 	  margin-top: 25px;
 	  margin-bottom: 50px;
 	}
+  .results{
+    width: 100%;
+    float: left;
+    margin-top: 25px;
+  }
+  .item:hover{
+    cursor: pointer;
+  }
 
 </style>
 <script>
@@ -30,7 +59,8 @@ export default {
     }
   },
   components: {
-    'create': require('modules/pricing/Create.vue')
+    'create': require('modules/pricing/Create.vue'),
+    'update': require('modules/pricing/Update.vue')
   },
   methods: {
     redirect(parameter){
@@ -46,11 +76,19 @@ export default {
       }
       this.APIRequest('pricings/retrieve', parameter).then(response => {
         if(response.data.length > 0){
-          this.data = response.data[0]
+          this.data = response.data
         }else{
           this.data = null
         }
       })
+    },
+    editModal(item){
+      for (var i = 0; i < this.$children.length; i++) {
+        if(this.$children[i].$el.id === 'updatePricings'){
+          this.$children[i].item = item
+          this.$children[i].modal()
+        }
+      }
     }
   }
 }

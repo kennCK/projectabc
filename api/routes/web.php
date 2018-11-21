@@ -254,6 +254,13 @@ Route::post('/payment_methods/update', "PaymentMethodController@update");
 Route::post('/payment_methods/delete', "PaymentMethodController@delete");
 Route::get('/payment_methods/test', 'PaymentMethodController@test');
 
+//Products
+Route::post('/products/create', "ProductController@create");
+Route::post('/products/retrieve', "ProductController@retrieve");
+Route::post('/products/update', "ProductController@update");
+Route::post('/products/delete', "ProductController@delete");
+Route::get('/products/test', 'ProductController@test');
+
 
 //Pricing
 Route::post('/pricings/create', "PricingController@create");

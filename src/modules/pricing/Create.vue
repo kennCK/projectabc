@@ -17,6 +17,12 @@
             </span>
             <br v-if="errorMessage !== null">
             <br>
+            <div class="form-group" v-if="data !== null">
+              <label for="exampleInputEmail1">Products</label>
+              <select class="form-control" v-model="product_id">
+                <option v-bind:value="item.id" v-for="item, index in data">{{item.title}}</option>
+              </select>
+            </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Minimum # of Print</label>
               <input type="text" class="form-control" placeholder="Type minimum here..." v-model="minimum">
@@ -49,6 +55,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    this.retrieve()
   },
   data(){
     return {
@@ -58,7 +65,8 @@ export default {
       product_id: 1,
       minimum: null,
       maximum: null,
-      price: null
+      price: null,
+      data: null
     }
   },
   props: ['params'],
@@ -77,11 +85,31 @@ export default {
         }
         this.APIRequest('pricings/create', parameter).then(response => {
           if(response.data > 0){
+            this.minimum = null
+            this.maximum = null
+            this.price = null
+            this.product_id = null
             $('#createPriceModal').modal('hide')
             this.$parent.retrieve()
           }
         })
       }
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.user.userID,
+          column: 'account_id',
+          clause: '='
+        }]
+      }
+      this.APIRequest('products/retrieve', parameter).then(response => {
+        if(response.data.length > 0){
+          this.data = response.data
+        }else{
+          this.data = null
+        }
+      })
     },
     validate(){
       if(this.minimum !== null || this.minimum !== '' || this.maximum !== null || this.maximum !== '' || this.price !== null || this.price !== ''){

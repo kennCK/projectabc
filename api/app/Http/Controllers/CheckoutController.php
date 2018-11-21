@@ -7,6 +7,7 @@ use App\Checkout;
 use App\CheckoutItem;
 use App\StripeCard;
 use App\PaymentMethod;
+use App\Pricing;
 class CheckoutController extends APIController
 {
     protected $subTotal = 0;
