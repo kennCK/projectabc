@@ -1,6 +1,6 @@
 <template>
 	<div class="holder" v-if="data !== null">
-		<span class="header">
+		<span class="thank-you-header">
 			<h1 style="line-height: 125px;">Thank you for your order, {{user.username}}!</h1>
 			<label><b>Order # 12312</b></label>
 			<label>We've sent an email for your receipt and payment notification at {{user.email}}.</label>
@@ -54,7 +54,7 @@
 	  margin-top: 25px;
 	  margin-bottom: 50px;
 	}
-	.holder .header{
+	.holder .thank-you-header{
 		height: 200px;
 	  width: 100%;
 	  float: left;
@@ -64,11 +64,11 @@
 	  border-top-right-radius: 5px;
 	  border-top-left-radius: 5px;
 	}
-	.holder .header h1, .holder .header h2{
+	.holder .thank-you-header h1, .holder .thank-you-header h2{
 		width: 100%;
 		float: left;
 	}
-	.holder .header label{
+	.holder .thank-you-header label{
 		float: left;
 		width: 100%;
 	}

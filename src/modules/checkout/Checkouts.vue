@@ -228,10 +228,13 @@ export default {
           sub_total: this.data[0].sub_total,
           total: this.data[0].total,
           tax: this.data[0].tax,
-          status: 'completed'
+          account_id: this.user.userID,
+          email: this.user.email,
+          order_number: '10101'
         }
         this.APIRequest('checkouts/update', parameter).then(response => {
           if(response.data === true){
+            AUTH.checkAuthentication(null)
             ROUTER.push('/thankyou')
           }
         })

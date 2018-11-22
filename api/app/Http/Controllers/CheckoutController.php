@@ -9,6 +9,8 @@ use App\StripeCard;
 use App\PaymentMethod;
 use App\Pricing;
 use App\Client;
+use App\StripeWebhook;
+use Carbon\Carbon;
 class CheckoutController extends APIController
 {
     protected $subTotal = 0;
@@ -56,9 +58,9 @@ class CheckoutController extends APIController
           $price = $this->getPrice($result[$i]['id'], $data['account_id']);
           $this->response['data'][$i]['templates'] = $this->getItemBy($result[$i]['id'], 'template', null);
           $this->response['data'][$i]['employees'] = $this->getItemBy($result[$i]['id'], 'employee', $price);
-          $this->response['data'][$i]['sub_total'] = $this->subTotal;
-          $this->response['data'][$i]['tax'] = $this->tax;
-          $this->response['data'][$i]['total'] = $this->subTotal - $this->tax;
+          // $this->response['data'][$i]['sub_total'] = $this->subTotal;
+          // $this->response['data'][$i]['tax'] = $this->tax;
+          // $this->response['data'][$i]['total'] = $this->subTotal - $this->tax;
           if($result[$i]['payment_method_id'] != null){
             $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_method_id']);
           }else{
@@ -91,7 +93,6 @@ class CheckoutController extends APIController
     public function getItemBy($checkoutId, $payload, $price = null){
       $result = CheckoutItem::where('checkout_id', '=', $checkoutId)->where('payload', '=', $payload)->get();
       $this->subTotal = 0;
-      $this->total = 0;
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
@@ -119,7 +120,6 @@ class CheckoutController extends APIController
     public function getItems($checkoutId, $price){
       $result = CheckoutItem::where('checkout_id', '=', $checkoutId)->get();
       $this->subTotal = 0;
-      $this->total = 0;
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
@@ -144,23 +144,43 @@ class CheckoutController extends APIController
       }
     }
 
-    public function getPaymentMethod($column, $value){
-      $result = PaymentMethod::where($column, '=', $value)->where('status', '=', 'active')->get();
-      if(sizeof($result) > 0){
-        $payload = $result[0]['payload'];
-        $payloadValue = $result[0]['payload_value'];
-        $result[0]['stripe'] = null;
-        $result[0]['paypal'] = null;
-        if($payload == 'credit_card'){
-          // stripe
-          $cards = StripeCard::where('id', '=', $payloadValue)->first();
-          $result[0]['stripe'] = ($cards) ? $cards : null;
-        }else if($payload == 'paypal'){
-          // paypal
-        }else if($payload == 'cod'){
-          // cod
-        }
+
+    public function update(Request $request){
+      $data = $request->all();
+      $accountId = $data['account_id'];
+      $id = $data['id'];
+      $tax = $data['tax'];
+      $subTotal = $data['sub_total'];
+      $total = $data['total'];
+      $paymentMethodId = $data['payment_method_id'];
+      $email = $data['email'];
+      $title = 'Charge for order number'.$data['order_number'];
+      $updateData = array(
+        'id'  => $id,
+        'tax' => $tax,
+        'sub_total' => $subTotal,
+        'total' => $total,
+        'payment_method_id' => $paymentMethodId,
+        'status'  => 'completed',
+        'updated_at'  => Carbon::now()
+      );
+      $paymentMethod = $this->getPaymentMethod('id', $paymentMethodId);
+      $charge = null;
+      if($paymentMethod->payload == 'credit_card'){
+        $stripe = new StripeWebhook();
+        $charge = $stripe->chargeCustomer($email, $paymentMethod->stripe->source, $paymentMethod->stripe->customer, $total, $title);
       }
-      return (sizeof($result) > 0) ? $result[0] : null;
+
+      if($charge && $charge->status == 'succeeded'){
+        $this->model = new Checkout();
+        $this->updateDB($updateData);
+        return $this->response();
+      }else{
+        return response()->json(array(
+          'data'  => false,
+          'error' => 'Unable to charge',
+          'timestamps'  => Carbon::now()
+        ));
+      }
     }
 }

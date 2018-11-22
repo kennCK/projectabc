@@ -25,6 +25,8 @@ use App\Checkout;
 use App\CheckoutItem;
 use App\Employee;
 use App\EmployeeColumn;
+use App\PaymentMethod;
+use App\StripeCard;
 class APIController extends Controller
 {
   /*
@@ -541,6 +543,26 @@ class APIController extends Controller
     public function getEmployeeColumn($column, $employeeId){
       $result = EmployeeColumn::where('employee_id', '=', $employeeId)->where('column', '=', $column)->get();
       return (sizeof($result) > 0) ? $result[0]['value'] : null;
+    }
+
+    public function getPaymentMethod($column, $value){
+      $result = PaymentMethod::where($column, '=', $value)->where('status', '=', 'active')->get();
+      if(sizeof($result) > 0){
+        $payload = $result[0]['payload'];
+        $payloadValue = $result[0]['payload_value'];
+        $result[0]['stripe'] = null;
+        $result[0]['paypal'] = null;
+        if($payload == 'credit_card'){
+          // stripe
+          $cards = StripeCard::where('id', '=', $payloadValue)->first();
+          $result[0]['stripe'] = ($cards) ? $cards : null;
+        }else if($payload == 'paypal'){
+          // paypal
+        }else if($payload == 'cod'){
+          // cod
+        }
+      }
+      return (sizeof($result) > 0) ? $result[0] : null;
     }
 
 

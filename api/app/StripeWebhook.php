@@ -37,8 +37,8 @@ class StripeWebhook{
 
     public function chargeCustomer($email, $sourceId, $customerId, $amount, $title){
       $charge = Charge::create(array(
-        'amount'      => $amount,
-        'currency'    => 'usd',
+        'amount'      => $amount * 100,
+        'currency'    => 'php',
         'description' => 'Charge for '.$email.$title,
         'source'      => $sourceId,
         'customer'    => $customerId,
