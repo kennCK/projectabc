@@ -9,23 +9,30 @@
           <span class="objects-holder" v-if="item.payload === 'template'">
             <objects :objects="item.objects" v-if="item.objects !== null"></objects>
           </span>
-          <span class="details" v-if="item.payload === 'template'">
-              <label style="margin-top: 10px;">
+          <span class="objects-holder" v-if="item.payload === 'employee' && item.employee.front_objects !== null">
+            <objects :objects="item.employee.front_objects"></objects>
+          </span>
+          <span class="objects-holder" v-if="item.payload === 'employee' && item.employee.back_objects !== null">
+            <objects :objects="item.employee.back_objects"></objects>
+          </span>
+          <span class="details" v-if="item.payload === 'template' || (item.payload === 'employee' && (item.employee.back_objects === null || item.employee.front_objects === null))">
+              <label style="margin-top: 10px;" v-if="item.payload === 'employee'">
+                Price: Php {{item.employee.price}}
+                <i class="fa fa-trash pull-right text-danger delete" style="font-size: 24px; padding-right: 25px;" @click="remove(item.id)"></i>
+              </label>
+              <label style="margin-top: 10px;" v-if="item.payload === 'template'">
                 <b>{{item.template.title}}</b>
                 <i class="fa fa-trash pull-right text-danger delete" style="font-size: 24px; padding-right: 25px;" @click="remove(item.id)"></i>
               </label>
-              <label>Price Php {{item.template.price}}</label>
-              <label>Cetegory: {{item.template.categories}}</label>
-              <label>
+              <label v-if="item.payload === 'template'">Price Php {{item.template.price}}</label>
+              <label v-if="item.payload === 'template'">Cetegory: {{item.template.categories}}</label>
+              <label v-if="item.payload === 'template'">
                 <rating :payload="'template'" :payloadValue="item.payload_value"></rating>
               </label>
           </span>
-          <span class="two-objects-holder" v-if="item.payload === 'employee'">
-            <objects :objects="item.employee.front_objects" v-if="item.employee.front_objects !== null"></objects>
-            <objects :objects="item.employee.back_objects" v-if="item.employee.back_objects !== null"></objects>
-          </span>
-          <span class="two-details" v-if="item.payload === 'employee'">
+          <span class="two-details" v-if="item.payload === 'employee' && item.employee.back_objects !== null && item.employee.front_objects !== null">
               <label style="margin-top: 10px;">
+                Price Php {{item.employee.price}}
                 <i class="fa fa-trash pull-right text-danger delete" style="font-size: 24px; padding-right: 25px;" @click="remove(item.id)"></i>
               </label>
           </span>
@@ -116,7 +123,7 @@
 }
 .two-details{
   float: left;
-  width: 20%;
+  width: 40%;
 }
 .details label, .two-details label{
   width: 100%;

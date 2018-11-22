@@ -8,6 +8,7 @@ use App\CheckoutItem;
 use App\StripeCard;
 use App\PaymentMethod;
 use App\Pricing;
+use App\Client;
 class CheckoutController extends APIController
 {
     protected $subTotal = 0;
@@ -26,7 +27,8 @@ class CheckoutController extends APIController
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
-          $this->response['data'][$i]['items'] = $this->getItems($result[$i]['id']);
+          $price = $this->getPrice($result[$i]['id'], $data['account_id']);
+          $this->response['data'][$i]['items'] = $this->getItems($result[$i]['id'], $price);
           $this->response['data'][$i]['sub_total'] = $this->subTotal;
           $this->response['data'][$i]['tax'] = $this->tax;
           $this->response['data'][$i]['total'] = $this->subTotal - $this->tax;
@@ -51,8 +53,9 @@ class CheckoutController extends APIController
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
-          $this->response['data'][$i]['templates'] = $this->getItemBy($result[$i]['id'], 'template');
-          $this->response['data'][$i]['employees'] = $this->getItemBy($result[$i]['id'], 'template');
+          $price = $this->getPrice($result[$i]['id'], $data['account_id']);
+          $this->response['data'][$i]['templates'] = $this->getItemBy($result[$i]['id'], 'template', null);
+          $this->response['data'][$i]['employees'] = $this->getItemBy($result[$i]['id'], 'employee', $price);
           $this->response['data'][$i]['sub_total'] = $this->subTotal;
           $this->response['data'][$i]['tax'] = $this->tax;
           $this->response['data'][$i]['total'] = $this->subTotal - $this->tax;
@@ -69,7 +72,23 @@ class CheckoutController extends APIController
       return $this->response();
     }
 
-    public function getItemBy($checkoutId, $payload){
+    public function getPrice($checkoutId, $accountId){
+      $total = $this->getItemSize($checkoutId, 'employee');
+      $partner = Client::where('client', '=', $accountId)->first();
+      $price = 0;
+      if($partner){
+        $result = Pricing::where('account_id', '=', $partner->partner)->where('minimum', '<=', $total)->orWhere('maximum', '>=', $total)->first();
+        return ($result) ? $result->price : 0;
+      }else{
+        return 0;
+      }
+    }
+
+    public function getItemSize($checkoutId, $payload){
+      return CheckoutItem::where('checkout_id', '=', $checkoutId)->where('payload', '=', $payload)->count();
+    }
+
+    public function getItemBy($checkoutId, $payload, $price = null){
       $result = CheckoutItem::where('checkout_id', '=', $checkoutId)->where('payload', '=', $payload)->get();
       $this->subTotal = 0;
       $this->total = 0;
@@ -81,10 +100,14 @@ class CheckoutController extends APIController
           if($payload == 'template'){
             $result[$i]['template'] = $this->getTemplateDetails($payloadValue);
             $result[$i]['objects'] = $this->getObjects($payloadValue);
+            $this->subTotal += $result[$i]['price'];
           }else if($payload == 'employee'){
             $result[$i]['employee'] = $this->getEmployee($payloadValue);
+            if($result[$i]['employee']){
+              $result[$i]['employee']['price'] = $price;
+              $this->subTotal += $price;
+            }
           }
-          $this->subTotal += $result[$i]['price'];
           $i++;
         }
         return $result;
@@ -93,7 +116,7 @@ class CheckoutController extends APIController
       }
     }
 
-    public function getItems($checkoutId){
+    public function getItems($checkoutId, $price){
       $result = CheckoutItem::where('checkout_id', '=', $checkoutId)->get();
       $this->subTotal = 0;
       $this->total = 0;
@@ -105,10 +128,14 @@ class CheckoutController extends APIController
           if($payload == 'template'){
             $result[$i]['template'] = $this->getTemplateDetails($payloadValue);
             $result[$i]['objects'] = $this->getObjects($payloadValue);
+            $this->subTotal += $result[$i]['price'];
           }else if($payload == 'employee'){
             $result[$i]['employee'] = $this->getEmployee($payloadValue);
+            if($result[$i]['employee']){
+              $result[$i]['employee']['price'] = $price;
+              $this->subTotal += $price;
+            }
           }
-          $this->subTotal += $result[$i]['price'];
           $i++;
         }
         return $result;
