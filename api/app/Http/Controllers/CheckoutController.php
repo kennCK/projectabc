@@ -79,7 +79,7 @@ class CheckoutController extends APIController
       $partner = Client::where('client', '=', $accountId)->first();
       $price = 0;
       if($partner){
-        $result = Pricing::where('account_id', '=', $partner->partner)->where('minimum', '<=', $total)->orWhere('maximum', '>=', $total)->first();
+        $result = Pricing::where('account_id', '=', $partner->partner)->Where('minimum', '<=', $total)->where('maximum', '>=', $total)->first();
         return ($result) ? $result->price : 0;
       }else{
         return 0;

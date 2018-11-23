@@ -215,7 +215,7 @@ export default {
       let parameter = {
         id: id
       }
-      this.APIRequest('checkouts/delete', parameter).then(response => {
+      this.APIRequest('checkout_items/delete', parameter).then(response => {
         AUTH.checkAuthentication(null)
         this.retrieve()
       })
