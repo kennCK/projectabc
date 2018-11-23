@@ -52,7 +52,13 @@
           <label><b>Total</b></label>
           <label class="pull-right" style="padding-right: 10px;"><b>PHP {{data[0].total}}</b></label>
         </span>
-
+        <span class="item" style="border-bottom: 0px;">
+            <PayPal
+              amount="10.00"
+              currency="USD"
+              :client="credentials">
+            </PayPal>
+        </span>
         <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
           <label>Active Payment Method</label>
           
@@ -172,6 +178,7 @@ import ROUTER from '../../router'
 import AUTH from '../../services/auth'
 import CONFIG from '../../config.js'
 import axios from 'axios'
+import PayPal from 'vue-paypal-checkout'
 export default {
   mounted(){
     this.retrieve()
@@ -182,12 +189,21 @@ export default {
       config: CONFIG,
       errorMessage: null,
       data: null,
-      method: null
+      method: null,
+      paypal: {
+        sandbox: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH',
+        production: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH'
+      },
+      credentials: {
+        sandbox: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH',
+        production: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH'
+      }
     }
   },
   components: {
     'objects': require('modules/object/Objects.vue'),
-    'rating': require('modules/rating/Ratings.vue')
+    'rating': require('modules/rating/Ratings.vue'),
+    PayPal
   },
   methods: {
     redirect(parameter){
@@ -206,6 +222,7 @@ export default {
         if(response.data.length > 0){
           this.data = response.data
           this.method = response.method
+          this.initPaypal()
         }else{
           this.data = null
         }
@@ -239,6 +256,8 @@ export default {
           }
         })
       }
+    },
+    initPaypal(){
     }
   }
 }

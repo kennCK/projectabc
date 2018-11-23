@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\StripeWebhook;
 use App\StripeCard;
+use App\PaymentMethod;
 use Carbon\Carbon;
 class StripeController extends APIController
 {
@@ -28,6 +29,13 @@ class StripeController extends APIController
         $stripeCard->created_at = Carbon::now();
         $stripeCard->save();
         
+        $paymentMethod = new PaymentMethod();
+        $paymentMethod->account_id = $accountId;
+        $paymentMethod->payload = 'credit_card';
+        $paymentMethod->payload_value = $stripeCard->id;
+        $paymentMethod->status = 'active';
+        $paymentMethod->created_at = Carbon::now();
+        $paymentMethod->save();
         return response()->json(
           array(
             'data'  => $stripeCard->id,

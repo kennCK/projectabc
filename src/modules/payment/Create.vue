@@ -259,6 +259,7 @@ export default {
             if(response.data > 0){
               $('#loading').css({'display': 'none'})
               this.newPaymentFlag = false
+              this.retrieve()
             }else{
               this.newPaymentFlag = true
             }
