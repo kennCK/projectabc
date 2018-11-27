@@ -55,8 +55,9 @@
         <span class="item" style="border-bottom: 0px;">
             <PayPal
               amount="10.00"
-              currency="USD"
-              :client="credentials">
+              currency="PHP"
+              :client="paypal"
+              env="sandbox">
             </PayPal>
         </span>
         <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
