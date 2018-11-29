@@ -53,11 +53,16 @@
           <label class="pull-right" style="padding-right: 10px;"><b>PHP {{data[0].total}}</b></label>
         </span>
         <span class="item" style="border-bottom: 0px;">
+          {{success}}
+        </span>
+        <span class="item" style="border-bottom: 0px;">
             <PayPal
               amount="10.00"
               currency="PHP"
               :client="paypal"
-              env="sandbox">
+              :button-style="myStyle"
+              env="sandbox"
+              payment-completed="">
             </PayPal>
         </span>
         <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
@@ -198,7 +203,14 @@ export default {
       credentials: {
         sandbox: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH',
         production: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH'
-      }
+      },
+      myStyle: {
+        label: 'checkout',
+        size: 'responsive',
+        shape: 'pill',
+        color: 'gold'
+      },
+      success: null
     }
   },
   components: {
