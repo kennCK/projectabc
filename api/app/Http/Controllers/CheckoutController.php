@@ -9,6 +9,7 @@ use App\StripeCard;
 use App\PaymentMethod;
 use App\Pricing;
 use App\Client;
+use App\PaypalTransaction;
 use App\StripeWebhook;
 use Carbon\Carbon;
 class CheckoutController extends APIController
@@ -19,6 +20,12 @@ class CheckoutController extends APIController
 
     function __construct(){
     	$this->model = new Checkout();
+
+      $this->notRequired = array(
+        'payment_type',
+        'payment_payload',
+        'payment_payload_value'
+      );
     }
 
     public function retrieve(Request $request){
@@ -34,8 +41,8 @@ class CheckoutController extends APIController
           $this->response['data'][$i]['sub_total'] = $this->subTotal;
           $this->response['data'][$i]['tax'] = $this->tax;
           $this->response['data'][$i]['total'] = $this->subTotal - $this->tax;
-          if($result[$i]['payment_method_id'] != null){
-            $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_method_id']);
+          if($result[$i]['payment_type'] == 'authorized' && $result[$i]['payment_payload'] == 'credit_card'){
+            $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_payload_value']);
           }else{
             $this->response['data'][$i]['method'] = null;
           }
@@ -61,8 +68,10 @@ class CheckoutController extends APIController
           // $this->response['data'][$i]['sub_total'] = $this->subTotal;
           // $this->response['data'][$i]['tax'] = $this->tax;
           // $this->response['data'][$i]['total'] = $this->subTotal - $this->tax;
-          if($result[$i]['payment_method_id'] != null){
-            $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_method_id']);
+          if($result[$i]['payment_type'] == 'authorized' && $result[$i]['payment_payload'] == 'credit_card'){
+            $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_payload_value']);
+          }else if($result[$i]['payment_type'] == 'express' && $result[$i]['payment_payload'] == 'paypal'){
+            $this->response['data'][$i]['method'] = $this->getPaypalTransaction($result[$i]['payment_payload_value']);
           }else{
             $this->response['data'][$i]['method'] = null;
           }
@@ -152,7 +161,9 @@ class CheckoutController extends APIController
       $tax = $data['tax'];
       $subTotal = $data['sub_total'];
       $total = $data['total'];
-      $paymentMethodId = $data['payment_method_id'];
+      $paymentType = $data['payment_type'];
+      $paymentPayload = $data['payment_payload'];
+      $paymentPayloadValue = $data['payment_payload_value'];
       $email = $data['email'];
       $title = 'Charge for order number'.$data['order_number'];
       $updateData = array(
@@ -160,27 +171,64 @@ class CheckoutController extends APIController
         'tax' => $tax,
         'sub_total' => $subTotal,
         'total' => $total,
-        'payment_method_id' => $paymentMethodId,
+        'payment_type' => $paymentType,
+        'payment_payload' => $paymentPayload,
         'status'  => 'completed',
         'updated_at'  => Carbon::now()
       );
-      $paymentMethod = $this->getPaymentMethod('id', $paymentMethodId);
-      $charge = null;
-      if($paymentMethod->payload == 'credit_card'){
-        $stripe = new StripeWebhook();
-        $charge = $stripe->chargeCustomer($email, $paymentMethod->stripe->source, $paymentMethod->stripe->customer, $total, $title);
-      }
+      if($paymentType == 'authorized' && $paymentPayload == 'credit_card'){
+        $paymentMethod = $this->getPaymentMethod('id', $paymentPayloadValue);
+        $updateData['payment_payload_value'] = $paymentPayloadValue;
+        $charge = null;
+        if($paymentMethod->payload == 'credit_card'){
+          $stripe = new StripeWebhook();
+          $charge = $stripe->chargeCustomer($email, $paymentMethod->stripe->source, $paymentMethod->stripe->customer, $total, $title);
+        }
 
-      if($charge && $charge->status == 'succeeded'){
-        $this->model = new Checkout();
-        $this->updateDB($updateData);
-        return $this->response();
+        if($charge && $charge->status == 'succeeded'){
+          $this->model = new Checkout();
+          $this->updateDB($updateData);
+          return $this->response();
+        }else{
+          return response()->json(array(
+            'data'  => false,
+            'error' => 'Unable to charge',
+            'timestamps'  => Carbon::now()
+          ));
+        }
+      }else if($paymentType == 'express' && $paymentPayload == 'paypal'){
+        $payerInfo = $paymentPayloadValue['payer']['payer_info'];
+        $paypal = new PaypalTransaction();
+        $paypal->account_id = $accountId;
+        $paypal->paypal = $paymentPayloadValue['id'];
+        $paypal->cart = $paymentPayloadValue['cart'];
+        $paypal->email = $payerInfo['email'];
+        $paypal->first_name = $payerInfo['first_name'];
+        $paypal->middle_name = $payerInfo['middle_name'];
+        $paypal->last_name = $payerInfo['last_name'];
+        $paypal->payer = $payerInfo['payer_id'];
+        $paypal->total = $total;
+        $paypal->currency = 'PHP';
+        $paypal->save();
+
+        if($paypal->id){
+          $updateData['payment_payload_value'] = $paypal->id;
+          $this->model = new Checkout();
+          $this->updateDB($updateData);
+          return $this->response();
+        }else{
+          return response()->json(array(
+            'data'  => false,
+            'error' => 'Unable to charge',
+            'timestamps'  => Carbon::now()
+          ));
+        }
       }else{
-        return response()->json(array(
-          'data'  => false,
-          'error' => 'Unable to charge',
-          'timestamps'  => Carbon::now()
-        ));
+          return response()->json(array(
+            'data'  => false,
+            'error' => 'Unable to charge',
+            'timestamps'  => Carbon::now()
+          ));
       }
     }
 }

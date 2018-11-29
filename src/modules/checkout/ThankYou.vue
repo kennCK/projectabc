@@ -43,7 +43,7 @@
 			<label>Payment Method</label>
 			<label class="pull-right" style="padding-right: 10px;" v-if="data.method.stripe !== null"><i class="fa fa-credit-card"></i>********{{data.method.stripe.last4}}</label>
 			<label class="pull-right" style="padding-right: 10px;" v-if="data.method.payload === 'cod'">{{data.method.payload_value}}</label>
-			<label class="pull-right" style="padding-right: 10px;" v-if="data.method.paypal !== null"><i class="fa fa-paypal"></i> {{data.method.paypal.nickname}}</label>
+			<label class="pull-right" style="padding-right: 10px;" v-if="data.method.paypal !== null"><i class="fa fa-paypal"></i> {{data.method.paypal.email}}</label>
 		</span>
 	</div>
 </template>

@@ -27,6 +27,7 @@ use App\Employee;
 use App\EmployeeColumn;
 use App\PaymentMethod;
 use App\StripeCard;
+use App\PaypalTransaction;
 class APIController extends Controller
 {
   /*
@@ -543,6 +544,14 @@ class APIController extends Controller
     public function getEmployeeColumn($column, $employeeId){
       $result = EmployeeColumn::where('employee_id', '=', $employeeId)->where('column', '=', $column)->get();
       return (sizeof($result) > 0) ? $result[0]['value'] : null;
+    }
+
+    public function getPaypalTransaction($id){
+      $response = array();
+      $result = PaypalTransaction::where('id', '=', $id)->get();
+      $response['stripe'] = null;
+      $response['paypal'] =  (sizeof($result) > 0) ? $result[0] : null;
+      return $response;
     }
 
     public function getPaymentMethod($column, $value){

@@ -57,12 +57,14 @@
         </span>
         <span class="item" style="border-bottom: 0px;">
             <PayPal
-              v-bind:amount="data[0].total"
+              v-bind:amount="'' + data[0].total"
               currency="PHP"
               :client="paypal"
               :button-style="myStyle"
               env="sandbox"
-              payment-completed="">
+              @payment-completed="paypalCompleted($event)"
+              @payment-cancelled="paypalCancelled($event)"
+              @payment-authorized="paypalAuthorized($event)">
             </PayPal>
         </span>
         <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
@@ -254,7 +256,9 @@ export default {
       if(this.data !== null){
         let parameter = {
           id: this.data[0].id,
-          payment_method_id: this.method.id,
+          payment_type: 'authorized',
+          payment_payload: 'credit_card',
+          payment_payload_value: this.method.id,
           sub_total: this.data[0].sub_total,
           total: this.data[0].total,
           tax: this.data[0].tax,
@@ -262,15 +266,40 @@ export default {
           email: this.user.email,
           order_number: '10101'
         }
-        this.APIRequest('checkouts/update', parameter).then(response => {
-          if(response.data === true){
-            AUTH.checkAuthentication(null)
-            ROUTER.push('/thankyou')
-          }
-        })
+        this.updateRequest(parameter)
       }
     },
     initPaypal(){
+    },
+    paypalCompleted(data){
+      if(data.state === 'approved'){
+        let parameter = {
+          id: this.data[0].id,
+          payment_type: 'express',
+          payment_payload: 'paypal',
+          payment_payload_value: data,
+          sub_total: this.data[0].sub_total,
+          total: this.data[0].total,
+          tax: this.data[0].tax,
+          account_id: this.user.userID,
+          email: this.user.email,
+          order_number: '10101'
+        }
+        this.updateRequest(parameter)
+      }
+    },
+    paypalCancelled(data){
+      console.log(data)
+    },
+    paypalAuthorized(data){
+    },
+    updateRequest(parameter){
+      this.APIRequest('checkouts/update', parameter).then(response => {
+        if(response.data === true){
+          AUTH.checkAuthentication(null)
+          ROUTER.push('/thankyou')
+        }
+      })
     }
   }
 }

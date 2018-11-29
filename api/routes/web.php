@@ -276,5 +276,12 @@ Route::post('/clients/update', "ClientController@update");
 Route::post('/clients/delete', "ClientController@delete");
 Route::get('/clients/test', 'ClientController@test');
 
+//Paypal Transactions
+Route::post('/paypal_transactions/create', "PaypalTransactionController@create");
+Route::post('/paypal_transactions/retrieve', "PaypalTransactionController@retrieve");
+Route::post('/paypal_transactions/update', "PaypalTransactionController@update");
+Route::post('/paypal_transactions/delete', "PaypalTransactionController@delete");
+Route::get('/paypal_transactions/test', 'PaypalTransactionController@test');
+
 
 
