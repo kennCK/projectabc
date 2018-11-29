@@ -52,21 +52,6 @@
           <label><b>Total</b></label>
           <label class="pull-right" style="padding-right: 10px;"><b>PHP {{data[0].total}}</b></label>
         </span>
-        <span class="item" style="border-bottom: 0px;">
-          {{success}}
-        </span>
-        <span class="item" style="border-bottom: 0px;">
-            <PayPal
-              v-bind:amount="'' + data[0].total"
-              currency="PHP"
-              :client="paypal"
-              :button-style="myStyle"
-              env="sandbox"
-              @payment-completed="paypalCompleted($event)"
-              @payment-cancelled="paypalCancelled($event)"
-              @payment-authorized="paypalAuthorized($event)">
-            </PayPal>
-        </span>
         <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
           <label>Active Payment Method</label>
           
@@ -83,10 +68,25 @@
           
           <label class="pull-right" style="padding-right: 10px;"> {{method.payload_value}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
         </span>
-        <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')" v-if="method === null">Add Payment Method</button>
+        <span class="custom-btn" style="border-bottom: 0px;">
+            <PayPal
+              v-bind:amount="'' + data[0].total"
+              currency="PHP"
+              :client="paypal"
+              :button-style="myStyle"
+              env="sandbox"
+              @payment-completed="paypalCompleted($event)"
+              @payment-cancelled="paypalCancelled($event)"
+              @payment-authorized="paypalAuthorized($event)">
+            </PayPal>
+        </span>
+        <button class="btn btn-primary custom-btn" @click="creditCard()"><i class="fa fa-credit-card"></i> Credit Card</button>
+        <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')" v-if="method === null">Authorized Payment using Credit Card</button>
         <button class="btn btn-warning custom-btn" @click="update()"> Complete Purchase</button>
       </span>
     </span>
+    <cancelled-paypal></cancelled-paypal>
+    <express-credit-card></express-credit-card>
   </div>
 </template>
 <style scoped>
@@ -164,7 +164,7 @@
   color: #fff;
 }
 .custom-btn{
-  margin-top: 25px !important; 
+  margin-top: 10px !important; 
   width: 100% !important;
   height: 50px !important;
 }
@@ -218,6 +218,8 @@ export default {
   components: {
     'objects': require('modules/object/Objects.vue'),
     'rating': require('modules/rating/Ratings.vue'),
+    'cancelled-paypal': require('modules/checkout/CancelPaypal.vue'),
+    'express-credit-card': require('modules/checkout/CreditCard.vue'),
     PayPal
   },
   methods: {
@@ -289,7 +291,7 @@ export default {
       }
     },
     paypalCancelled(data){
-      console.log(data)
+      $('#cancelPaypalModal').modal('show')
     },
     paypalAuthorized(data){
     },
@@ -300,6 +302,9 @@ export default {
           ROUTER.push('/thankyou')
         }
       })
+    },
+    creditCard(){
+      $('#creditCardModal').modal('show')
     }
   }
 }
