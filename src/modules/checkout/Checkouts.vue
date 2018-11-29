@@ -57,7 +57,7 @@
         </span>
         <span class="item" style="border-bottom: 0px;">
             <PayPal
-              amount="10.00"
+              v-bind:amount="data[0].total"
               currency="PHP"
               :client="paypal"
               :button-style="myStyle"
