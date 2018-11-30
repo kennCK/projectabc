@@ -82,7 +82,7 @@
         </span>
         <button class="btn btn-primary custom-btn" @click="creditCard()"><i class="fa fa-credit-card"></i> Credit Card</button>
         <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')" v-if="method === null">Authorized Payment using Credit Card</button>
-        <button class="btn btn-warning custom-btn" @click="update()"> Complete Purchase</button>
+        <button class="btn btn-warning custom-btn" @click="updateStripeAuthorized()"> Complete Purchase</button>
       </span>
     </span>
     <cancelled-paypal></cancelled-paypal>
@@ -254,13 +254,30 @@ export default {
         this.retrieve()
       })
     },
-    update(){
+    updateStripeAuthorized(){
       if(this.data !== null){
         let parameter = {
           id: this.data[0].id,
           payment_type: 'authorized',
           payment_payload: 'credit_card',
           payment_payload_value: this.method.id,
+          sub_total: this.data[0].sub_total,
+          total: this.data[0].total,
+          tax: this.data[0].tax,
+          account_id: this.user.userID,
+          email: this.user.email,
+          order_number: '10101'
+        }
+        this.updateRequest(parameter)
+      }
+    },
+    updateStripeExpress(id){
+      if(this.data !== null){
+        let parameter = {
+          id: this.data[0].id,
+          payment_type: 'express',
+          payment_payload: 'credit_card',
+          payment_payload_value: id,
           sub_total: this.data[0].sub_total,
           total: this.data[0].total,
           tax: this.data[0].tax,

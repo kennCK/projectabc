@@ -241,6 +241,7 @@ Route::get('/stripes/test', 'StripeController@test');
 
 //Stripe Card
 Route::post('/stripe_cards/create', "StripeCardController@create");
+Route::post('/stripe_cards/create_charge', "StripeCardController@createCharge");
 Route::post('/stripe_cards/retrieve', "StripeCardController@retrieve");
 Route::post('/stripe_cards/update', "StripeCardController@update");
 Route::post('/stripe_cards/delete', "StripeCardController@delete");

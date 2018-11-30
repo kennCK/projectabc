@@ -68,7 +68,7 @@ class CheckoutController extends APIController
           // $this->response['data'][$i]['sub_total'] = $this->subTotal;
           // $this->response['data'][$i]['tax'] = $this->tax;
           // $this->response['data'][$i]['total'] = $this->subTotal - $this->tax;
-          if($result[$i]['payment_type'] == 'authorized' && $result[$i]['payment_payload'] == 'credit_card'){
+          if(($result[$i]['payment_type'] == 'authorized' || $result[$i]['payment_type'] == 'express') && $result[$i]['payment_payload'] == 'credit_card'){
             $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_payload_value']);
           }else if($result[$i]['payment_type'] == 'express' && $result[$i]['payment_payload'] == 'paypal'){
             $this->response['data'][$i]['method'] = $this->getPaypalTransaction($result[$i]['payment_payload_value']);
@@ -176,7 +176,7 @@ class CheckoutController extends APIController
         'status'  => 'completed',
         'updated_at'  => Carbon::now()
       );
-      if($paymentType == 'authorized' && $paymentPayload == 'credit_card'){
+      if(($paymentType == 'authorized' || $paymentType == 'express') && $paymentPayload == 'credit_card'){
         $paymentMethod = $this->getPaymentMethod('id', $paymentPayloadValue);
         $updateData['payment_payload_value'] = $paymentPayloadValue;
         $charge = null;
