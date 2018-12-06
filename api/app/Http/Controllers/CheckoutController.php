@@ -9,6 +9,9 @@ use App\StripeCard;
 use App\PaymentMethod;
 use App\Pricing;
 use App\Client;
+use App\Template;
+use App\CustomObject;
+use App\Attribute;
 use App\PaypalTransaction;
 use App\StripeWebhook;
 use Carbon\Carbon;
@@ -188,6 +191,7 @@ class CheckoutController extends APIController
         if($charge && $charge->status == 'succeeded'){
           $this->model = new Checkout();
           $this->updateDB($updateData);
+          $this->managePurchasedTemplate($updateData['id']);
           return $this->response();
         }else{
           return response()->json(array(
@@ -215,6 +219,7 @@ class CheckoutController extends APIController
           $updateData['payment_payload_value'] = $paypal->id;
           $this->model = new Checkout();
           $this->updateDB($updateData);
+          $this->managePurchasedTemplate($updateData['id']);
           return $this->response();
         }else{
           return response()->json(array(
@@ -229,6 +234,70 @@ class CheckoutController extends APIController
             'error' => 'Unable to charge',
             'timestamps'  => Carbon::now()
           ));
+      }
+    }
+
+    public function managePurchasedTemplate($checkoutId){
+      $templates = CheckoutItem::where('checkout_id', '=', $checkoutId)->where('payload', 'template')->get();
+      if(sizeof($templates) > 0){
+        $i = 0;
+        foreach ($templates as $key) {
+          $template = $this->getTemplateDetails($templates[$i]['payload_value']);
+          if($template != null){
+            $pTemplate = new Template();
+            $pTemplate->account_id  = $templates[$i]['account_id'];
+            $pTemplate->title       = $template['title'];
+            $pTemplate->settings    = $template['settings'];
+            $pTemplate->orientation = $template['orientation'];
+            $pTemplate->status      = 'purchased';
+            $pTemplate->purchased   = $template['id'];
+            $pTemplate->categories  = $template['categories'];
+            $pTemplate->price       = $template['price'];
+            $pTemplate->created_at  = Carbon::now();
+            $pTemplate->save();
+            if($pTemplate->id){
+              $this->managePurchasedObjects($templates[$i]['payload_value'], $pTemplate->id);
+            }
+          }
+          $i++;
+        }
+      }
+    }
+
+    public function managePurchasedObjects($oldTemplateId, $newTemplateId){
+       $objects = $this->getPruchasedObjects($oldTemplateId);
+       if(sizeof($objects) > 0){
+          $i = 0;
+          foreach ($objects as $key) {
+            $customObject = new CustomObject();
+            $customObject->template_id = $newTemplateId;
+            $customObject->name = $objects[$i]['name'];
+            $customObject->type = $objects[$i]['type'];
+            $customObject->content = $objects[$i]['content'];
+            $customObject->settings = $objects[$i]['settings'];
+            $customObject->created_at = Carbon::now();
+            $customObject->save();
+            if($customObject->id){
+              $this->managePurchasedAttributes($objects[$i]['attributes'], $customObject->id);
+            }
+            $i++;
+          }
+       }
+    }
+
+    public function managePurchasedAttributes($attributes, $objectId){
+      if(sizeof($attributes) > 0){
+        $i = 0;
+        foreach ($attributes as $key) {
+          $attribute = new Attribute();
+          $attribute->payload = 'object';
+          $attribute->payload_value = $objectId;
+          $attribute->attribute = $attributes[$i]['attribute'];
+          $attribute->value = $attributes[$i]['value'];
+          $attribute->created_at = Carbon::now();
+          $attribute->save();
+          $i++;
+        }
       }
     }
 }

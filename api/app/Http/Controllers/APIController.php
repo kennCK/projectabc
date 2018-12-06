@@ -462,6 +462,27 @@ class APIController extends Controller
     return (sizeof($result) > 0) ? $result[0] : null;     
   }
 
+  public function getPruchasedObjects($id){
+    $result = CustomObject::where('template_id', '=', $id)->get();
+    if(sizeof($result) > 0){
+      $i = 0;
+      foreach ($result as $key) {
+        $result[$i]['attributes'] = $this->getPurchasedAttributes($result[$i]['id']);
+       $i++; 
+      }
+    }
+    return (sizeof($result) > 0) ? $result : null;
+  }
+
+  public function getPurchasedAttributes($id){
+    $result = Attribute::where('payload', '=', 'object')->where('payload_value', '=', $id)->get();
+    if(sizeof($result) > 0){
+      return $result;
+    }
+    return null;
+  }
+
+
   public function getObjects($id){
     $result = CustomObject::where('template_id', '=', $id)->get();
     if(sizeof($result) > 0){
