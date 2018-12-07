@@ -15,9 +15,16 @@ class MarketplaceController extends APIController
       $data = $request->all();
       $accountId = $data['account_id'];
       $cart = $this->getCart($accountId);
+      $purchased = $this->getPurchasedItems($accountId);
       $result = null;
-      if($cart !== null){
-      	$result = Template::whereNotIn('id', $cart)->where('status', '=', 'marketplace')->get();
+      if($cart != null || $purchased != null){
+        if($cart != null && $purchased != null){
+          $result = Template::whereNotIn('id', $cart)->whereNotIn('id', $purchased)->where('status', '=', 'marketplace')->get();
+        }else if($cart != null){
+          $result = Template::whereNotIn('id', $cart)->where('status', '=', 'marketplace')->get();
+        }else if($purchased != null){
+          $result = Template::whereNotIn('id', $purchased)->where('status', '=', 'marketplace')->get();
+        }
       }else{
       	$result = Template::where('status', '=', 'marketplace')->get();
       }
@@ -48,6 +55,20 @@ class MarketplaceController extends APIController
             $i++;
           }
         }
+      }
+      return (sizeof($array) > 0) ? $array : null;
+    }
+
+
+    public function getPurchasedItems($accountId){
+      $checkout = Template::where('account_id', '=', $accountId)->where('status', '=', 'purchased')->get();
+      $array = [];
+      if(sizeof($checkout) > 0){
+          $i = 0;
+          foreach ($checkout as $key) {
+            $array[] = $checkout[$i]['purchased'];
+            $i++;
+          }
       }
       return (sizeof($array) > 0) ? $array : null;
     }
