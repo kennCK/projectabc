@@ -113,7 +113,7 @@ export default{
     }
   },
   {
-    path: '/thankyou',
+    path: '/thankyou/:orderNumber',
     name: 'thankyou',
     component: resolve => require(['modules/checkout/ThankYou.vue'], resolve),
     meta: {

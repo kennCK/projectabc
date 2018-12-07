@@ -23,7 +23,8 @@ class AccountController extends APIController
         "username"  => "unique:accounts"
       );
       $this->notRequired = array(
-        'status'
+        'status',
+        'order_suffix'
       );
     }
 
@@ -36,6 +37,7 @@ class AccountController extends APIController
       'email'           => $request['email'],
       'username'        => $request['username'],
       'account_type'    => $request['account_type'],
+      'order_suffix'    => 'IDF-',
       'created_at'      => Carbon::now()
      );
      $this->model = new Account();

@@ -266,7 +266,7 @@ export default {
           tax: this.data[0].tax,
           account_id: this.user.userID,
           email: this.user.email,
-          order_number: '10101'
+          order_number: this.data[0].order_number
         }
         this.updateRequest(parameter)
       }
@@ -283,7 +283,7 @@ export default {
           tax: this.data[0].tax,
           account_id: this.user.userID,
           email: this.user.email,
-          order_number: '10101'
+          order_number: this.data[0].order_number
         }
         this.updateRequest(parameter)
       }
@@ -302,7 +302,7 @@ export default {
           tax: this.data[0].tax,
           account_id: this.user.userID,
           email: this.user.email,
-          order_number: '10101'
+          order_number: this.data[0].order_number
         }
         this.updateRequest(parameter)
       }
@@ -316,7 +316,7 @@ export default {
       this.APIRequest('checkouts/update', parameter).then(response => {
         if(response.data === true){
           AUTH.checkAuthentication(null)
-          ROUTER.push('/thankyou')
+          ROUTER.push('/thankyou/' + this.data[0].order_number)
         }
       })
     },

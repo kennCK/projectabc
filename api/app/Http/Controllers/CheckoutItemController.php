@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\CheckoutItem;
 use App\Checkout;
+use App\Account;
 class CheckoutItemController extends APIController
 {
     function __construct(){
@@ -24,6 +25,7 @@ class CheckoutItemController extends APIController
     	}else{
     		$checkout = new Checkout();
     		$checkout->account_id = $data['account_id'];
+            $checkout->order_number = $this->getOrderNumber($data['account_id']);
     		$checkout->sub_total = 0;
     		$checkout->tax = 0;
     		$checkout->total = 0;
@@ -43,5 +45,25 @@ class CheckoutItemController extends APIController
     		}
     	}
     	
+    }
+    public function getOrderNumber($accountId){
+      $account = Account::where('id', '=', $accountId)->first();
+      if($account){
+        $checkouts = Checkout::where('account_id', '=', $accountId)->count();
+        if($checkouts){
+          if($checkouts >= 1000){
+            return $account->order_suffix.($checkouts + 1);
+          }else if($checkouts >= 100){
+            return $account->order_suffix.'0'.($checkouts + 1);
+          }else if($checkouts >= 10){
+            return $account->order_suffix.'00'.($checkouts + 1);
+          }else if($checkouts >= 0){
+            return $account->order_suffix.'000'.($checkouts + 1);
+          }
+        }else{
+          return $account->order_suffix.'0001';
+        }
+      }
+      return null;
     }
 }

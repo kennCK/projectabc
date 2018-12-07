@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Account;
 use App\Checkout;
 use App\CheckoutItem;
 use App\StripeCard;
@@ -25,6 +26,7 @@ class CheckoutController extends APIController
     	$this->model = new Checkout();
 
       $this->notRequired = array(
+        'order_number',
         'payment_type',
         'payment_payload',
         'payment_payload_value'
@@ -235,6 +237,27 @@ class CheckoutController extends APIController
             'timestamps'  => Carbon::now()
           ));
       }
+    }
+
+    public function getOrderNumber($accountId){
+      $account = Account::where('id', '=', $accountId)->first();
+      if($account){
+        $checkouts = Checkout::where('account_id', '=', $accountId)->count();
+        if($checkouts){
+          if($checkouts >= 1000){
+            return $account->order_suffix.$checkouts;
+          }else if($checkouts >= 100){
+            return $account->order_suffix.'0'.$checkouts;
+          }else if($checkouts >= 10){
+            return $account->order_suffix.'00'.$checkouts;
+          }else if($checkouts >= 0){
+            return $account->order_suffix.'000'.$checkouts;
+          }
+        }else{
+          return $account->order_suffix.'0001';
+        }
+      }
+      return null;
     }
 
     public function managePurchasedTemplate($checkoutId){

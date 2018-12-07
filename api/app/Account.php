@@ -9,5 +9,5 @@ class Account extends APIModel
 {
     protected $table = 'accounts';
     protected $hidden = array('password');
-    protected $fillable = ['username', 'password', 'account_type', 'status', 'verified'];
+    protected $fillable = ['username', 'password', 'account_type', 'status', 'verified', 'order_suffix'];
 }

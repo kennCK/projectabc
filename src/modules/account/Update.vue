@@ -13,6 +13,7 @@
       <account v-if="menu[1].flag === true"></account>
       <payment v-if="menu[2].flag === true"></payment>
       <billing-information v-if="menu[3].flag === true"></billing-information>
+      <merchant v-if="menu[4].flag === true"></merchant>
     </div>
   </div>
 
@@ -97,7 +98,8 @@ export default {
         {title: 'Profile', flag: true, type: 'profile'},
         {title: 'Account', flag: false, type: 'account'},
         {title: 'Payment Accounts', flag: false, type: 'payment_method'},
-        {title: 'Billing Informations', flag: false, type: 'billing_information'}
+        {title: 'Billing Information', flag: false, type: 'billing_information'},
+        {title: 'Merchant Setting', flag: false, type: 'merchant'}
       ],
       prevIndex: 0,
       parameter: this.$route.params.parameter
@@ -107,7 +109,8 @@ export default {
     'profile': require('modules/account/Profile.vue'),
     'account': require('modules/account/Account.vue'),
     'payment': require('modules/payment/Create.vue'),
-    'billing-information': require('modules/billing/Information.vue')
+    'billing-information': require('modules/billing/Information.vue'),
+    'merchant': require('modules/merchant/Settings.vue')
   },
   methods: {
     redirect(path){

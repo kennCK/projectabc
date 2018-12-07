@@ -2,7 +2,7 @@
 	<div class="holder" v-if="data !== null">
 		<span class="thank-you-header">
 			<h1 style="line-height: 125px;">Thank you for your order, {{user.username}}!</h1>
-			<label><b>Order # 12312</b></label>
+			<label><b>Order # {{data.order_number}}</b></label>
 			<label>We've sent an email for your receipt and payment notification at {{user.email}}.</label>
 		</span>
 		<span class="thank-you-item">
@@ -117,6 +117,10 @@ export default {
         }, {
           value: 'completed',
           column: 'status',
+          clause: '='
+        }, {
+          value: this.$route.params.orderNumber,
+          column: 'order_number',
           clause: '='
         }],
         account_id: this.user.userID
