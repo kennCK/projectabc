@@ -55,6 +55,7 @@
         </span>
       </div>
     </div>
+    <empty v-if="data === null" :title="'Looks like you have not added an employee to your template!'" :action="'Click the button New Employee to get started.'"></empty>
     <update></update>
     <editor></editor>
     <edit></edit>
@@ -195,6 +196,7 @@
   float: left;
   color: #555;
 }
+
 </style>
 <script>
 import ROUTER from '../../router'
@@ -221,7 +223,8 @@ export default {
     'editor': require('modules/editor/Editor.vue'),
     'comments': require('modules/comment/Comments.vue'),
     'edit': require('modules/employee/Edit.vue'),
-    'print': require('modules/print/Print.vue')
+    'print': require('modules/print/Print.vue'),
+    'empty': require('modules/empty/Empty.vue')
   },
   methods: {
     redirect(parameter){

@@ -1,7 +1,7 @@
 <template>
 	<div class="holder">
     <create></create>
-    <div class="results">
+    <div class="results" v-if="data !== null">
       <table class="table table-bordered table-hover table-responsive" style="margin-top: 25px;">
         <thead>
           <tr>
@@ -21,6 +21,7 @@
         </tbody>
       </table>
     </div>
+    <empty v-if="data === null" :title="'Looks like you have not added a pricing!'" :action="'Click the button New Price to get started.'"></empty>
     <update></update>
 	</div>
 </template>
@@ -60,7 +61,8 @@ export default {
   },
   components: {
     'create': require('modules/pricing/Create.vue'),
-    'update': require('modules/pricing/Update.vue')
+    'update': require('modules/pricing/Update.vue'),
+    'empty': require('modules/empty/Empty.vue')
   },
   methods: {
     redirect(parameter){

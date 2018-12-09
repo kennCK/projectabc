@@ -44,7 +44,10 @@ class AccountController extends APIController
      $this->insertDB($dataAccount);
      $accountId = $this->response['data'];
 
-     $this->createDetails($accountId);
+     if($accountId){
+       $this->createDetails($accountId);
+     }
+    
      return $this->response();
     }
 
