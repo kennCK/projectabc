@@ -66,7 +66,6 @@
 .text, .photo{
   background: rgba(250, 250, 250, 0) !important;
 }
-
 .display{
   width: 100%;
   float: left;
