@@ -1,6 +1,6 @@
 <template>
   <div class="image-holder">
-    <button class="btn btn-primary pull-right" @click="addImage()"><i class="fa fa-plus"></i> New Image
+    <button class="btn btn-primary pull-right" @click="addImage()"><i class="fa fa-plus"></i> Upload Image
       <input type="file" @change="setUpFileUpload($event)" id="newImage">
     </button>
     <div class="image-list" v-if="data !== null">
@@ -14,6 +14,8 @@
         </div>
       </div>
     </div>
+      <empty v-if="data === null" :title="'Looks like you have not uploaded an images!'" :action="'Click the button Upload Image to get started.'">
+      </empty>
   </div>
 </template>
 <style scoped>
@@ -87,6 +89,9 @@ export default {
       data: null,
       file: null
     }
+  },
+  components: {
+    'empty': require('modules/empty/Empty.vue')
   },
   methods: {
     redirect(parameter){

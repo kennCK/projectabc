@@ -129,6 +129,14 @@ Route::post('/account_images/update', "AccountImageController@update");
 Route::post('/account_images/delete', "AccountImageController@delete");
 Route::get('/account_images/test', 'AccountImageController@test');
 
+//Billing Informations
+Route::get('/billing_informations/test', 'BillingInformationController@test');
+Route::post('/billing_informations/create', 'BillingInformationController@create');
+Route::post('/billing_informations/retrieve', 'BillingInformationController@retrieve');
+Route::post('/billing_informations/update', 'BillingInformationController@update');
+Route::post('/billing_informations/delete', 'BillingInformationController@delete');
+
+
 //Templates
 Route::post('/templates/create', "TemplateController@create");
 Route::post('/templates/retrieve', "TemplateController@retrieve");
@@ -194,7 +202,7 @@ Route::post('/comment_replies/delete', "CommentReplyController@delete");
 Route::get('/comment_replies/test', 'CommentReplyController@test');
 
 
-//Checkouts
+//Marketplace
 Route::post('/marketplace/create', "MarketplaceController@create");
 Route::post('/marketplace/retrieve', "MarketplaceController@retrieve");
 Route::post('/marketplace/update', "MarketplaceController@update");
@@ -204,9 +212,77 @@ Route::get('/marketplace/test', 'MarketplaceController@test');
 //Checkouts
 Route::post('/checkouts/create', "CheckoutController@create");
 Route::post('/checkouts/retrieve', "CheckoutController@retrieve");
+Route::post('/checkouts/retrieve_summary', "CheckoutController@retrieveSummary");
 Route::post('/checkouts/update', "CheckoutController@update");
 Route::post('/checkouts/delete', "CheckoutController@delete");
 Route::get('/checkouts/test', 'CheckoutController@test');
+
+//Checkout Items
+Route::post('/checkout_items/create', "CheckoutItemController@create");
+Route::post('/checkout_items/retrieve', "CheckoutItemController@retrieve");
+Route::post('/checkout_items/update', "CheckoutItemController@update");
+Route::post('/checkout_items/delete', "CheckoutItemController@delete");
+Route::get('/checkout_items/test', 'CheckoutItemController@test');
+
+//Ratings
+Route::post('/ratings/create', "RatingController@create");
+Route::post('/ratings/retrieve', "RatingController@retrieve");
+Route::post('/ratings/update', "RatingController@update");
+Route::post('/ratings/delete', "RatingController@delete");
+Route::get('/ratings/test', 'RatingController@test');
+
+//Stripes
+Route::post('/stripes/create', "StripeController@create");
+Route::post('/stripes/retrieve', "StripeController@retrieve");
+Route::post('/stripes/update', "StripeController@update");
+Route::post('/stripes/delete', "StripeController@delete");
+Route::get('/stripes/test', 'StripeController@test');
+
+
+//Stripe Card
+Route::post('/stripe_cards/create', "StripeCardController@create");
+Route::post('/stripe_cards/create_charge', "StripeCardController@createCharge");
+Route::post('/stripe_cards/retrieve', "StripeCardController@retrieve");
+Route::post('/stripe_cards/update', "StripeCardController@update");
+Route::post('/stripe_cards/delete', "StripeCardController@delete");
+Route::get('/stripe_cards/test', 'StripeCardController@test');
+
+
+//Payment Methods
+Route::post('/payment_methods/create', "PaymentMethodController@create");
+Route::post('/payment_methods/retrieve', "PaymentMethodController@retrieve");
+Route::post('/payment_methods/update', "PaymentMethodController@update");
+Route::post('/payment_methods/delete', "PaymentMethodController@delete");
+Route::get('/payment_methods/test', 'PaymentMethodController@test');
+
+//Products
+Route::post('/products/create', "ProductController@create");
+Route::post('/products/retrieve', "ProductController@retrieve");
+Route::post('/products/update', "ProductController@update");
+Route::post('/products/delete', "ProductController@delete");
+Route::get('/products/test', 'ProductController@test');
+
+
+//Pricing
+Route::post('/pricings/create', "PricingController@create");
+Route::post('/pricings/retrieve', "PricingController@retrieve");
+Route::post('/pricings/update', "PricingController@update");
+Route::post('/pricings/delete', "PricingController@delete");
+Route::get('/pricings/test', 'PricingController@test');
+
+//Clients
+Route::post('/clients/create', "ClientController@create");
+Route::post('/clients/retrieve', "ClientController@retrieve");
+Route::post('/clients/update', "ClientController@update");
+Route::post('/clients/delete', "ClientController@delete");
+Route::get('/clients/test', 'ClientController@test');
+
+//Paypal Transactions
+Route::post('/paypal_transactions/create', "PaypalTransactionController@create");
+Route::post('/paypal_transactions/retrieve', "PaypalTransactionController@retrieve");
+Route::post('/paypal_transactions/update', "PaypalTransactionController@update");
+Route::post('/paypal_transactions/delete', "PaypalTransactionController@delete");
+Route::get('/paypal_transactions/test', 'PaypalTransactionController@test');
 
 
 

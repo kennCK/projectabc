@@ -11,6 +11,9 @@
     <div class="content">
       <profile v-if="menu[0].flag === true"></profile>
       <account v-if="menu[1].flag === true"></account>
+      <payment v-if="menu[2].flag === true"></payment>
+      <billing-information v-if="menu[3].flag === true"></billing-information>
+      <merchant v-if="menu[4].flag === true"></merchant>
     </div>
   </div>
 
@@ -71,6 +74,20 @@ import axios from 'axios'
 import CONFIG from '../../config.js'
 export default {
   mounted(){
+    if(this.parameter !== null){
+      let flag = false
+      for (var i = 0; i < this.menu.length; i++) {
+        if(this.parameter === this.menu[i].type){
+          flag = true
+          this.makeActive(i)
+        }
+      }
+      if(flag === false){
+        this.makeActive(0)
+      }
+    }else{
+      this.makeActive(0)
+    }
   },
   data(){
     return {
@@ -78,16 +95,22 @@ export default {
       tokenData: AUTH.tokenData,
       config: CONFIG,
       menu: [
-        {title: 'Profile', flag: true},
-        {title: 'Account', flag: false},
-        {title: 'Billing', flag: false}
+        {title: 'Profile', flag: true, type: 'profile'},
+        {title: 'Account', flag: false, type: 'account'},
+        {title: 'Payment Accounts', flag: false, type: 'payment_method'},
+        {title: 'Billing Information', flag: false, type: 'billing_information'},
+        {title: 'Merchant Setting', flag: false, type: 'merchant'}
       ],
-      prevIndex: null
+      prevIndex: 0,
+      parameter: this.$route.params.parameter
     }
   },
   components: {
     'profile': require('modules/account/Profile.vue'),
-    'account': require('modules/account/Account.vue')
+    'account': require('modules/account/Account.vue'),
+    'payment': require('modules/payment/Create.vue'),
+    'billing-information': require('modules/billing/Information.vue'),
+    'merchant': require('modules/merchant/Settings.vue')
   },
   methods: {
     redirect(path){
@@ -99,7 +122,7 @@ export default {
         this.menu[0].flag = false
         this.menu[this.prevIndex].flag = true
       }else{
-        if(this.prevIndex !== null){
+        if(this.prevIndex !== index){
           this.menu[this.prevIndex].flag = false
           this.menu[index].flag = true
           this.prevIndex = index

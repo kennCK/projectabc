@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Account;
 use App\AccountInformation;
+use App\BillingInformation;
 use App\AccountProfile;
 use App\Checkout;
+use App\CheckoutItem;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +23,8 @@ class AccountController extends APIController
         "username"  => "unique:accounts"
       );
       $this->notRequired = array(
-        'status'
+        'status',
+        'order_suffix'
       );
     }
 
@@ -34,13 +37,17 @@ class AccountController extends APIController
       'email'           => $request['email'],
       'username'        => $request['username'],
       'account_type'    => $request['account_type'],
+      'order_suffix'    => 'IDF-',
       'created_at'      => Carbon::now()
      );
      $this->model = new Account();
      $this->insertDB($dataAccount);
      $accountId = $this->response['data'];
 
-     $this->createDetails($accountId);
+     if($accountId){
+       $this->createDetails($accountId);
+     }
+    
      return $this->response();
     }
 
@@ -49,6 +56,11 @@ class AccountController extends APIController
       $info->account_id = $accountId;
       $info->created_at = Carbon::now();
       $info->save();
+
+      $billing = new BillingInformation();
+      $billing->account_id = $accountId;
+      $billing->created_at = Carbon::now();
+      $billing->save();
     }
 
     public function generateCode(){
@@ -128,10 +140,9 @@ class AccountController extends APIController
           $result[$i]['account_profile_flag'] = false;
           $accountInfoResult = AccountInformation::where('account_id', '=', $accountId)->get();
           $accountProfileResult = AccountProfile::where('account_id', '=', $accountId)->orderBy('created_at', 'DESC')->get();
-          $checkout = Checkout::where('account_id', '=', $accountId)->where('status', '=', 'added')->get();
           $result[$i]['account_information'] = (sizeof($accountInfoResult) > 0) ? $accountInfoResult[0] : null;
           $result[$i]['account_profile'] = (sizeof($accountProfileResult) > 0) ? $accountProfileResult[0] : null;
-          $result[$i]['checkout'] = sizeof($checkout);
+          $result[$i]['checkout'] = $this->getCheckoutItem($accountId);
           $i++;
         }
         return response()->json(array('data' => $result));
@@ -139,6 +150,17 @@ class AccountController extends APIController
         return $this->response();
       }
     }
+
+    public function getCheckoutItem($accountId){
+      $checkout = Checkout::where('account_id', '=', $accountId)->where('status', '=', 'added')->first();
+      if($checkout){
+        return CheckoutItem::where('checkout_id', '=', $checkout->id)->count();
+      }else{
+        return 0;
+      }
+    }
+
+
 
 
 

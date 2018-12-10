@@ -3,26 +3,36 @@
     <span class="list" v-if="data !== null">
       <span class="items">
         <span class="title">
-          Cart Items
+          <b>Your Items</b>
         </span>
-        <span class="item" v-for="item, index in data">
+        <span class="item" v-for="item, index in data[0].items" v-if="data[0].items !== null">
           <span class="objects-holder" v-if="item.payload === 'template'">
             <objects :objects="item.objects" v-if="item.objects !== null"></objects>
           </span>
-          <span class="details" v-if="item.payload === 'template'">
-              <label style="margin-top: 10px;">
+          <span class="objects-holder" v-if="item.payload === 'employee' && item.employee.front_objects !== null">
+            <objects :objects="item.employee.front_objects"></objects>
+          </span>
+          <span class="objects-holder" v-if="item.payload === 'employee' && item.employee.back_objects !== null">
+            <objects :objects="item.employee.back_objects"></objects>
+          </span>
+          <span class="details" v-if="item.payload === 'template' || (item.payload === 'employee' && (item.employee.back_objects === null || item.employee.front_objects === null))">
+              <label style="margin-top: 10px;" v-if="item.payload === 'employee'">
+                Price: Php {{item.employee.price}}
+                <i class="fa fa-trash pull-right text-danger delete" style="font-size: 24px; padding-right: 25px;" @click="remove(item.id)"></i>
+              </label>
+              <label style="margin-top: 10px;" v-if="item.payload === 'template'">
                 <b>{{item.template.title}}</b>
                 <i class="fa fa-trash pull-right text-danger delete" style="font-size: 24px; padding-right: 25px;" @click="remove(item.id)"></i>
               </label>
-              <label>Price Php {{item.template.price}}</label>
-              <label>Cetegory: {{item.template.categories}}</label>
+              <label v-if="item.payload === 'template'">Price Php {{item.template.price}}</label>
+              <label v-if="item.payload === 'template'">Cetegory: {{item.template.categories}}</label>
+              <label v-if="item.payload === 'template'">
+                <rating :payload="'template'" :payloadValue="item.payload_value"></rating>
+              </label>
           </span>
-          <span class="two-objects-holder" v-if="item.payload === 'employee'">
-            <objects :objects="item.employee.front_objects" v-if="item.employee.front_objects !== null"></objects>
-            <objects :objects="item.employee.back_objects" v-if="item.employee.back_objects !== null"></objects>
-          </span>
-          <span class="two-details" v-if="item.payload === 'employee'">
+          <span class="two-details" v-if="item.payload === 'employee' && item.employee.back_objects !== null && item.employee.front_objects !== null">
               <label style="margin-top: 10px;">
+                Price Php {{item.employee.price}}
                 <i class="fa fa-trash pull-right text-danger delete" style="font-size: 24px; padding-right: 25px;" @click="remove(item.id)"></i>
               </label>
           </span>
@@ -42,9 +52,41 @@
           <label><b>Total</b></label>
           <label class="pull-right" style="padding-right: 10px;"><b>PHP {{data[0].total}}</b></label>
         </span>
-        <button class="btn btn-warning custom-btn"> Checkout</button>
+        <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
+          <label>Active Payment Method</label>
+          
+          <label class="pull-right" style="padding-right: 10px;">******** {{method.stripe.last4}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
+        </span>
+        <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.paypal !== null">
+          <label>Active Payment Method</label>
+          
+          <label class="pull-right" style="padding-right: 10px;"> {{method.paypal.nickname}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
+        </span>
+
+        <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.payload === 'cod'">
+          <label>Active Payment Method</label>
+          
+          <label class="pull-right" style="padding-right: 10px;"> {{method.payload_value}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
+        </span>
+        <span class="custom-btn" style="border-bottom: 0px;">
+            <PayPal
+              v-bind:amount="'' + data[0].total"
+              currency="PHP"
+              :client="paypal"
+              :button-style="myStyle"
+              env="sandbox"
+              @payment-completed="paypalCompleted($event)"
+              @payment-cancelled="paypalCancelled($event)"
+              @payment-authorized="paypalAuthorized($event)">
+            </PayPal>
+        </span>
+        <button class="btn btn-primary custom-btn" @click="creditCard()"><i class="fa fa-credit-card"></i> Credit Card</button>
+        <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')" v-if="method === null">Authorized Payment using Credit Card</button>
+        <button class="btn btn-warning custom-btn" @click="updateStripeAuthorized()"> Complete Purchase</button>
       </span>
     </span>
+    <cancelled-paypal></cancelled-paypal>
+    <express-credit-card></express-credit-card>
   </div>
 </template>
 <style scoped>
@@ -95,7 +137,7 @@
 }
 .two-details{
   float: left;
-  width: 20%;
+  width: 40%;
 }
 .details label, .two-details label{
   width: 100%;
@@ -122,12 +164,21 @@
   color: #fff;
 }
 .custom-btn{
-  margin-top: 25px !important; 
+  margin-top: 10px !important; 
   width: 100% !important;
   height: 50px !important;
 }
+.fa-edit{
+  font-size: 24px;
+  line-height: 50px;
+  float: left;
+}
 .delete:hover{
   cursor: pointer;
+}
+.fa-edit:hover{
+  cursor: pointer;
+  color: #22b173;
 }
 </style>
 <script>
@@ -135,6 +186,7 @@ import ROUTER from '../../router'
 import AUTH from '../../services/auth'
 import CONFIG from '../../config.js'
 import axios from 'axios'
+import PayPal from 'vue-paypal-checkout'
 export default {
   mounted(){
     this.retrieve()
@@ -144,11 +196,31 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      data: null
+      data: null,
+      method: null,
+      paypal: {
+        sandbox: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH',
+        production: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH'
+      },
+      credentials: {
+        sandbox: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH',
+        production: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH'
+      },
+      myStyle: {
+        label: 'checkout',
+        size: 'responsive',
+        shape: 'pill',
+        color: 'gold'
+      },
+      success: null
     }
   },
   components: {
-    'objects': require('modules/object/Objects.vue')
+    'objects': require('modules/object/Objects.vue'),
+    'rating': require('modules/rating/Ratings.vue'),
+    'cancelled-paypal': require('modules/checkout/CancelPaypal.vue'),
+    'express-credit-card': require('modules/checkout/CreditCard.vue'),
+    PayPal
   },
   methods: {
     redirect(parameter){
@@ -160,11 +232,14 @@ export default {
           value: this.user.userID,
           column: 'account_id',
           clause: '='
-        }]
+        }],
+        account_id: this.user.userID
       }
       this.APIRequest('checkouts/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data
+          this.method = response.method
+          this.initPaypal()
         }else{
           this.data = null
         }
@@ -174,10 +249,79 @@ export default {
       let parameter = {
         id: id
       }
-      this.APIRequest('checkouts/delete', parameter).then(response => {
+      this.APIRequest('checkout_items/delete', parameter).then(response => {
         AUTH.checkAuthentication(null)
         this.retrieve()
       })
+    },
+    updateStripeAuthorized(){
+      if(this.data !== null){
+        let parameter = {
+          id: this.data[0].id,
+          payment_type: 'authorized',
+          payment_payload: 'credit_card',
+          payment_payload_value: this.method.id,
+          sub_total: this.data[0].sub_total,
+          total: this.data[0].total,
+          tax: this.data[0].tax,
+          account_id: this.user.userID,
+          email: this.user.email,
+          order_number: this.data[0].order_number
+        }
+        this.updateRequest(parameter)
+      }
+    },
+    updateStripeExpress(id){
+      if(this.data !== null){
+        let parameter = {
+          id: this.data[0].id,
+          payment_type: 'express',
+          payment_payload: 'credit_card',
+          payment_payload_value: id,
+          sub_total: this.data[0].sub_total,
+          total: this.data[0].total,
+          tax: this.data[0].tax,
+          account_id: this.user.userID,
+          email: this.user.email,
+          order_number: this.data[0].order_number
+        }
+        this.updateRequest(parameter)
+      }
+    },
+    initPaypal(){
+    },
+    paypalCompleted(data){
+      if(data.state === 'approved'){
+        let parameter = {
+          id: this.data[0].id,
+          payment_type: 'express',
+          payment_payload: 'paypal',
+          payment_payload_value: data,
+          sub_total: this.data[0].sub_total,
+          total: this.data[0].total,
+          tax: this.data[0].tax,
+          account_id: this.user.userID,
+          email: this.user.email,
+          order_number: this.data[0].order_number
+        }
+        this.updateRequest(parameter)
+      }
+    },
+    paypalCancelled(data){
+      $('#cancelPaypalModal').modal('show')
+    },
+    paypalAuthorized(data){
+    },
+    updateRequest(parameter){
+      this.APIRequest('checkouts/update', parameter).then(response => {
+        if(response.data === true){
+          AUTH.checkAuthentication(null)
+          ROUTER.push('/thankyou/' + this.data[0].order_number)
+        }
+      })
+    },
+    creditCard(){
+      $('#creditCardModal').modal('show')
     }
   }
 }

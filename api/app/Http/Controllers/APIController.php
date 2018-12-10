@@ -22,8 +22,12 @@ use App\CustomObject;
 use App\Attribute;
 use App\Template;
 use App\Checkout;
+use App\CheckoutItem;
 use App\Employee;
 use App\EmployeeColumn;
+use App\PaymentMethod;
+use App\StripeCard;
+use App\PaypalTransaction;
 class APIController extends Controller
 {
   /*
@@ -458,6 +462,27 @@ class APIController extends Controller
     return (sizeof($result) > 0) ? $result[0] : null;     
   }
 
+  public function getPruchasedObjects($id){
+    $result = CustomObject::where('template_id', '=', $id)->get();
+    if(sizeof($result) > 0){
+      $i = 0;
+      foreach ($result as $key) {
+        $result[$i]['attributes'] = $this->getPurchasedAttributes($result[$i]['id']);
+       $i++; 
+      }
+    }
+    return (sizeof($result) > 0) ? $result : null;
+  }
+
+  public function getPurchasedAttributes($id){
+    $result = Attribute::where('payload', '=', 'object')->where('payload_value', '=', $id)->get();
+    if(sizeof($result) > 0){
+      return $result;
+    }
+    return null;
+  }
+
+
   public function getObjects($id){
     $result = CustomObject::where('template_id', '=', $id)->get();
     if(sizeof($result) > 0){
@@ -485,8 +510,14 @@ class APIController extends Controller
     return null;
   }
 
-  public function getCheckout($payload, $payloadValue){
-    $result = Checkout::where('payload', '=', $payload)->where('payload_value', '=', $payloadValue)->get();
+  public function getCheckout($payload, $payloadValue, $accountId){
+    $checkout = Checkout::where('account_id', '=', $accountId)->where('status', '=', 'added')->first();
+    if($checkout){
+      $item = CheckoutItem::where('payload', '=', $payload)->where('payload_value', '=', $payloadValue)->where('checkout_id', '=', $checkout->id)->first();
+      return ($item) ? $item : null;
+    }else{
+      return null;
+    }
     return (sizeof($result) > 0) ? $result[0] : null;
   }
 
@@ -534,6 +565,34 @@ class APIController extends Controller
     public function getEmployeeColumn($column, $employeeId){
       $result = EmployeeColumn::where('employee_id', '=', $employeeId)->where('column', '=', $column)->get();
       return (sizeof($result) > 0) ? $result[0]['value'] : null;
+    }
+
+    public function getPaypalTransaction($id){
+      $response = array();
+      $result = PaypalTransaction::where('id', '=', $id)->get();
+      $response['stripe'] = null;
+      $response['paypal'] =  (sizeof($result) > 0) ? $result[0] : null;
+      return $response;
+    }
+
+    public function getPaymentMethod($column, $value){
+      $result = PaymentMethod::where($column, '=', $value)->where('status', '=', 'active')->get();
+      if(sizeof($result) > 0){
+        $payload = $result[0]['payload'];
+        $payloadValue = $result[0]['payload_value'];
+        $result[0]['stripe'] = null;
+        $result[0]['paypal'] = null;
+        if($payload == 'credit_card'){
+          // stripe
+          $cards = StripeCard::where('id', '=', $payloadValue)->first();
+          $result[0]['stripe'] = ($cards) ? $cards : null;
+        }else if($payload == 'paypal'){
+          // paypal
+        }else if($payload == 'cod'){
+          // cod
+        }
+      }
+      return (sizeof($result) > 0) ? $result[0] : null;
     }
 
 

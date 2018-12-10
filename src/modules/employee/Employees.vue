@@ -55,6 +55,7 @@
         </span>
       </div>
     </div>
+    <empty v-if="data === null" :title="'Looks like you have not added an employee to your template!'" :action="'Click the button New Employee to get started.'"></empty>
     <update></update>
     <editor></editor>
     <edit></edit>
@@ -195,6 +196,7 @@
   float: left;
   color: #555;
 }
+
 </style>
 <script>
 import ROUTER from '../../router'
@@ -221,7 +223,8 @@ export default {
     'editor': require('modules/editor/Editor.vue'),
     'comments': require('modules/comment/Comments.vue'),
     'edit': require('modules/employee/Edit.vue'),
-    'print': require('modules/print/Print.vue')
+    'print': require('modules/print/Print.vue'),
+    'empty': require('modules/empty/Empty.vue')
   },
   methods: {
     redirect(parameter){
@@ -257,6 +260,11 @@ export default {
     },
     showComments(id){
       $('#overlay-' + id).css({'display': 'block'})
+      for (var i = 0; i < this.$children.length; i++) {
+        if(this.$children[i].$el.id === ('comment' + id)){
+          this.$children[i].retrieve()
+        }
+      }
     },
     hideComments(id){
       $('#overlay-' + id).css({'display': 'none'})
@@ -294,10 +302,9 @@ export default {
         account_id: this.user.userID,
         payload: 'employee',
         payload_value: id,
-        status: 'added',
         price: 0
       }
-      this.APIRequest('checkouts/create', parameter).then(response => {
+      this.APIRequest('checkout_items/create', parameter).then(response => {
         if(response.data > 0){
           AUTH.checkAuthentication(null)
           this.retrieve()

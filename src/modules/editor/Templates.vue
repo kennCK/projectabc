@@ -4,6 +4,7 @@
     <div class="template-list" v-if="data !==null">
       <item v-for="item, index in data" :item="item" :key="item.id" :index="index"></item>
     </div>
+    <empty v-if="data === null" :title="'Looks like you have not created or purchased a tempate!'" :action="'Click the button New Template or purchase a template to get started.'"></empty>
     <marketplace></marketplace>
 	</div>
 </template>
@@ -40,7 +41,8 @@ export default {
   components: {
     'create': require('modules/editor/Create.vue'),
     'item': require('modules/editor/Item.vue'),
-    'marketplace': require('modules/marketplace/Marketplace.vue')
+    'marketplace': require('modules/marketplace/Marketplace.vue'),
+    'empty': require('modules/empty/Empty.vue')
   },
   methods: {
     redirect(parameter){

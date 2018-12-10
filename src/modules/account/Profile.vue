@@ -119,6 +119,18 @@
 .custom-block input{
   display: none;
 }
+@media screen and (max-width: 992px){
+  .holder{
+    width: 96%;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+  .sidebar, .inputs{
+    width: 100%;
+    margin-right: 0%;
+    margin-left: 0%;
+  }
+}
 </style>
 <script>
 import ROUTER from '../../router'

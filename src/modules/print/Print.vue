@@ -11,9 +11,11 @@
           </div>
           <div class="modal-body">
             <div class="print-content">
-              <div class="holder" style="margin-right: 20px;" ref="printFrontObject">
-                <objects :objects="item.front_objects" v-if="item.front_objects !== null" ref="objects">
-                </objects>
+              <div class="holder" style="margin-right: 20px;">
+                <span id="frontObject">
+                  <objects :objects="item.front_objects" v-if="item.front_objects !== null"></objects>
+                </span>
+                
                 <div class="display">
                   <i class="fas fa-spinner fa-spin"></i>
                   <label>Printing...</label>
@@ -21,8 +23,9 @@
               </div>
 
               <div class="holder">
-                <objects :objects="item.back_objects" v-if="item.back_objects !== null">
-                </objects>
+                <span id="backObject">
+                  <objects :objects="item.back_objects" v-if="item.back_objects !== null"></objects>
+                </span>
                 <div class="display">
                   <i class="fas fa-spinner fa-spin"></i>
                   <label>Printing...</label>
@@ -32,8 +35,7 @@
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" @click="hideModal()">Cancel</button>
-              <button type="button" class="btn btn-primary" @click="printID(item.front_objects)">Print</button>
-
+              <button type="button" class="btn btn-primary" @click="print()">Print</button>
           </div>
         </div>
       </div>
@@ -64,7 +66,6 @@
 .text, .photo{
   background: rgba(250, 250, 250, 0) !important;
 }
-
 .display{
   width: 100%;
   float: left;
@@ -116,40 +117,13 @@ export default {
       this.item = null
       $('#printModal').modal('hide')
     },
-    printID(objects){
-      let header = '<!DOCTYPE html><html><head>'
-      let css = '<style>.preview{ height: 324px;position: absolute; width: 100%; float: left;}'
-      css += ' .division, .text, .photo{ position: absolute;}'
-      css += 'p{color: red;}'
-      css += '.text, .photo{ background: rgba(250, 250, 250, 0) !important;}</style></head>'
-      let body = '<body>'
-      let objectPrint = this.generateObject(objects)
-      let bodyEnd = '</body></html>'
-      var win = window.open()
-      self.focus()
-      win.document.open()
-      win.document.write(header + css + body + objectPrint + bodyEnd)
-      win.document.close()
-      win.print()
-      win.close()
-    },
-    generateObject(objects){
-      let response = '<span class="preview">'
-      console.log(objects.length)
-      for (var i = 0; i < objects.length; i++) {
-        response += '<span>'
-        let attributes = JSON.parse(objects[i].attributes)
-        console.log(attributes)
-        if(objects[i].type === 'division'){
-          response += '<span class="division"' + 'style="' + attributes + '"></span>'
-        }else if(objects[i].type === 'text'){
-          response += '<label class="text"' + 'style="' + attributes + '">' + objects[i].content + '</label>'
-        }else if(objects[i].type === 'photo'){
-          response += '<img class="photo"' + 'src="' + this.config.BACKEND_URL + objects[i].content + '"' + 'style="' + attributes + '>'
-        }
-      }
-      response += '</span>'
-      return response
+    print(){
+      // let Css = require('json-to-css')
+      let printContents = document.getElementById('frontObject').innerHTML
+      let originalContents = document.body.innerHTML
+      document.body.innerHTML = printContents
+      window.print()
+      document.body.innerHTML = originalContents
     }
   }
 }
