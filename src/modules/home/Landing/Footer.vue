@@ -2,7 +2,7 @@
   <footer>
     <div class="footer">
       <ul class="footer-widget contact-us">
-        <li class="title"><b>ClassWorx</b></li>
+        <li class="title"><b>ID Factory</b></li>
         <li class="link"><a v-on:click="redirect('/')">Home</a></li>
        <!--  <li class="link"><a v-on:click="redirect('/')">About Us</a></li>
         <li class="link"><a v-on:click="redirect('/')">Contact Us</a></li> -->
@@ -11,11 +11,11 @@
         <li class="title"><b>Privacy and Terms</b></li>
         <li class="link"><a v-on:click="redirect('/terms_and_conditions')">Terms & Conditions</a></li>
         <li class="link"><a v-on:click="redirect('/privacy_policy')">Privacy Policy</a></li>
+        <li class="link"><a v-on:click="redirect('/terms_and_conditions')">Billing Terms</a></li>
       </ul>
        <ul class="footer-widget">
         <li class="title"><b>Resources</b></li>
-        <li class="link"><a v-on:click="redirect('/guide/ft')">Teacher's Guide</a></li>
-        <li class="link"><a v-on:click="redirect('/guide/fs')">Student's Guide</a></li>
+        <li class="link"><a v-on:click="redirect('/guide/ft')">Guide</a></li>
       </ul>
       <span class="footer-widget community">
         <span class="title"><b>Community</b></span>
@@ -25,7 +25,7 @@
       </span>
       
       <span class="copyright">
-        <label>Copyright @ClassWorx 2018. All rights reserved.</label>
+        <label>Copyright @idfactory 2019. All rights reserved.</label>
       </span>
     </div>
   </footer>
