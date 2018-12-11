@@ -2,42 +2,25 @@
 	<div class="cw-banner">
     <div class="text text-white">
       <span class="title">
-        <h1>First Automated ID Printing in the Philippines.</h1>
+        <h1>Built to ease the editing and printing of Identification Card.</h1>
       </span>
       <span class="description">
         <h4>
-          
+          ID Factory is a web-based ID editor and printing inspired to ease the bottleneck of the hassle of manual editing of photos, signatures, and details of every employee.
         </h4>
       </span>
     </div>
     <div class="image">
-      <img src="../../../assets/img/devices.png" style="margin-bottom: 5px;">
+      <img src="../../../assets/img/banner.png" style="margin-bottom: 5px;" width="100%">
     </div>
 	</div>
 </template>
-<script>
-import ROUTER from '../../../router'
-import AUTH from '../../../services/auth'
-export default {
-  mounted(){
-  },
-  data(){
-    return {
-    }
-  },
-  methods: {
-    redirect(parameter){
-      ROUTER.push(parameter)
-    }
-  }
-}
-</script>
 <style scoped>
 .cw-banner{
-	width: 100%;
-	float: left;
-	height: 500px;
-	background: #028170;
+  width: 100%;
+  float: left;
+  height: 500px;
+  background: #028170;
 }
 .text{
   width: 40%;
@@ -50,7 +33,7 @@ export default {
   float: left;
 }
 .title h1{
-  font-size: 60px;
+  font-size: 50px;
 }
 .text .description{
   margin-top: 25px;
@@ -81,5 +64,21 @@ export default {
     display: none;
   }
 }
-
 </style>
+<script>
+import ROUTER from '../../../router'
+import AUTH from '../../../services/auth'
+export default {
+  mounted(){
+  },
+  data(){
+    return {
+    }
+  },
+  methods: {
+    redirect(parameter){
+      ROUTER.push(parameter)
+    }
+  }
+}
+</script>
