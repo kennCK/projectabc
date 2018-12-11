@@ -2,7 +2,7 @@
 	<div class="cw-features">
     <div class="header">
       <span class="title text-green">
-        <h2>Lovely features that will make you fall in love with</h2>
+        <h1>Made for you to have more time to relax</h1>
       </span>
       <span class="description">
         <h6></h6>
@@ -10,149 +10,39 @@
     </div>
     <div class="holder">
 
-      <span class="item">
+      <span class="item" v-for="item, index in data" v-if="data !== null">
         <span class="icon text-green text-center">
           <i class="fas fa-comments"></i>
         </span>
         <span class="title text-center">
-          <h5>Discussions</h5>
+          <h5>{{item.title}}</h5>
         </span>
         <span class="description">
-          Allows students and teachers to exchange and share ideas. Discussions are available for all users, classes and organizations.
-        </span>
-      </span>
-
-      <span class="item">
-        <span class="icon text-green text-center">
-          <i class="fas fa-paper-plane"></i>
-        </span>
-        <span class="title text-center">
-          <h5>Announcements</h5>
-        </span>
-        <span class="description">
-          Broadcast announcements to members and students. Org admins and teachers have this feature.
-        </span>
-      </span>
-
-
-      <span class="item">
-        <span class="icon text-green text-center">
-          <i class="fas fa-newspaper-o"></i>
-        </span>
-        <span class="title text-center">
-          <h5>Online Examination</h5>
-        </span>
-        <span class="description">
-          No more yellowpads or bluebooks. Create and distribute customizable exams online. 
-        </span>
-      </span>
-
-
-
-      <span class="item">
-        <span class="icon text-green text-center">
-          <i class="fas fa-files-o"></i>
-        </span>
-        <span class="title text-center">
-          <h5>Resources Sharing</h5>
-        </span>
-        <span class="description">
-          Users can upload notes, slides and other copyright-free documents and share with other users.
-        </span>
-      </span>
-    </div>
-
-    <div class="holder">
-      
-      <span class="item">
-        <span class="icon text-green text-center">
-          <i class="fas fa-qrcode"></i>
-        </span>
-        <span class="title text-center">
-          <h5>Class Attendance with QR Code Scanner</h5>
-        </span>
-        <span class="description">
-          Easily record and track attendance with QR Code scanner. Scan attendance QR code using Scannear mobile app.
-        </span>
-      </span>
-
-
-
-      <span class="item">
-        <span class="icon text-green text-center">
-          <i class="fas fa-users"></i>
-        </span>
-        <span class="title text-center">
-          <h5>Organization</h5>
-        </span>
-        <span class="description">
-          Students and teachers can create organizations or groups for class and org activities.
-        </span>
-      </span>
-
-
-      <span class="item">
-        <span class="icon text-green text-center">
-          <i class="fas fa-calendar"></i>
-        </span>
-        <span class="title text-center">
-          <h5>Events</h5>
-        </span>
-        <span class="description">
-          Organizations can create and broadcast events to their members. A ticketing service feature is also available. 
-        </span>
-      </span>
-
-
-      <span class="item">
-        <span class="icon text-green text-center">
-          <i class="fas fa-search"></i>
-        </span>
-        <span class="title text-center">
-          <h5>Scannear</h5>
-        </span>
-        <span class="description">
-          Scannear mobile app is made not only for attendance checking, but also for events. Scan QR codes for easy events registrtration. 
+          {{item.description}}
         </span>
       </span>
     </div>
 	</div>
 </template>
-<script>
-import ROUTER from '../../../router'
-import AUTH from '../../../services/auth'
-export default {
-  mounted(){
-  },
-  data(){
-    return {
-    }
-  },
-  methods: {
-    redirect(parameter){
-      ROUTER.push(parameter)
-    }
-  }
-}
-</script>
 <style scoped>
 .cw-features{
-	width: 100%;
-	float: left;
-	min-height: 500px;
-	background: #fff;
+  width: 100%;
+  float: left;
+  min-height: 500px;
+  background: #fff;
   overflow-y: hidden;
 }
 .header{
-  width: 100%;
+  width: 90%;
   float: left;
-  text-align: center;
+  margin-left: 5%;
+  margin-right: 5%;
   margin-top: 50px;
 }
 .holder{
-  width: 80%;
+  width: 90%;
   float: left;
-  margin: 50px 10% 0 10%;
+  margin: 50px 5% 0 5%;
 }
 .item{
   width: 21%;
@@ -183,3 +73,28 @@ export default {
   }
 }
 </style>
+<script>
+import ROUTER from '../../../router'
+import AUTH from '../../../services/auth'
+export default {
+  mounted(){
+  },
+  data(){
+    return {
+      data: [
+        {title: 'Template Editor', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', icon: ''},
+        {title: 'Content Management', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', icon: ''},
+        {title: 'Comments', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', icon: ''},
+        {title: 'Messenger', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', icon: ''},
+        {title: 'Pricing', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', icon: ''},
+        {title: 'Marketplace', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', icon: ''}
+      ]
+    }
+  },
+  methods: {
+    redirect(parameter){
+      ROUTER.push(parameter)
+    }
+  }
+}
+</script>

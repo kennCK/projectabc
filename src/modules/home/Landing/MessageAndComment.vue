@@ -6,12 +6,12 @@
       </span>
       <span class="description">
         <h4>
-          Best way of communication between yoy and our printing partners. Chat or Comment to our created entries of your templates.
+          Best way of communication between you and our printing partners. Chat or Comment to your created entries of your templates.
         </h4>
       </span>
     </div>
     <div class="image">
-      <img src="../../../assets/img/devices.png" style="margin-bottom: 5px;">
+      <img src="../../../assets/img/banner.png" style="margin-bottom: 5px;" width="100%">
     </div>
   </div>
 </template>
@@ -23,9 +23,9 @@
   height: 650px;
 }
 .text{
-  width: 40%;
+  width: 45%;
   float: left;
-  margin-left: 10%;
+  margin-left: 5%;
   margin-top: 200px;
 }
 .text .title{
@@ -43,7 +43,8 @@
 }
 .image{
   width: 40%;
-  margin-right: 10%;
+  margin-right: 5%;
+  margin-left: 5%;
   float: left;
   margin-top: 150px;
   display: block;

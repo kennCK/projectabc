@@ -20,7 +20,7 @@
       <span class="footer-widget community">
         <span class="title"><b>Community</b></span>
         <span class="link">
-          <a target="_BLANK" class="text-gray" href="https://www.facebook.com/classworx"><i class="fab fa-facebook"></i></a>
+          <a target="_BLANK" class="text-gray" href="https://www.facebook.com/idfactoryph"><i class="fab fa-facebook"></i></a>
         </span>
       </span>
       
