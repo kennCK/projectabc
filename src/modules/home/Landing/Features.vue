@@ -1,7 +1,7 @@
 <template>
 	<div class="cw-features">
     <div class="header">
-      <span class="title text-green">
+      <span class="title text-white">
         <h2>Lovely features that will make you fall in love with</h2>
       </span>
       <span class="description">
@@ -11,7 +11,7 @@
     <div class="holder">
 
       <span class="item">
-        <span class="icon text-green text-center">
+        <span class="icon text-white text-center">
           <i class="fas fa-comments"></i>
         </span>
         <span class="title text-center">
@@ -23,7 +23,7 @@
       </span>
 
       <span class="item">
-        <span class="icon text-green text-center">
+        <span class="icon text-white text-center">
           <i class="fas fa-paper-plane"></i>
         </span>
         <span class="title text-center">
@@ -36,7 +36,7 @@
 
 
       <span class="item">
-        <span class="icon text-green text-center">
+        <span class="icon text-white text-center">
           <i class="fas fa-newspaper-o"></i>
         </span>
         <span class="title text-center">
@@ -50,7 +50,7 @@
 
 
       <span class="item">
-        <span class="icon text-green text-center">
+        <span class="icon text-white text-center">
           <i class="fas fa-files-o"></i>
         </span>
         <span class="title text-center">
@@ -65,7 +65,7 @@
     <div class="holder">
       
       <span class="item">
-        <span class="icon text-green text-center">
+        <span class="icon text-white text-center">
           <i class="fas fa-qrcode"></i>
         </span>
         <span class="title text-center">
@@ -79,7 +79,7 @@
 
 
       <span class="item">
-        <span class="icon text-green text-center">
+        <span class="icon text-white text-center">
           <i class="fas fa-users"></i>
         </span>
         <span class="title text-center">
@@ -92,7 +92,7 @@
 
 
       <span class="item">
-        <span class="icon text-green text-center">
+        <span class="icon text-white text-center">
           <i class="fas fa-calendar"></i>
         </span>
         <span class="title text-center">
@@ -105,7 +105,7 @@
 
 
       <span class="item">
-        <span class="icon text-green text-center">
+        <span class="icon text-white text-center">
           <i class="fas fa-search"></i>
         </span>
         <span class="title text-center">
@@ -118,30 +118,14 @@
     </div>
 	</div>
 </template>
-<script>
-import ROUTER from '../../../router'
-import AUTH from '../../../services/auth'
-export default {
-  mounted(){
-  },
-  data(){
-    return {
-    }
-  },
-  methods: {
-    redirect(parameter){
-      ROUTER.push(parameter)
-    }
-  }
-}
-</script>
 <style scoped>
 .cw-features{
-	width: 100%;
-	float: left;
-	min-height: 500px;
-	background: #fff;
+  width: 100%;
+  float: left;
+  min-height: 500px;
+  background: #22b173;
   overflow-y: hidden;
+  color: #fff;
 }
 .header{
   width: 100%;
@@ -183,3 +167,20 @@ export default {
   }
 }
 </style>
+<script>
+import ROUTER from '../../../router'
+import AUTH from '../../../services/auth'
+export default {
+  mounted(){
+  },
+  data(){
+    return {
+    }
+  },
+  methods: {
+    redirect(parameter){
+      ROUTER.push(parameter)
+    }
+  }
+}
+</script>

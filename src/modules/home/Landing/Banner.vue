@@ -19,14 +19,14 @@
 .cw-banner{
   width: 100%;
   float: left;
-  height: 500px;
+  height: 600px;
   background: #028170;
 }
 .text{
-  width: 40%;
+  width: 45%;
   float: left;
-  margin-left: 10%;
-  margin-top: 100px;
+  margin-left: 5%;
+  margin-top: 150px;
 }
 .text .title{
   width: 100%;
@@ -43,9 +43,10 @@
 }
 .image{
   width: 40%;
-  margin-right: 10%;
+  margin-right: 5%;
   float: left;
-  margin-top: 50px;
+  margin-left: 5%;
+  margin-top: 100px;
   display: block;
 }
 

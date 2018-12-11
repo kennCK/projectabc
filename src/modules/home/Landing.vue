@@ -1,9 +1,8 @@
 <template>
 	<div class="body">
 		<landing-banner></landing-banner>
-    <landing-snetwork></landing-snetwork>
-    <landing-classroom></landing-classroom>
-    <landing-organization></landing-organization>
+    <landing-steps></landing-steps>
+    <landing-features></landing-features>
 	</div>
 </template>
 <script>
@@ -12,9 +11,7 @@ import AUTH from '../../services/auth'
 export default {
   components: {
     'landing-banner': require('modules/home/Landing/Banner.vue'),
-    'landing-snetwork': require('modules/home/Landing/SocialNetwork.vue'),
-    'landing-classroom': require('modules/home/Landing/Classroom.vue'),
-    'landing-organization': require('modules/home/Landing/Organization.vue'),
+    'landing-steps': require('modules/home/Landing/Steps.vue'),
     'landing-features': require('modules/home/Landing/Features.vue')
   },
   mounted(){
