@@ -4,8 +4,8 @@
       <span class="body">
         <span class="preview">
           <span v-for="obj, innerIndex in objects" v-if="objects !== null">
-              <span class="division" v-if="obj.type === 'division'" v-bind:style="obj.attributes">
-              </span>
+              <div class="division" v-if="obj.type === 'division'" v-bind:style="obj.attributes">
+              </div>
               <label class="text" v-if="obj.type === 'text'" v-bind:style="obj.attributes">{{obj.content}}</label>
               <img class="photo" :src="config.BACKEND_URL + obj.content" v-if="obj.type === 'photo'" :style="obj.attributes">
           </span>
