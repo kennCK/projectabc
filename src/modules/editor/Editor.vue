@@ -50,9 +50,9 @@
                   </span>
                 </span>
                 <span class="object-settings" v-if="selected !== null">
-                  <division v-if="selected !== null && selected.type === 'division'" :object="selected"></division>
-                  <photo v-if="selected !== null && selected.type === 'photo'" :object="selected"></photo>
-                  <c-text v-if="selected !== null && selected.type === 'text'" :object="selected"></c-text>
+                  <division v-if="selected !== null && selected.type === 'division'" :object="selected" :index="selectedIndex"></division>
+                  <photo v-if="selected !== null && selected.type === 'photo'" :object="selected" :index="selectedIndex"></photo>
+                  <c-text v-if="selected !== null && selected.type === 'text'" :object="selected" :index="selectedIndex"></c-text>
                 </span>
               </span>
             </span>
@@ -185,6 +185,7 @@ export default {
       item: null,
       prevIndex: null,
       selected: null,
+      selectedIndex: null,
       objects: null
     }
   },
@@ -299,11 +300,13 @@ export default {
         }
       }
       this.selected = object
+      this.selectedIndex = index
     },
     unSelected(){
       this.objects[this.prevIndex].selected = false
       this.prevIndex = null
       this.selected = null
+      this.selectedIndex = null
     },
     retrieve(){
       if(this.item !== null){
@@ -336,6 +339,11 @@ export default {
           this.retrieve()
         }
       })
+    },
+    removeObject(index){
+      this.objects.splice(index, 1)
+      this.prevIndex = null
+      this.setSelectedObject(this.objects[0], 0)
     }
   }
 }

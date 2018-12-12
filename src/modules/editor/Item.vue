@@ -13,28 +13,29 @@
               </span>
               <label class="text" v-if="obj.type === 'text'" v-bind:style="obj.attributes">{{obj.content}}</label>
               <img class="photo" :src="config.BACKEND_URL + obj.content" v-if="obj.type === 'photo'" :style="obj.attributes">
-          </span> v-on:click="show(item, 'updateSettings')"-->
+          </span>-->
           <objects :objects="item.objects" v-if="item.objects !== null">
                 </objects>
         </span>
 
-        <ul v-if="item.active === true">
+        <ul>
           <li v-on:click="show(item, 'editor')" style="border-left: 0px;">Editor</li>
           <li>
             <div class="dropdown">
-              <label id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <label id="dropdownMenuSettingsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Settings
               </label>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuSettingsButton">
                   <span class="dropdown-item disabled">Settings</span>
-                  <span class="dropdown-item">Update</span>
-                  <span class="dropdown-item text-danger">Delete</span>
+                  <span class="dropdown-item" v-on:click="show(item, 'updateSettings')">Update</span>
+                  <span class="dropdown-item text-danger" v-on:click="show(item, 'deleteModal')" v-if="item.status !== 'purchased'">Delete</span>
               </div>
             </div>
           </li>
         </ul>
       </span>
     </div>
+    <delete-modal></delete-modal>
     <update></update>
     <editor></editor>
   </div>
@@ -68,6 +69,25 @@
 .make-active-header{
   background: #22b173;
   color: #fff;
+}
+.dropdown-menu{
+  padding: 0px !important;
+  margin-top: -145px !important;
+  margin-left: -28px !important;
+}
+
+.dropdown-item{
+  height: 35px !important;
+  line-height: 35px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+.dropdown-item:hover{
+  background: #eee;
+}
+.disabled:hover{
+  background: #fff !important;
+  cursor: default;
 }
 .body{
   width: 100%;
@@ -119,7 +139,8 @@ export default {
   components: {
     'update': require('modules/editor/Update.vue'),
     'editor': require('modules/editor/Editor.vue'),
-    'objects': require('modules/object/Objects.vue')
+    'objects': require('modules/object/Objects.vue'),
+    'delete-modal': require('modules/Editor/Delete.vue')
   },
   props: ['item', 'index'],
   methods: {
@@ -149,6 +170,15 @@ export default {
             this.$children[i].item = item
             setTimeout(() => {
               $('#updateTemplateModal').modal({
+                backdrop: 'static',
+                show: true,
+                keyboard: false
+              })
+            }, 50)
+          }else if(id === 'deleteModal'){
+            this.$children[i].id = item.id
+            setTimeout(() => {
+              $('#deleteTemplateModal').modal({
                 backdrop: 'static',
                 show: true,
                 keyboard: false

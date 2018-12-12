@@ -240,6 +240,15 @@
             <input type="text" class="form-control" v-model="object.attributes.lineHeight">
           </span>
         </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Action
+          </span>
+          <span class="input">
+            <i class="fas fa-trash text-danger actions" @click="remove()"></i>
+          </span>
+        </span>
         
       </span>
     </div>
@@ -299,6 +308,15 @@
   margin-top: 1px !important;
   margin-bottom: 1px !important;
 }
+.actions{
+  font-size: 24px;
+  line-height: 30px;
+  padding-left: 5px;
+}
+.actions:hover{
+  cursor: pointer;
+  color: #ff0000;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -313,10 +331,22 @@ export default {
       errorMessage: null
     }
   },
-  props: ['object'],
+  props: ['object', 'index'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    remove(){
+      if(this.object.new === true){
+        this.$parent.removeObject(this.index)
+      }else{
+        let parameter = {
+          id: this.object.id
+        }
+        this.APIRequest('objects/delete', parameter).then(response => {
+          this.$parent.retrieve()
+        })
+      }
     }
   }
 }
