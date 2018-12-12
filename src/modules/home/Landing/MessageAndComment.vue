@@ -2,11 +2,11 @@
   <div class="cw-banner bg-green">
     <div class="text text-white">
       <span class="title">
-        <h1>Comment and Chat with our Printing Partners</h1>
+        <h1>Easy Communication with our Printing Partners</h1>
       </span>
       <span class="description">
         <h4>
-          Best way of communication between you and our printing partners. Chat or Comment to your created entries of your templates.
+          With our chat and comment features, getting real-time responses from our printing partners is now made easier.
         </h4>
       </span>
     </div>

@@ -2,11 +2,11 @@
 	<div class="cw-banner">
     <div class="text text-white">
       <span class="title">
-        <h1>Built to ease the editing and printing of Identification Card.</h1>
+        <h1>Your one-stop shop ID printer.</h1>
       </span>
       <span class="description">
         <h4>
-          ID Factory is a web-based ID editor and printing inspired to ease the bottleneck of the hassle of manual editing of photos, signatures, and details of every employee.
+          ID factory is an integrated web-based ID creator inspired to ease the bottleneck of manually editing tons of IDs into place.
         </h4>
       </span>
     </div>
