@@ -125,6 +125,9 @@ export default {
       window.print()
       console.log(printContents)
       document.body.innerHTML = originalContents
+      setTimeout(function() {
+        location.reload()
+      }, 100)
     }
   }
 }
