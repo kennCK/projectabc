@@ -13,14 +13,25 @@
               </span>
               <label class="text" v-if="obj.type === 'text'" v-bind:style="obj.attributes">{{obj.content}}</label>
               <img class="photo" :src="config.BACKEND_URL + obj.content" v-if="obj.type === 'photo'" :style="obj.attributes">
-          </span> -->
+          </span> v-on:click="show(item, 'updateSettings')"-->
           <objects :objects="item.objects" v-if="item.objects !== null">
                 </objects>
         </span>
 
         <ul v-if="item.active === true">
           <li v-on:click="show(item, 'editor')" style="border-left: 0px;">Editor</li>
-          <li v-on:click="show(item, 'updateSettings')">Settings</li>
+          <li>
+            <div class="dropdown">
+              <label id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Settings
+              </label>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <span class="dropdown-item disabled">Settings</span>
+                  <span class="dropdown-item">Update</span>
+                  <span class="dropdown-item text-danger">Delete</span>
+              </div>
+            </div>
+          </li>
         </ul>
       </span>
     </div>
