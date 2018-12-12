@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-      <empty v-if="data === null" :title="'Looks like you have not uploaded an images!'" :action="'Click the button Upload Image to get started.'">
+      <empty v-if="data === null" :title="'Looks like you have not uploaded an images!'" :action="'Click the Upload Image Button to get started.'">
       </empty>
   </div>
 </template>

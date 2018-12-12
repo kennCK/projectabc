@@ -21,7 +21,7 @@
         </tbody>
       </table>
     </div>
-    <empty v-if="data === null" :title="'Looks like you have not added a pricing!'" :action="'Click the button New Price to get started.'"></empty>
+    <empty v-if="data === null" :title="'Looks like you have not added a pricing!'" :action="'Click the New Price Button to get started.'"></empty>
     <update></update>
 	</div>
 </template>

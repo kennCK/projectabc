@@ -55,7 +55,7 @@
         </span>
       </div>
     </div>
-    <empty v-if="data === null" :title="'Looks like you have not added an employee to your template!'" :action="'Click the button New Employee to get started.'"></empty>
+    <empty v-if="data === null" :title="'Looks like you have not added an employee to your template!'" :action="'Click the  New Employee Button to get started.'"></empty>
     <update></update>
     <editor></editor>
     <edit></edit>
