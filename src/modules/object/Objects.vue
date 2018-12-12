@@ -15,6 +15,17 @@
   </div>
 </template>
 <style scoped>
+@media print {
+    .division {
+        -webkit-print-color-adjust: exact; 
+    }
+}
+
+@media print {
+    .division {
+        color: white !important;
+    }
+}
 .item{
   width: 204px;
   height: 324px;
