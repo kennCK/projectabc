@@ -16,6 +16,13 @@ export default {
       data: null,
       current: null,
       prevCurrent: null
+    },
+    messages: {
+      data: [
+        {title: 'Hello', description: 'World!', created_at: 'December 13, 2018'}
+      ],
+      current: 1,
+      prevCurrent: null
     }
   },
   timer: {

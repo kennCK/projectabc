@@ -284,5 +284,32 @@ Route::post('/paypal_transactions/update', "PaypalTransactionController@update")
 Route::post('/paypal_transactions/delete', "PaypalTransactionController@delete");
 Route::get('/paypal_transactions/test', 'PaypalTransactionController@test');
 
+//Messenger Controller
+Route::post('/messenger_groups/create', "MessengerGroupController@create");
+Route::post('/messenger_groups/retrieve', "MessengerGroupController@retrieve");
+Route::post('/messenger_groups/update', "MessengerGroupController@update");
+Route::post('/messenger_groups/delete', "MessengerGroupController@delete");
+Route::get('/messenger_groups/test', 'MessengerGroupController@test');
+
+//Messenger Controller
+Route::post('/messenger_messages/create', "MessengerMessageController@create");
+Route::post('/messenger_messages/retrieve', "MessengerMessageController@retrieve");
+Route::post('/messenger_messages/update', "MessengerMessageController@update");
+Route::post('/messenger_messages/delete', "MessengerMessageController@delete");
+Route::get('/messenger_messages/test', 'MessengerMessageController@test');
+
+//Messenger Member Controller
+Route::post('/messenger_members/create', "MessengerMemberController@create");
+Route::post('/messenger_members/retrieve', "MessengerMemberController@retrieve");
+Route::post('/messenger_members/update', "MessengerMemberController@update");
+Route::post('/messenger_members/delete', "MessengerMemberController@delete");
+Route::get('/messenger_members/test', 'MessengerMemberController@test');
+
+//Messenger Message Controller
+Route::post('/messenger_message_files/create', "MessengerMessageFileController@create");
+Route::post('/messenger_message_files/retrieve', "MessengerMessageFileController@retrieve");
+Route::post('/messenger_message_files/update', "MessengerMessageFileController@update");
+Route::post('/messenger_message_files/delete', "MessengerMessageFileController@delete");
+Route::get('/messenger_message_files/test', 'MessengerMessageFileController@test');
 
 
