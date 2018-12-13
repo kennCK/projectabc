@@ -135,6 +135,14 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/messenger',
+    name: 'messenger',
+    component: resolve => require(['modules/messenger/Messenger.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
   }
   ]
 }

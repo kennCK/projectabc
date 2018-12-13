@@ -61,6 +61,26 @@
           </span>
         </div>
 
+        <div class="dropdown" v-if="user.messages !== null"> 
+            <span class="nav-item" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false" v-if="user.messages.data !== null">
+              <span>
+                <i class="fas fa-envelope" style="font-size: 22px;margin-top: 2px;"></i>
+                <label class="badge badge-danger" style="margin-left: -15px;" v-if="parseInt(user.messages.current) > 0">{{user.messages.current}}</label>
+              </span>
+              <span class="dropdown-menu dropdown-menu-right dropdown-menu-notification" aria-labelledby="notifications">
+                <span class="notification-header" @click="redirect('/messenger')">
+                  Messages
+                </span>
+                <span class="notification-item" v-for="item, index in user.messages.data" v-if="user.messages.data !== null && item.status !== 'ac_viewed'">
+                  <span class="notification-title">{{item.title}}</span>
+                  <span class="notification-description">{{item.description}}</span>
+                  <span class="notification-date">Posted on {{item.created_at}}</span>
+                </span>
+              </span>
+            </span>
+        </div>
+
+
         <div class="dropdown" v-if="user.notifications !== null"> 
             <span class="nav-item" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('notif'), updateNotif(user.notifications.data[0])" v-bind:onkeypress="makeActive('')" v-if="user.notifications.data !== null">
               <span>
@@ -79,7 +99,7 @@
               </span>
             </span>
         </div>
-        <span class="nav-item" @click="redirect('/checkout')">
+        <span class="nav-item" @click="redirect('/checkout')" v-if="user.checkout > 0 && user.checkout !== null">
           <span>
             <i class="fa fa-shopping-cart"></i>
             <label class="badge badge-danger" style="margin-left: -15px;" v-if="user.checkout > 0 && user.checkout !== null">{{user.checkout}}</label>
@@ -252,11 +272,10 @@ body{
 }
 
 .nav-item span .notifications{
-  background: #ff0000;
   color: #ffffff;
   border-radius: 5px;
-  height: 20px;
-  width: 20px;
+  height: 18px;
+  width: 18px;
   margin-left: -10px;
   font-size: 10px;
   margin-top: 15px;
