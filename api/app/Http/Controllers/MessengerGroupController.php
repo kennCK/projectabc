@@ -52,8 +52,8 @@ class MessengerGroupController extends APIController
 
         $responseData = array(
           'id'  => $id,
-          'account_id'  => $creator,
-          'title' => $this->retrieveAccountDetails($creator)
+          'account_id'  => $memberData,
+          'title' => $this->retrieveAccountDetails($memberData)
         );
 
         return response()->json(array(
