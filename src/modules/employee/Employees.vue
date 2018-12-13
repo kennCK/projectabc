@@ -64,8 +64,9 @@
 </template>
 <style scoped>
 .employee-holder{
-  width: 100%;
+  width: 98%;
   float: left;
+  margin-right: 2%;
 }
 .employee-list{
   width: 100%;

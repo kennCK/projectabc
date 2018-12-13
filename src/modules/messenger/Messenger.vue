@@ -1,5 +1,5 @@
 <template>
-  <div class="holder">
+  <div class="messenger-holder">
     <div class="conversation">
       <conversation></conversation>   
     </div>
@@ -9,7 +9,7 @@
   </div>
 </template>
 <style scoped>
-.holder{
+.messenger-holder{
   width: 100%;
   float: left;
 }
@@ -20,11 +20,12 @@
   overflow-y:hidden;
 }
 .users{
-  width: 30%;
+  width: 28%;
   float: left;
-  height: 90vh; 
-  padding: 2px;
+  height: 80vh;
+  margin-left: 2%; 
   overflow-y:hidden;
+  border-left: solid 1px #22b173;
 }
 @media (max-width: 992px){
   .users{
@@ -76,11 +77,8 @@ export default {
     },
     retrieve(){
       let parameter = {
-        condition: [{
-          value: this.user.userID,
-          column: 'account_id',
-          clause: '='
-        }]
+        account_id: this.user.userID,
+        account_type: this.user.type
       }
       this.APIRequest('messenger_groups/retrieve', parameter).then(response => {
         if(response.data.length > 0){

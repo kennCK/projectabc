@@ -91,8 +91,9 @@
 </template>
 <style scoped>
 .holder{
-  width: 100%;
+  width: 98%;
   float: left;
+  margin-right: 2%;
   margin-top: 25px;
 }
 .list{

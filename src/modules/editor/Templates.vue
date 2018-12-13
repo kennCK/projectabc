@@ -10,8 +10,9 @@
 </template>
 <style scoped>
 .template-holder{
-  width: 100%;
+  width: 98%;
   float: left;
+  margin-right: 2%;
 }
 .template-list{
   width: 100%;

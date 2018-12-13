@@ -1,9 +1,9 @@
 <template>
-  <div class="holder" @click="selected(index)">
-<!--     <img :src="config.BACKEND_URL + item.account_profile.profile_url" class="profile" v-if="item.account_profile !== null">
-    <i class="fa fa-user-circle-o" v-else></i> -->
-    <label>{{group.title}}
-      <span class="badge badge-primary">{{group.total_members}}</span>
+  <div class="holder" @click="selected(index)" v-if="group !== null  && group.title !== null">
+    <img :src="config.BACKEND_URL + group.title.profile.profile_url" class="profile" v-if="group.title.profile !== null">
+    <i class="fa fa-user-circle-o" v-else></i>
+    <label>{{group.title.username}}
+      <!-- <span class="badge badge-primary">{{group.total_members}}</span> -->
     </label>
     
   </div>
@@ -14,10 +14,12 @@
   float: left;
   height: 50px;
   padding-left: 5px;
+  border-bottom: solid 1px #eee;
 }
 .profile{
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
+  margin-top: 5px;
   border-radius: 50%; 
   float: left;
 
@@ -30,7 +32,7 @@ label{
 }
 
 i{
-  font-size: 50px;
+  font-size: 40px;
   line-height: 50px;
   float: left;
 }

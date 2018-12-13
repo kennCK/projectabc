@@ -3,7 +3,7 @@
     <textarea type="text" class="form-control" placeholder="Type your message here..." v-model="newMessageInput" @keyup.enter="newmessage()">
     </textarea>
     <span>
-      <i class="fa fa-reply" @click="newmessage()"></i>
+      <i class="fas fa-location-arrow text-green" @click="newmessage()"></i>
     </span>
   </div>
 </template>

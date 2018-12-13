@@ -23,8 +23,9 @@ button input{
   display: none;
 }
 .image-holder{
-  width: 100%;
+  width: 98%;
   float: left;
+  margin-right: 2%;
 }
 .image-list{
   width: 100%;

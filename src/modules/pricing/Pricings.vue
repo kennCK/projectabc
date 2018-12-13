@@ -26,9 +26,10 @@
 	</div>
 </template>
 <style>
-	.holder{
-	  width: 100%;
-	  float: left;
+	.holder{  
+    width: 98%;
+    float: left;
+    margin-right: 2%;
 	  margin-top: 25px;
 	  margin-bottom: 50px;
 	}

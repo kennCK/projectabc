@@ -199,8 +199,8 @@
     display: block;
   }
   .content-holder{
-    width: 79%;
-    margin: 60px 1% 0 19%;
+    width: 81%;
+    margin: 60px 0% 0 19%;
     float: left;
   }
   /*  Change with Menu Toggled */
@@ -208,8 +208,8 @@
     margin-left: -14%;
   }
   .content-holder.hidden{
-    width: 92%;
-    margin: 60px 2% 0 6%;
+    width: 94%;
+    margin: 60px 0% 0 6%;
     float: left;
   }
 }
@@ -221,8 +221,8 @@
     float: left;
   }
   .content-holder{
-    width: 71%;
-    margin: 60px 2% 0 25%;
+    width: 72%;
+    margin: 60px 0% 0 25%;
     float: left;
   }
   .main-sidebar.active{
@@ -240,8 +240,8 @@
     margin-left: -18%;
   }
   .content-holder.hidden{
-    width: 92%;
-    margin: 60px 2% 0 6%;
+    width: 94%;
+    margin: 60px 0% 0 6%;
     float: left;
   }
 }
