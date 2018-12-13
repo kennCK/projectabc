@@ -8,7 +8,8 @@
       Printing Partners
       <i class="fa fa-pencil-square-o pull-right text-white create-new-group"></i>
     </div>
-    <m-card v-for="group, index in groups" :key="group.id" :group="group" :index="index"></m-card>
+    <m-card v-for="group, index in groups" :key="group.id" :group="group" :index="index" :moduleText="'groups'"></m-card>
+    <m-card v-for="partner, index in partners" :key="partner.id" :group="partner" :index="index" :moduleText="'partners'"></m-card>
   </div>
 </template>
 <style scoped>
@@ -40,13 +41,15 @@ import AUTH from '../../services/auth'
 import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
+  mounted(){
+  },
   data(){
     return {
       user: AUTH.user,
       config: CONFIG
     }
   },
-  props: ['groups'],
+  props: ['groups', 'partners'],
   components: {
     'm-card': require('modules/userlist/Card.vue'),
     'm-options': require('modules/userlist/OtherOptions.vue')
@@ -55,8 +58,8 @@ export default {
     redirect(parameter){
       ROUTER.push(parameter)
     },
-    makeActive(selectedIndex){
-      this.$parent.selectedGroup(selectedIndex)
+    makeActive(selectedIndex, moduleText){
+      this.$parent.selectedGroup(selectedIndex, moduleText)
     }
   }
 }

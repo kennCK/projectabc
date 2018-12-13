@@ -2,9 +2,15 @@
   <div class="holder" id="groupConversation">
     <c-header :group="group" v-if="group !== null"></c-header>
     <c-body :conversations="conversations" v-if="group !== null"></c-body>
-    <c-footer :messengerGroupId="group.id" v-if="group !== null"></c-footer>
+    <c-footer :group="group" :newFlag="newFlag" v-if="group !== null"></c-footer>
   </div>
 </template>
+<style scoped>
+.holder{
+  width: 100%;
+  float: left;
+}
+</style>
 <script>
 import ROUTER from '../../router'
 import AUTH from '../../services/auth'
@@ -16,7 +22,8 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       conversations: null,
-      group: null
+      group: null,
+      newFlag: false
     }
   },
   components: {
@@ -29,7 +36,7 @@ export default {
       ROUTER.push(parameter)
     },
     retrieve(){
-      if(this.group !== null){
+      if(this.group !== null && this.newFlag === false){
         let parameter = {
           condition: [{
             value: this.group.id,
@@ -52,10 +59,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.holder{
-  width: 100%;
-  float: left;
-}
-
-</style>

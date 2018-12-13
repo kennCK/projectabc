@@ -4,7 +4,7 @@
       <conversation></conversation>   
     </div>
     <div class="users">
-      <groups :groups="groups" v-if="groups !== null"></groups>
+      <groups :groups="groups" :partners="partners" v-if="groups !== null || partners !== null"></groups>
     </div>
   </div>
 </template>
@@ -52,6 +52,7 @@ export default {
       newTitle: null,
       data: null,
       groups: null,
+      partners: null,
       selectedIndex: 0
     }
   },
@@ -81,18 +82,25 @@ export default {
         account_type: this.user.type
       }
       this.APIRequest('messenger_groups/retrieve', parameter).then(response => {
-        if(response.data.length > 0){
-          this.groups = response.data
-        }else{
-          this.groups = null
-        }
+        this.groups = response.data
+        this.partners = response.accounts
       })
     },
-    selectedGroup(index){
-      for (var i = 0; i < this.$children.length; i++) {
-        if(this.$children[i].$el.id === 'groupConversation'){
-          this.$children[i].group = this.groups[index]
-          this.$children[i].retrieve()
+    selectedGroup(index, moduleText){
+      if(moduleText === 'groups'){
+        for (var i = 0; i < this.$children.length; i++) {
+          if(this.$children[i].$el.id === 'groupConversation'){
+            this.$children[i].group = this.groups[index]
+            this.$children[i].newFlag = false
+            this.$children[i].retrieve()
+          }
+        }
+      }else if(moduleText === 'partners'){
+        for (i = 0; i < this.$children.length; i++) {
+          if(this.$children[i].$el.id === 'groupConversation'){
+            this.$children[i].newFlag = true
+            this.$children[i].group = this.partners[index]
+          }
         }
       }
     }

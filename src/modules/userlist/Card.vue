@@ -1,5 +1,5 @@
 <template>
-  <div class="holder" @click="selected(index)" v-if="group !== null  && group.title !== null">
+  <div class="holder" @click="selected(index, moduleText)" v-if="group !== null  && group.title !== null">
     <img :src="config.BACKEND_URL + group.title.profile.profile_url" class="profile" v-if="group.title.profile !== null">
     <i class="fa fa-user-circle-o" v-else></i>
     <label>{{group.title.username}}
@@ -48,20 +48,18 @@ import ROUTER from '../../router'
 import AUTH from '../../services/auth'
 import CONFIG from '../../config.js'
 export default {
-  mounted(){
-  },
   data(){
     return {
       config: CONFIG
     }
   },
-  props: ['group', 'index'],
+  props: ['group', 'index', 'moduleText'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
-    selected(index){
-      this.$parent.makeActive(index)
+    selected(index, moduleText){
+      this.$parent.makeActive(index, moduleText)
     }
   }
 }

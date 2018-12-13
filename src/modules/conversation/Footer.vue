@@ -68,21 +68,35 @@ export default {
       prevNewMessageIndex: null
     }
   },
-  props: ['messengerGroupId'],
+  props: ['group', 'newFlag'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
     newmessage(){
-      if(this.newMessageInput !== '' || this.newMessageInput !== null){
+      if((this.newMessageInput !== '' || this.newMessageInput !== null) && this.newFlag === false){
         let parameter = {
-          messenger_group_id: this.messengerGroupId,
+          messenger_group_id: this.group.id,
           message: this.newMessageInput,
           account_id: this.user.userID
         }
         this.APIRequest('messenger_messages/create', parameter).then(response => {
           if(response.data > 0){
             this.newMessageInput = null
+            this.$parent.retrieve()
+          }
+        })
+      }else if((this.newMessageInput !== '' || this.newMessageInput !== null) && this.newFlag === true){
+        let parameter = {
+          creator: this.user.userID,
+          message: this.newMessageInput,
+          member: this.group.id
+        }
+        this.APIRequest('messenger_groups/create', parameter).then(response => {
+          if(response.data !== null){
+            this.newMessageInput = null
+            this.$parent.group = response.data
+            this.$parent.newFlag = false
             this.$parent.retrieve()
           }
         })
