@@ -18,11 +18,12 @@
   float: left;
   min-height: 500px;
   overflow-y:hidden;
+  height: 90vh;
 }
 .users{
   width: 28%;
   float: left;
-  height: 80vh;
+  height: 90vh;
   margin-left: 2%; 
   overflow-y:hidden;
   border-left: solid 1px #22b173;

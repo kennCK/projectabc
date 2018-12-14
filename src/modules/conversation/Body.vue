@@ -10,7 +10,7 @@
       </div>
       <div class="right-template" v-else>
          <label class="content">
-          {{conversation.message}}
+          <bdi>{{conversation.message}}</bdi>
          </label>
          <img :src="config.BACKEND_URL + conversation.account.profile.profile_url" class="profile pull-right" v-if="conversation.account.profile !== null && conversation.account !== null">
          <i class="fa fa-user-circle-o pull-right" v-else></i>
@@ -22,7 +22,7 @@
 .holder{
   width: 100%;
   float: right;
-  height: 66vh;
+  height: 74vh;
   overflow-y: scroll;
 }
 .profile{
@@ -55,8 +55,9 @@
   float: left;
   padding-left: 10px;
   width: 90%;
-
 }
+
+
 .left-template i, .right-template i{
   font-size: 25px;
   line-height: 25px;

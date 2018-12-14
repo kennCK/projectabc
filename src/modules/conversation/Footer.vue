@@ -3,7 +3,7 @@
     <textarea type="text" class="form-control" placeholder="Type your message here..." v-model="newMessageInput" @keyup.enter="newmessage()">
     </textarea>
     <span>
-      <i class="fas fa-location-arrow text-green" @click="newmessage()"></i>
+      <i class="fas fa-location-arrow" @click="newmessage()"></i>
     </span>
   </div>
 </template>
@@ -11,7 +11,9 @@
 .holder{
   width: 100%;
   float: left;
-  height: 15vh;
+  height: 8vh;
+  background: #22b173;
+  color: #fff;
 }
 .profile{
   width: 50px;
@@ -32,15 +34,17 @@
 }
 
 .form-control{
-  width: 90% !important;
+  width: 89% !important;
   float: left !important;
-  height: 45px !important;
+  height: 6vh !important;
+  margin-top: 1vh !important;
+  margin-left: 1% !important;
 }
 span{
   width: 10%;
   float: left;
   height: 45px;
-  line-height: 45px;
+  line-height: 8vh;
   text-align: center;
 }
 span i{

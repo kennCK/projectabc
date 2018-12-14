@@ -73,9 +73,9 @@ export default{
     }
   },
   {
-    path: '/employees',
-    name: 'employees',
-    component: resolve => require(['modules/employee/Employees.vue'], resolve),
+    path: '/data_entries',
+    name: 'dataEntries',
+    component: resolve => require(['modules/entry/DataEntries.vue'], resolve),
     meta: {
       tokenRequired: true
     }
