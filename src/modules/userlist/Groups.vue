@@ -2,11 +2,11 @@
   <div class="holder">
     <div class="header" v-if="user.type === 'PARTNER'">
       My Clients
-      <i class="fa fa-pencil-square-o pull-right text-white create-new-group"></i>
+      <!-- <i class="fa fa-pencil-square-o pull-right text-white create-new-group"></i> -->
     </div>
     <div class="header" v-if="user.type === 'USER'">
       Printing Partners
-      <i class="fa fa-pencil-square-o pull-right text-white create-new-group"></i>
+      <!-- <i class="fa fa-pencil-square-o pull-right text-white create-new-group"></i> -->
     </div>
     <m-card v-for="group, index in groups" :key="group.id" :group="group" :index="index" :moduleText="'groups'"></m-card>
     <m-card v-for="partner, index in partners" :key="partner.id" :group="partner" :index="index" :moduleText="'partners'"></m-card>

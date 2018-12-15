@@ -30,9 +30,11 @@
   float: left;
   height: 90vh;
   margin-left: 2%; 
-  overflow-y:hidden;
+  overflow-y:scroll;
   border-left: solid 1px #22b173;
 }
+
+.users::-webkit-scrollbar { width: 0; }
 @media (max-width: 992px){
   .users{
     display: none;
