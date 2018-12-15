@@ -31,13 +31,14 @@ label{
   line-height: 50px;
   padding-left: 10px;
   float: left;
-  align: center;
+  text-align: center;
 }
 
 i{
-  font-size: 40px;
+  font-size: 30px;
   line-height: 50px;
   float: left;
+  color: #22b173;
 }
 
 .holder:hover{

@@ -35,6 +35,7 @@ i{
   font-size: 40px;
   line-height: 50px;
   float: left;
+  color: #22b173;
 }
 </style>
 <script>

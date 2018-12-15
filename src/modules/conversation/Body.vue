@@ -61,6 +61,7 @@
 .left-template i, .right-template i{
   font-size: 25px;
   line-height: 25px;
+  
 }
 .holder::-webkit-scrollbar { width: 0; }
 </style>
