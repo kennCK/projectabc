@@ -1,7 +1,7 @@
 <template>
   <div class="holder">
     <div class="profile-icon" v-for="conversation, index in conversations" v-if="conversations !== null">
-      <div class="left-template" v-if="user.userID !== conversation.account_id">
+      <div class="left-template" v-if="user.userID !== parseInt(conversation.account_id)">
         <img :src="config.BACKEND_URL + conversation.account.profile.profile_url" class="profile pull-left" v-if="conversation.account.profile !== null && conversation.account !== null">
         <i class="fa fa-user-circle-o pull-left" v-else></i>
         <label class="content" >
