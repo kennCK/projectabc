@@ -76,6 +76,7 @@ class MessengerGroupController extends APIController
       $accountType = $data['account_type'];
       $accountId = $data['account_id'];
       $existed = array();
+      $flag = false;
 
 
       $result = null;
@@ -95,6 +96,13 @@ class MessengerGroupController extends APIController
             $result[$i]['members'] = $this->getMembers($result[$i]['id']);
             $result[$i]['title'] = $this->retrieveAccountDetails($result[$i]['account_id']);
             $existed[] = $result[$i]['account_id'];
+              
+            if($i == 0){
+              $result[$i]['flag'] = true;
+              $flag = true;
+            }else{
+              $result[$i]['flag'] = false;
+            }
             $i++;
           }
         }
@@ -109,6 +117,12 @@ class MessengerGroupController extends APIController
             $result[$i]['members'] = $this->getMembers($result[$i]['id']);
             $result[$i]['title'] = $this->getTitle($result[$i]['id']);
             $existed[] = $this->getMemberExisted($result[$i]['id']);
+            $result[$i]['flag'] = false;
+            if($i == 0 && $flag == false){
+              $result[$i]['flag'] = true;
+            }else{
+              $result[$i]['flag'] = false;
+            }
             $i++;
           }
         }
@@ -162,6 +176,7 @@ class MessengerGroupController extends APIController
         $i = 0;
         foreach ($accounts as $key) {
           $accounts[$i]['title'] = $this->retrieveAccountDetails($accounts[$i]['id']);
+          $accounts[$i]['flag'] = false;
           $i++;
         }
       }

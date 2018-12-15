@@ -1,11 +1,16 @@
 <template>
-  <div class="messenger-holder">
-    <div class="conversation">
-      <conversation></conversation>   
+  <div>
+    
+    <div class="messenger-holder" v-if="groups !== null || partners !== null">
+      <div class="conversation">
+        <conversation :groupId.sync="groupId" :group="selectedGroupData"></conversation>   
+      </div>
+      <div class="users">
+        <groups :groups="groups" :partners="partners" v-if="groups !== null || partners !== null"></groups>
+      </div>
     </div>
-    <div class="users">
-      <groups :groups="groups" :partners="partners" v-if="groups !== null || partners !== null"></groups>
-    </div>
+
+    <empty v-if="groups === null && partners === null" :title="'You do not have conversation right now.'" :action="'Wait for your customer to message you.'"></empty>
   </div>
 </template>
 <style scoped>
@@ -54,13 +59,16 @@ export default {
       data: null,
       groups: null,
       partners: null,
-      selectedIndex: 0
+      selectedIndex: 0,
+      selectedGroupData: null,
+      prevModuleSelected: null
     }
   },
   props: ['params'],
   components: {
     'conversation': require('modules/conversation/Conversation.vue'),
-    'groups': require('modules/userlist/Groups.vue')
+    'groups': require('modules/userlist/Groups.vue'),
+    'empty': require('modules/empty/Empty.vue')
   },
   methods: {
     redirect(parameter){
@@ -82,28 +90,65 @@ export default {
         account_id: this.user.userID,
         account_type: this.user.type
       }
-      this.APIRequest('messenger_groups/retrieve', parameter).then(response => {
+      this.APIRequest('messenger_groups/retrieve', parameter).done(response => {
         this.groups = response.data
         this.partners = response.accounts
+        if(this.groups !== null){
+          this.prevModuleSelected = 'groups'
+          this.selectedGroup(0, 'groups')
+        }else if(this.partners !== null){
+          this.prevModuleSelected = 'partners'
+          this.selectedGroup(0, 'partners')
+        }
       })
     },
     selectedGroup(index, moduleText){
+      this.selectedIndex = index
+      var i = 0
       if(moduleText === 'groups'){
-        for (var i = 0; i < this.$children.length; i++) {
+        this.groupId = this.groups[index].id
+        this.selectedGroupData = this.groups[index]
+        for (i = 0; i < this.$children.length; i++) {
           if(this.$children[i].$el.id === 'groupConversation'){
-            this.$children[i].group = this.groups[index]
             this.$children[i].newFlag = false
-            this.$children[i].retrieve()
+            this.$children[i].conversations = null
           }
         }
       }else if(moduleText === 'partners'){
+        this.groupId = null
+        this.selectedGroupData = this.partners[index]
         for (i = 0; i < this.$children.length; i++) {
           if(this.$children[i].$el.id === 'groupConversation'){
             this.$children[i].newFlag = true
-            this.$children[i].group = this.partners[index]
+            this.$children[i].conversations = null
+            this.$children[i].retrieve()
           }
         }
       }
+    },
+    makeActiveCard(index, moduleText){
+      if(moduleText === 'groups' && this.prevModuleSelected === 'groups'){
+        if(this.selectedIndex !== index){
+          this.groups[this.selectedIndex].flag = false
+          this.groups[index].flag = true
+        }
+      }
+      if(moduleText === 'groups' && this.prevModuleSelected === 'partners'){
+        this.partners[this.selectedIndex].flag = false
+        this.groups[index].flag = true
+      }
+      if(moduleText === 'partners' && this.prevModuleSelected === 'groups'){
+        this.groups[this.selectedIndex].flag = false
+        this.partners[index].flag = true
+      }
+      if(moduleText === 'partners' && this.prevModuleSelected === 'partners'){
+        if(this.selectedIndex !== index){
+          this.groups[this.selectedIndex].flag = false
+          this.groups[index].flag = true
+        }
+      }
+      this.prevModuleSelected = moduleText
+      this.selectedGroup(index, moduleText)
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="holder" @click="selected(index, moduleText)" v-if="group !== null  && group.title !== null">
+  <div class="holder" v-bind:class="{'active-card': group.flag === true}" @click="selected(index, moduleText)" v-if="group !== null  && group.title !== null">
     <img :src="config.BACKEND_URL + group.title.profile.profile_url" class="profile" v-if="group.title.profile !== null">
     <i class="fa fa-user-circle-o" v-else></i>
     <label>{{group.title.username}}
@@ -15,6 +15,9 @@
   height: 50px;
   padding-left: 5px;
   border-bottom: solid 1px #eee;
+}
+.active-card{
+  background: #ddd;
 }
 .profile{
   width: 40px;

@@ -17,12 +17,15 @@ import AUTH from '../../services/auth'
 import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
+  mounted(){
+    this.retrieve()
+  },
   data(){
     return {
       user: AUTH.user,
       config: CONFIG,
       conversations: null,
-      group: null,
+      id: null,
       newFlag: false
     }
   },
@@ -31,15 +34,22 @@ export default {
     'c-body': require('modules/conversation/Body.vue'),
     'c-footer': require('modules/conversation/Footer.vue')
   },
+  props: ['groupId', 'group'],
+  watch: {
+    groupId: function(newVal, oldVal) { // watch it
+      this.groupId = newVal
+      this.retrieve()
+    }
+  },
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
     retrieve(){
-      if(this.group !== null && this.newFlag === false){
+      if(this.groupId && this.newFlag === false){
         let parameter = {
           condition: [{
-            value: this.group.id,
+            value: this.groupId,
             column: 'messenger_group_id',
             clause: '='
           }],

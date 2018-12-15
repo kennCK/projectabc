@@ -59,7 +59,7 @@ export default {
       ROUTER.push(parameter)
     },
     makeActive(selectedIndex, moduleText){
-      this.$parent.selectedGroup(selectedIndex, moduleText)
+      this.$parent.makeActiveCard(selectedIndex, moduleText)
     }
   }
 }
