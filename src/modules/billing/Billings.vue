@@ -19,7 +19,7 @@ export default {
     }
   },
   components: {
-    'create': require('modules/employee/Create.vue')
+    'create': require('modules/entry/Create.vue')
   },
   methods: {
     redirect(parameter){

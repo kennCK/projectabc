@@ -58,11 +58,11 @@
 <style>
 
 .main-sidebar, .content-holder{  
-  min-height: 84.5vh;
+  min-height: 92vh;
   overflow: hidden;
   transition: all 1s ease 0s;
   z-index: 1;
-  margin-top: 50px;
+  margin-top: 8vh;
 }
 .main-sidebar{
   position: fixed;
@@ -199,8 +199,8 @@
     display: block;
   }
   .content-holder{
-    width: 79%;
-    margin: 60px 1% 0 19%;
+    width: 81%;
+    margin: 60px 0% 0 19%;
     float: left;
   }
   /*  Change with Menu Toggled */
@@ -208,8 +208,8 @@
     margin-left: -14%;
   }
   .content-holder.hidden{
-    width: 92%;
-    margin: 60px 2% 0 6%;
+    width: 94%;
+    margin: 60px 0% 0 6%;
     float: left;
   }
 }
@@ -221,8 +221,8 @@
     float: left;
   }
   .content-holder{
-    width: 71%;
-    margin: 60px 2% 0 25%;
+    width: 72%;
+    margin: 60px 0% 0 25%;
     float: left;
   }
   .main-sidebar.active{
@@ -240,8 +240,8 @@
     margin-left: -18%;
   }
   .content-holder.hidden{
-    width: 92%;
-    margin: 60px 2% 0 6%;
+    width: 94%;
+    margin: 60px 0% 0 6%;
     float: left;
   }
 }
@@ -401,7 +401,7 @@ export default {
       menu: [
       // {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
       {id: 2, users: 'ALL', parent_id: 0, description: 'Templates', icon: 'fas fa-file', path: 'templates'},
-      {id: 3, users: 'ALL', parent_id: 0, description: 'Employees', icon: 'fas fa-users', path: 'employees'},
+      {id: 3, users: 'ALL', parent_id: 0, description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries'},
       {id: 4, users: 'ALL', parent_id: 0, description: 'Images', icon: 'fas fa-image', path: 'images'},
       // {id: 5, users: 'ALL', parent_id: 0, description: 'Billings', icon: 'fas fa-credit-card', path: 'billings'},
       {id: 6, users: 'PARTNER', parent_id: 0, description: 'Pricings', icon: 'fas fa-money', path: 'pricings'}
