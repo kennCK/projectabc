@@ -57,12 +57,15 @@ export default {
             'created_at': 'ASC'
           }
         }
-        this.APIRequest('messenger_messages/retrieve', parameter).then(response => {
+        this.APIRequest('messenger_messages/retrieve', parameter).done(response => {
           if(response.data.length > 0){
             this.conversations = response.data
           }else{
             this.conversations = null
           }
+          setTimeout(() => {
+            this.retrieve()
+          }, 1000)
         })
       }
     }

@@ -2,6 +2,9 @@
   <div class="holder">
     <div class="profile-icon" v-for="conversation, index in conversations" v-if="conversations !== null">
       <div class="left-template" v-if="user.userID !== parseInt(conversation.account_id)">
+        <span class="date">
+          {{conversation.created_at_human}}
+        </span>
         <img :src="config.BACKEND_URL + conversation.account.profile.profile_url" class="profile pull-left" v-if="conversation.account.profile !== null && conversation.account !== null">
         <i class="fa fa-user-circle-o pull-left" v-else></i>
         <label class="content" >
@@ -9,6 +12,9 @@
         </label>
       </div>
       <div class="right-template" v-else>
+        <span class="date">
+          {{conversation.created_at_human}}
+        </span>
          <label class="content">
           <bdi>{{conversation.message}}</bdi>
          </label>
@@ -57,11 +63,24 @@
   width: 90%;
 }
 
+.left-template .date, .right-template .date{
+  width: 100%;
+  height: 20px;
+  color: #aaa;
+  font-size: 12px;
+  float: left;
+  line-height: 20px;
+}
+.left-template .date{
+  padding-left: 8%;
+}
+.right-template .date{
+  padding-right: 10%;
+}
 
 .left-template i, .right-template i{
   font-size: 25px;
-  line-height: 25px;
-  
+  line-height: 25px; 
 }
 .holder::-webkit-scrollbar { width: 0; }
 </style>
