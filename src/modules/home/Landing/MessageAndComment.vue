@@ -6,7 +6,7 @@
       </span>
       <span class="description">
         <h4>
-          With our chat and comment features, getting real-time responses from our printing partners is now made easier.
+          As a customer-first business, we need constant communication to ensure quality prints all the time. Always get in touch through the chat and comment feature.  
         </h4>
       </span>
     </div>
