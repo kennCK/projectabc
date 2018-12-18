@@ -1,23 +1,15 @@
 <template>
   <div>
-    <div v-bind:class="{'make-active': item !== null && item.active === true}" class="item" v-if="item !== null" v-on:click="makeActive()">
+    <div v-bind:class="{'make-active': item !== null && item.active === true}" v-if="item !== null" v-on:click="makeActive()" v-bind:style="{height: (parseInt(item.height) + 50) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="item">
       <span v-bind:class="{'make-active-header': item.active === true}" class="header">
         <b>
           {{item.title}}
         </b>
       </span>
-      <span class="body">
+      <span v-bind:style="{height: parseInt(item.height) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="body">
         <span class="preview">
-         <!--  <span v-for="obj, innerIndex in item.objects" v-if="item.objects !== null">
-              <span class="division" v-if="obj.type === 'division'" v-bind:style="obj.attributes">
-              </span>
-              <label class="text" v-if="obj.type === 'text'" v-bind:style="obj.attributes">{{obj.content}}</label>
-              <img class="photo" :src="config.BACKEND_URL + obj.content" v-if="obj.type === 'photo'" :style="obj.attributes">
-          </span>-->
-          <objects :objects="item.objects" v-if="item.objects !== null">
-                </objects>
+          <objects :objects="item.objects" :heightTemplate="parseInt(item.height)" :widthTemplate="parseInt(item.width)" v-if="item.objects !== null"></objects>
         </span>
-
         <ul>
           <li v-on:click="show(item, 'editor')" style="border-left: 0px;">Editor</li>
           <li>
@@ -42,8 +34,6 @@
 </template>
 <style scoped>
 .item{
-  width: 204px;
-  height: 374px;
   float: left;
   border: solid 1px #ddd;
   border-top-left-radius: 5px;
@@ -90,9 +80,7 @@
   cursor: default;
 }
 .body{
-  width: 100%;
   float: left;
-  height: 324px;
   position: relative;
 }
 ul{

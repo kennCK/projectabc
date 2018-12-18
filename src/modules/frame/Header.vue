@@ -36,7 +36,7 @@
               </span>
               <span class="dropdown-item" v-on:click="redirect('/profile')">
                 <i class="fa fa-cog"></i>
-                <label>Your Profile</label>
+                <label>My Profile</label>
               </span>
               <span class="dropdown-item dropdown-item-menu-title">
                 <label>Documents</label>

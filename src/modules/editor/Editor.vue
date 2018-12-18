@@ -41,7 +41,7 @@
                     <span class="item" v-bind:class="{'layer-selected': item.selected === true}" v-for="item, index in objects" v-if="objects !== null" @click="setSelectedObject(item, index)" >{{item.type}}</span>
                   </span>
                 </span>
-                <span class="card-holder">
+                <span v-bind:style="{height: parseInt(item.height) + 'px', width: parseInt(item.width)  + 'px', left: (parseInt(item.height) === 324) ? '35%' : '29%'}" class="card-holder">
                   <span v-for="item, index in objects">
                     <span class="division" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'division'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">
                     </span>
@@ -139,9 +139,6 @@ ul li:hover{
   cursor: pointer;
 }
 .card-holder{
-  width: 204px;
-  height: 324px;
-  left: 35%;
   position: absolute;
   border: solid 1px #ddd;
 }

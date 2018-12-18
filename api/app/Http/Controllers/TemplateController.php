@@ -8,6 +8,9 @@ class TemplateController extends APIController
 {
     function __construct(){
     	$this->model = new Template();
+      $this->notRequired = array(
+        'purchased'
+      );
     }
 
     public function retrieve(Request $request){

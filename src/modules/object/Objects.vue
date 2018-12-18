@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="item" v-if="objects !== null">
-      <span class="body">
-        <span class="preview">
+    <div v-if="objects !== null" v-bind:style="{height: heightTemplate + 'px', width: widthTemplate + 'px'}" class="item">
+      <span v-bind:style="{height: heightTemplate + 'px', width: widthTemplate + 'px'}" class="body">
+        <span v-bind:style="{height: heightTemplate + 'px', width: widthTemplate + 'px'}" class="preview">
           <span v-for="obj, innerIndex in objects" v-if="objects !== null">
               <div class="division" v-if="obj.type === 'division'" v-bind:style="obj.attributes">
               </div>
@@ -27,8 +27,6 @@
     }
 }
 .item{
-  width: 204px;
-  height: 324px;
   float: left;
 }
 
@@ -38,17 +36,13 @@
 .make-active-header{
 }
 .body{
-  width: 100%;
   float: left;
-  height: 324px;
   position: relative;
 }
 .preview{
-  height: 324px;
   position: absolute;
   width: 100%;
   float: left;
-
 }
 
 .division, .text, .photo{
@@ -72,7 +66,7 @@ export default {
       prevId: null
     }
   },
-  props: ['objects'],
+  props: ['objects', 'heightTemplate', 'widthTemplate'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)

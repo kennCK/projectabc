@@ -93,7 +93,7 @@ export default {
           let profile = response.data[0].account_profile
           let checkout = response.data[0].checkout
           this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout)
-          ROUTER.push('/dashboard')
+          ROUTER.push('/templates')
         })
         // this.retrieveNotifications(userInfo.id)
         this.retrieveMessages(userInfo.id, userInfo.account_type)

@@ -29,10 +29,10 @@
             </div>
 
             <div class="form-group">
-              <label for="exampleInputEmail1">Orientation</label>
-              <select class="form-control" v-model="orientation">
-                <option value="portrait">Portrait</option>
-                <option value="landscape">Landscape</option>
+              <label for="exampleInputEmail1">Size</label>
+              <select class="form-control" v-model="size">
+                <option value="portrait">3.375" x 2.125" Portrait</option>
+                <option value="landscape">2.125" x 3.375" Landscape</option>
               </select>
             </div>
 
@@ -84,7 +84,7 @@ export default {
       errorMessage: null,
       title: null,
       settings: null,
-      orientation: null,
+      size: null,
       status: 'personal',
       category: 'personal',
       price: 0
@@ -101,7 +101,8 @@ export default {
           account_id: this.user.userID,
           title: this.title,
           settings: this.settings,
-          orientation: this.orientation,
+          width: (this.size === 'portrait') ? '204px' : '324px',
+          height: (this.size === 'portrait') ? '324px' : '204px',
           status: this.status,
           categories: this.category,
           price: this.price
