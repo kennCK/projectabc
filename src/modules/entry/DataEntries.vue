@@ -45,11 +45,11 @@
             </ul>
           </span>
 
-          <span class="items">
-            <objects :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null">
+          <span v-bind:style="{height: (parseInt(item.front_template_details.height)) + 'px', width: (parseInt(item.front_template_details.width) * 2)  + 'px'}" class="items" v-if="item.front_template_details.width === '204'">
+            <objects :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
             </objects>
 
-            <objects :objects="item.back_objects" :key="item.id + 'b'" v-if="item.back_objects !== null">
+            <objects :objects="item.back_objects" :key="item.id + 'b'" v-if="item.back_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
             </objects>
           </span>
         </span>

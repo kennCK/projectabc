@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div v-bind:class="{'make-active': item !== null && item.active === true}" v-if="item !== null" v-on:click="makeActive()" v-bind:style="{height: (parseInt(item.height) + 50) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="item">
+    <div v-bind:class="{'make-active': item !== null && item.active === true}" v-if="item !== null" v-on:click="makeActive()" v-bind:style="{height: (parseInt(item.height) + 90) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="item">
       <span v-bind:class="{'make-active-header': item.active === true}" class="header">
         <b>
           {{item.title}}
         </b>
       </span>
       <span v-bind:style="{height: parseInt(item.height) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="body">
-        <span class="preview">
+        <div v-bind:style="{height: parseInt(item.height) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="preview">
           <objects :objects="item.objects" :heightTemplate="parseInt(item.height)" :widthTemplate="parseInt(item.width)" v-if="item.objects !== null"></objects>
-        </span>
+        </div>
         <ul>
           <li v-on:click="show(item, 'editor')" style="border-left: 0px;">Editor</li>
           <li>
@@ -93,7 +93,6 @@ ul{
   bottom: 0;
   height: 40px;
   background: #22b173;
-  position: absolute;
   transition: 1s;
 }
 ul li{
