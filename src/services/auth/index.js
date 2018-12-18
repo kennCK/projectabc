@@ -18,9 +18,7 @@ export default {
       prevCurrent: null
     },
     messages: {
-      data: [
-        {title: 'Hello', description: 'World!', created_at: 'December 13, 2018'}
-      ],
+      data: null,
       current: 1,
       prevCurrent: null
     }
@@ -98,6 +96,7 @@ export default {
           ROUTER.push('/dashboard')
         })
         // this.retrieveNotifications(userInfo.id)
+        this.retrieveMessages(userInfo.id, userInfo.account_type)
         if(callback){
           callback(userInfo)
         }
@@ -136,6 +135,7 @@ export default {
           }
         })
         // this.retrieveNotifications(userInfo.id)
+        this.retrieveMessages(userInfo.id, userInfo.account_type)
       }, (response) => {
         this.setToken(null)
         this.tokenData.verifyingToken = false
@@ -177,6 +177,16 @@ export default {
         this.user.notifications.data = null
         this.user.notifications.current = null
       }
+    })
+  },
+  retrieveMessages(accountId, type){
+    let vue = new Vue()
+    let parameter = {
+      account_id: accountId,
+      account_type: type
+    }
+    vue.APIRequest('messenger_groups/retrieve_summary', parameter).then(response => {
+      this.user.messages.data = response.data
     })
   },
   startNotifTimer(accountId){

@@ -88,7 +88,6 @@ class MessengerGroupController extends APIController
           ->select('T2.*')
           ->get();
         $result = json_decode($result, true);
-        // echo json_encode($result);
         if(sizeof($result) > 0){
           $i = 0;
           foreach ($result as $key) {
@@ -142,6 +141,47 @@ class MessengerGroupController extends APIController
       ));
     }
 
+    public function retrieveSummary(Request $request){
+      $data = $request->all();
+      $accountType = $data['account_type'];
+      $accountId = $data['account_id'];
+      $response = array();
+
+      $result = DB::table('messenger_members as T1')
+        ->join('messenger_groups as T2', 'T2.id', '=', 'T1.messenger_group_id')
+        ->where('T1.account_id', '=', $accountId)
+        ->select('T2.*')
+        ->get();
+      $result = json_decode($result, true);
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $response[] = $this->getLastMessage($result[$i]['id']);
+        }
+      }else{
+        $response = null;
+      }
+
+      return response()->json(array(
+        'data'  => $response,
+        'error' => null,
+        'timestamps'  => Carbon::now()
+      ));
+    }
+
+    public function getLastMessage($messengerGroupId){
+      $message = MessengerMessage::where('messenger_group_id', '=', $messengerGroupId)->orderBy('created_at', 'desc')->get();
+      $response = array(
+        'title', 'description', 'date'
+      );
+      if(sizeof($message) > 0){
+        $response['title'] = $this->retrieveAccountDetails($message[0]['account_id']);
+        $response['description'] = $message[0]['message'];
+        $response['created_at_human'] = Carbon::createFromFormat('Y-m-d H:i:s', $message[0]['created_at'])->copy()->tz('Asia/Manila')->format('F j, Y');
+        return $response;
+      }
+      return null;
+    }
     public function getMembers($messengerGroupId){
       $result = MessengerMember::where('messenger_group_id', '=', $messengerGroupId)->get();
 

@@ -8,8 +8,8 @@
       Printing Partners
       <!-- <i class="fa fa-pencil-square-o pull-right text-white create-new-group"></i> -->
     </div>
-    <m-card v-for="group, index in groups" :key="group.id" :group="group" :index="index" :moduleText="'groups'"></m-card>
-    <m-card v-for="partner, index in partners" :key="partner.id" :group="partner" :index="index" :moduleText="'partners'"></m-card>
+    <m-card v-for="group, index in groups" :key="'A' + group.id" :group="group" :index="index" :moduleText="'groups'"></m-card>
+    <m-card v-for="partner, index in partners" :key="'B' + partner.id" :group="partner" :index="index" :moduleText="'partners'"></m-card>
   </div>
 </template>
 <style scoped>
