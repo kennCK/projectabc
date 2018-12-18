@@ -6,7 +6,7 @@
       </span>
       <span class="description">
         <h4>
-          As a customer-first business, we need constant communication to assure quality prints all the time. 
+          As a customer-first business, we need constant communication to ensure quality prints all the time. Always get in touch through the chat and comment feature.  
         </h4>
       </span>
     </div>

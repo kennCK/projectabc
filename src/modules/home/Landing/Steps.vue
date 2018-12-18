@@ -107,7 +107,7 @@ export default {
       data: [
         {title: 'Create or Choose a Template', description: 'Create custom templates using our editor tool or choose from the free ID templates gallery', image: '../../assets/img/banner.png'},
         {title: 'Data Entry', description: 'All the information required for each ID you create will automatically be exported to the template. No need to go to the editor to edit each template. ', image: '../../../assets/img/banner.png'},
-        {title: 'Review', description: 'Once IDs are generated you may review them in the gallery section', image: '../../../assets/img/banner.png'},
+        {title: 'Review', description: 'Once IDs are generated you may review them in the gallery section.', image: '../../../assets/img/banner.png'},
         {title: 'Check Out and Print', description: 'When you are satisfied with your output, you can now proceed to checkout and print using your printer or from any of our partner printers near your locale.', image: '../../../assets/img/banner.png'}
       ]
     }
