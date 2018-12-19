@@ -101,8 +101,8 @@ export default {
           account_id: this.user.userID,
           title: this.title,
           settings: this.settings,
-          width: (this.size === 'portrait') ? '204px' : '324px',
-          height: (this.size === 'portrait') ? '324px' : '204px',
+          width: (this.size === 'portrait') ? this.config.LANDSCAPE : this.config.PORTRAIT,
+          height: (this.size === 'portrait') ? this.config.PORTRAIT : this.config.LANDSCAPE,
           status: this.status,
           categories: this.category,
           price: this.price

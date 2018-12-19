@@ -29,10 +29,10 @@
 
 
             <div class="form-group">
-              <label for="exampleInputEmail1">Orientation</label>
-              <select class="form-control" v-model="item.orientation">
-                <option value="portrait">Portrait</option>
-                <option value="landscape">Landscape</option>
+              <label for="exampleInputEmail1">Size</label>
+              <select class="form-control" v-model="size">
+                <option value="portrait">3.375" x 2.125" Portrait</option>
+                <option value="landscape">2.125" x 3.375" Landscape</option>
               </select>
             </div>
 
@@ -122,7 +122,8 @@ export default {
       title: null,
       settings: null,
       orientation: null,
-      item: null
+      item: null,
+      size: null
     }
   },
   methods: {
@@ -131,7 +132,14 @@ export default {
     },
     update(){
       if(this.validate()){
-        this.APIRequest('templates/update', this.item).then(response => {
+        let parameter = {
+          id: this.item.id,
+          title: this.item.title,
+          settings: this.item.settings,
+          width: (this.size === 'portrait') ? this.config.LANDSCAPE : this.config.PORTRAIT,
+          height: (this.size === 'portrait') ? this.config.PORTRAIT : this.config.LANDSCAPE
+        }
+        this.APIRequest('templates/update', parameter).then(response => {
           if(response.data > 0){
             $('#updateTemplateModal').modal('hide')
             this.$parent.retrieve()
@@ -141,7 +149,7 @@ export default {
     },
     validate(){
       let i = this.item
-      if(i.title !== null || i.title !== '' || i.settings !== null || i.settings !== '' || i.orientation !== null || i.orientation !== ''){
+      if(i.title !== null || i.title !== '' || i.settings !== null || i.settings !== '' || this.size !== null || this.size !== ''){
         return true
       }
       return false

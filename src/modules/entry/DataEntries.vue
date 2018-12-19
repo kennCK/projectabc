@@ -3,7 +3,7 @@
 		<create></create>
     <div class="employee-list" v-if="data !==null">
       <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data" >
-        <span class="holder">
+        <span v-bind:style="{height: (parseInt(item.front_template_details.height) === config.LANDSCAPE) ? ((parseInt(item.front_template_details.height) * 2) + 50) + 'px' : (parseInt(item.front_template_details.height) + 50) + 'px', width: (parseInt(item.front_template_details.height) === config.LANDSCAPE) ? (parseInt(item.front_template_details.width) + 2)  + 'px' : ((parseInt(item.front_template_details.width) * 2) + 2)  + 'px'}" class="holder">
           <span class="header">
             <ul class="menu">
               <li>
@@ -45,7 +45,15 @@
             </ul>
           </span>
 
-          <span v-bind:style="{height: (parseInt(item.front_template_details.height)) + 'px', width: (parseInt(item.front_template_details.width) * 2)  + 'px'}" class="items" v-if="item.front_template_details.width === '204'">
+          <span v-bind:style="{height: (parseInt(item.front_template_details.height)) + 'px', width: (parseInt(item.front_template_details.width) * 2)  + 'px'}" class="items" v-if="parseInt(item.front_template_details.width) === config.LANDSCAPE">
+            <objects :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
+            </objects>
+
+            <objects :objects="item.back_objects" :key="item.id + 'b'" v-if="item.back_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
+            </objects>
+          </span>
+
+          <span v-bind:style="{height: (parseInt(item.front_template_details.height) * 2) + 'px', width: (parseInt(item.front_template_details.width))  + 'px'}" class="items" v-if="parseInt(item.front_template_details.width) === config.PORTRAIT">
             <objects :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
             </objects>
 
@@ -75,9 +83,7 @@
 }
 
 .holder{
-  width: 410px;
   float: left;
-  height: 374px;
   margin-right: 25px;
   border: solid 1px #ddd;
   margin-bottom: 25px;
@@ -127,8 +133,6 @@
   cursor: pointer;
 }
 .items{
-  width: 408px;
-  height: 324px;
   float: left;
 }
 

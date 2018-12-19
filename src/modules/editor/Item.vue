@@ -63,7 +63,6 @@
 .dropdown-menu{
   padding: 0px !important;
   margin-top: -145px !important;
-  margin-left: -28px !important;
 }
 
 .dropdown-item{
@@ -107,6 +106,12 @@ ul li{
 ul li:hover{
   cursor: pointer;
   background: #028170;
+}
+#dropdownMenuSettingsButton{
+  width: 100%;
+}
+#dropdownMenuSettingsButton:hover{
+  cursor: pointer;
 }
 </style>
 <script>
@@ -154,6 +159,7 @@ export default {
               })
             }, 50)
           }else if(id === 'updateSettings'){
+            this.$children[i].size = (parseInt(item.width) === 204) ? 'portrait' : 'landscape'
             this.$children[i].item = item
             setTimeout(() => {
               $('#updateTemplateModal').modal({
