@@ -9,9 +9,6 @@
           ID Factory is an online application that lets you design and create custom IDs. Ideal for companies, corporate events and many more.
           (Create. Archive. Print. All in one place.)
         </h4>
-        <h4>
-          <a href="" class="" data-aos="zoom-in" data-aos-delay="400"> Create an ID template </a>
-        </h4>
       </span>
     </div>
     <div class="image">
