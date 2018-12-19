@@ -137,7 +137,10 @@ export default {
           title: this.item.title,
           settings: this.item.settings,
           width: (this.size === 'portrait') ? this.config.LANDSCAPE : this.config.PORTRAIT,
-          height: (this.size === 'portrait') ? this.config.PORTRAIT : this.config.LANDSCAPE
+          height: (this.size === 'portrait') ? this.config.PORTRAIT : this.config.LANDSCAPE,
+          status: this.item.status,
+          categories: this.item.categories,
+          price: this.item.price
         }
         this.APIRequest('templates/update', parameter).then(response => {
           if(response.data > 0){

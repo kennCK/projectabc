@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div v-bind:class="{'make-active': item !== null && item.active === true}" class="item" v-if="item !== null" v-on:click="makeActive()">
+    <div v-bind:class="{'make-active': item !== null && item.active === true}" v-bind:style="{height: (parseInt(item.height) + 90) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="item" v-if="item !== null" v-on:click="makeActive()">
       <span v-bind:class="{'make-active-header': item.active === true}" class="header">
         <b>
           {{item.title}}
         </b>
       </span>
-      <span class="body">
-        <span class="preview">
-          <objects :objects="item.objects" v-if="item.objects !== null"></objects>
+      <span v-bind:style="{height: parseInt(item.height) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="body">
+        <span v-bind:style="{height: parseInt(item.height) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="preview">
+          <objects :objects="item.objects" v-if="item.objects !== null" :heightTemplate="parseInt(item.height)" :widthTemplate="parseInt(item.width)"></objects>
         </span>
 
         <ul v-if="item.active === true">
@@ -25,8 +25,6 @@
 </template>
 <style scoped>
 .item{
-  width: 204px;
-  height: 374px;
   float: left;
   border: solid 1px #ddd;
   border-top-left-radius: 5px;
@@ -54,9 +52,7 @@
   color: #fff;
 }
 .body{
-  width: 100%;
   float: left;
-  height: 324px;
   position: relative;
 }
 ul{
@@ -69,7 +65,6 @@ ul{
   bottom: 0;
   height: 40px;
   background: #22b173;
-  position: absolute;
   transition: 1s;
 }
 ul li{
