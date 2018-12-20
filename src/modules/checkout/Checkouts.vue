@@ -7,13 +7,17 @@
         </span>
         <span class="item" v-for="item, index in data[0].items" v-if="data[0].items !== null">
           <span class="objects-holder" v-if="item.payload === 'template'">
-            <objects :objects="item.objects" v-if="item.objects !== null"></objects>
+            <objects :objects="item.objects" v-if="item.objects !== null" :heightTemplate="parseInt(item.template.height)" :widthTemplate="parseInt(item.template.width)"></objects>
           </span>
-          <span class="objects-holder" v-if="item.payload === 'employee' && item.employee.front_objects !== null">
-            <objects :objects="item.employee.front_objects"></objects>
+          <span class="objects-holder" v-if="item.payload === 'employee' && item.employee.front_objects !== null && parseInt(item.employee.front_template_details.height) === config.PORTRAIT">
+            <objects :objects="item.employee.front_objects" :heightTemplate="parseInt(item.employee.front_template_details.height)" :widthTemplate="parseInt(item.employee.front_template_details.width)"></objects>
           </span>
-          <span class="objects-holder" v-if="item.payload === 'employee' && item.employee.back_objects !== null">
-            <objects :objects="item.employee.back_objects"></objects>
+          <span class="objects-holder" v-if="item.payload === 'employee' && item.employee.back_objects !== null && parseInt(item.employee.front_template_details.height) === config.PORTRAIT">
+            <objects :objects="item.employee.back_objects" :heightTemplate="parseInt(item.employee.front_template_details.height)" :widthTemplate="parseInt(item.employee.front_template_details.width)"></objects>
+          </span>
+          <span class="objects-holder" v-if="item.payload === 'employee' && item.employee.back_objects !== null && parseInt(item.employee.front_template_details.height) === config.LANDSCAPE">
+            <objects :objects="item.employee.front_objects" :heightTemplate="parseInt(item.employee.front_template_details.height)" :widthTemplate="parseInt(item.employee.front_template_details.width)"></objects>
+            <objects :objects="item.employee.back_objects" :heightTemplate="parseInt(item.employee.front_template_details.height)" :widthTemplate="parseInt(item.employee.front_template_details.width)"></objects>
           </span>
           <span class="details" v-if="item.payload === 'template' || (item.payload === 'employee' && (item.employee.back_objects === null || item.employee.front_objects === null))">
               <label style="margin-top: 10px;" v-if="item.payload === 'employee'">
@@ -38,7 +42,7 @@
           </span>
         </span>
       </span>
-      <span class="sidebar">
+      <span class="sidebar pull-right">
         <span class="title">Order Summary</span>
         <span class="item">
           <label>Subtotal</label>
@@ -126,7 +130,6 @@
 }
 .objects-holder{
   float: left;
-  width: 30%;
 }
 .details{
   float: left;
@@ -232,6 +235,10 @@ export default {
         condition: [{
           value: this.user.userID,
           column: 'account_id',
+          clause: '='
+        }, {
+          column: 'status',
+          value: 'added',
           clause: '='
         }],
         account_id: this.user.userID
