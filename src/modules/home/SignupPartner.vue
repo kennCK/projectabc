@@ -163,25 +163,25 @@ export default {
       }
       if(this.flag === true){
         $('#loading').css({'display': 'block'})
-        // this.APIRequest('accounts/create', parameter).then(response => {
-        //   $('#loading').css({'display': 'none'})
-        //   if(response.error !== null){
-        //     if(response.error.status === 100){
-        //       let message = response.error.message
-        //       if(typeof message.username !== undefined && typeof message.username !== 'undefined'){
-        //         this.errorMessage = message.username[0]
-        //       }else if(typeof message.email !== undefined && typeof message.email !== 'undefined'){
-        //         this.errorMessage = message.email[0]
-        //       }
-        //     }else if(response.data !== null){
-        //       if(response.data > 0){
-        //         this.login()
-        //       }
-        //     }
-        //   }
+        this.APIRequest('accounts/create', parameter).then(response => {
+          $('#loading').css({'display': 'none'})
+          if(response.error !== null){
+            if(response.error.status === 100){
+              let message = response.error.message
+              if(typeof message.username !== undefined && typeof message.username !== 'undefined'){
+                this.errorMessage = message.username[0]
+              }else if(typeof message.email !== undefined && typeof message.email !== 'undefined'){
+                this.errorMessage = message.email[0]
+              }
+            }else if(response.data !== null){
+              if(response.data > 0){
+                this.login()
+              }
+            }
+          }
           // this.redirect('/verification/' + this.email)
           // this.login()
-        // })
+        })
       }
     },
     redirect(parameter){

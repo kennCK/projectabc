@@ -12,15 +12,13 @@
 <style scoped>
 .customModal{
   position: fixed;
-  background: rgb(254, 254, 254);
-  background: rgba(254, 254, 254, 1);
+  background: rgba(254, 254, 254, 0.5);
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   width: 100%;
   z-index: 100000 !important;
-  pointer-events: none;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   transition: all 0.3s;
@@ -28,15 +26,20 @@
   display: none;
 }
 .customModal .loading{
-  font-size: 50px;
+  font-size: 75px;
   margin-top: 200px;
-  height: 100px;
+  height: 200px;
   float: left;
-  width: 100%;
+  width: 20%;
+  margin-left: 40%;
+  margin-right: 40%;
   text-align: center;
   color: #22b173;
   background: #fff;
-  line-height: 100px;
+  line-height: 200px;
   border-radius: 5px;
+  border: solid 1px #eee;
+}
+.fa-spin{
 }
 </style>

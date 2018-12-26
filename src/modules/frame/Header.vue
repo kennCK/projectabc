@@ -448,9 +448,10 @@ body{
 }
 
 .profile-photo-header i{
-  float: left;
-  font-size: 80px;
-  width: 100%;
+  float: left !important;
+  font-size: 60px !important;
+  line-height: 80px !important;
+  width: 100% !important;
 }
 
 
