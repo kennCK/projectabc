@@ -271,7 +271,8 @@ class CheckoutController extends APIController
             $pTemplate->account_id  = $templates[$i]['account_id'];
             $pTemplate->title       = $template['title'];
             $pTemplate->settings    = $template['settings'];
-            $pTemplate->orientation = $template['orientation'];
+            $pTemplate->height      = $template['height'];
+            $pTemplate->width       = $template['width'];
             $pTemplate->status      = 'purchased';
             $pTemplate->purchased   = $template['id'];
             $pTemplate->categories  = $template['categories'];
