@@ -17,6 +17,14 @@ export default{
     }
   },
   {
+    path: '/signup_partner',
+    name: 'signupPartner',
+    component: resolve => require(['modules/home/SignupPartner.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
+  },
+  {
     path: '/verification/:email',
     name: 'verification',
     component: resolve => require(['modules/home/Verification.vue'], resolve),

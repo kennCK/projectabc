@@ -7,6 +7,7 @@ use App\AccountInformation;
 use App\BillingInformation;
 use App\AccountProfile;
 use App\Checkout;
+use App\Product;
 use App\CheckoutItem;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -45,13 +46,13 @@ class AccountController extends APIController
      $accountId = $this->response['data'];
 
      if($accountId){
-       $this->createDetails($accountId);
+       $this->createDetails($accountId, $request['account_type']);
      }
     
      return $this->response();
     }
 
-    public function createDetails($accountId){
+    public function createDetails($accountId, $type){
       $info = new AccountInformation();
       $info->account_id = $accountId;
       $info->created_at = Carbon::now();
@@ -61,6 +62,14 @@ class AccountController extends APIController
       $billing->account_id = $accountId;
       $billing->created_at = Carbon::now();
       $billing->save();
+
+      if($type == 'PARTNER' || $type == 'partner'){
+        $product = new Product();
+        $product->account_id = $accountId;
+        $product->title = 'id_printing';
+        $product->created_at = Carbon::now();
+        $product->save();
+      }
     }
 
     public function generateCode(){
