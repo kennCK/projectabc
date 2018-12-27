@@ -32,11 +32,15 @@
                 <span class="account-info text-center">{{user.username}}</span>
               </span>
               <span class="dropdown-item dropdown-item-menu-title">
-                <label>Profile</label>
+                <label>Personal</label>
               </span>
               <span class="dropdown-item" v-on:click="redirect('/profile')">
                 <i class="fa fa-cog"></i>
                 <label>My Profile</label>
+              </span>
+              <span class="dropdown-item" v-on:click="redirect('/plan')">
+                <i class="fa fa-cog"></i>
+                <label>My Plan</label>
               </span>
               <span class="dropdown-item dropdown-item-menu-title">
                 <label>Documents</label>
