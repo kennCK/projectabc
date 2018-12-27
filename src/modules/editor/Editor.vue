@@ -58,8 +58,14 @@
             </span>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-danger" @click="close()">Close</button>
-              <button type="button" class="btn btn-primary" @click="save()">Save</button>
+              <button type="button" class="btn btn-danger" @click="close()" v-if="saveFlag === 0 || saveFlag === 1">Close</button>
+              <button type="button" class="btn btn-primary" @click="save()" v-if="saveFlag === 1">Save</button>
+              <span class="loading-save" v-if="saveFlag === 2">
+                <i class="fas fa-circle-o-notch fa-spin"></i> Saving...
+              </span>
+              <span class="loading-save" v-if="saveFlag === 3">
+                Successfully Updated!
+              </span>
           </div>
         </div>
       </div>
@@ -165,6 +171,15 @@ ul li:hover{
   background: #22b173;
   color: #fff;
 }
+.loading-save{
+  line-height: 35px;
+  color: #22b173;
+  float: left;
+  height: 35px;
+}
+.loading-save i{
+  font-size: 18px;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -183,7 +198,8 @@ export default {
       prevIndex: null,
       selected: null,
       selectedIndex: null,
-      objects: null
+      objects: null,
+      saveFlag: 0
     }
   },
   components: {
@@ -201,6 +217,7 @@ export default {
       $('#templateEditorModal').modal('hide')
     },
     addObject(type){
+      this.saveFlag = 1
       if(this.objects === null){
         this.objects = []
       }else{
@@ -286,6 +303,7 @@ export default {
       this.setSelectedObject(this.objects[this.objects.length - 1], this.objects.length - 1)
     },
     setSelectedObject(object, index){
+      this.saveFlag = 1
       if(this.prevIndex === null){
         this.prevIndex = index
         this.objects[this.prevIndex].selected = true
@@ -300,6 +318,7 @@ export default {
       this.selectedIndex = index
     },
     unSelected(){
+      this.saveFlag = 1
       this.objects[this.prevIndex].selected = false
       this.prevIndex = null
       this.selected = null
@@ -331,7 +350,9 @@ export default {
       let parameter = {
         objects: this.objects
       }
+      this.saveFlag = 2
       this.APIRequest('objects/create', parameter).done(response => {
+        this.saveFlag = 3
         if(response.data === true){
           this.retrieve()
         }
