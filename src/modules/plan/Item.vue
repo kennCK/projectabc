@@ -18,8 +18,8 @@
           </span>
         </span>
         <span class="lead">
-          <button class="btn btn-primary btn-whole" v-on:click="createPaypal('pause')">
-            BUY THIS PLAN
+          <button class="btn btn-primary btn-whole" v-on:click="addToCart('free', products.free)">
+            Add to Cart
           </button>
           <span class="text text-danger">
             <b>FEATURES</b>
@@ -30,8 +30,8 @@
           <span class="text">
             Expire after 1 Month
           </span>
-          <button class="btn btn-primary btn-whole" v-on:click="createPaypal('pause')">
-            BUY THIS PLAN
+          <button class="btn btn-primary btn-whole" v-on:click="addToCart('free', products.free)">
+            Add to Cart
           </button>
         </span>
       </span>
@@ -54,8 +54,8 @@
           </span>
         </span>
         <span class="lead">
-          <button class="btn btn-primary btn-whole" v-on:click="createPaypal('pause')">
-            BUY THIS PLAN
+          <button class="btn btn-primary btn-whole" v-on:click="addToCart('monthly', products.monthly)">
+            Add to Cart
           </button>
           <span class="text text-danger">
             <b>FEATURES</b>
@@ -72,8 +72,8 @@
           <span class="text">
             Notifications
           </span>
-          <button class="btn btn-primary btn-whole" v-on:click="createPaypal('pause')">
-            BUY THIS PLAN
+          <button class="btn btn-primary btn-whole" v-on:click="addToCart('monthly', products.monthly)">
+            Add to Cart
           </button>
         </span>
       </span>
@@ -96,8 +96,8 @@
           </span>
         </span>
         <span class="lead">
-          <button class="btn btn-primary btn-whole" v-on:click="createPaypal('pause')">
-            BUY THIS PLAN
+          <button class="btn btn-primary btn-whole" v-on:click="addToCart('annually', products.annually)">
+            Add to Cart
           </button>
           <span class="text text-danger">
             <b>FEATURES</b>
@@ -114,8 +114,8 @@
           <span class="text">
             Notifications
           </span>
-          <button class="btn btn-primary btn-whole" v-on:click="createPaypal('pause')">
-            BUY THIS PLAN
+          <button class="btn btn-primary btn-whole" v-on:click="addToCart('annually', products.annually)">
+            Add to Cart
           </button>
         </span>
       </span>
@@ -287,6 +287,30 @@ export default {
   methods: {
     redirect(route){
       ROUTER.push(route)
+    },
+    addToCart(plan, price){
+      let parameter = {
+        account_id: this.user.userID,
+        title: plan,
+        price: price,
+        total_amount: 0,
+        status: 'added'
+      }
+      this.APIRequest('plans/create', parameter).done(response => {
+        if(response.data > 0){
+          let innerParameter = {
+            account_id: this.user.userID,
+            payload: 'plan',
+            payload_value: response.data,
+            price: price
+          }
+          this.APIRequest('checkout_items/create', innerParameter).then(innerResponse => {
+            if(innerResponse.data > 0){
+              AUTH.checkAuthentication(null)
+            }
+          })
+        }
+      })
     }
   }
 }
