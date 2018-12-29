@@ -3,23 +3,24 @@
     <div class="pricing-item">
       <span class="header-options option-false"></span>
       <span class="header-item bg-green">
-        <label>FREE</label>
+        <label><b>BASIC</b></label>
       </span>
       <span class="pricing-content-holder">
         <span class="cost bg-green">
           <span class="top">
-            <span class="value">{{products.currency + '' + products.free}}</span>
+            <span class="value">{{products.currency + '' + products.basic}}</span>
           </span>
-          <div class="bottom-pricing text-warning"><b>BASIC</b></div>
-        </span>
-        <span class="other-details">
-          <span class="item bg-default">
-            Regular
-          </span>
+          <div class="bottom-pricing text-warning"><b>PER MONTH</b></div>
         </span>
         <span class="lead">
-          <button class="btn btn-primary btn-whole" v-on:click="addToCart('free', products.free)">
-            Add to Cart
+          <select class="form-control form-control-plan" v-model="basic">
+            <option v-for="i in 12" v-bind:value="i">{{i}} 
+              <label v-if="i === 1">Month</label>
+              <label v-else>Months</label>
+            </option>
+          </select>
+          <button class="btn btn-primary btn-whole" v-on:click="upgradePlan('basic', products.basic, basic)">
+            Upgrade
           </button>
           <span class="text text-danger">
             <b>FEATURES</b>
@@ -30,8 +31,8 @@
           <span class="text">
             Expire after 1 Month
           </span>
-          <button class="btn btn-primary btn-whole" v-on:click="addToCart('free', products.free)">
-            Add to Cart
+          <button class="btn btn-primary btn-whole" v-on:click="upgradePlan('basic', products.basic, basic)">
+            Upgrade
           </button>
         </span>
       </span>
@@ -39,23 +40,24 @@
 
     <span class="pricing-item" style="margin-left: 2%;">
       <span class="header-item bg-secondary">
-        <label>MONTHLY</label>
+        <label><b>ENTERPRISE</b></label>
       </span>
       <span class="pricing-content-holder">
         <span class="cost bg-secondary">
           <span class="top">
-            <span class="value">{{products.currency + '' + products.monthly}}</span>
+            <span class="value">{{products.currency + '' + products.enterprise}}</span>
           </span>
-          <span class="bottom-pricing text-warning"><b>PREMIUM</b></span>
-        </span>
-        <span class="other-details">
-          <span class="item bg-secondary">
-            Regular
-          </span>
+          <span class="bottom-pricing text-warning"><b>PER MONTH</b></span>
         </span>
         <span class="lead">
-          <button class="btn btn-primary btn-whole" v-on:click="addToCart('monthly', products.monthly)">
-            Add to Cart
+          <select class="form-control form-control-plan" v-model="enterprise">
+            <option v-for="i in 12" v-bind:value="i">{{i}} 
+              <label v-if="i === 1">Month</label>
+              <label v-else>Months</label>
+            </option>
+          </select>
+          <button class="btn btn-primary btn-whole" v-on:click="upgradePlan('enterprise', products.enterprise, enterprise)">
+            Upgrade
           </button>
           <span class="text text-danger">
             <b>FEATURES</b>
@@ -72,8 +74,8 @@
           <span class="text">
             Notifications
           </span>
-          <button class="btn btn-primary btn-whole" v-on:click="addToCart('monthly', products.monthly)">
-            Add to Cart
+          <button class="btn btn-primary btn-whole" v-on:click="upgradePlan('enterprise', products.enterprise, enterprise)">
+            Upgrade
           </button>
         </span>
       </span>
@@ -81,23 +83,24 @@
 
     <span class="pricing-item" style="margin-left: 2%;">
       <span class="header-item bg-secondary">
-        <label>ANNUALLY</label>
+        <label><b>PREMIUM</b></label>
       </span>
       <span class="pricing-content-holder">
         <span class="cost bg-secondary">
           <span class="top">
-            <span class="value">{{products.currency + '' + products.annually}}</span>
+            <span class="value">{{products.currency + '' + products.premium}}</span>
           </span>
-          <span class="bottom-pricing text-warning"><b>PREMIUM</b></span>
-        </span>
-        <span class="other-details">
-          <span class="item bg-secondary">
-            Save up to 20% per Month
-          </span>
+          <span class="bottom-pricing text-warning"><b>PER MONTH</b></span>
         </span>
         <span class="lead">
-          <button class="btn btn-primary btn-whole" v-on:click="addToCart('annually', products.annually)">
-            Add to Cart
+          <select class="form-control form-control-plan" v-model="premium">
+            <option v-for="i in 12" v-bind:value="i">{{i}} 
+              <label v-if="i === 1">Month</label>
+              <label v-else>Months</label>
+            </option>
+          </select>
+          <button class="btn btn-primary btn-whole" v-on:click="upgradePlan('premium', products.premium, premium)">
+            Upgrade
           </button>
           <span class="text text-danger">
             <b>FEATURES</b>
@@ -114,8 +117,8 @@
           <span class="text">
             Notifications
           </span>
-          <button class="btn btn-primary btn-whole" v-on:click="addToCart('annually', products.annually)">
-            Add to Cart
+          <button class="btn btn-primary btn-whole" v-on:click="upgradePlan('premium', products.premium, premium)">
+            Upgrade
           </button>
         </span>
       </span>
@@ -163,9 +166,10 @@
 .pricing-content-holder .cost{
   width: 100%;
   float: left;
-  height: 150px;
+  min-height: 150px;
   text-align: right;
   color: #fff;
+  overflow-y: hidden;
 }
 .pricing-content-holder .center{
   height: 250px;
@@ -180,6 +184,8 @@
   float: left;
   text-align: center;
   font-size: 18px;
+  line-height: 40px;
+  height: 40px;
 }
 .cost .top .value{
   font-size: 80px;
@@ -262,6 +268,14 @@
 .bg-green{
   background: #22b173;
 }
+
+.form-control-plan{
+  width: 80% !important;
+  margin-left: 10% !important;
+  margin-right: 10% !important;
+  height: 50px !important;
+  margin-top: 20px;
+}
 @media (max-width: 992px){
   .pricing-item{
     width: 90%;
@@ -281,14 +295,17 @@ export default {
     return{
       user: AUTH.user,
       config: CONFIG,
-      products: PRODUCTS
+      products: PRODUCTS,
+      basic: 1,
+      enterprise: 1,
+      premium: 1
     }
   },
   methods: {
     redirect(route){
       ROUTER.push(route)
     },
-    addToCart(plan, price){
+    upgradePlan(plan, price){
       let parameter = {
         account_id: this.user.userID,
         title: plan,
@@ -304,11 +321,6 @@ export default {
             payload_value: response.data,
             price: price
           }
-          this.APIRequest('checkout_items/create', innerParameter).then(innerResponse => {
-            if(innerResponse.data > 0){
-              AUTH.checkAuthentication(null)
-            }
-          })
         }
       })
     }

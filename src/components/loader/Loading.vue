@@ -27,8 +27,8 @@
 }
 .customModal .loading{
   font-size: 75px;
-  margin-top: 200px;
-  height: 200px;
+  margin-top: 20vh;
+  height: 35vh;
   float: left;
   width: 20%;
   margin-left: 40%;
@@ -36,7 +36,7 @@
   text-align: center;
   color: #22b173;
   background: #fff;
-  line-height: 200px;
+  line-height: 30vh;
   border-radius: 5px;
   border: solid 1px #eee;
 }

@@ -39,7 +39,7 @@
                 <label>My Profile</label>
               </span>
               <span class="dropdown-item" v-on:click="redirect('/plan')">
-                <i class="fa fa-cog"></i>
+                <i class="fa fa-tag"></i>
                 <label>My Plan</label>
               </span>
               <span class="dropdown-item dropdown-item-menu-title">
