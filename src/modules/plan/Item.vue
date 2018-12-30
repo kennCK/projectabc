@@ -305,22 +305,17 @@ export default {
     redirect(route){
       ROUTER.push(route)
     },
-    upgradePlan(plan, price){
+    upgradePlan(plan, price, multiplier){
       let parameter = {
         account_id: this.user.userID,
         title: plan,
         price: price,
-        total_amount: 0,
+        total_amount: parseInt(price) * parseInt(multiplier),
         status: 'added'
       }
       this.APIRequest('plans/create', parameter).done(response => {
         if(response.data > 0){
-          let innerParameter = {
-            account_id: this.user.userID,
-            payload: 'plan',
-            payload_value: response.data,
-            price: price
-          }
+          this.redirect('/checkout_plan')
         }
       })
     }

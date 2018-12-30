@@ -159,6 +159,14 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/checkout_plan',
+    name: 'checkoutPlan',
+    component: resolve => require(['modules/plan/Checkout.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
