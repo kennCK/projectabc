@@ -158,7 +158,7 @@ export default {
     let vue = new Vue()
     vue.APIRequest('authenticate/invalidate')
     this.clearNotifTimer()
-    ROUTER.push('/')
+    this.tokenData.token = null
     ROUTER.go('/')
   },
   retrieveNotifications(accountId){
