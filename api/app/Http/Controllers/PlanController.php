@@ -14,7 +14,7 @@ class PlanController extends APIController
     	$this->model = new Plan();
 
     	$this->notRequired = array(
-    		'start', 'end'
+    		'order_number', 'start', 'end'
     	);
     }
 
@@ -38,5 +38,29 @@ class PlanController extends APIController
       $this->response['tax'] = $this->tax;
       $this->response['total'] = $this->subTotal - $this->tax;
       return $this->response();
+    }
+
+    public function update(Request $request){
+    	$data = $request->all();
+    	$data['order_number'] = $this->getOrderNumber();
+    	$this->updatDB($data);
+    	$this->response();
+    }
+
+    public function getOrderNumber(){
+    	$result = Plan::where('deleted_at', '!=', null)->count();
+    	if($result){
+        if($result >= 1000){
+          return 'IDFO-'.$result;
+        }else if($result >= 100){
+          return 'IDFO-0'.$result;
+        }else if($result >= 10){
+          return 'IDFO-00'.$result;
+        }else if($result >= 0){
+          return 'IDFO-000'.$result;
+        }
+      }else{
+        return 'IDFO-0001';
+      }
     }
 }
