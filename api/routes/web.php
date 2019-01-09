@@ -317,6 +317,7 @@ Route::get('/messenger_message_files/test', 'MessengerMessageFileController@test
 //Plans Controller
 Route::post('/plans/create', "PlanController@create");
 Route::post('/plans/retrieve', "PlanController@retrieve");
+Route::post('/plans/retrieve_summary', "PlanController@retrieveSummary");
 Route::post('/plans/update', "PlanController@update");
 Route::post('/plans/delete', "PlanController@delete");
 Route::get('/plans/test', 'PlanController@test');

@@ -55,7 +55,7 @@
         </span>
         <span class="custom-btn" style="border-bottom: 0px;">
             <PayPal
-              v-bind:amount="'' + data[0].total"
+              v-bind:amount="'' + total"
               currency="PHP"
               :client="paypal"
               :button-style="myStyle"
@@ -244,7 +244,7 @@ export default {
       let parameter = {
         id: id
       }
-      this.APIRequest('checkout_items/delete', parameter).then(response => {
+      this.APIRequest('plans/delete', parameter).then(response => {
         AUTH.checkAuthentication(null)
         this.retrieve()
       })
@@ -256,9 +256,9 @@ export default {
           payment_type: 'authorized',
           payment_payload: 'credit_card',
           payment_payload_value: this.method.id,
-          sub_total: this.data[0].sub_total,
-          total: this.data[0].total,
-          tax: this.data[0].tax,
+          sub_total: this.subTotal,
+          total: this.total,
+          tax: this.tax,
           account_id: this.user.userID,
           email: this.user.email,
           order_number: this.data[0].order_number
@@ -273,9 +273,9 @@ export default {
           payment_type: 'express',
           payment_payload: 'credit_card',
           payment_payload_value: id,
-          sub_total: this.data[0].sub_total,
-          total: this.data[0].total,
-          tax: this.data[0].tax,
+          sub_total: this.subTotal,
+          total: this.total,
+          tax: this.tax,
           account_id: this.user.userID,
           email: this.user.email,
           order_number: this.data[0].order_number
@@ -292,9 +292,9 @@ export default {
           payment_type: 'express',
           payment_payload: 'paypal',
           payment_payload_value: data,
-          sub_total: this.data[0].sub_total,
-          total: this.data[0].total,
-          tax: this.data[0].tax,
+          sub_total: this.subTotal,
+          total: this.total,
+          tax: this.tax,
           account_id: this.user.userID,
           email: this.user.email,
           order_number: this.data[0].order_number
@@ -308,10 +308,10 @@ export default {
     paypalAuthorized(data){
     },
     updateRequest(parameter){
-      this.APIRequest('checkouts/update', parameter).then(response => {
+      this.APIRequest('plans/update', parameter).then(response => {
         if(response.data === true){
           AUTH.checkAuthentication(null)
-          ROUTER.push('/thankyou/' + this.data[0].order_number)
+          ROUTER.push('/cp_thank_you/' + this.data[0].order_number)
         }
       })
     },

@@ -167,6 +167,14 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/cp_thank_you/:orderNumber',
+    name: 'cpThankYou',
+    component: resolve => require(['modules/plan/ThankYou.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
