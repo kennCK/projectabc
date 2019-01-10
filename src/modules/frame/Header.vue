@@ -12,6 +12,7 @@
       </span>
       <span class="left-menu-icons">
         <label class="account-type  hide-on-mobile" v-bind:class="{'bg-warning': user.type === 'USER', 'bg-danger': user.type === 'PARTNER', 'bg-gray': user.type === 'ADMIN'}" v-if="user !== null">{{user.type}}</label>
+        <label class="account-type  hide-on-mobile" v-bind:class="{'bg-warning': user.plan === 'enterprise', 'bg-danger': user.plan === 'Trial', 'bg-gray': user.plan === 'premium', 'bg-white': user.plan === 'basic'}" v-if="user !== null && user.plan !== null">{{user.plan.toUpperCase()}}</label>
       </span>
       <span class="right-menu-icons">
         <div class="dropdown"> 

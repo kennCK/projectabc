@@ -9,6 +9,7 @@ use App\AccountProfile;
 use App\Checkout;
 use App\Product;
 use App\CheckoutItem;
+use App\Plan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -152,6 +153,7 @@ class AccountController extends APIController
           $result[$i]['account_information'] = (sizeof($accountInfoResult) > 0) ? $accountInfoResult[0] : null;
           $result[$i]['account_profile'] = (sizeof($accountProfileResult) > 0) ? $accountProfileResult[0] : null;
           $result[$i]['checkout'] = $this->getCheckoutItem($accountId);
+          $result[$i]['plan'] = $this->getCurrentPlan($accountId, $result[$i]['created_at']);
           $i++;
         }
         return response()->json(array('data' => $result));
@@ -166,6 +168,22 @@ class AccountController extends APIController
         return CheckoutItem::where('checkout_id', '=', $checkout->id)->count();
       }else{
         return 0;
+      }
+    }
+
+    public function getCurrentPlan($accountId, $createdAt){
+      $result = Plan::where('account_id', '=', $accountId)->where('status', '=', 'completed')->orderBy('created_at', 'desc')->first();
+      $current = Carbon::now();
+      $accountDate = Carbon::createFromFormat('Y-m-d H:i:s', $createdAt);
+      $diff = $accountDate->diffInSeconds($current, false);
+      if($diff >= 30){
+        if($result){
+          return $result->title;
+        }else{
+          return 'Expired';
+        }
+      }else{
+        return 'Trial';
       }
     }
 

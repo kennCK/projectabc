@@ -14,7 +14,7 @@ class UpdatePlansTable extends Migration
     public function up()
     {
         Schema::table('plans', function (Blueprint $table) {
-            // $table->string('status')->after('total_amount');
+            $table->string('status')->after('total_amount');
         });
     }
 
