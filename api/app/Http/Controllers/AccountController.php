@@ -172,11 +172,11 @@ class AccountController extends APIController
     }
 
     public function getCurrentPlan($accountId, $createdAt){
-      $result = Plan::where('account_id', '=', $accountId)->where('status', '=', 'completed')->orderBy('created_at', 'desc')->first();
       $current = Carbon::now();
       $accountDate = Carbon::createFromFormat('Y-m-d H:i:s', $createdAt);
-      $diff = $accountDate->diffInSeconds($current, false);
+      $diff = $accountDate->diffInDays($current, false);
       if($diff >= 30){
+        $result = Plan::where('account_id', '=', $accountId)->whereDate('end', '<=', Carbon::now())->where('status', '=', 'completed')->orderBy('created_at', 'desc')->first();
         if($result){
           return $result->title;
         }else{
