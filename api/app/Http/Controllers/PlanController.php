@@ -33,7 +33,7 @@ class PlanController extends APIController
         $current = Carbon::now();
         $diff = $current->diffInSeconds($accountDate, false);
 
-        if($diff <= 0){
+        if($diff < 0){
           $currentPlan = Plan::where('account_id', '=', $accountId)->where('status', '=', 'completed')->orderBy('end', 'desc')->first();
           if($currentPlan){
             $data['start'] =  Carbon::createFromFormat('Y-m-d H:i:s', $currentPlan->end)->addDay(1);
@@ -49,8 +49,8 @@ class PlanController extends APIController
             return $this->response();
           }
         }else{
-          $data['start'] = Carbon::createFromFormat('Y-m-d H:i:s', $accountDetails['created_at'])->addDay(1);
-          $data['end'] = Carbon::createFromFormat('Y-m-d H:i:s', $accountDetails['created_at'])->addDay(1)->addMonth($months);
+          $data['start'] = Carbon::createFromFormat('Y-m-d H:i:s', $accountDetails['created_at'])->addDay(1)->addMonth(1);
+          $data['end'] = Carbon::createFromFormat('Y-m-d H:i:s', $accountDetails['created_at'])->addDay(1)->addMonth($months + 1);
           $this->model = new Plan();
           $this->insertDB($data);
           return $this->response();
