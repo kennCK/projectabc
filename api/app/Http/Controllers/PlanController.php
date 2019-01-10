@@ -23,9 +23,42 @@ class PlanController extends APIController
 
     public function create(Request $request){
     	$data = $request->all();
+      $accountId = $data['account_id'];
+      $months = intval($data['total_amount']) / intval($data['price']);
     	$data['order_number'] = $this->getOrderNumber();
-    	$this->insertDB($data);
-    	return $this->response();
+      $accountDetails = $this->retrieveAccountDetails($accountId);
+
+      if($accountDetails != null){
+        $accountDate = Carbon::createFromFormat('Y-m-d H:i:s', $accountDetails['created_at']);
+        $current = Carbon::now();
+        $diff = $current->diffInSeconds($accountDate, false);
+
+        if($diff <= 0){
+          $currentPlan = Plan::where('account_id', '=', $accountId)->where('status', '=', 'completed')->orderBy('end', 'desc')->first();
+          if($currentPlan){
+            $data['start'] =  Carbon::createFromFormat('Y-m-d H:i:s', $currentPlan->end)->addDay(1);
+            $data['end'] = Carbon::createFromFormat('Y-m-d H:i:s', $currentPlan->end)->addDay(1)->addMonth($months);
+            $this->model = new Plan();
+            $this->insertDB($data);
+            return $this->response();
+          }else{
+            $data['start'] =  Carbon::now();
+            $data['end'] = Carbon::now()->addMonth($months);
+            $this->model = new Plan();
+            $this->insertDB($data);
+            return $this->response();
+          }
+        }else{
+          $data['start'] = Carbon::createFromFormat('Y-m-d H:i:s', $accountDetails['created_at'])->addDay(1);
+          $data['end'] = Carbon::createFromFormat('Y-m-d H:i:s', $accountDetails['created_at'])->addDay(1)->addMonth($months);
+          $this->model = new Plan();
+          $this->insertDB($data);
+          return $this->response();
+        }
+
+      }else{
+        return $this->response();     
+      }
     }
 
     public function retrieve(Request $request){
