@@ -15,7 +15,7 @@
       </thead>
       <tbody>
         <tr v-for="item, index in data">
-          <td>{{item.title}}</td>
+          <td>{{item.title.toUpperCase()}}</td>
           <td>{{item.start_human}}</td>
           <td>{{item.end_human}}</td>
           <td>{{item.price}}</td>
@@ -62,7 +62,15 @@ export default {
     },
     retrieve(){
       let parameter = {
-        account_id: this.user.userID
+        account_id: this.user.userID,
+        condition: [{
+          value: this.user.userID,
+          column: 'account_id',
+          clause: '='
+        }],
+        sort: {
+          start: 'desc'
+        }
       }
       this.APIRequest('plans/retrieve', parameter).done(response => {
         if(response.data.length > 0){
