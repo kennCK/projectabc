@@ -74,6 +74,7 @@ import axios from 'axios'
 import CONFIG from '../../config.js'
 export default {
   mounted(){
+    AUTH.checkPlan()
     if(this.parameter !== null){
       let flag = false
       for (var i = 0; i < this.menu.length; i++) {

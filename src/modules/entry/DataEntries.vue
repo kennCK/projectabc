@@ -210,6 +210,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    AUTH.checkPlan()
     this.retrieve()
   },
   data(){

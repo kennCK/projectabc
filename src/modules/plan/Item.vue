@@ -1,5 +1,10 @@
 <template>
 	<div class="holder">
+    
+    <div class="alert alert-danger" v-if="user.plan === 'Expired'">
+      <strong>Your Plan was Expired!</strong> Please update or upgrade your plan to continue using ID Factory.
+    </div>
+
     <div class="pricing-item">
       <span class="header-options option-false"></span>
       <span class="header-item bg-green">

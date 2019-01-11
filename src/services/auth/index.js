@@ -221,5 +221,10 @@ export default {
       sound.play()
       this.user.notifications.prevCurrent = this.user.notifications.current
     }
+  },
+  checkPlan(){
+    if(this.user.plan === 'Expired' && this.user.type !== 'ADMIN'){
+      ROUTER.push('/plan')
+    }
   }
 }

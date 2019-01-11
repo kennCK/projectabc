@@ -193,6 +193,7 @@ import axios from 'axios'
 import PayPal from 'vue-paypal-checkout'
 export default {
   mounted(){
+    AUTH.checkPlan()
     this.retrieve()
   },
   data(){
