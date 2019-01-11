@@ -1,19 +1,25 @@
 <template>
   <div class="template-holder">
-    <table class="table table-bordered" v-if="data !== null">
+    <h5>Plan History</h5>
+    <br>
+    <table class="table table-bordered table-responsive" v-if="data !== null">
       <thead>
         <tr>
-          <td>Plan</td>
-          <td>Start Date</td>
-          <td>Expiry Date</td>
-          <td>Total</td>
+          <td><b>Plan</b></td>
+          <td><b>Start Date</b></td>
+          <td><b>Expiry Date</b></td>
+          <td><b>Price</b></td>
+          <td><b># of Months</b></td>
+          <td><b>Total</b></td>
         </tr>
       </thead>
       <tbody>
         <tr v-for="item, index in data">
           <td>{{item.title}}</td>
-          <td>{{item.start}}</td>
-          <td>{{item.end}}</td>
+          <td>{{item.start_human}}</td>
+          <td>{{item.end_human}}</td>
+          <td>{{item.price}}</td>
+          <td>{{parseInt(item.total_amount) / parseInt(item.price)}}</td>
           <td>{{item.total_amount}}</td>
         </tr>
       </tbody>
@@ -24,6 +30,7 @@
 .template-holder{
   width: 98%;
   float: left;
+  margin-bottom: 100px;
   margin-right: 2%;
 }
 

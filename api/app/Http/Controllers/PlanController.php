@@ -76,6 +76,8 @@ class PlanController extends APIController
         foreach ($result as $key) {
           $this->subTotal += $result[$i]['total_amount'];
           $this->response['data'][$i]['months'] = intval($result[$i]['total_amount']) / intval($result[$i]['price']);
+          $this->response['data'][$i]['start_human'] = Carbon::createFromFormat('Y-m-d H:i:s', $result[$i]['start'])->copy()->tz('Asia/Manila')->format('F j, Y');
+          $this->response['data'][$i]['end_human'] = Carbon::createFromFormat('Y-m-d H:i:s', $result[$i]['end'])->copy()->tz('Asia/Manila')->format('F j, Y');
           $i++;
         }
       }

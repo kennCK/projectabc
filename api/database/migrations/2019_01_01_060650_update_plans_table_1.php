@@ -14,7 +14,7 @@ class UpdatePlansTable1 extends Migration
     public function up()
     {
         Schema::table('plans', function (Blueprint $table) {
-            $table->string('order_number')->after('account_id')->nullable();
+            // $table->string('order_number')->after('account_id')->nullable();
         });
     }
 

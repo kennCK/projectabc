@@ -178,17 +178,22 @@ class AccountController extends APIController
       if($diff >= 30){
         $result = Plan::where('account_id', '=', $accountId)->whereDate('end', '>=', Carbon::now())->where('status', '=', 'completed')->orderBy('created_at', 'desc')->first();
         if($result){
-          return $result->title;
+          return array(
+            'title' => $result->title,
+            'end_human' => Carbon::createFromFormat('Y-m-d H:i:s', $result->end)->copy()->tz('Asia/Manila')->format('F j, Y')
+          );
         }else{
-          return 'Expired';
+          return array(
+            'title' => 'Expired',
+            'end_human' => null
+          );
         }
       }else{
-        return 'Trial';
+        return array(
+          'title' => 'Trial',
+          'end_human' => Carbon::createFromFormat('Y-m-d H:i:s', $createdAt)->copy()->tz('Asia/Manila')->format('F j, Y')
+        );
       }
     }
-
-
-
-
 
 }
