@@ -176,7 +176,7 @@ class AccountController extends APIController
       $accountDate = Carbon::createFromFormat('Y-m-d H:i:s', $createdAt);
       $diff = $accountDate->diffInDays($current, false);
       if($diff >= 30){
-        $result = Plan::where('account_id', '=', $accountId)->whereDate('end', '>=', Carbon::now())->where('status', '=', 'completed')->orderBy('created_at', 'desc')->first();
+        $result = Plan::where('account_id', '=', $accountId)->whereDate('end', '>=', Carbon::now())->where('status', '=', 'completed')->orderBy('created_at', 'asc')->first();
         if($result){
           return array(
             'title' => $result->title,
