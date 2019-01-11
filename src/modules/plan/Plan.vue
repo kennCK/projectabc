@@ -2,6 +2,7 @@
   <div class="template-holder">
     <div class="template-list">
       <item></item>
+      <history></history>
     </div>
   </div>
 </template>
@@ -36,7 +37,8 @@ export default {
     }
   },
   components: {
-    'item': require('modules/plan/Item.vue')
+    'item': require('modules/plan/Item.vue'),
+    'history': require('modules/plan/History.vue')
   },
   methods: {
     redirect(parameter){
