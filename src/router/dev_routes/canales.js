@@ -175,6 +175,14 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/printings',
+    name: 'printings',
+    component: resolve => require(['modules/partner/Partners.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

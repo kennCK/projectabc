@@ -404,7 +404,8 @@ export default {
       {id: 3, users: 'ALL', parent_id: 0, description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries'},
       {id: 4, users: 'ALL', parent_id: 0, description: 'Images', icon: 'fas fa-image', path: 'images'},
       // {id: 5, users: 'ALL', parent_id: 0, description: 'Billings', icon: 'fas fa-credit-card', path: 'billings'},
-      {id: 6, users: 'PARTNER', parent_id: 0, description: 'Pricings', icon: 'fas fa-money', path: 'pricings'}
+      {id: 6, users: 'PARTNER', parent_id: 0, description: 'Pricings', icon: 'fas fa-money', path: 'pricings'},
+      {id: 6, users: 'USER', parent_id: 0, description: 'Find Printing', icon: 'fas fa-print', path: 'printings'}
       ],
       toggleSidebar: 'fa fa-toggle-on',
       toggleSidebarFlag: true,

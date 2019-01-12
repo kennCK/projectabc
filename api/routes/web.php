@@ -323,3 +323,6 @@ Route::post('/plans/delete', "PlanController@delete");
 Route::get('/plans/test', 'PlanController@test');
 
 
+Route::post('/partners/retrieve', "AccountController@retrievePartners");
+
+

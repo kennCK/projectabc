@@ -162,6 +162,22 @@ class AccountController extends APIController
       }
     }
 
+    public function retrievePartners(Request $request){
+      $data = $request->all();
+      $this->model = new Account();
+      $result = $this->retrieveDB($data);
+
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $accountId = $result[$i]['id'];
+          $this->response['data'][$i]['account'] = $this->retrieveAccountDetails($accountId);
+          $i++;
+        }
+      }
+      return $this->response();
+    }
+
     public function getCheckoutItem($accountId){
       $checkout = Checkout::where('account_id', '=', $accountId)->where('status', '=', 'added')->first();
       if($checkout){
