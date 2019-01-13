@@ -1,18 +1,24 @@
 <template>
-  <div class="partner" v-if="item !== null">
+  <div class="partner" v-if="item !== null && item.account !== null && item.account.billing !== null && item.account.billing.company !== null">
     <div class="partner-container">
       <div class="partner-profile">
         <img :src="config.BACKEND_URL + item.account.profile.profile_url" v-if="item.account.profile !== null">
         <i class="fa fa-user-circle-o" v-else></i>
       </div>
       <div class="partner-info">
-        <label><h5>ID Factory</h5></label>
-        <label><i class="fas fa-map-marker-alt"></i>Cebu City, Philippines</label>
+        <label><h5>{{item.account.billing.company}}</h5></label>
+        <label><i class="fas fa-map-marker-alt"></i>{{item.account.billing.address}}</label>
         <label class="text-warning action-link"><i class="fas fa-envelope"></i>Send Message</label>
         <label class="text-danger action-link"><i class="fas fa-store"></i>View Store</label>
       </div>
       <div class="partner-reviews">
-        <label class="reviews"><i class="fa fa-star-o text-primary" v-for="i in 5"></i></label>
+        <label class="reviews">
+          <span class="badge badge-warning">4</span>
+          <i class="fa fa-star-o text-primary" v-for="i in 5"></i>
+        </label>
+        <label>
+          300 Reviews
+        </label>
       </div>
     </div>
 
@@ -65,6 +71,10 @@
 }
 .partner-reviews{
   width: 25%;
+  float: left;
+}
+.partner-reviews label{
+  width: 100%;
   float: left;
 }
 .reviews i{

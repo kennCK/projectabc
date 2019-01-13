@@ -28,6 +28,7 @@ use App\EmployeeColumn;
 use App\PaymentMethod;
 use App\StripeCard;
 use App\PaypalTransaction;
+use App\BillingInformation;
 class APIController extends Controller
 {
   /*
@@ -449,8 +450,10 @@ class APIController extends Controller
     if(sizeof($result) > 0){
       $profile = AccountProfile::where('account_id', '=', $accountId)->orderBy('created_at', 'DESC')->get();
       $information = AccountInformation::where('account_id', '=', $accountId)->get();
+      $billing = BillingInformation::where('account_id', '=', $accountId)->get();
       $result[0]['profile'] = (sizeof($profile) > 0) ? $profile[0] : null;
       $result[0]['information'] = (sizeof($information) > 0) ? $information[0] : null;
+      $result[0]['billing'] = (sizeof($billing) > 0) ? $billing[0] : null;
       return $result[0];
     }else{
       return null;
