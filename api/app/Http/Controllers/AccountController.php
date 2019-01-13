@@ -25,7 +25,6 @@ class AccountController extends APIController
         "username"  => "unique:accounts"
       );
       $this->notRequired = array(
-        'status',
         'order_suffix'
       );
     }

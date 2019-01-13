@@ -26,7 +26,7 @@
 .filter{
   width: 100%;
   float: left;
-  height: 50px;
+  height: 45px;
 }
 
 .form-control{
@@ -85,7 +85,9 @@ export default {
           clause: '='
         }]
       }
+      $('#loading').css({'display': 'block'})
       this.APIRequest('partners/retrieve', parameter).then(response => {
+        $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data
         }else{

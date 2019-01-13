@@ -145,7 +145,7 @@ export default{
     }
   },
   {
-    path: '/messenger',
+    path: '/messenger/:username?',
     name: 'messenger',
     component: resolve => require(['modules/messenger/Messenger.vue'], resolve),
     meta: {

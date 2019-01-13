@@ -8,7 +8,8 @@
                   <span class="profile-image-holder"  v-if="user.profile !== null">
                     <img v-bind:src="config.BACKEND_URL + user.profile.profile_url">
                   </span>
-                  <i class="fa fa-user-circle-o" v-else></i>
+                  <i class="fa fa-user-circle-o profile-icon" v-else></i>
+                  <i class="fas fa-check text-primary profile-status" v-if="user.status === 'VERIFIED'"></i>
                   Hi {{user.username}}!
                 </span>
                 <i v-bind:class="toggleSidebar + ' pull-right'" aria-hidden="true" v-on:click="changeToggleSidebarIcon()" id="toggleIcon"></i>
@@ -132,12 +133,18 @@
   border-radius: 5px;
 }
 
-.profile-photo i{
+.profile-photo .profile-icon{
   float: left;
   font-size: 80px;
   width: 100%;
   height: 80px;
   margin-bottom: 10px;
+}
+
+.profile-photo .profile-status{
+  font-size: 12px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 
 
