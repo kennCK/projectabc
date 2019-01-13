@@ -129,9 +129,9 @@ class MessengerGroupController extends APIController
 
 
       $accounts = null;
-      if($accountType == 'user' || $accountType == 'USER'){
-        $accounts = $this->getPartners($existed);
-      }
+      // if($accountType == 'user' || $accountType == 'USER'){
+      //   $accounts = $this->getPartners($existed);
+      // }
 
       return response()->json(array(
         'data'  => (sizeof($result) > 0) ? $result : null,

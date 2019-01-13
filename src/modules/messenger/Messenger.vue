@@ -64,7 +64,8 @@ export default {
       partners: null,
       selectedIndex: 0,
       selectedGroupData: null,
-      prevModuleSelected: null
+      prevModuleSelected: null,
+      username: this.$route.params.username
     }
   },
   props: ['params'],
