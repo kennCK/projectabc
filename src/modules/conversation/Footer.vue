@@ -72,13 +72,13 @@ export default {
       prevNewMessageIndex: null
     }
   },
-  props: ['group', 'newFlag'],
+  props: ['group'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
     newmessage(){
-      if((this.newMessageInput !== '' || this.newMessageInput !== null) && this.newFlag === false){
+      if((this.newMessageInput !== '' || this.newMessageInput !== null) && this.group.new === false){
         let parameter = {
           messenger_group_id: this.group.id,
           message: this.newMessageInput,
@@ -90,7 +90,7 @@ export default {
             this.$parent.retrieve()
           }
         })
-      }else if((this.newMessageInput !== '' || this.newMessageInput !== null) && this.newFlag === true){
+      }else if((this.newMessageInput !== '' || this.newMessageInput !== null) && this.group.new === true){
         let parameter = {
           creator: this.user.userID,
           message: this.newMessageInput,

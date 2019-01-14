@@ -737,13 +737,7 @@ export default {
       AUTH.deaunthenticate()
     },
     redirect(parameter){
-      if(AUTH.timer.interval === null){
-        this.confirmation.message = null
-        ROUTER.push(parameter)
-      }else{
-        this.confirmation.message = 'You have an ongoing examination. You are not allowed to cancel the examination.'
-        $('#timerHeaderModal').modal('show')
-      }
+      AUTH.redirect(parameter)
     },
     display(){
     },

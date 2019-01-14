@@ -2,7 +2,7 @@
   <div class="holder" id="groupConversation">
     <c-header :group="group" v-if="group !== null"></c-header>
     <c-body :conversations="conversations" v-if="group !== null"></c-body>
-    <c-footer :group="group" :newFlag="newFlag" v-if="group !== null"></c-footer>
+    <c-footer :group="group" v-if="group !== null"></c-footer>
   </div>
 </template>
 <style scoped>
@@ -46,7 +46,7 @@ export default {
       ROUTER.push(parameter)
     },
     retrieve(){
-      if(this.groupId && this.newFlag === false){
+      if(this.groupId && this.group.new === false){
         let parameter = {
           condition: [{
             value: this.groupId,
@@ -63,10 +63,14 @@ export default {
           }else{
             this.conversations = null
           }
-          setTimeout(() => {
-            this.retrieve()
-          }, 1000)
+          if(AUTH.messenger.flag === true){
+            setTimeout(() => {
+              this.retrieve()
+            }, 1000)
+          }
         })
+      }else{
+        this.conversations = null
       }
     }
   }

@@ -101,7 +101,7 @@ export default {
       this.$parent.makeActive(this.index)
     },
     redirect(parameter){
-      ROUTER.push(parameter)
+      AUTH.redirect(parameter)
     }
   }
 }

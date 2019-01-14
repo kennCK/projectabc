@@ -92,17 +92,18 @@ export default {
     retrieve(){
       let parameter = {
         account_id: this.user.userID,
-        account_type: this.user.type
+        account_type: this.user.type,
+        username: (this.username) ? this.username : ''
       }
       this.APIRequest('messenger_groups/retrieve', parameter).done(response => {
         this.groups = response.data
         this.partners = response.accounts
-        if(this.groups !== null){
-          this.prevModuleSelected = 'groups'
-          this.selectedGroup(0, 'groups')
-        }else if(this.partners !== null){
+        if(this.partners !== null){
           this.prevModuleSelected = 'partners'
           this.selectedGroup(0, 'partners')
+        }else if(this.groups !== null){
+          this.prevModuleSelected = 'groups'
+          this.selectedGroup(response.active, 'groups')
         }
       })
     },

@@ -75,9 +75,10 @@ class MessengerGroupController extends APIController
       $data = $request->all();
       $accountType = $data['account_type'];
       $accountId = $data['account_id'];
+      $username = $data['username'];
       $existed = array();
       $flag = false;
-
+      $active = 0;
 
       $result = null;
 
@@ -95,7 +96,7 @@ class MessengerGroupController extends APIController
             $result[$i]['members'] = $this->getMembers($result[$i]['id']);
             $result[$i]['title'] = $this->retrieveAccountDetails($result[$i]['account_id']);
             $existed[] = $result[$i]['account_id'];
-              
+            $result[$i]['new'] = false;
             if($i == 0){
               $result[$i]['flag'] = true;
               $flag = true;
@@ -112,13 +113,16 @@ class MessengerGroupController extends APIController
         if(sizeof($result) > 0){
           $i = 0;
           foreach ($result as $key) {
+            $details = $this->retrieveAccountDetails($result[$i]['account_id']);
             $result[$i]['account_details'] = $this->retrieveAccountDetails($result[$i]['account_id']);
-            $result[$i]['members'] = $this->getMembers($result[$i]['id']);
+            $members = $this->getMembers($result[$i]['id'], $username);
+            $result[$i]['members'] = ($members) ? $members['result'] : null;
             $result[$i]['title'] = $this->getTitle($result[$i]['id']);
-            $existed[] = $this->getMemberExisted($result[$i]['id']);
-            $result[$i]['flag'] = false;
-            if($i == 0 && $flag == false){
+            $result[$i]['new'] = false;
+            if($members == true && $members['exist_username'] == true){
               $result[$i]['flag'] = true;
+              $active = $i;
+              $flag = true;
             }else{
               $result[$i]['flag'] = false;
             }
@@ -127,15 +131,16 @@ class MessengerGroupController extends APIController
         }
       }
 
-
       $accounts = null;
-      // if($accountType == 'user' || $accountType == 'USER'){
-      //   $accounts = $this->getPartners($existed);
-      // }
+      if(($accountType == 'user' || $accountType == 'USER') && $flag == false){
+        $result[0]['flag'] = true;
+        $accounts = $this->getPartner($username);
+      }
 
       return response()->json(array(
         'data'  => (sizeof($result) > 0) ? $result : null,
         'accounts'  => $accounts,
+        'active'  => $active,
         'error' => null,
         'timestamps'  => Carbon::now()
       ));
@@ -182,17 +187,24 @@ class MessengerGroupController extends APIController
       }
       return null;
     }
-    public function getMembers($messengerGroupId){
+    public function getMembers($messengerGroupId, $username){
       $result = MessengerMember::where('messenger_group_id', '=', $messengerGroupId)->get();
-
+      $flag = false;
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
-          $result[$i]['account_details'] = $this->retrieveAccountDetails($result[$i]['account_id']);
+          $account = $this->retrieveAccountDetails($result[$i]['account_id']);
+          $result[$i]['account_details'] = $account;
+          if($account['username'] == $username){
+            $flag = true;
+          }
           $i++;
         }
       }
-      return (sizeof($result) > 0) ? $result : null;
+      return (sizeof($result) > 0) ? array(
+        'result' => $result,
+        'exist_username' => $flag
+      ) : null;
     }
 
     public function getMemberExisted($messengerGroupId){
@@ -209,14 +221,15 @@ class MessengerGroupController extends APIController
       return ($title) ? $title : null;
     }
 
-    public function getPartners($array){
+    public function getPartner($username){
       $accounts = null;
-      $accounts = Account::whereNotIn('id', $array)->where('account_type', '=', 'PARTNER')->get();
+      $accounts = Account::where('username', '=', $username)->where('account_type', '=', 'PARTNER')->get();
       if(sizeof($accounts) > 0){
         $i = 0;
         foreach ($accounts as $key) {
           $accounts[$i]['title'] = $this->retrieveAccountDetails($accounts[$i]['id']);
-          $accounts[$i]['flag'] = false;
+          $accounts[$i]['flag'] = true;
+          $accounts[$i]['new'] = true;
           $i++;
         }
       }

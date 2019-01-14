@@ -455,14 +455,8 @@ export default {
       this.activeItem = ''
     },
     navigateTo(method, toggleCondition){
-      if(AUTH.timer.interval === null){
-        this.confirmation.message = null
-        this.toggleOnClick = (toggleCondition === true) ? 'collapse' : ''
-        ROUTER.push('/' + method)
-      }else{
-        this.confirmation.message = 'You have an ongoing examination. You are not allowed to cancel the examination.'
-        $('#timerModal').modal('show')
-      }
+      this.toggleOnClick = (toggleCondition === true) ? 'collapse' : ''
+      AUTH.redirect('/' + method)
     },
     changeToggleSidebarIcon(){
       this.toggleSidebarFlag = !this.toggleSidebarFlag
