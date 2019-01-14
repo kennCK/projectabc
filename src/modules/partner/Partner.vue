@@ -13,11 +13,12 @@
       </div>
       <div class="partner-reviews">
         <label class="reviews">
-          <span class="badge badge-warning">4</span>
-          <i class="fa fa-star-o text-primary" v-for="i in 5"></i>
+          <span class="badge badge-warning">{{Math.floor(item.rating.avg)}}</span>
+          <i v-bind:class="{'fas fa-star': item.rating.avg >= i, 'fa fa-star-o': item.rating.avg < i}" class="text-warning" v-for="i in 5"></i>
+          <!-- 'fas fa-star-half-alt': item.rating.avg > (i - 1) && item.rating.avg < i  -->
         </label>
         <label>
-          300 Reviews
+          {{item.rating.size}} Reviews
         </label>
       </div>
     </div>

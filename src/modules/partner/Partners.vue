@@ -15,6 +15,8 @@
     <div class="partner-list" v-if="data !== null">
       <partner v-for="item, index in data" v-if="data !==null" :item="item" :key="item.id" :index="index"></partner>
     </div>
+    <empty v-if="data === null" :title="'No printing partners available!'" :action="'Please be back soon.'">
+    </empty>
   </div>
 </template>
 <style scoped>
@@ -71,7 +73,8 @@ export default {
     }
   },
   components: {
-    'partner': require('modules/partner/Partner.vue')
+    'partner': require('modules/partner/Partner.vue'),
+    'empty': require('modules/empty/Empty.vue')
   },
   methods: {
     redirect(parameter){
@@ -82,6 +85,10 @@ export default {
         condition: [{
           value: 'PARTNER',
           column: 'account_type',
+          clause: '='
+        }, {
+          value: 'VERIFIED',
+          column: 'status',
           clause: '='
         }]
       }
