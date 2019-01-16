@@ -88,6 +88,10 @@
   float: left;
   margin-top: 20px;
 }
+@page { margin: 0; }
+@media print {
+  @page { margin: 0; }
+}
 </style>
 <script>
 import ROUTER from '../../router'
