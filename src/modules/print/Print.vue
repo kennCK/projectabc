@@ -13,7 +13,7 @@
             <div class="print-content">
               <div class="holder" style="margin-right: 20px;">
                 <span id="frontObject">
-                  <objects :objects="item.front_objects" v-if="item.front_objects !== null"></objects>
+                  <objects :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)"></objects>
                 </span>
                 
                 <div class="display">
@@ -24,7 +24,7 @@
 
               <div class="holder">
                 <span id="backObject">
-                  <objects :objects="item.back_objects" v-if="item.back_objects !== null"></objects>
+                  <objects :objects="item.back_objects" v-if="item.back_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)"></objects>
                 </span>
                 <div class="display">
                   <i class="fas fa-spinner fa-spin"></i>
