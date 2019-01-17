@@ -4,7 +4,7 @@
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
-            <h5 class="modal-title" id="exampleModalLabel">Update Settings</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Update Price</h5>
             <button type="button" class="close" @click="close()" aria-label="Close">
               <span aria-hidden="true" class="text-white">&times;</span>
             </button>

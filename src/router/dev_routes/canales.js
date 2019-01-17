@@ -183,6 +183,22 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/orders',
+    name: 'orders',
+    component: resolve => require(['modules/order/Orders.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/coupons',
+    name: 'coupons',
+    component: resolve => require(['modules/coupon/Coupons.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

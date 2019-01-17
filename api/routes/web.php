@@ -322,7 +322,12 @@ Route::post('/plans/update', "PlanController@update");
 Route::post('/plans/delete', "PlanController@delete");
 Route::get('/plans/test', 'PlanController@test');
 
-
+//Partners Controller
 Route::post('/partners/retrieve', "AccountController@retrievePartners");
 
-
+//Coupons Controller
+Route::post('/coupons/create', "CouponController@create");
+Route::post('/coupons/retrieve', "CouponController@retrieve");
+Route::post('/coupons/update', "CouponController@update");
+Route::post('/coupons/delete', "CouponController@delete");
+Route::get('/coupons/test', 'CouponController@test');
