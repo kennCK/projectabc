@@ -120,8 +120,9 @@ class PlanController extends APIController
       $accountId = $data['account_id'];
       $id = $data['id'];
       $tax = $data['tax'];
+      $couponId = $data['coupon_id'];
       $subTotal = $data['sub_total'];
-      $total = $data['total'];
+      $total = round(floatval($data['total']), 2);
       $paymentType = $data['payment_type'];
       $paymentPayload = $data['payment_payload'];
       $paymentPayloadValue = $data['payment_payload_value'];
@@ -129,9 +130,10 @@ class PlanController extends APIController
       $title = 'Charge for order number'.$data['order_number'];
       $updateData = array(
         'id'  => $id,
+        'coupon_id' => $couponId,
         'tax' => $tax,
         'sub_total' => $subTotal,
-        'total' => $total,
+        'total_amount' => $total,
         'payment_type' => $paymentType,
         'payment_payload' => $paymentPayload,
         'status'  => 'completed',
