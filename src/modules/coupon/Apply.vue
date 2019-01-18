@@ -20,7 +20,7 @@
             </div>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#applyCouponModal">Cancel</button>
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#applyCouponModal">Close</button>
               <button type="button" class="btn btn-primary" @click="retrieve()">Apply</button>
           </div>
         </div>
@@ -62,6 +62,8 @@ export default {
       this.APIRequest('coupons/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data
+          this.$parent.coupon = response.data[0]
+          this.$parent.manageCoupon()
         }else{
           this.data = null
         }

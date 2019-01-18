@@ -34,9 +34,13 @@
           <label class="pull-right" style="padding-right: 10px;">PHP {{tax}}</label>
         </span>
         
-        <span class="item" style="border-bottom: 0px;">
-          <label class="text-primary"><b>Promo Code</b></label>
-          <i @click="coupon = null" class="fa fa-trash text-danger pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-if="coupon !== null"></i>
+        <span class="item">
+          <label class="text-primary">
+            <b>Promo Code</b>: <b v-if="coupon !== null">{{coupon.code.toUpperCase()}}</b>
+            <b v-if="coupon !== null && coupon.type === 'percentage'"> (-{{coupon.value}}%)</b>
+            <b v-if="coupon !== null && coupon.type === 'fixed_amount'"> (-{{coupon.value}})</b>
+          </label>
+          <i @click="clearCoupon()" class="fa fa-trash text-danger pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-if="coupon !== null"></i>
           <i @click="applyCoupon()" class="fa fa-plus text-primary pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-else></i>
         </span>
 
@@ -281,6 +285,7 @@ export default {
       if(this.data !== null){
         let parameter = {
           id: this.data[0].id,
+          coupon_id: (this.coupon !== null) ? this.coupon.id : null,
           payment_type: 'express',
           payment_payload: 'credit_card',
           payment_payload_value: id,
@@ -300,6 +305,7 @@ export default {
       if(data.state === 'approved'){
         let parameter = {
           id: this.data[0].id,
+          coupon_id: (this.coupon !== null) ? this.coupon.id : null,
           payment_type: 'express',
           payment_payload: 'paypal',
           payment_payload_value: data,
@@ -331,6 +337,19 @@ export default {
     },
     applyCoupon(){
       $('#applyCouponModal').modal('show')
+    },
+    clearCoupon(){
+      this.coupon = null
+      this.retrieve()
+    },
+    manageCoupon(){
+      if(this.coupon !== null){
+        if(this.coupon.type === 'percentage'){
+          this.total -= (parseFloat(this.coupon.value) / 100) * this.total
+        }else if(this.coupon.type === 'fixed_amount'){
+          this.total -= parseFloat(this.coupon.value)
+        }
+      }
     }
   }
 }
