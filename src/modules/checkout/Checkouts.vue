@@ -53,6 +53,11 @@
           <label class="pull-right" style="padding-right: 10px;">PHP {{data[0].tax}}</label>
         </span>
         <span class="item" style="border-bottom: 0px;">
+          <label class="text-primary"><b>Promo Code</b></label>
+          <i @click="coupon = null" class="fa fa-trash text-danger pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-if="coupon !== null"></i>
+          <i @click="applyCoupon()" class="fa fa-plus text-primary pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-else></i>
+        </span>
+        <span class="item" style="border-bottom: 0px;">
           <label><b>Total</b></label>
           <label class="pull-right" style="padding-right: 10px;"><b>PHP {{data[0].total}}</b></label>
         </span>
@@ -202,6 +207,7 @@ export default {
       config: CONFIG,
       errorMessage: null,
       data: null,
+      coupon: null,
       method: null,
       paypal: {
         sandbox: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH',
@@ -331,6 +337,9 @@ export default {
     },
     creditCard(){
       $('#creditCardModal').modal('show')
+    },
+    applyCoupon(){
+      $('#applyCouponModal').modal('show')
     }
   }
 }

@@ -33,10 +33,18 @@
           <label>Tax</label>
           <label class="pull-right" style="padding-right: 10px;">PHP {{tax}}</label>
         </span>
+        
+        <span class="item" style="border-bottom: 0px;">
+          <label class="text-primary"><b>Promo Code</b></label>
+          <i @click="coupon = null" class="fa fa-trash text-danger pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-if="coupon !== null"></i>
+          <i @click="applyCoupon()" class="fa fa-plus text-primary pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-else></i>
+        </span>
+
         <span class="item" style="border-bottom: 0px;">
           <label><b>Total</b></label>
           <label class="pull-right" style="padding-right: 10px;"><b>PHP {{total}}</b></label>
         </span>
+        
         <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
           <label>Active Payment Method</label>
           
@@ -72,6 +80,7 @@
     </span>
     <cancelled-paypal></cancelled-paypal>
     <express-credit-card></express-credit-card>
+    <apply-coupon></apply-coupon>
   </div>
 </template>
 <style scoped>
@@ -186,6 +195,7 @@ export default {
       method: null,
       total: null,
       tax: null,
+      coupon: null,
       subTotal: null,
       products: PRODUCTS,
       paypal: {
@@ -208,6 +218,7 @@ export default {
   components: {
     'cancelled-paypal': require('modules/checkout/CancelPaypal.vue'),
     'express-credit-card': require('modules/checkout/CreditCard.vue'),
+    'apply-coupon': require('modules/coupon/Apply.vue'),
     PayPal
   },
   methods: {
@@ -317,6 +328,9 @@ export default {
     },
     creditCard(){
       $('#creditCardModal').modal('show')
+    },
+    applyCoupon(){
+      $('#applyCouponModal').modal('show')
     }
   }
 }

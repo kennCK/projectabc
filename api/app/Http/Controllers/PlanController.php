@@ -17,7 +17,7 @@ class PlanController extends APIController
     	$this->model = new Plan();
 
     	$this->notRequired = array(
-    		'start', 'end', 'payment_type', 'payment_payload', 'payment_payload_value'
+    		'coupon_id', 'start', 'end', 'payment_type', 'payment_payload', 'payment_payload_value'
     	);
     }
 

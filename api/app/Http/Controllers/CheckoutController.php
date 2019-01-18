@@ -26,6 +26,7 @@ class CheckoutController extends APIController
     	$this->model = new Checkout();
 
       $this->notRequired = array(
+        'coupon_id',
         'order_number',
         'payment_type',
         'payment_payload',
