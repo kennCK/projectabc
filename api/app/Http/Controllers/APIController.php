@@ -29,6 +29,7 @@ use App\PaymentMethod;
 use App\StripeCard;
 use App\PaypalTransaction;
 use App\BillingInformation;
+use App\Coupon;
 class APIController extends Controller
 {
   /*
@@ -595,6 +596,11 @@ class APIController extends Controller
           // cod
         }
       }
+      return (sizeof($result) > 0) ? $result[0] : null;
+    }
+
+    public function getCoupon($id){
+      $result = Coupon::where('id', '=', $id)->get();
       return (sizeof($result) > 0) ? $result[0] : null;
     }
 

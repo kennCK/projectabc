@@ -95,9 +95,11 @@ class PlanController extends APIController
       $this->retrieveDB($data);
       $result = $this->response['data'];
       $cards = $this->getPaymentMethod('account_id', $data['account_id']);
+      $coupon = null;
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
+          $coupon = ($result[$i]['coupon_id'] != null) ? $this->getCoupon($result[$i]['coupon_id']) : null;
         	$this->response['data'][$i]['months'] = intval($result[$i]['total_amount']) / intval($result[$i]['price']);
           if(($result[$i]['payment_type'] == 'authorized' || $result[$i]['payment_type'] == 'express') && $result[$i]['payment_payload'] == 'credit_card'){
             $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_payload_value']);
@@ -106,10 +108,14 @@ class PlanController extends APIController
           }else{
             $this->response['data'][$i]['method'] = null;
           }
+
+          $this->response['sub_total'] = $result[$i]['price'];
+          $this->response['tax'] = 0;
+          $this->response['coupon'] = $coupon;
+          $this->response['total'] = $result[$i]['total_amount'];
           $i++;
         }
       }
-      
       $this->response['method'] = $cards;
       return $this->response();
     }

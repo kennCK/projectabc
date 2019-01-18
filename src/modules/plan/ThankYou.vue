@@ -28,6 +28,15 @@
 			<label>Tax</label>
       <label class="pull-right" style="padding-right: 10px;">PHP {{data.tax}}</label>
 		</span>
+		 <span class="thank-you-item">
+      <label class="text-primary">
+        <b>Promo Code</b>: <b v-if="data.coupon !== null">{{data.coupon.code.toUpperCase()}}</b>
+        <b v-if="data.coupon !== null && data.coupon.type === 'percentage'"> (-{{coupon.value}}%)</b>
+        <b v-if="data.coupon !== null && data.coupon.type === 'fixed_amount'"> (-{{coupon.value}})</b>
+      </label>
+      <i @click="clearCoupon()" class="fa fa-trash text-danger pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-if="coupon !== null"></i>
+      <i @click="applyCoupon()" class="fa fa-plus text-primary pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-else></i>
+    </span>
 		<span class="thank-you-item">
 			<label></label>
 			<label><b>Total</b></label>
