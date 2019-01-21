@@ -24,7 +24,7 @@ class PlanController extends APIController
     public function create(Request $request){
     	$data = $request->all();
       $accountId = $data['account_id'];
-      $months = intval($data['total_amount']) / intval($data['price']);
+      $months = intval($data['sub_total']) / intval($data['price']);
     	$data['order_number'] = $this->getOrderNumber();
       $accountDetails = $this->retrieveAccountDetails($accountId);
 
@@ -74,8 +74,8 @@ class PlanController extends APIController
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
-          $this->subTotal += $result[$i]['total_amount'];
-          $this->response['data'][$i]['months'] = intval($result[$i]['total_amount']) / intval($result[$i]['price']);
+          $this->subTotal += $result[$i]['sub_total'];
+          $this->response['data'][$i]['months'] = intval($result[$i]['sub_total']) / intval($result[$i]['price']);
           $this->response['data'][$i]['start_human'] = Carbon::createFromFormat('Y-m-d H:i:s', $result[$i]['start'])->copy()->tz('Asia/Manila')->format('F j, Y');
           $this->response['data'][$i]['end_human'] = Carbon::createFromFormat('Y-m-d H:i:s', $result[$i]['end'])->copy()->tz('Asia/Manila')->format('F j, Y');
           $i++;
@@ -85,6 +85,7 @@ class PlanController extends APIController
       $this->response['method'] = $cards;
       $this->response['sub_total'] = $this->subTotal;
       $this->response['tax'] = $this->tax;
+      $this->response['discount'] = 0;
       $this->response['total'] = $this->subTotal - $this->tax;
       return $this->response();
     }
@@ -100,7 +101,7 @@ class PlanController extends APIController
         $i = 0;
         foreach ($result as $key) {
           $coupon = ($result[$i]['coupon_id'] != null) ? $this->getCoupon($result[$i]['coupon_id']) : null;
-        	$this->response['data'][$i]['months'] = intval($result[$i]['total_amount']) / intval($result[$i]['price']);
+        	$this->response['data'][$i]['months'] = intval($result[$i]['sub_total']) / intval($result[$i]['price']);
           if(($result[$i]['payment_type'] == 'authorized' || $result[$i]['payment_type'] == 'express') && $result[$i]['payment_payload'] == 'credit_card'){
             $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_payload_value']);
           }else if($result[$i]['payment_type'] == 'express' && $result[$i]['payment_payload'] == 'paypal'){
@@ -108,15 +109,12 @@ class PlanController extends APIController
           }else{
             $this->response['data'][$i]['method'] = null;
           }
+          
 
-          $this->response['sub_total'] = $result[$i]['price'];
-          $this->response['tax'] = 0;
-          $this->response['coupon'] = $coupon;
-          $this->response['total'] = $result[$i]['total_amount'];
+          $this->response['data'][$i]['coupon'] = $coupon;
           $i++;
         }
       }
-      $this->response['method'] = $cards;
       return $this->response();
     }
 
@@ -128,6 +126,7 @@ class PlanController extends APIController
       $tax = $data['tax'];
       $couponId = $data['coupon_id'];
       $subTotal = $data['sub_total'];
+      $discount = $data['discount'];
       $total = round(floatval($data['total']), 2);
       $paymentType = $data['payment_type'];
       $paymentPayload = $data['payment_payload'];
@@ -139,6 +138,7 @@ class PlanController extends APIController
         'coupon_id' => $couponId,
         'tax' => $tax,
         'sub_total' => $subTotal,
+        'discount' => $discount,
         'total_amount' => $total,
         'payment_type' => $paymentType,
         'payment_payload' => $paymentPayload,

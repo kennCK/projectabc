@@ -320,6 +320,9 @@ export default {
         account_id: this.user.userID,
         title: plan,
         price: price,
+        sub_total: parseInt(price) * parseInt(multiplier),
+        tax: 0,
+        discount: 0,
         total_amount: parseInt(price) * parseInt(multiplier),
         status: 'added'
       }

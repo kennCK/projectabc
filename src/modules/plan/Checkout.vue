@@ -200,6 +200,7 @@ export default {
       total: null,
       tax: null,
       coupon: null,
+      discount: null,
       subTotal: null,
       products: PRODUCTS,
       paypal: {
@@ -292,6 +293,7 @@ export default {
           sub_total: this.subTotal,
           total: this.total,
           tax: this.tax,
+          discount: (this.coupon !== null) ? this.discount : 0,
           account_id: this.user.userID,
           email: this.user.email,
           order_number: this.data[0].order_number
@@ -312,6 +314,7 @@ export default {
           sub_total: this.subTotal,
           total: this.total,
           tax: this.tax,
+          discount: (this.coupon !== null) ? this.discount : 0,
           account_id: this.user.userID,
           email: this.user.email,
           order_number: this.data[0].order_number
@@ -345,10 +348,11 @@ export default {
     manageCoupon(){
       if(this.coupon !== null){
         if(this.coupon.type === 'percentage'){
-          this.total -= (parseFloat(this.coupon.value) / 100) * this.total
+          this.discount = (parseFloat(this.coupon.value) / 100) * this.total
         }else if(this.coupon.type === 'fixed_amount'){
-          this.total -= parseFloat(this.coupon.value)
+          this.discount = parseFloat(this.coupon.value)
         }
+        this.total -= this.discount
       }
     }
   }

@@ -9,7 +9,7 @@
           <td><b>Start Date</b></td>
           <td><b>Expiry Date</b></td>
           <td><b>Price</b></td>
-          <td><b># of Months</b></td>
+          <td><b>Discount</b></td>
           <td><b>Total</b></td>
         </tr>
       </thead>
@@ -18,8 +18,8 @@
           <td>{{item.title.toUpperCase()}}</td>
           <td>{{item.start_human}}</td>
           <td>{{item.end_human}}</td>
-          <td>{{item.price}}</td>
-          <td>{{parseInt(item.total_amount) / parseInt(item.price)}}</td>
+          <td>{{item.price}} x {{parseInt(item.sub_total) / parseInt(item.price)}}</td>
+          <td>{{item.discount}}</td>
           <td>{{item.total_amount}}</td>
         </tr>
       </tbody>
