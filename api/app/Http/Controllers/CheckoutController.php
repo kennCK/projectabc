@@ -70,6 +70,7 @@ class CheckoutController extends APIController
         foreach ($result as $key) {
           $this->response['data'][$i]['order_date'] = Carbon::createFromFormat('Y-m-d H:i:s', $result[$i]['created_at'])->copy()->tz('Asia/Manila')->format('F j, Y');
           $this->response['data'][$i]['account'] = $this->retrieveAccountDetails($result[$i]['account_id']);
+          $i++;
         }
       }
       return $this->response();

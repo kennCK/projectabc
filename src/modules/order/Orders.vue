@@ -5,8 +5,7 @@
         <thead>
           <tr>
             <td>Date</td>
-            <td>Order #</td>
-            <td>Title</td>
+            <td>Order Number</td>
             <td>Customer</td>
             <td>Amount</td>
             <td>Status</td>
@@ -15,11 +14,10 @@
         <tbody>
           <tr v-for="item, index in data" v-if="data !== null" class="item">
             <td>{{item.order_date}}</td>
-            <td>{{item.order_date}}</td>
-            <td>{{item.order_date}}</td>
-            <td>{{item.order_date}}</td>
+            <td>{{item.order_number}}</td>
+            <td><label v-if="item.account !== null">{{item.account.username}}</label></td>
             <td>{{item.total}}</td>
-            <td>{{item.order_date}}</td>
+            <td>{{item.status.toUpperCase()}}</td>
           </tr>
         </tbody>
       </table>
