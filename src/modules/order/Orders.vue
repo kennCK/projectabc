@@ -68,10 +68,15 @@ export default {
       let parameter = {
         condition: [{
           value: this.user.userID,
-          column: 'account_id',
+          column: 'partner',
           clause: '='
         }]
       }
+      this.APIRequest('checkouts/retrieve_basic', parameter).then(response => {
+        if(response.data.length > 0){
+          this.data = response.data
+        }
+      })
     }
   }
 }

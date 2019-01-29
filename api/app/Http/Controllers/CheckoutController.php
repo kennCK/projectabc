@@ -60,6 +60,12 @@ class CheckoutController extends APIController
       return $this->response();
     }
 
+    public function retrieveBasic(Request $request){
+      $data = $request->all();
+      $this->retrieveDB($data);
+      return $this->response();
+    }
+
     public function retrieveSummary(Request $request){
       $data = $request->all();
       $this->retrieveDB($data);
