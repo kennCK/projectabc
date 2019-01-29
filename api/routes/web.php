@@ -212,7 +212,7 @@ Route::get('/marketplace/test', 'MarketplaceController@test');
 //Checkouts
 Route::post('/checkouts/create', "CheckoutController@create");
 Route::post('/checkouts/retrieve', "CheckoutController@retrieve");
-Route::post('/checkouts/retrieve_basic', "CheckoutController@retrieveBasic");
+Route::post('/checkouts/retrieve_orders', "CheckoutController@retrieveOrders");
 Route::post('/checkouts/retrieve_summary', "CheckoutController@retrieveSummary");
 Route::post('/checkouts/update', "CheckoutController@update");
 Route::post('/checkouts/delete', "CheckoutController@delete");

@@ -60,9 +60,18 @@ class CheckoutController extends APIController
       return $this->response();
     }
 
-    public function retrieveBasic(Request $request){
+    public function retrieveOrders(Request $request){
       $data = $request->all();
       $this->retrieveDB($data);
+      
+      $result = $this->response['data'];
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $this->response['data'][$i]['order_date'] = Carbon::createFromFormat('Y-m-d H:i:s', $result[$i]['created_at'])->copy()->tz('Asia/Manila')->format('F j, Y');
+          $this->response['data'][$i]['account'] = $this->retrieveAccountDetails($result[$i]['account_id']);
+        }
+      }
       return $this->response();
     }
 

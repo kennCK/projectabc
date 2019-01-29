@@ -14,6 +14,12 @@
         </thead>
         <tbody>
           <tr v-for="item, index in data" v-if="data !== null" class="item">
+            <td>{{item.order_date}}</td>
+            <td>{{item.order_date}}</td>
+            <td>{{item.order_date}}</td>
+            <td>{{item.order_date}}</td>
+            <td>{{item.total}}</td>
+            <td>{{item.order_date}}</td>
           </tr>
         </tbody>
       </table>
@@ -72,7 +78,7 @@ export default {
           clause: '='
         }]
       }
-      this.APIRequest('checkouts/retrieve_basic', parameter).then(response => {
+      this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data
         }
