@@ -10,6 +10,7 @@ use App\Checkout;
 use App\Product;
 use App\CheckoutItem;
 use App\Plan;
+use App\Rating;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +26,6 @@ class AccountController extends APIController
         "username"  => "unique:accounts"
       );
       $this->notRequired = array(
-        'status',
         'order_suffix'
       );
     }
@@ -162,6 +162,43 @@ class AccountController extends APIController
       }
     }
 
+    public function retrievePartners(Request $request){
+      $data = $request->all();
+      $this->model = new Account();
+      $result = $this->retrieveDB($data);
+
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $accountId = $result[$i]['id'];
+          $this->response['data'][$i]['account'] = $this->retrieveAccountDetails($accountId);
+          $this->response['data'][$i]['rating'] = $this->getRatingsPartners($accountId);
+          $i++;
+        }
+      }
+      return $this->response();
+    }
+
+    public function getRatingsPartners($accountId){
+      $rating = Rating::where('payload', '=', 'partner')->where('payload_value', '=', $accountId)->get();
+      $avg = 0;
+      $totalRating = 0;
+      $size = sizeof($rating);
+      if(sizeof($rating) > 0){
+        $i = 0;
+        foreach ($rating as $key) {
+          $totalRating += intval($rating[$i]['value']);
+          $i++;
+        }
+      }
+      $avg = ($size > 0) ? floatval($totalRating / $size) : $totalRating;
+      return array(
+        'total' => $totalRating,
+        'size'  => $size,
+        'avg'   => $avg
+      );
+    }
+
     public function getCheckoutItem($accountId){
       $checkout = Checkout::where('account_id', '=', $accountId)->where('status', '=', 'added')->first();
       if($checkout){
@@ -176,19 +213,24 @@ class AccountController extends APIController
       $accountDate = Carbon::createFromFormat('Y-m-d H:i:s', $createdAt);
       $diff = $accountDate->diffInDays($current, false);
       if($diff >= 30){
-        $result = Plan::where('account_id', '=', $accountId)->whereDate('end', '>=', Carbon::now())->where('status', '=', 'completed')->orderBy('created_at', 'desc')->first();
+        $result = Plan::where('account_id', '=', $accountId)->whereDate('end', '>=', Carbon::now())->where('status', '=', 'completed')->orderBy('created_at', 'asc')->first();
         if($result){
-          return $result->title;
+          return array(
+            'title' => $result->title,
+            'end_human' => Carbon::createFromFormat('Y-m-d H:i:s', $result->end)->copy()->tz('Asia/Manila')->format('F j, Y')
+          );
         }else{
-          return 'Expired';
+          return array(
+            'title' => 'Expired',
+            'end_human' => null
+          );
         }
       }else{
-        return 'Trial';
+        return array(
+          'title' => 'Trial',
+          'end_human' => Carbon::createFromFormat('Y-m-d H:i:s', $createdAt)->copy()->tz('Asia/Manila')->format('F j, Y')
+        );
       }
     }
-
-
-
-
 
 }

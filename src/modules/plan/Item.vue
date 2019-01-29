@@ -1,8 +1,13 @@
 <template>
 	<div class="holder">
     
-    <div class="alert alert-danger" v-if="user.plan === 'Expired'">
-      <strong>Your Plan was Expired!</strong> Please update or upgrade your plan to continue using ID Factory.
+    <div v-if="user.plan !== null">
+      <div class="alert alert-danger" v-if="user.plan.title === 'Expired'">
+        <strong>Your Plan was Expired!</strong> Please update or upgrade your plan to continue using ID Factory.
+      </div>
+      <div class="alert alert-success" v-if="user.plan.title !== 'Expired'">
+        Your current plan <strong>{{user.plan.title.toUpperCase()}}</strong> will expired on {{user.plan.end_human}}.
+      </div>
     </div>
 
     <div class="pricing-item">
@@ -315,6 +320,9 @@ export default {
         account_id: this.user.userID,
         title: plan,
         price: price,
+        sub_total: parseInt(price) * parseInt(multiplier),
+        tax: 0,
+        discount: 0,
         total_amount: parseInt(price) * parseInt(multiplier),
         status: 'added'
       }

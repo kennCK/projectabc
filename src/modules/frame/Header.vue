@@ -12,7 +12,7 @@
       </span>
       <span class="left-menu-icons">
         <label class="account-type  hide-on-mobile bg-warning" v-if="user !== null">{{user.type}}</label>
-        <label class="account-type  hide-on-mobile bg-danger" v-if="user !== null && user.plan !== null">{{user.plan.toUpperCase()}}</label>
+        <label class="account-type  hide-on-mobile bg-danger" v-if="user !== null && user.plan !== null">{{user.plan.title.toUpperCase()}}</label>
       </span>
       <span class="right-menu-icons">
         <div class="dropdown"> 
@@ -737,13 +737,7 @@ export default {
       AUTH.deaunthenticate()
     },
     redirect(parameter){
-      if(AUTH.timer.interval === null){
-        this.confirmation.message = null
-        ROUTER.push(parameter)
-      }else{
-        this.confirmation.message = 'You have an ongoing examination. You are not allowed to cancel the examination.'
-        $('#timerHeaderModal').modal('show')
-      }
+      AUTH.redirect(parameter)
     },
     display(){
     },

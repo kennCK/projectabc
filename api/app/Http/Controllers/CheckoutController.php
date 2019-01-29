@@ -26,6 +26,7 @@ class CheckoutController extends APIController
     	$this->model = new Checkout();
 
       $this->notRequired = array(
+        'coupon_id',
         'order_number',
         'payment_type',
         'payment_payload',
@@ -68,11 +69,10 @@ class CheckoutController extends APIController
         $i = 0;
         foreach ($result as $key) {
           $price = $this->getPrice($result[$i]['id'], $data['account_id']);
+          $coupon = ($result[$i]['coupon_id'] != null) ? $this->getCoupon($result[$i]['coupon_id']) : null;
           $this->response['data'][$i]['templates'] = $this->getItemBy($result[$i]['id'], 'template', null);
           $this->response['data'][$i]['employees'] = $this->getItemBy($result[$i]['id'], 'employee', $price);
-          // $this->response['data'][$i]['sub_total'] = $this->subTotal;
-          // $this->response['data'][$i]['tax'] = $this->tax;
-          // $this->response['data'][$i]['total'] = $this->subTotal - $this->tax;
+          $this->response['data'][$i]['coupon'] = $coupon;
           if(($result[$i]['payment_type'] == 'authorized' || $result[$i]['payment_type'] == 'express') && $result[$i]['payment_payload'] == 'credit_card'){
             $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_payload_value']);
           }else if($result[$i]['payment_type'] == 'express' && $result[$i]['payment_payload'] == 'paypal'){
@@ -83,8 +83,6 @@ class CheckoutController extends APIController
           $i++;
         }
       }
-      
-      $this->response['method'] = $cards;
       return $this->response();
     }
 
@@ -167,20 +165,29 @@ class CheckoutController extends APIController
       $subTotal = $data['sub_total'];
       $total = $data['total'];
       $paymentType = $data['payment_type'];
+      $couponId = $data['coupon_id'];
+      $discount = $data['discount'];
       $paymentPayload = $data['payment_payload'];
       $paymentPayloadValue = $data['payment_payload_value'];
       $email = $data['email'];
       $title = 'Charge for order number'.$data['order_number'];
+
       $updateData = array(
         'id'  => $id,
         'tax' => $tax,
         'sub_total' => $subTotal,
         'total' => $total,
+        'discount'  => $discount,
         'payment_type' => $paymentType,
         'payment_payload' => $paymentPayload,
         'status'  => 'completed',
         'updated_at'  => Carbon::now()
       );
+
+      if($couponId != '' && $couponId != null){
+        $updateData['coupon_id'] = $couponId;
+      }
+
       if(($paymentType == 'authorized' || $paymentType == 'express') && $paymentPayload == 'credit_card'){
         $paymentMethod = $this->getPaymentMethod('id', $paymentPayloadValue);
         $updateData['payment_payload_value'] = $paymentPayloadValue;

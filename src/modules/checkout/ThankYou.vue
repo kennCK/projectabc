@@ -33,6 +33,17 @@
 			<label>Tax</label>
       <label class="pull-right" style="padding-right: 10px;">PHP {{data.tax}}</label>
 		</span>
+		<span class="thank-you-item" v-if="data !== null && data.coupon !== null">
+		 	<label></label>
+      <label class="text-primary">
+        <b>Promo Code</b>: <b v-if="data.coupon !== null">{{data.coupon.code.toUpperCase()}}</b>
+        <b v-if="data.coupon !== null && data.coupon.type === 'percentage'"> (-{{data.coupon.value}}%)</b>
+        <b v-if="data.coupon !== null && data.coupon.type === 'fixed_amount'"> (-{{data.coupon.value}})</b>
+      </label>
+      <label class="pull-right">
+      	PHP {{data.discount}}
+      </label>
+    </span>
 		<span class="thank-you-item">
 			<label></label>
 			<label><b>Total</b></label>

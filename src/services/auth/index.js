@@ -24,9 +24,8 @@ export default {
       prevCurrent: null
     }
   },
-  timer: {
-    interval: null,
-    speed: 1000
+  messenger: {
+    flag: null
   },
   notifTimer: {
     timer: null,
@@ -162,6 +161,7 @@ export default {
     this.setUser(null)
     let vue = new Vue()
     vue.APIRequest('authenticate/invalidate')
+    this.clearMessenger()
     this.clearNotifTimer()
     this.tokenData.token = null
     ROUTER.go('/')
@@ -209,6 +209,11 @@ export default {
       this.notifTimer.timer = null
     }
   },
+  clearMessenger(){
+    if(this.messenger.flag !== null){
+      this.messenger.flag = null
+    }
+  },
   playNotificationSound(){
     let audio = require('../../assets/audio/notification.mp3')
     let sound = new Howl({
@@ -223,8 +228,16 @@ export default {
     }
   },
   checkPlan(){
-    if(this.user.plan === 'Expired' && this.user.type !== 'ADMIN'){
+    if(this.user.plan.title === 'Expired' && this.user.type !== 'ADMIN'){
       ROUTER.push('/plan')
     }
+  },
+  redirect(path){
+    if(path.includes('messenger') === false){
+      this.clearMessenger()
+    }else{
+      this.messenger.flag = true
+    }
+    ROUTER.push(path)
   }
 }

@@ -53,6 +53,9 @@ Vue.mixin({
     },
     APIFailRequestHandler(link, jqXHR, errorCallback){
       switch(jqXHR.status){
+        case 400:
+          alert('Error Connection')
+          break
         case 401: // Unauthorized
           if(link === 'authenticate' || 'authenticate/user'){ // if error occured during authentication request
             if(errorCallback){

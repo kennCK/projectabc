@@ -145,7 +145,7 @@ export default{
     }
   },
   {
-    path: '/messenger',
+    path: '/messenger/:username?',
     name: 'messenger',
     component: resolve => require(['modules/messenger/Messenger.vue'], resolve),
     meta: {
@@ -172,6 +172,38 @@ export default{
     path: '/cp_thank_you/:orderNumber',
     name: 'cpThankYou',
     component: resolve => require(['modules/plan/ThankYou.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/printings',
+    name: 'printings',
+    component: resolve => require(['modules/partner/Partners.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/orders',
+    name: 'orders',
+    component: resolve => require(['modules/order/Orders.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/coupons',
+    name: 'coupons',
+    component: resolve => require(['modules/coupon/Coupons.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/products',
+    name: 'products',
+    component: resolve => require(['modules/product/Products.vue'], resolve),
     meta: {
       tokenRequired: true
     }

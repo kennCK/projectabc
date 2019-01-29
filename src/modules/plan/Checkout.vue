@@ -33,10 +33,22 @@
           <label>Tax</label>
           <label class="pull-right" style="padding-right: 10px;">PHP {{tax}}</label>
         </span>
+        
+        <span class="item">
+          <label class="text-primary">
+            <b>Promo Code</b>: <b v-if="coupon !== null">{{coupon.code.toUpperCase()}}</b>
+            <b v-if="coupon !== null && coupon.type === 'percentage'"> (-{{coupon.value}}%)</b>
+            <b v-if="coupon !== null && coupon.type === 'fixed_amount'"> (-{{coupon.value}})</b>
+          </label>
+          <i @click="clearCoupon()" class="fa fa-trash text-danger pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-if="coupon !== null"></i>
+          <i @click="applyCoupon()" class="fa fa-plus text-primary pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-else></i>
+        </span>
+
         <span class="item" style="border-bottom: 0px;">
           <label><b>Total</b></label>
           <label class="pull-right" style="padding-right: 10px;"><b>PHP {{total}}</b></label>
         </span>
+        
         <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
           <label>Active Payment Method</label>
           
@@ -72,6 +84,7 @@
     </span>
     <cancelled-paypal></cancelled-paypal>
     <express-credit-card></express-credit-card>
+    <apply-coupon></apply-coupon>
   </div>
 </template>
 <style scoped>
@@ -186,6 +199,8 @@ export default {
       method: null,
       total: null,
       tax: null,
+      coupon: null,
+      discount: null,
       subTotal: null,
       products: PRODUCTS,
       paypal: {
@@ -208,6 +223,7 @@ export default {
   components: {
     'cancelled-paypal': require('modules/checkout/CancelPaypal.vue'),
     'express-credit-card': require('modules/checkout/CreditCard.vue'),
+    'apply-coupon': require('modules/coupon/Apply.vue'),
     PayPal
   },
   methods: {
@@ -270,12 +286,14 @@ export default {
       if(this.data !== null){
         let parameter = {
           id: this.data[0].id,
+          coupon_id: (this.coupon !== null) ? this.coupon.id : null,
           payment_type: 'express',
           payment_payload: 'credit_card',
           payment_payload_value: id,
           sub_total: this.subTotal,
           total: this.total,
           tax: this.tax,
+          discount: (this.coupon !== null) ? this.discount : 0,
           account_id: this.user.userID,
           email: this.user.email,
           order_number: this.data[0].order_number
@@ -289,12 +307,14 @@ export default {
       if(data.state === 'approved'){
         let parameter = {
           id: this.data[0].id,
+          coupon_id: (this.coupon !== null) ? this.coupon.id : null,
           payment_type: 'express',
           payment_payload: 'paypal',
           payment_payload_value: data,
           sub_total: this.subTotal,
           total: this.total,
           tax: this.tax,
+          discount: (this.coupon !== null) ? this.discount : 0,
           account_id: this.user.userID,
           email: this.user.email,
           order_number: this.data[0].order_number
@@ -317,6 +337,23 @@ export default {
     },
     creditCard(){
       $('#creditCardModal').modal('show')
+    },
+    applyCoupon(){
+      $('#applyCouponModal').modal('show')
+    },
+    clearCoupon(){
+      this.coupon = null
+      this.retrieve()
+    },
+    manageCoupon(){
+      if(this.coupon !== null){
+        if(this.coupon.type === 'percentage'){
+          this.discount = (parseFloat(this.coupon.value) / 100) * this.total
+        }else if(this.coupon.type === 'fixed_amount'){
+          this.discount = parseFloat(this.coupon.value)
+        }
+        this.total -= this.discount
+      }
     }
   }
 }
