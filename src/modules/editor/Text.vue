@@ -161,6 +161,7 @@
           </span>
           <span class="input">
             <select class="form-control" v-model="object.attributes.left">
+              <option v-for="i in 100" v-bind:value="((101 - i) * -1) + '%'">{{((101 - i) * -1) + '%'}}</option>
               <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
             </select>
           </span>
