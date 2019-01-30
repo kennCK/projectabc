@@ -135,7 +135,6 @@ class PlanController extends APIController
       $title = 'Charge for order number'.$data['order_number'];
       $updateData = array(
         'id'  => $id,
-        'coupon_id' => $couponId,
         'tax' => $tax,
         'sub_total' => $subTotal,
         'discount' => $discount,
@@ -145,6 +144,11 @@ class PlanController extends APIController
         'status'  => 'completed',
         'updated_at'  => Carbon::now()
       );
+
+      if($couponId != '' && $couponId != null){
+        $updateData['coupon_id'] = $couponId;
+      }
+
       if(($paymentType == 'authorized' || $paymentType == 'express') && $paymentPayload == 'credit_card'){
         $paymentMethod = $this->getPaymentMethod('id', $paymentPayloadValue);
         $updateData['payment_payload_value'] = $paymentPayloadValue;

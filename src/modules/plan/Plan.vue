@@ -26,6 +26,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    this.retrieve()
   },
   data(){
     return {
@@ -43,6 +44,25 @@ export default {
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.user.userID,
+          column: 'account_id',
+          clause: '='
+        }, {
+          value: 'ADDED',
+          column: 'status',
+          clause: '='
+        }],
+        account_id: this.user.userID
+      }
+      this.APIRequest('plans/retrieve', parameter).then(response => {
+        if(response.data.length > 0){
+          ROUTER.push('/checkout_plan')
+        }
+      })
     }
   }
 }

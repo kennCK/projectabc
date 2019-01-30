@@ -12,6 +12,10 @@
         <label class="text-danger action-link"><i class="fas fa-store"></i>View Store</label>
       </div>
       <div class="partner-reviews">
+        <label class="input-group">
+          <input type="text" style="border-top-right-radius: 0px;border-bottom-right-radius: 0px;" v-bind:id="'code' + item.account.id" class="form-control" v-model="item.account.code">
+          <button class="btn btn-primary" @click="copy('code' + item.account.id)" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;"><i class="fa fa-copy"></i></button>
+        </label>
         <label class="reviews">
           <span class="badge badge-warning">{{Math.floor(item.rating.avg)}}</span>
           <i v-bind:class="{'fas fa-star': item.rating.avg >= i, 'fa fa-star-o': item.rating.avg < i}" class="text-warning" v-for="i in 5"></i>
@@ -58,7 +62,7 @@
   padding-left: 10px;
 }
 .partner-info{
-  width: 60%;
+  width: 45%;
   float: left;
 }
 .partner-info label{
@@ -71,12 +75,13 @@
   padding-right: 10px;
 }
 .partner-reviews{
-  width: 25%;
+  width: 40%;
   float: left;
 }
 .partner-reviews label{
-  width: 100%;
+  width: 95%;
   float: left;
+  margin-right: 5%;
 }
 .reviews i{
   padding-right: 5px;
@@ -103,6 +108,12 @@ export default {
     },
     redirect(parameter){
       AUTH.redirect(parameter)
+    },
+    copy(id){
+      let copyText = document.getElementById(id)
+      copyText.select()
+      document.execCommand('copy')
+      console.log(copyText.value)
     }
   }
 }
