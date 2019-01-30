@@ -143,7 +143,8 @@ export default {
         account_id: this.user.userID,
         payload: 'template',
         payload_value: item.id,
-        price: item.price
+        price: item.price,
+        type: 'direct'
       }
       this.APIRequest('checkout_items/create', parameter).then(response => {
         if(response.data > 0){

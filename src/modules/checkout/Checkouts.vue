@@ -54,6 +54,15 @@
         </span>
         <span class="item" style="border-bottom: 0px;">
           <label class="text-primary">
+            <label v-if="partner === null"><b>Assign</b></label>
+            <label v-else><b>Assigned</b></label>
+            <b>Printing</b> <b v-if="partner !== null">{{' to ' + partner.username}}</b>
+          </label>
+          <i @click="clearPartner()" class="fa fa-trash text-danger pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-if="partner !== null"></i>
+          <i @click="applyPartner()" class="fa fa-plus text-primary pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-else></i>
+        </span>
+        <span class="item" style="border-bottom: 0px;" v-if="(partner !== null && data[0].payload === 'marketplace') || data[0].payload === 'direct'">
+          <label class="text-primary">
             <b>Promo Code</b>: <b v-if="coupon !== null">{{coupon.code.toUpperCase()}}</b>
             <b v-if="coupon !== null && coupon.type === 'percentage'"> (-{{coupon.value}}%)</b>
             <b v-if="coupon !== null && coupon.type === 'fixed_amount'"> (-{{coupon.value}})</b>
@@ -65,12 +74,12 @@
           <label><b>Total</b></label>
           <label class="pull-right" style="padding-right: 10px;"><b>PHP {{data[0].total}}</b></label>
         </span>
-        <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
+        <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null && ((partner !== null && data[0].payload === 'marketplace') || data[0].payload === 'direct')">
           <label>Active Payment Method</label>
           
           <label class="pull-right" style="padding-right: 10px;">******** {{method.stripe.last4}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
         </span>
-        <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.paypal !== null">
+        <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.paypal !== null && ((partner !== null && data[0].payload === 'marketplace') || data[0].payload === 'direct')">
           <label>Active Payment Method</label>
           
           <label class="pull-right" style="padding-right: 10px;"> {{method.paypal.nickname}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
@@ -81,7 +90,7 @@
           
           <label class="pull-right" style="padding-right: 10px;"> {{method.payload_value}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
         </span>
-        <span class="custom-btn" style="border-bottom: 0px;">
+        <span class="custom-btn" style="border-bottom: 0px;" v-if="(partner !== null && data[0].payload === 'marketplace') || data[0].payload === 'direct'">
             <PayPal
               v-bind:amount="'' + data[0].total"
               currency="PHP"
@@ -93,14 +102,15 @@
               @payment-authorized="paypalAuthorized($event)">
             </PayPal>
         </span>
-        <button class="btn btn-primary custom-btn" @click="creditCard()"><i class="fa fa-credit-card"></i> Credit Card</button>
-        <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')" v-if="method === null">Authorized Payment using Credit Card</button>
-        <button class="btn btn-warning custom-btn" @click="updateStripeAuthorized()"> Complete Purchase</button>
+        <button class="btn btn-primary custom-btn" @click="creditCard()" v-if="(partner !== null && data[0].payload === 'marketplace') || data[0].payload === 'direct'"><i class="fa fa-credit-card"></i> Credit Card</button>
+        <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')" v-if="method === null && ((partner !== null && data[0].payload === 'marketplace') || data[0].payload === 'direct')">Authorized Payment using Credit Card</button>
+        <!-- <button class="btn btn-warning custom-btn" @click="updateStripeAuthorized()"> Complete Purchase</button> -->
       </span>
     </span>
     <cancelled-paypal></cancelled-paypal>
     <express-credit-card></express-credit-card>
     <apply-coupon></apply-coupon>
+    <apply-partner></apply-partner>
   </div>
 </template>
 <style scoped>
@@ -212,6 +222,7 @@ export default {
       config: CONFIG,
       errorMessage: null,
       data: null,
+      partner: null,
       coupon: null,
       discount: null,
       method: null,
@@ -238,6 +249,7 @@ export default {
     'cancelled-paypal': require('modules/checkout/CancelPaypal.vue'),
     'express-credit-card': require('modules/checkout/CreditCard.vue'),
     'apply-coupon': require('modules/coupon/Apply.vue'),
+    'apply-partner': require('modules/checkout/Partner.vue'),
     PayPal
   },
   methods: {
@@ -354,6 +366,13 @@ export default {
     },
     clearCoupon(){
       this.coupon = null
+      this.retrieve()
+    },
+    applyPartner(){
+      $('#applyPartnerModal').modal('show')
+    },
+    clearPartner(){
+      this.partner = null
       this.retrieve()
     },
     manageCoupon(){

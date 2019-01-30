@@ -1,17 +1,7 @@
 <template>
   <div class="template-holder" v-if="data !== null">
     <div class="filter">
-      <div class="input-group">
-        <span class="input-group-addon input-group-title">Marketplace</span>
-        <span class="input-group-addon">Search</span>
-        <input type="text" class="form-control" placeholder="Search here...">
-
-        <span class="input-group-addon" style="margin-left: 20px;">Categories</span>
-        <select class="form-control">
-          <option>School</option>
-          <option>Office</option>
-        </select>
-      </div>
+      <h5>Choose from our ready to print templates</h5>
     </div>
     <div class="template-list">
       <product v-for="item, index in data" v-if="data !==null" :item="item" :key="item.id" :index="index"></product>
@@ -24,10 +14,8 @@
   float: left;
 }
 .filter{
-  width: 75%;
+  width: 100%;
   float: left;
-  margin-right: 25%;
-  height: 50px;
 }
 
 .form-control{

@@ -310,7 +310,8 @@ export default {
         account_id: this.user.userID,
         payload: 'employee',
         payload_value: id,
-        price: 0
+        price: 0,
+        type: 'marketplace'
       }
       this.APIRequest('checkout_items/create', parameter).then(response => {
         if(response.data > 0){
