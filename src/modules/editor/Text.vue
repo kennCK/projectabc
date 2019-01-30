@@ -243,6 +243,17 @@
 
         <span class="item-setting">
           <span class="title">
+            Rotate
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="object.attributes.transform">
+              <option v-for="i in 361" v-bind:value="'rotate(' + (i - 1) + 'deg)'">{{(i - 1) + '%'}}</option>
+            </select>
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
             Action
           </span>
           <span class="input">

@@ -251,7 +251,8 @@ export default {
             fontWeight: '500',
             zIndex: 3,
             lineHeight: '50px',
-            textTransform: 'uppercase'
+            textTransform: 'uppercase',
+            transform: 'rotate(0deg)'
           }
         }
       }else if(type === 'division'){
@@ -273,7 +274,8 @@ export default {
             left: '0%',
             right: '0%',
             borderRadius: '0%',
-            zIndex: 1
+            zIndex: 1,
+            transform: 'rotate(0deg)'
           }
         }
       }else if(type === 'photo'){
@@ -295,7 +297,8 @@ export default {
             left: '0%',
             right: '0%',
             borderRadius: '0%',
-            zIndex: 2
+            zIndex: 2,
+            transform: 'rotate(0deg)'
           }
         }
       }
