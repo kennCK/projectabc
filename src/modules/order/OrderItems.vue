@@ -30,7 +30,8 @@
                   </label>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <span class="dropdown-item disabled">Settings</span>
-                      <span class="dropdown-item" @click="updateStatus('verified', item.employee.id)">Edit Status</span>
+                      <span class="dropdown-item" v-if="item.status !== 'printing'" @click="updateStatus('printing', item.id)">Printing</span>
+                      <span class="dropdown-item" v-if="item.status !== 'printed'" @click="updateStatus('printed', item.id)">Printed</span>
                   </div>
                 </div>
               </li>
@@ -295,7 +296,7 @@ export default {
         id: id,
         status: status
       }
-      this.APIRequest('employees/update', parameter).then(response => {
+      this.APIRequest('checkout_items/update', parameter).then(response => {
         if(response.data === true){
           this.retrieve()
         }

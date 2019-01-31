@@ -19,6 +19,7 @@ class CheckoutItemController extends APIController
         'payload' => $data['payload'],
         'payload_value' => $data['payload_value'],
         'price' => $data['price'],
+        'status' => 'added'
       );
     	$accountId = $data['account_id'];
     	$checkout = Checkout::where('account_id', '=', $accountId)->where('status', '=', 'added')->first();

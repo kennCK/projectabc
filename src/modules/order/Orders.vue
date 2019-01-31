@@ -18,9 +18,15 @@
             <td>{{item.order_number}}</td>
             <td><label v-if="item.account !== null">{{item.account.username}}</label></td>
             <td>{{item.total}}</td>
-            <td>{{item.status.toUpperCase()}}</td>
             <td>
-              <i class="fa fa-pencil text-danger"></i>
+              <select class="form-control" v-model="item.status" @change="updateStatus(item)">
+                <option value="added">Added</option>
+                <option value="printing">Printing</option>
+                <option value="shipping">Shipping</option>
+                <option value="completed">Completed</option>
+              </select>
+            </td>
+            <td>
               <i class="fa fa-shopping-cart text-primary" @click="redirect('/order_items/' + item.order_number)"></i>
             </td>
           </tr>
@@ -84,6 +90,17 @@ export default {
       this.APIRequest('orders/retrieve_orders', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data
+        }
+      })
+    },
+    updateStatus(item){
+      let parameter = {
+        id: item.id,
+        status: item.status
+      }
+      this.APIRequest('checkouts/update_status', parameter).then(response => {
+        if(response.data === true){
+          this.retrieve()
         }
       })
     }

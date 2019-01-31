@@ -214,6 +214,7 @@ Route::post('/checkouts/create', "CheckoutController@create");
 Route::post('/checkouts/retrieve', "CheckoutController@retrieve");
 Route::post('/checkouts/retrieve_summary', "CheckoutController@retrieveSummary");
 Route::post('/checkouts/update', "CheckoutController@update");
+Route::post('/checkouts/update_status', "CheckoutController@updateStatus");
 Route::post('/checkouts/delete', "CheckoutController@delete");
 Route::get('/checkouts/test', 'CheckoutController@test');
 
