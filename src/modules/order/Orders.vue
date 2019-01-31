@@ -9,6 +9,7 @@
             <td>Customer</td>
             <td>Amount</td>
             <td>Status</td>
+            <td>Action</td>
           </tr>
         </thead>
         <tbody>
@@ -18,6 +19,10 @@
             <td><label v-if="item.account !== null">{{item.account.username}}</label></td>
             <td>{{item.total}}</td>
             <td>{{item.status.toUpperCase()}}</td>
+            <td>
+              <i class="fa fa-pencil text-danger"></i>
+              <i class="fa fa-shopping-cart text-primary" @click="redirect('/order_items/' + item.order_number)"></i>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -76,7 +81,7 @@ export default {
           clause: '='
         }]
       }
-      this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
+      this.APIRequest('orders/retrieve_orders', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data
         }

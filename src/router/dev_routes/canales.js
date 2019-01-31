@@ -193,6 +193,14 @@ export default{
     }
   },
   {
+    path: '/order_items/:orderNumber',
+    name: 'orderItems',
+    component: resolve => require(['modules/order/OrderItems.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
     path: '/coupons',
     name: 'coupons',
     component: resolve => require(['modules/coupon/Coupons.vue'], resolve),

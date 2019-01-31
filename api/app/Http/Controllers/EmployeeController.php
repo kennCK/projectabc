@@ -221,8 +221,4 @@ class EmployeeController extends APIController
       return (sizeof($result) > 0) ? $result : null;
     }
 
-    public function getComments($employeeId){
-      $result = Comment::where('payload', '=', 'employees')->where('payload_value', '=', $employeeId)->get();
-      return sizeof($result);
-    }
 }

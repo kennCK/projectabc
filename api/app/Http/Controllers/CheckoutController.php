@@ -11,6 +11,7 @@ use App\PaymentMethod;
 use App\Pricing;
 use App\Client;
 use App\Template;
+use App\Employee;
 use App\CustomObject;
 use App\Attribute;
 use App\PaypalTransaction;
@@ -57,6 +58,21 @@ class CheckoutController extends APIController
       }
       
       $this->response['method'] = $cards;
+      return $this->response();
+    }
+
+    public function retrieveOrderItems(Request $request){
+      $data = $request->all();
+      $this->retrieveDB($data);
+      $result = $this->response['data'];
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $this->response['data'][$i]['items'] = $this->getOrderItems($result[$i]['id']);
+          $i++;
+        }
+      }
+      
       return $this->response();
     }
 
@@ -172,6 +188,40 @@ class CheckoutController extends APIController
       }
     }
 
+    public function getOrderItems($checkoutId){
+      $result = CheckoutItem::where('checkout_id', '=', $checkoutId)->get();
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $payload = $result[$i]['payload'];
+          $payloadValue = $result[$i]['payload_value'];
+
+          $result[$i]['active'] = false;
+          if($payload == 'employee'){
+            $result[$i]['employee'] = $this->getEmployeeFromOrders($payloadValue);
+          }
+          $i++;
+        }
+        return $result;
+      }else{
+        return null;
+      }
+    }
+
+    public function getEmployeeFromOrders($payloadValue){
+      $result = Employee::where('id', '=', $payloadValue)->get();
+      if(sizeof($result) > 0){
+        $id = $result[0]['id'];
+        $result[0]['front_objects'] = $this->getObjectsCustom($result[0]['front_template'], $id);
+        $result[0]['back_objects'] = $this->getObjectsCustom($result[0]['back_template'], $id);
+        $result[0]['front_template_details'] = $this->getTemplateDetails($result[0]['front_template']);
+        $result[0]['back_template_details'] = $this->getTemplateDetails($result[0]['back_template']);
+        $result[0]['total_comments'] = $this->getComments($id);
+        return $result[0];
+      }else{
+        return null;
+      }
+    }
 
     public function update(Request $request){
       $data = $request->all();

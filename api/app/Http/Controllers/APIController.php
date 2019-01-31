@@ -30,6 +30,7 @@ use App\StripeCard;
 use App\PaypalTransaction;
 use App\BillingInformation;
 use App\Coupon;
+use App\Comment;
 class APIController extends Controller
 {
   /*
@@ -602,6 +603,11 @@ class APIController extends Controller
     public function getCoupon($id){
       $result = Coupon::where('id', '=', $id)->get();
       return (sizeof($result) > 0) ? $result[0] : null;
+    }
+
+    public function getComments($employeeId){
+      $result = Comment::where('payload', '=', 'employees')->where('payload_value', '=', $employeeId)->get();
+      return sizeof($result);
     }
 
 
