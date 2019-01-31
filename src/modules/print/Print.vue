@@ -10,23 +10,23 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="print-content">
-              <div class="holder" style="margin-right: 20px;">
+            <div v-bind:style="{height: (parseInt(item.front_template_details.height)) + 'px', width: ((parseInt(item.front_template_details.width) + 25) * 2)  + 'px'}" class="print-content">
+              <div v-bind:style="{height: (parseInt(item.front_template_details.height)) + 'px', width: (parseInt(item.front_template_details.width))  + 'px'}" class="holder">
                 <span id="frontObject">
                   <objects :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)"></objects>
                 </span>
                 
-                <div class="display">
+                <div v-bind:style="{height: (parseInt(item.front_template_details.height)) + 'px', width: (parseInt(item.front_template_details.width))  + 'px'}" class="display">
                   <i class="fas fa-spinner fa-spin"></i>
                   <label>Printing...</label>
                 </div>
               </div>
 
-              <div class="holder">
+              <div v-bind:style="{height: (parseInt(item.front_template_details.height)) + 'px', width: (parseInt(item.front_template_details.width))  + 'px'}" class="holder">
                 <span id="backObject">
                   <objects :objects="item.back_objects" v-if="item.back_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)"></objects>
                 </span>
-                <div class="display">
+                <div v-bind:style="{height: (parseInt(item.front_template_details.height)) + 'px', width: (parseInt(item.front_template_details.width))  + 'px'}" class="display">
                   <i class="fas fa-spinner fa-spin"></i>
                   <label>Printing...</label>
                 </div>
@@ -44,18 +44,13 @@
 </template>
 <style scoped>
 .print-content{
-  width: 428px;
-  height: 374px;
   margin: auto;
 }
 .holder{
-  width: 204px;
-  height: 374px;
   position: relative;
   float: left;
 }
 .preview{
-  height: 324px;
   position: absolute;
   width: 100%;
   float: left;
@@ -69,7 +64,6 @@
 .display{
   width: 100%;
   float: left;
-  height: 324px;
   text-align: center;
   position: absolute;
   z-index: 3;
