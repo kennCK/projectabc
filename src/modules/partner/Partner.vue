@@ -1,5 +1,5 @@
 <template>
-  <div class="partner" v-if="item !== null && item.account !== null && item.status === 'VERIFIED'">
+  <div class="partner" v-if="item !== null && item.account !== null">
     <div class="partner-container">
       <div class="partner-profile">
         <img :src="config.BACKEND_URL + item.account.profile.profile_url" v-if="item.account.profile !== null">

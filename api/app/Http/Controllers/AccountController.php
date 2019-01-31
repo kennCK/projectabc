@@ -163,20 +163,49 @@ class AccountController extends APIController
     }
 
     public function retrievePartners(Request $request){
+      // retrieve all partners
+      // check plan
+      // check trial plan
       $data = $request->all();
-      $this->model = new Account();
-      $result = $this->retrieveDB($data);
-
+      $this->model = new Account;
+      $this->retrieveDB($data);
+      $result = $this->response['data'];
+      $response = array(
+        'data'  => array(),
+        'error' => null,
+        'timestamp' => Carbon::now()
+      );
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
           $accountId = $result[$i]['id'];
-          $this->response['data'][$i]['account'] = $this->retrieveAccountDetails($accountId);
-          $this->response['data'][$i]['rating'] = $this->getRatingsPartners($accountId);
+          $accountDate = Carbon::createFromFormat('Y-m-d H:i:s', $result[$i]['created_at']);
+          $current = Carbon::now();
+          $diff = $accountDate->diffInDays($current, false);
+          if($diff < 30){
+            $temp = array(
+              'account' => $this->retrieveAccountDetails($accountId),
+              'rating'  => $this->getRatingsPartners($accountId)
+            );
+            $response['data'][] = $temp;            
+          }else if($this->checkPlan($accountId) == true){
+            $temp = array(
+              'account' => $this->retrieveAccountDetails($accountId),
+              'rating'  => $this->getRatingsPartners($accountId)
+            );
+            $response['data'][] = $temp;
+          }else{
+            //
+          }
           $i++;
         }
       }
-      return $this->response();
+      return response()->json($response);
+    }
+
+    public function checkPlan($accountId){
+      $result = Plan::where('account_id', '=', $accountId)->whereDate('end', '>=', Carbon::now())->get();
+      return (sizeof($result) > 0) ? true : false;
     }
 
     public function getRatingsPartners($accountId){
