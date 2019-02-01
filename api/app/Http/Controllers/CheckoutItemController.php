@@ -37,6 +37,7 @@ class CheckoutItemController extends APIController
     		$checkout->tax = 0;
     		$checkout->total = 0;
     		$checkout->status = 'added';
+        $checkout->printing_status = 'added';
     		$checkout->save();
     		if($checkout->id){
     			$insertData['checkout_id'] = $checkout->id;

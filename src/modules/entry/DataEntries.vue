@@ -307,7 +307,7 @@ export default {
         payload: 'employee',
         payload_value: id,
         price: 0,
-        type: 'marketplace'
+        type: 'cards'
       }
       this.APIRequest('checkout_items/create', parameter).then(response => {
         if(response.data > 0){

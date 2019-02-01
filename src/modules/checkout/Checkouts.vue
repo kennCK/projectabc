@@ -43,7 +43,8 @@
         </span>
       </span>
       <span class="sidebar pull-right">
-        <marketplace :item="data[0]" v-if="data[0].payload === 'marketplace'"></marketplace>
+        <cards :item="data[0]" :method="method" v-if="data[0].payload === 'cards'"></cards>
+        <direct :item="data[0]" :method="method" v-if="data[0].payload === 'direct'"></direct>
       </span>
     </span>
   </div>
@@ -127,31 +128,16 @@ export default {
       config: CONFIG,
       errorMessage: null,
       data: null,
-      partner: null,
-      coupon: null,
-      discount: null,
       method: null,
-      paypal: {
-        sandbox: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH',
-        production: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH'
-      },
-      credentials: {
-        sandbox: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH',
-        production: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH'
-      },
-      myStyle: {
-        label: 'checkout',
-        size: 'responsive',
-        shape: 'pill',
-        color: 'gold'
-      },
-      success: null
+      success: null,
+      parter: null
     }
   },
   components: {
     'objects': require('modules/object/Objects.vue'),
     'rating': require('modules/rating/Ratings.vue'),
-    'marketplace': require('modules/checkout/Marketplace.vue')
+    'cards': require('modules/checkout/Cards.vue'),
+    'direct': require('modules/checkout/Direct.vue')
   },
   methods: {
     redirect(parameter){
@@ -170,7 +156,9 @@ export default {
         }],
         account_id: this.user.userID
       }
+      $('#loading').css({display: 'block'})
       this.APIRequest('checkouts/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
           this.method = response.method

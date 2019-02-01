@@ -43,7 +43,8 @@ class CheckoutController extends APIController
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
-          $price = $this->getPrice($result[$i]['id'], $data['account_id']);
+          $price = $this->getPrice($result[$i], $data['account_id']);
+          $this->response['data'][$i]['partner_details'] = ($result[$i]['partner'] != null && $result[$i]['partner'] != '' && $result[$i]['partner'] > 0) ? $this->retrieveAccountDetails($result[$i]['partner']) : null;
           $this->response['data'][$i]['items'] = $this->getItems($result[$i]['id'], $price);
           $this->response['data'][$i]['sub_total'] = $this->subTotal;
           $this->response['data'][$i]['tax'] = $this->tax;
@@ -118,12 +119,14 @@ class CheckoutController extends APIController
       return $this->response();
     }
 
-    public function getPrice($checkoutId, $accountId){
-      $total = $this->getItemSize($checkoutId, 'employee');
-      $partner = Client::where('client', '=', $accountId)->first();
+    public function getPrice($checkout, $accountId){
+      $total = $this->getItemSize($checkout['id'], 'employee');
       $price = 0;
-      if($partner){
-        $result = Pricing::where('account_id', '=', $partner->partner)->Where('minimum', '<=', $total)->where('maximum', '>=', $total)->first();
+      if(sizeof($checkout) > 0){
+        $result = null;
+        if($checkout['partner'] != null && $checkout['partner'] != '' && $checkout['partner'] > 0){
+          $result = Pricing::where('account_id', '=', $checkout['partner'])->Where('minimum', '<=', $total)->where('maximum', '>=', $total)->first();  
+        }
         return ($result) ? $result->price : 0;
       }else{
         return 0;
@@ -228,6 +231,30 @@ class CheckoutController extends APIController
       $this->model = new Checkout();
       $this->updateDB($data);
       return $this->response();
+    }
+
+
+    public function updateRemovePartner(Request $request){
+      $data = $request->all();
+      $checkoutId = $data['id'];
+      $result = Checkout::where('id', '=', $checkoutId)->update(array(
+        'partner' => null,
+        'updated_at' => Carbon::now()
+      ));
+
+      if($result){
+        return response()->json(array(
+          'data' => true,
+          'error' => null,
+          'timestamp' => Carbon::now()
+        ));
+      }else{
+        return response()->json(array(
+          'data' => false,
+          'error' => null,
+          'timestamp' => Carbon::now()
+        ));
+      }
     }
 
     public function update(Request $request){

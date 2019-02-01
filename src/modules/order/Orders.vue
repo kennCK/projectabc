@@ -19,7 +19,7 @@
             <td><label v-if="item.account !== null">{{item.account.username}}</label></td>
             <td>{{item.total}}</td>
             <td>
-              <select class="form-control" v-model="item.status" @change="updateStatus(item)">
+              <select class="form-control" v-model="item.printing_status" @change="updateStatus(item)">
                 <option value="added">Added</option>
                 <option value="printing">Printing</option>
                 <option value="shipping">Shipping</option>
@@ -85,6 +85,10 @@ export default {
           value: this.user.userID,
           column: 'partner',
           clause: '='
+        }, {
+          value: 'completed',
+          column: 'status',
+          clause: '='
         }]
       }
       this.APIRequest('orders/retrieve_orders', parameter).then(response => {
@@ -96,7 +100,7 @@ export default {
     updateStatus(item){
       let parameter = {
         id: item.id,
-        status: item.status
+        printing_status: item.printing_status
       }
       this.APIRequest('checkouts/update_status', parameter).then(response => {
         if(response.data === true){

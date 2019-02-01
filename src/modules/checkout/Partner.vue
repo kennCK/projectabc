@@ -63,6 +63,7 @@ export default {
         if(response.data.length > 0){
           this.data = response.data
           this.$parent.partner = response.data[0]
+          this.$parent.managePartner()
         }else{
           this.data = null
         }
