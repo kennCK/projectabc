@@ -3,13 +3,12 @@
     <div class="filter">
       <div class="input-group">
         <span class="input-group-addon">Filter By</span>
-        <select class="form-control">
-          <option>Company Name</option>
-          <option>Company Location</option>
-          <option>Products</option>
+        <select class="form-control" v-model="filterValue" @change="retrieve()">
+          <option value="name">Name</option>
+          <option value="location">Location</option>
         </select>
         <span class="input-group-addon">Search</span>
-        <input type="text" class="form-control" placeholder="Search here...">
+        <input type="text" class="form-control" v-model="searchValue" @keyup.enter="retrieve()" placeholder="Search here...">
       </div>
     </div>
     <div class="partner-list" v-if="data !== null">
@@ -69,7 +68,9 @@ export default {
       config: CONFIG,
       errorMessage: null,
       data: null,
-      prevIndex: null
+      prevIndex: null,
+      filterValue: 'name',
+      searchValue: null
     }
   },
   components: {
@@ -82,15 +83,8 @@ export default {
     },
     retrieve(){
       let parameter = {
-        condition: [{
-          value: 'PARTNER',
-          column: 'account_type',
-          clause: '='
-        }, {
-          value: 'VERIFIED',
-          column: 'status',
-          clause: '='
-        }]
+        filter: this.filterValue,
+        search: this.search ? this.search : ''
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('partners/retrieve', parameter).then(response => {
