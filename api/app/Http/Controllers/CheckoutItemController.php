@@ -24,7 +24,7 @@ class CheckoutItemController extends APIController
     	$accountId = $data['account_id'];
     	$checkout = Checkout::where('account_id', '=', $accountId)->where('status', '=', 'added')->first();
     	if($checkout){
-    		$data['checkout_id'] = $checkout->id;
+    		$insertData['checkout_id'] = $checkout->id;
     		$this->model = new CheckoutItem();
     		$this->insertDB($insertData);
     		return $this->response();

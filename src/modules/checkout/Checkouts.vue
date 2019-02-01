@@ -52,7 +52,7 @@
           <label>Tax</label>
           <label class="pull-right" style="padding-right: 10px;">PHP {{data[0].tax}}</label>
         </span>
-        <span class="item" style="border-bottom: 0px;">
+        <span class="item" style="border-bottom: 0px;" v-if="data[0].payload !== 'direct'">
           <label class="text-primary">
             <label v-if="partner === null"><b>Assign</b></label>
             <label v-else><b>Assigned</b></label>

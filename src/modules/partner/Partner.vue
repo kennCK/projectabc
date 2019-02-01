@@ -62,7 +62,7 @@
   padding-left: 10px;
 }
 .partner-info{
-  width: 45%;
+  width: 35%;
   float: left;
 }
 .partner-info label{
@@ -75,7 +75,7 @@
   padding-right: 10px;
 }
 .partner-reviews{
-  width: 40%;
+  width: 50%;
   float: left;
 }
 .partner-reviews label{
