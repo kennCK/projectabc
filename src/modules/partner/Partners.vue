@@ -84,7 +84,7 @@ export default {
     retrieve(){
       let parameter = {
         filter: this.filterValue,
-        search: this.search ? this.search : ''
+        search: (this.searchValue !== null || this.searchValue !== '') ? this.searchValue : ''
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('partners/retrieve', parameter).then(response => {
