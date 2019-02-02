@@ -1,7 +1,7 @@
 <template>
   <div class="employee-holder">
     <div class="title">
-      <b @click="redirect('/orders')">
+      <b @click="redirect('/my_orders')">
         <label class="text-primary action-link">My Orders</label>
       </b>
       <label class="text-primary">/ {{orderNumber}}</label>
@@ -26,10 +26,7 @@
                   </div>
                 </div>
               </li>
-              <li @click="print(item.employee)">
-                <i v-bind:class="{'gray': item.employee.status !== 'printed', 'green': item.employee.status === 'printed'}" class="fas fa-print"></i>
-              </li>
-              <li style="border-right: 0px;">
+              <li style="border-right: 0px;width: 50%;">
                 <div class="dropdown">
                   <label id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-cog"></i>
@@ -244,7 +241,7 @@ export default {
       let parameter = {
         condition: [{
           value: this.user.userID,
-          column: 'partner',
+          column: 'account_id',
           clause: '='
         }, {
           value: this.orderNumber,

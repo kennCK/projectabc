@@ -193,9 +193,25 @@ export default{
     }
   },
   {
+    path: '/my_orders',
+    name: 'myOrders',
+    component: resolve => require(['modules/order/MyOrders.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
     path: '/order_items/:orderNumber',
     name: 'orderItems',
     component: resolve => require(['modules/order/OrderItems.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/my_order_items/:orderNumber',
+    name: 'myOrderItems',
+    component: resolve => require(['modules/order/MyOrderItems.vue'], resolve),
     meta: {
       tokenRequired: true
     }

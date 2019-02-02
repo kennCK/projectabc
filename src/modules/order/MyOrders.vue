@@ -19,18 +19,17 @@
           <tr v-for="item, index in data" v-if="data !== null" class="item">
             <td>{{item.order_date}}</td>
             <td>{{item.order_number}}</td>
-            <td><label v-if="item.account !== null">{{item.account.username}}</label></td>
+            <td>
+              <label v-if="item.partner_details !== null">{{item.partner_details.username}}</label>
+              <label v-if="item.payload === 'direct'">ID Factory</label>
+            </td>
             <td>{{item.total}}</td>
             <td>
-              <select class="form-control" v-model="item.printing_status" @change="updateStatus(item)">
-                <option value="added">Added</option>
-                <option value="printing">Printing</option>
-                <option value="shipping">Shipping</option>
-                <option value="completed">Completed</option>
-              </select>
+              <label v-if="item.payload === 'direct'">{{item.status}}</label>
+              <label v-if="item.payload !== 'direct'">{{item.printing_status}}</label>
             </td>
             <td>
-              <i class="fa fa-shopping-cart text-primary" @click="redirect('/order_items/' + item.order_number)"></i>
+              <i class="fa fa-shopping-cart text-primary" @click="redirect('/my_order_items/' + item.order_number)"></i>
             </td>
           </tr>
         </tbody>
@@ -89,7 +88,7 @@ export default {
       let parameter = {
         condition: [{
           value: this.user.userID,
-          column: 'partner',
+          column: 'account_id',
           clause: '='
         }, {
           value: 'completed',

@@ -35,6 +35,10 @@
               <span class="dropdown-item dropdown-item-menu-title">
                 <label>Personal</label>
               </span>
+              <span class="dropdown-item" v-on:click="redirect('/my_orders')">
+                <i class="fa fa-tag"></i>
+                <label>My Orders</label>
+              </span>
               <span class="dropdown-item" v-on:click="redirect('/profile')">
                 <i class="fa fa-cog"></i>
                 <label>My Profile</label>
