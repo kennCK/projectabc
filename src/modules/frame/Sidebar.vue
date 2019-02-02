@@ -410,6 +410,7 @@ export default {
       {id: 2, users: 'ALL', parent_id: 0, description: 'Templates', icon: 'fas fa-file', path: 'templates'},
       {id: 3, users: 'ALL', parent_id: 0, description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries'},
       {id: 4, users: 'ALL', parent_id: 0, description: 'Images', icon: 'fas fa-image', path: 'images'},
+      {id: 5, users: 'ALL', parent_id: 0, description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace'},
       // {id: 5, users: 'ALL', parent_id: 0, description: 'Billings', icon: 'fas fa-credit-card', path: 'billings'},
       {id: 6, users: 'PARTNER', parent_id: 0, description: 'Pricings', icon: 'fas fa-money', path: 'pricings'},
       {id: 7, users: 'USER', parent_id: 0, description: 'Find Printing', icon: 'fas fa-print', path: 'printings'},

@@ -32,7 +32,7 @@ class MarketplaceController extends APIController
         $i = 0;
         foreach ($result as $key) {
           $result[$i]['objects'] = $this->getObjects($result[$i]['id']);
-          $result[$i]['active'] = false;
+          $result[$i]['active'] = true;
          $i++; 
         }
       }

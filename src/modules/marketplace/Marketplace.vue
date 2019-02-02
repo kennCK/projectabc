@@ -1,21 +1,65 @@
 <template>
-  <div class="template-holder" v-if="data !== null">
-    <div class="filter">
-      <h5>Choose from our ready to print templates</h5>
+  <div class="marketplace-holder">
+    <div class="banner text-white">
+      <h1>Welcome to Marketplace!</h1>
+      <h3>We have all you need.</h3>
     </div>
-    <div class="template-list">
-      <product v-for="item, index in data" v-if="data !==null" :item="item" :key="item.id" :index="index"></product>
+
+    <div class="product-holder">
+      <div class="listing">
+        <div class="filter">
+          <div class="input-group">
+            <span class="input-group-addon">Category</span>
+            <select class="form-control" v-model="categoryValue">
+              <option value="name">Tees</option>
+              <option value="location">Slings</option>
+            </select>
+            <span class="input-group-addon">Search</span>
+            <input type="text" class="form-control" v-model="searchValue" placeholder="Search here...">
+          </div>
+        </div>
+        <div class="results">
+          <products></products>
+        </div>
+      </div>
+      <div class="sidebar"></div>
     </div>
   </div>
 </template>
 <style scoped>
-.template-holder{
+.marketplace-holder{
   width: 100%;
   float: left;
+  min-height: 10px;
+  overflow-y: hidden;
+  margin-bottom: 50px;
 }
-.filter{
+.banner{
   width: 100%;
   float: left;
+  min-height: 50px;
+  overflow-y: hidden;
+  padding: 20px;
+  background: #ffaa81;
+}
+.product-holder{
+  width: 100%;
+  float: left;
+  min-height: 10px;
+  overflow-y: hidden;
+}
+.listing{
+  width: 70%;
+  float: left;
+  min-height: 10px;
+  overflow-y: hidden;
+}
+.listing .filter{
+  width: 99%;
+  float: left;
+  height: 50px;
+  margin-top: 25px;
+  margin-right: 1%;
 }
 
 .form-control{
@@ -35,10 +79,18 @@
   color: #fff !important;
 }
 
-.template-list{
+.listing .results{
   width: 100%;
+  font-size: left;
+  min-height: 10px;
+  overflow-y: hidden;
+}
+
+.sidebar{
+  width: 30%;
   float: left;
-  margin-top: 25px;
+  min-height: 10px;
+  overflow-y: hidden;
 }
 </style>
 <script>
@@ -48,7 +100,6 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
-    this.retrieve()
   },
   data(){
     return {
@@ -56,42 +107,16 @@ export default {
       config: CONFIG,
       errorMessage: null,
       data: null,
-      prevIndex: null
+      categoryValue: null,
+      searchValue: null
     }
   },
   components: {
-    'product': require('modules/marketplace/Product.vue')
+    'products': require('modules/marketplace/Products.vue')
   },
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
-    },
-    retrieve(){
-      let parameter = {
-        account_id: this.user.userID
-      }
-      this.APIRequest('marketplace/retrieve', parameter).then(response => {
-        if(response.data.length > 0){
-          this.data = response.data
-        }else{
-          this.data = null
-        }
-      })
-    },
-    makeActive(index){
-      if(this.prevIndex === null){
-        this.prevIndex = index
-        this.data[index].active = true
-      }else{
-        if(this.prevIndex !== index){
-          this.data[this.prevIndex].active = false
-          this.data[index].active = true
-          this.prevIndex = index
-        }else{
-          this.data[this.prevIndex].active = false
-          this.prevIndex = null
-        }
-      }
     }
   }
 }

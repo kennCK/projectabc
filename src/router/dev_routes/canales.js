@@ -231,6 +231,14 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/marketplace',
+    name: 'marketplace',
+    component: resolve => require(['modules/marketplace/Marketplace.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

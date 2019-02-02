@@ -1,24 +1,44 @@
 <template>
-	<div class="template-holder">
-		<create></create>
-    <div class="template-list" v-if="data !==null">
-      <item v-for="item, index in data" :item="item" :key="item.id" :index="index"></item>
+  <div class="template-holder" v-if="data !== null">
+    <div class="filter">
+      <h5>Choose from our ready to print templates</h5>
     </div>
-    <empty v-if="data === null" :title="'Looks like you have not created or purchased a tempate!'" :action="'Click the New Template Button or Purchase a template to get started.'"></empty>
-    <marketplace></marketplace>
-	</div>
+    <div class="template-list">
+      <product v-for="item, index in data" v-if="data !==null" :item="item" :key="item.id" :index="index"></product>
+    </div>
+  </div>
 </template>
 <style scoped>
 .template-holder{
-  width: 98%;
+  width: 100%;
   float: left;
-  margin-right: 2%;
 }
+.filter{
+  width: 100%;
+  float: left;
+}
+
+.form-control{
+  height: 45px !important;
+}
+.input-group{
+  margin-bottom: 10px !important;
+}
+.input-group-addon{
+  width: 100px !important;
+  background: #22b173 !important;
+  color: #fff !important;
+}
+.input-group-title{
+  width: 100px !important;
+  background: #028170 !important;
+  color: #fff !important;
+}
+
 .template-list{
   width: 100%;
   float: left;
   margin-top: 25px;
-  margin-bottom: 50px;
 }
 </style>
 <script>
@@ -28,7 +48,6 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
-    AUTH.checkPlan()
     this.retrieve()
   },
   data(){
@@ -41,10 +60,7 @@ export default {
     }
   },
   components: {
-    'create': require('modules/editor/Create.vue'),
-    'item': require('modules/editor/Item.vue'),
-    'marketplace': require('modules/editor/Marketplace.vue'),
-    'empty': require('modules/empty/Empty.vue')
+    'product': require('modules/editor/Product.vue')
   },
   methods: {
     redirect(parameter){
@@ -52,15 +68,9 @@ export default {
     },
     retrieve(){
       let parameter = {
-        condition: [{
-          value: this.user.userID,
-          column: 'account_id',
-          clause: '='
-        }]
+        account_id: this.user.userID
       }
-      $('#loading').css({'display': 'block'})
-      this.APIRequest('templates/retrieve', parameter).then(response => {
-        $('#loading').css({'display': 'none'})
+      this.APIRequest('marketplace/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data
         }else{
