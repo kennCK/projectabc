@@ -7,6 +7,37 @@
       <label class="text-primary">/ {{orderNumber}}</label>
     </div>
     <div class="employee-list" v-if="data !==null">
+      <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data.items" v-if="item.template !== null">
+        <span v-bind:style="{height: (parseInt(item.template.details.height) === config.LANDSCAPE) ? ((parseInt(item.template.details.height) * 2) + 50) + 'px' : (parseInt(item.template.details.height) + 50) + 'px', width: (parseInt(item.template.details.height) === config.LANDSCAPE) ? (parseInt(item.template.details.width) + 2)  + 'px' : ((parseInt(item.template.details.width)) + 2)  + 'px'}" class="holder">
+          <span class="header">
+            <ul class="menu">
+              <li style="border-right: 0px;width: 25%;margin-left: 75%;">
+                <div class="dropdown">
+                  <label id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-cog"></i>
+                  </label>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <span class="dropdown-item disabled">Settings</span>
+                      <span class="dropdown-item">Printing</span>
+                      <span class="dropdown-item">Printed</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </span>
+
+          <span v-bind:style="{height: (parseInt(item.template.details.height)) + 'px', width: (parseInt(item.template.details.width) * 2)  + 'px'}" class="items" v-if="parseInt(item.template.details.width) === config.LANDSCAPE">
+            <objects :objects="item.template.objects" :key="item.id" v-if="item.template.objects !== null" :heightTemplate="parseInt(item.template.details.height)" :widthTemplate="parseInt(item.template.details.width)">
+            </objects>
+          </span>
+
+          <span v-bind:style="{height: (parseInt(item.template.details.height) * 2) + 'px', width: (parseInt(item.template.details.width))  + 'px'}" class="items" v-if="parseInt(item.template.details.width) === config.PORTRAIT">
+            <objects :objects="item.template.objects" :key="item.id" v-if="item.template.objects !== null" :heightTemplate="parseInt(item.template.details.height)" :widthTemplate="parseInt(item.template.details.width)">
+            </objects>
+          </span>
+        </span>
+      </div>
+
       <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data.items" v-if="item.employee !== null">
         <span v-bind:style="{height: (parseInt(item.employee.front_template_details.height) === config.LANDSCAPE) ? ((parseInt(item.employee.front_template_details.height) * 2) + 50) + 'px' : (parseInt(item.employee.front_template_details.height) + 50) + 'px', width: (parseInt(item.employee.front_template_details.height) === config.LANDSCAPE) ? (parseInt(item.employee.front_template_details.width) + 2)  + 'px' : ((parseInt(item.employee.front_template_details.width) * 2) + 2)  + 'px'}" class="holder">
           <span class="header">
@@ -33,8 +64,8 @@
                   </label>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <span class="dropdown-item disabled">Settings</span>
-                      <span class="dropdown-item" v-if="item.status !== 'printing'" @click="updateStatus('printing', item.id)">Printing</span>
-                      <span class="dropdown-item" v-if="item.status !== 'printed'" @click="updateStatus('printed', item.id)">Printed</span>
+                      <span class="dropdown-item" v-if="item.status !== 'printing'">Printing</span>
+                      <span class="dropdown-item" v-if="item.status !== 'printed'">Printed</span>
                   </div>
                 </div>
               </li>

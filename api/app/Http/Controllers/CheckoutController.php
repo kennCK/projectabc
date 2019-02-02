@@ -203,6 +203,13 @@ class CheckoutController extends APIController
           $result[$i]['active'] = false;
           if($payload == 'employee'){
             $result[$i]['employee'] = $this->getEmployeeFromOrders($payloadValue);
+            $result[$i]['template'] = null;
+          }else if($payload == 'template'){
+            $result[$i]['employee'] = null;
+            $result[$i]['template'] = array(
+              'details' => $this->getTemplateDetails($payloadValue),
+              'objects' => $this->getObjects($payloadValue)
+            );
           }
           $i++;
         }
