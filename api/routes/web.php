@@ -269,6 +269,14 @@ Route::post('/products/delete', "ProductController@delete");
 Route::get('/products/test', 'ProductController@test');
 
 
+//Product Attributes
+Route::post('/product_attributes/create', "ProductAttributeController@create");
+Route::post('/product_attributes/retrieve', "ProductAttributeController@retrieve");
+Route::post('/product_attributes/update', "ProductAttributeController@update");
+Route::post('/product_attributes/delete', "ProductAttributeController@delete");
+Route::get('/product_attributes/test', 'ProductAttributeController@test');
+
+
 //Pricing
 Route::post('/pricings/create', "PricingController@create");
 Route::post('/pricings/retrieve', "PricingController@retrieve");

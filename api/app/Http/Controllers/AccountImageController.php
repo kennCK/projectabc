@@ -8,5 +8,9 @@ class AccountImageController extends APIController
 {
     function __construct(){
       $this->model = new AccountImage();
+
+      $this->notRequired = array(
+      	'payload', 'payload_value', 'status'
+      );
     }
 }

@@ -415,7 +415,7 @@ export default {
       {id: 6, users: 'PARTNER', parent_id: 0, description: 'Pricings', icon: 'fas fa-money', path: 'pricings'},
       {id: 7, users: 'USER', parent_id: 0, description: 'Find Printing', icon: 'fas fa-print', path: 'printings'},
       {id: 21, users: 'PARTNER', parent_id: 0, description: 'Products', icon: 'fa fa-shopping-cart', path: 'products'},
-      {id: 22, users: 'PARTNER', parent_id: 0, description: 'Orders', icon: 'fa fa-shopping-cart', path: 'orders'},
+      {id: 22, users: 'PARTNER', parent_id: 0, description: 'Orders', icon: 'fa fa-file', path: 'orders'},
       {id: 23, users: 'PARTNER', parent_id: 0, description: 'Coupons', icon: 'fa fa-tags', path: 'coupons'}
       ],
       toggleSidebar: 'fa fa-toggle-on',
