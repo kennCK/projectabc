@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="product-holder" v-for="i in 2">
+    <div class="product-holder" v-for="i in 20" @click="redirect('marketplace/product/12312312')">
       <div class="product-image">
        <img src="../../assets/img/devices.png">
       </div>
@@ -18,20 +18,29 @@
 </template>
 <style scoped>
   .product-holder{
-    width: 49%;
+    width: 24%;
     float: left;
-    height: 400px;
+    height: 300px;
     margin-right: 1%;
     border: solid 1px #ddd;
+    margin-bottom: 10px;
+    color: #555;
+    margin-top: 25px;
+  }
+  .product-holder:hover{
+    cursor: pointer;
+    border: solid 1px #ffaa81;
+    background: #ffaa81;
+    color: #fff;
   }
   .product-image{
     width: 100%;
     float: left;
-    height: 350px;
+    height: 250px;
   }
 
   .product-image img{
-    height: 350px;
+    height: 250px;
     float: left;
     width: 100%;
   }
@@ -52,7 +61,6 @@
     font-size: 12px;
     margin: 0px !important;
     padding-left: 10px;
-    color: #555;
   }
   .product-price{
     width: 25%;
@@ -61,6 +69,7 @@
     line-height: 50px;
     font-weight: 600;
   }
+
 </style>
 <script>
 import ROUTER from '../../router'

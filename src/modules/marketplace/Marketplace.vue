@@ -9,11 +9,6 @@
       <div class="listing">
         <div class="filter">
           <div class="input-group">
-            <span class="input-group-addon">Category</span>
-            <select class="form-control" v-model="categoryValue">
-              <option value="name">Tees</option>
-              <option value="location">Slings</option>
-            </select>
             <span class="input-group-addon">Search</span>
             <input type="text" class="form-control" v-model="searchValue" placeholder="Search here...">
           </div>
@@ -22,7 +17,6 @@
           <products></products>
         </div>
       </div>
-      <div class="sidebar"></div>
     </div>
   </div>
 </template>
@@ -35,12 +29,13 @@
   margin-bottom: 50px;
 }
 .banner{
-  width: 100%;
+  width: 99%;
   float: left;
   min-height: 50px;
   overflow-y: hidden;
   padding: 20px;
   background: #ffaa81;
+  margin-right: 1%;
 }
 .product-holder{
   width: 100%;
@@ -49,7 +44,7 @@
   overflow-y: hidden;
 }
 .listing{
-  width: 70%;
+  width: 100%;
   float: left;
   min-height: 10px;
   overflow-y: hidden;
@@ -86,12 +81,6 @@
   overflow-y: hidden;
 }
 
-.sidebar{
-  width: 30%;
-  float: left;
-  min-height: 10px;
-  overflow-y: hidden;
-}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -107,7 +96,6 @@ export default {
       config: CONFIG,
       errorMessage: null,
       data: null,
-      categoryValue: null,
       searchValue: null
     }
   },

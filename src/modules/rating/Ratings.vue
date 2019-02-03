@@ -2,7 +2,7 @@
   <span>
     <span class="holder">
       <span class="text">
-        Average Ratings
+        Ratings
         <i v-bind:class="{'far': stars === 0 || i > stars || status === false, 'fas text-warning': i <= stars}" class="fa-star" v-for="i in 5"></i> <label v-if="status !== false">({{avg.toFixed(1)}})</label>
       </span>
       <button class="btn btn-primary pull-right" style="margin-top: 5px;" data-toggle="modal" data-target="#submitRatingModal" v-if="status === false">Submit</button>
