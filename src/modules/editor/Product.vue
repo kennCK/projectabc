@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-bind:class="{'make-active': item !== null && item.active === true}" v-bind:style="{height: (parseInt(item.height) + 90) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="item" v-if="item !== null" v-on:click="makeActive()">
+    <div v-bind:class="{'make-active': item !== null && item.active === true}" v-bind:style="{height: (parseInt(item.height) + 90) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="item" v-if="item !== null">
       <span v-bind:class="{'make-active-header': item.active === true}" class="header">
         <b>
           {{item.title}}

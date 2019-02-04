@@ -159,6 +159,15 @@
 
         <span class="item-setting">
           <span class="title">
+            Border
+          </span>
+          <span class="input">
+            <input type="text" class="form-control" v-model="object.attributes.border">
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
             Action
           </span>
           <span class="input">

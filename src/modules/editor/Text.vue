@@ -266,6 +266,51 @@
 
         <span class="item-setting">
           <span class="title">
+            Border Top
+          </span>
+          <span class="input">
+            <input type="text" class="form-control" v-model="object.attributes.borderTop">
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Border Bo.
+          </span>
+          <span class="input">
+            <input type="text" class="form-control" v-model="object.attributes.borderBottom">
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Border Left
+          </span>
+          <span class="input">
+            <input type="text" class="form-control" v-model="object.attributes.borderLeft">
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
+            Border Right
+          </span>
+          <span class="input">
+            <input type="text" class="form-control" v-model="object.attributes.borderRight">
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
+            P. Left
+          </span>
+          <span class="input">
+            <input type="text" class="form-control" v-model="object.attributes.paddingLeft">
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
             Action
           </span>
           <span class="input">

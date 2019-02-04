@@ -253,7 +253,12 @@ export default {
             lineHeight: '50px',
             textTransform: 'uppercase',
             transform: 'rotate(0deg)',
-            opacity: 1
+            opacity: 1,
+            borderTop: '0px',
+            borderBottom: '0px',
+            borderLeft: '0px',
+            borderRight: '0px',
+            paddingLeft: '0px'
           }
         }
       }else if(type === 'division'){
@@ -277,7 +282,8 @@ export default {
             borderRadius: '0%',
             zIndex: 1,
             transform: 'rotate(0deg)',
-            opacity: 1
+            opacity: 1,
+            border: '0px'
           }
         }
       }else if(type === 'photo'){
