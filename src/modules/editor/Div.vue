@@ -148,6 +148,17 @@
 
         <span class="item-setting">
           <span class="title">
+            Transparency
+          </span>
+          <span class="input">
+            <select class="form-control" v-model="object.attributes.opacity">
+              <option v-for="i in 11" v-bind:value="(i - 1) / 10">{{((i - 1) * 10) + '%'}}</option>
+            </select>
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="title">
             Action
           </span>
           <span class="input">
