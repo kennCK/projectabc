@@ -67,9 +67,22 @@ class AccountController extends APIController
       if($type == 'PARTNER' || $type == 'partner'){
         $product = new Product();
         $product->account_id = $accountId;
+        $product->code = $this->generateProductCode();
         $product->title = 'id_printing';
+        $product->description = 'Auto created service...';
+        $product->status = 'pending';
         $product->created_at = Carbon::now();
         $product->save();
+      }
+    }
+
+    public function generateProductCode(){
+      $code = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 32);
+      $codeExist = Product::where('id', '=', $code)->get();
+      if(sizeof($codeExist) > 0){
+        $this->generateCode();
+      }else{
+        return $code;
       }
     }
 
