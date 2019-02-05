@@ -14,21 +14,59 @@
                 <label><b>Opps! </b>{{errorMessage}}</label>
             </span>
             <br v-if="errorMessage !== null">
-            <br>
+            
             <div class="form-group">
               <label for="exampleInputEmail1">Title</label>
-              <input type="text" class="form-control" placeholder="Type title here..." v-model="item.title">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Description</label>
-              <textarea class="form-control" v-model="item.description" rows="5"></textarea>
+              <input type="text" class="form-control" placeholder="Type title here..." v-model="item.title" v-bind:disabled="item.title === 'id_printing'">
             </div>
 
-            <div class="product-images">
-              <div class="new-image text-primary">
-                <i class="fa fa-plus"></i>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Description</label>
+              <textarea class="form-control" v-model="item.description" rows="5" ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Featured Image</label>
+              <div class="product-images">
+                <div class="new-image text-primary">
+                  <i class="fa fa-plus"></i>
+                </div>
               </div>
             </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Other Images</label>
+              <div class="product-images">
+                <div class="new-image text-primary">
+                  <i class="fa fa-plus"></i>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Prices</label>
+              <div>
+                <select class="form-control" style="width: 40%; float: left;">
+                  <option value="fixed">Fixed</option>
+                  <option value="variable">Variable</option>
+                </select>
+                <button class="btn btn-primary" style="margin-left: 10px;"><i class="fa fa-plus"></i></button>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Attributes</label>
+              <div>
+                <select class="form-control" style="width: 40%; float: left;">
+                  <option value="color">Color</option>
+                  <option value="size">Size</option>
+                </select>
+                <button class="btn btn-primary" style="margin-left: 10px;"><i class="fa fa-plus"></i></button>
+              </div>
+            </div>
+            
 
             <div class="form-group">
               <label for="exampleInputEmail1">Status</label>
@@ -39,7 +77,7 @@
             </div>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-danger pull-left" @click="deleteItem()">Delete</button>
+              <button type="button" class="btn btn-danger pull-left" @click="close()">Close</button>
               <button type="button" class="btn btn-primary" @click="update()">Update</button>
           </div>
         </div>

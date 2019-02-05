@@ -7,6 +7,7 @@
           <tr>
             <td>Title</td>
             <td>Description</td>
+            <td>Price Range</td>
             <td>Status</td>
           </tr>
         </thead>
@@ -14,6 +15,7 @@
           <tr v-for="item, index in data" v-if="data !== null" @click="editModal(item)" class="item">
             <td>{{item.title}}</td>
             <td>{{item.description}}</td>
+            <td></td>
             <td>{{item.status}}</td>
           </tr>
         </tbody>
