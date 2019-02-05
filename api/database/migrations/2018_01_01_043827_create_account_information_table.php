@@ -13,19 +13,19 @@ class CreateAccountInformationTable extends Migration
      */
     public function up()
     {
-        Schema::create('account_informations', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('account_id');
-            $table->string('first_name',100)->nullable();
-            $table->string('middle_name',100)->nullable();
-            $table->string('last_name',100)->nullable();
-            $table->date('birth_date')->nullable();
-            $table->string('sex',20)->nullable();
-            $table->string('cellular_number',20)->nullable();
-            $table->string('address')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        // Schema::create('account_informations', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->unsignedInteger('account_id');
+        //     $table->string('first_name',100)->nullable();
+        //     $table->string('middle_name',100)->nullable();
+        //     $table->string('last_name',100)->nullable();
+        //     $table->date('birth_date')->nullable();
+        //     $table->string('sex',20)->nullable();
+        //     $table->string('cellular_number',20)->nullable();
+        //     $table->string('address')->nullable();
+        //     $table->timestamps();
+        //     $table->softDeletes();
+        // });
     }
 
     /**
