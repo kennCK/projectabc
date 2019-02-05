@@ -25,7 +25,6 @@
               <label for="exampleInputEmail1">Description</label>
               <input type="text" class="form-control" placeholder="Type description here..." v-model="description">
             </div>
-
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#createProductModal">Cancel</button>

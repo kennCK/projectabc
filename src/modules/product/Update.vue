@@ -21,7 +21,21 @@
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Description</label>
-              <input type="text" class="form-control" placeholder="Type description here..." v-model="item.description">
+              <textarea class="form-control" v-model="item.description" rows="5"></textarea>
+            </div>
+
+            <div class="product-images">
+              <div class="new-image text-primary">
+                <i class="fa fa-plus"></i>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Status</label>
+              <select class="form-control" v-model="item.status">
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+              </select>
             </div>
           </div>
           <div class="modal-footer">
@@ -70,6 +84,27 @@
   width: 100%;
   float: left;
   height: auto;
+}
+.product-images{
+  width: 100%;
+  float: left;
+  min-height: 10px;
+  overflow-y: hidden;
+}
+.new-image{
+  height: 80px;
+  width: 80px;
+  border-radius: 5px;
+  border: solid 1px #ddd;
+  float: left;
+  text-align: center;
+}
+.new-image i{
+  line-height: 80px;
+  font-size: 24px;
+}
+.new-image:hover{
+  cursor: pointer;
 }
 </style>
 <script>

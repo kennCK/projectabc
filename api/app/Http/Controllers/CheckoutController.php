@@ -8,6 +8,7 @@ use App\Checkout;
 use App\CheckoutItem;
 use App\StripeCard;
 use App\PaymentMethod;
+use App\Product;
 use App\Pricing;
 use App\Client;
 use App\Template;
@@ -126,7 +127,11 @@ class CheckoutController extends APIController
       if(sizeof($checkout) > 0){
         $result = null;
         if($checkout['partner'] != null && $checkout['partner'] != '' && $checkout['partner'] > 0){
-          $result = Pricing::where('account_id', '=', $checkout['partner'])->Where('minimum', '<=', $total)->where('maximum', '>=', $total)->first();  
+          $product = Product::where('title', '=', 'id_printing')->orderBy('created_at', 'asc')->first();
+          if($product){
+            $productId = $product->id;
+            $result = Pricing::where('account_id', '=', $productId)->Where('minimum', '<=', $total)->where('maximum', '>=', $total)->first(); 
+          }
         }
         return ($result) ? $result->price : 0;
       }else{
