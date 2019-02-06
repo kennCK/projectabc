@@ -345,3 +345,10 @@ Route::post('/coupons/retrieve', "CouponController@retrieve");
 Route::post('/coupons/update', "CouponController@update");
 Route::post('/coupons/delete', "CouponController@delete");
 Route::get('/coupons/test', 'CouponController@test');
+
+//Guides Controller
+Route::post('/guides/create', "GuideController@create");
+Route::post('/guides/retrieve', "GuideController@retrieve");
+Route::post('/guides/update', "GuideController@update");
+Route::post('/guides/delete', "GuideController@delete");
+Route::get('/guides/test', 'GuideController@test');

@@ -18,9 +18,12 @@
                 Settings
               </label>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSettingsButton">
-                  <span class="dropdown-item disabled">Settings</span>
-                  <span class="dropdown-item" v-on:click="show(item, 'updateSettings')">Update</span>
-                  <span class="dropdown-item text-danger" v-on:click="show(item, 'deleteModal')" v-if="item.status !== 'purchased'">Delete</span>
+                <span class="dropdown-item disabled">Settings</span>
+                <span class="dropdown-item" v-on:click="show(item, 'editSettings')">Edit Settings</span>
+                <span class="dropdown-item" v-on:click="show(item, 'guideModal')" v-if="user.type === 'ADMIN'">Guide</span>
+                <span class="dropdown-item" v-on:click="show(item, 'updateSettings')" v-if="user.type === 'ADMIN'">Update</span>
+                <span class="dropdown-item" v-on:click="show(item, 'guideViewModal')" v-if="user.type !== 'ADMIN' && item.status === 'purchased'">View Guide</span>
+                <span class="dropdown-item text-danger" v-on:click="show(item, 'deleteModal')" v-if="item.status !== 'purchased'">Delete</span>
               </div>
             </div>
           </li>
@@ -30,6 +33,9 @@
     <delete-modal></delete-modal>
     <update></update>
     <editor></editor>
+    <guide-modal></guide-modal>
+    <guide-view></guide-view>
+    <edit-setting></edit-setting>
   </div>
 </template>
 <style scoped>
@@ -132,7 +138,10 @@ export default {
     'update': require('modules/editor/Update.vue'),
     'editor': require('modules/editor/Editor.vue'),
     'objects': require('modules/object/Objects.vue'),
-    'delete-modal': require('modules/Editor/Delete.vue')
+    'delete-modal': require('modules/Editor/Delete.vue'),
+    'guide-modal': require('modules/Editor/Guide.vue'),
+    'guide-view': require('modules/Editor/ViewGuide.vue'),
+    'edit-setting': require('modules/Editor/EditSetting.vue')
   },
   props: ['item', 'index'],
   methods: {
@@ -172,6 +181,33 @@ export default {
             this.$children[i].id = item.id
             setTimeout(() => {
               $('#deleteTemplateModal').modal({
+                backdrop: 'static',
+                show: true,
+                keyboard: false
+              })
+            }, 50)
+          }else if(id === 'guideModal'){
+            this.$children[i].item = item
+            setTimeout(() => {
+              $('#createGuideModal').modal({
+                backdrop: 'static',
+                show: true,
+                keyboard: false
+              })
+            }, 50)
+          }else if(id === 'guideViewModal'){
+            this.$children[i].item = item
+            setTimeout(() => {
+              $('#viewGuideModal').modal({
+                backdrop: 'static',
+                show: true,
+                keyboard: false
+              })
+            }, 50)
+          }else if(id === 'editSettings'){
+            this.$children[i].item = item
+            setTimeout(() => {
+              $('#editSettingsModal').modal({
                 backdrop: 'static',
                 show: true,
                 keyboard: false

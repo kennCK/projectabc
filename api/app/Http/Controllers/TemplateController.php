@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Template;
+use App\Guide;
 class TemplateController extends APIController
 {
     function __construct(){
@@ -22,6 +23,7 @@ class TemplateController extends APIController
         $i = 0;
         foreach ($result as $key) {
           $this->response['data'][$i]['objects'] = $this->getObjects($result[$i]['id']);
+          $this->response['data'][$i]['guide'] = ($result[$i]['status'] == 'purchased') ? $this->getGuide($result[$i]['purchased']) : $this->getGuide($result[$i]['id']);
           $this->response['data'][$i]['active'] = false;
          $i++; 
         }
@@ -34,5 +36,10 @@ class TemplateController extends APIController
       $this->model = new Template();
       $this->retrieveDB($data);
       return $this->response();
+    }
+
+    public function getGuide($id){
+      $result = Guide::where('payload_value', '=', $id)->where('payload', '=', 'template')->get();
+      return (sizeof($result) > 0) ? $result[0] : null;
     }
 }
