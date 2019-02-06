@@ -35,6 +35,7 @@
                       <span class="dropdown-item" v-if="item.status === 'not_verified'" @click="updateStatus('verified', item.id)">Verified</span>
                       <span class="dropdown-item" v-if="item.status === 'verified' || item.status === 'printed'" @click="updateStatus('not_verified', item.id)">Need Verification</span>
                       <span class="dropdown-item" @click="editProfile(item.id)">Edit Profile</span>
+                      <span class="dropdown-item text-danger" @click="remove(item.id)">Delete</span>
                   </div>
                 </div>
               </li>
@@ -310,6 +311,19 @@ export default {
         type: 'cards'
       }
       this.APIRequest('checkout_items/create', parameter).then(response => {
+        if(response.data > 0){
+          AUTH.checkAuthentication(null)
+          this.retrieve()
+        }
+      })
+    },
+    remove(id){
+      let parameter = {
+        id: id
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('employees/delete', parameter).then(response => {
+        $('#loading').css({'display': 'none'})
         if(response.data > 0){
           AUTH.checkAuthentication(null)
           this.retrieve()

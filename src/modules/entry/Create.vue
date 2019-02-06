@@ -18,14 +18,14 @@
             <br>
             <div class="form-group">
               <label for="exampleInputEmail1">Front Template</label>
-              <select v-model="newEntry.front_template" class="form-control" @change="reset()">
+              <select v-model="newEntry.front_template" class="form-control" @change="getColumns()">
                 <option v-for="item, index in templates" v-if="templates !== null && item.settings === 'front'" v-bind:value="item.id">{{item.title}}</option>
               </select>
             </div>
 
             <div class="form-group">
               <label for="exampleInputEmail1">Back Template</label>
-              <select v-model="newEntry.back_template" class="form-control" @change="reset()">
+              <select v-model="newEntry.back_template" class="form-control" @change="getColumns()">
                 <option v-for="item, index in templates" v-if="templates !== null && item.settings === 'back'" v-bind:value="item.id">{{item.title}}</option>
               </select>
             </div>
@@ -126,7 +126,7 @@ export default {
       columns: null,
       file: null,
       fileIndex: null,
-      sync: false
+      sync: true
     }
   },
   methods: {
@@ -159,12 +159,12 @@ export default {
       })
     },
     reset(){
-      this.sync = false
+      this.sync = true
     },
     getColumns(){
       let parameter = {
-        front: this.newEntry.front_template,
-        back: this.newEntry.back_template
+        front: (this.newEntry.front_template) ? this.newEntry.front_template : null,
+        back: (this.newEntry.back_template) ? this.newEntry.back_template : null
       }
       this.APIRequest('objects/retrieve_dynamic_without_attributes', parameter).done(response => {
         this.sync = true

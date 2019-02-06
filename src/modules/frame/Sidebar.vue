@@ -412,7 +412,7 @@ export default {
       {id: 4, users: 'ALL', parent_id: 0, description: 'Images', icon: 'fas fa-image', path: 'images'},
       {id: 5, users: 'ALL', parent_id: 0, description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace'},
       // {id: 5, users: 'ALL', parent_id: 0, description: 'Billings', icon: 'fas fa-credit-card', path: 'billings'},
-      {id: 6, users: 'PARTNER', parent_id: 0, description: 'Pricings', icon: 'fas fa-money', path: 'pricings'},
+      // {id: 6, users: 'PARTNER', parent_id: 0, description: 'Pricings', icon: 'fas fa-money', path: 'pricings'},
       {id: 7, users: 'USER', parent_id: 0, description: 'Find Printing', icon: 'fas fa-print', path: 'printings'},
       {id: 21, users: 'PARTNER', parent_id: 0, description: 'Products', icon: 'fa fa-shopping-cart', path: 'products'},
       {id: 22, users: 'PARTNER', parent_id: 0, description: 'Orders', icon: 'fa fa-file', path: 'orders'},
