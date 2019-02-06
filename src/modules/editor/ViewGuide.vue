@@ -1,6 +1,6 @@
 <template>
   <div id="guideViewModal">
-    <div class="modal fade" id="viewGuideModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="item !== null">
+    <div class="modal fade" id="viewGuideModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="item !== null && item.guide !== null">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
