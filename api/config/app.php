@@ -178,6 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         LaravelQRCode\Providers\QRCodeServiceProvider::class,
+        Skovmand\Mailchimp\MailchimpServiceProvider::class,
     ],
 
     /*

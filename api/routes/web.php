@@ -352,3 +352,10 @@ Route::post('/guides/retrieve', "GuideController@retrieve");
 Route::post('/guides/update', "GuideController@update");
 Route::post('/guides/delete', "GuideController@delete");
 Route::get('/guides/test', 'GuideController@test');
+
+//Emails Controller
+Route::post('/emails/create', "EmailController@create");
+Route::post('/emails/retrieve', "EmailController@retrieve");
+Route::post('/emails/update', "EmailController@update");
+Route::post('/emails/delete', "EmailController@delete");
+Route::get('/emails/test', 'EmailController@test');
