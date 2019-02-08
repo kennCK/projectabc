@@ -7,23 +7,6 @@
     </div> 
   </div> 
 </template>
-<script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-export default {
-  data(){
-    return {
-      user: AUTH.user,
-      tokenData: AUTH.tokenData
-    }
-  },
-  methods: {
-    redirect(parameter){
-      ROUTER.push(parameter)
-    }
-  }
-}
-</script>
 <style type="text/css">
 
 
@@ -104,7 +87,7 @@ body{
   .login-content-holder{
     width: 100%;
     float: left;
-    min-height: 87.5vh;
+    min-height: 400px;
     overflow: hidden;
   }
 /*---------------------------------------------
@@ -258,3 +241,20 @@ body{
   } 
 
 </style>
+<script>
+import ROUTER from '../../router'
+import AUTH from '../../services/auth'
+export default {
+  data(){
+    return {
+      user: AUTH.user,
+      tokenData: AUTH.tokenData
+    }
+  },
+  methods: {
+    redirect(parameter){
+      ROUTER.push(parameter)
+    }
+  }
+}
+</script>

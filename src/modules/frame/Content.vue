@@ -8,7 +8,7 @@
 <style type="text/css">
   .content-holder{
     width: 100%;
-    min-height: 86vh;
+    min-height: 400px;
     float: left;
     overflow: hidden;
   }/*-- content-holder --*/

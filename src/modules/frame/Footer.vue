@@ -15,7 +15,7 @@
 <style type="text/css">
 footer {
   width:100%;
-  height:5vh;   /* Height of the footer */
+  height:30px;   /* Height of the footer */
   float: left;
   background: #fff;
   padding: 10px 0 10px 0;

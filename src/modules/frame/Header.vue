@@ -193,7 +193,7 @@ body{
 
   .system-header{
     float: left;
-    height: 8vh;
+    height: 50px;
     font-size: 24px;
     width: 18%;
     background: #028170;
@@ -204,7 +204,7 @@ body{
   
   .header-navbar{
     background: #22b173;
-    height: 8vh;
+    height: 50px;
     float: left;
     width: 82%;
     position: fixed;
@@ -227,7 +227,7 @@ body{
 
 -----------------------------------------------*/
   .header-navbar-nav{
-      height: 8vh;
+      height: 50px;
       float: left;
       color: #fff;
       width: 15%;
@@ -263,14 +263,14 @@ body{
 }
 .nav-item{
   width: 5%;
-  height: 8vh;
+  height: 50px;
   text-align: center;
   float: right;
   color: #fff;
   display: inline;
 }
 .left-menu-icons, right-menu-icons{
-  height: 8vh;
+  height: 50px;
   float: left;
   width: 50%;
   position: fixed;

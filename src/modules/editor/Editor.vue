@@ -76,18 +76,21 @@
 .editor-holder{
   width: 100%;
   float: left;
-  height: 55vh;
+  min-height: 400px;
+  overflow-y: hidden;
 }
 .tools{
   width: 5%;
   float: left;
-  height: 55vh;
+  min-height: 400px;
+  overflow-y: hidden;
   border-right: solid 1px #eee;
 }
 .preview{
   width: 95%;
   float: left;
-  height: 55vh;
+  min-height: 400px;
+  overflow-y: hidden;
 }
 ul{
   list-style: none;

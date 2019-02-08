@@ -59,11 +59,11 @@
 <style>
 
 .main-sidebar, .content-holder{  
-  min-height: 92vh;
+  min-height: 200px;
   overflow: hidden;
   transition: all 1s ease 0s;
   z-index: 1;
-  margin-top: 8vh;
+  margin-top: 50px;
 }
 .main-sidebar{
   position: fixed;
@@ -308,7 +308,7 @@
   .main-sidebar ul{
     background: #fff;
     width: 90%;
-    min-height: 84.5vh;
+    min-height: 400px;
   }
    .sm-title{
     text-align: center;

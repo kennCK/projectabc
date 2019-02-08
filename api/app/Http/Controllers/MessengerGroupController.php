@@ -133,7 +133,9 @@ class MessengerGroupController extends APIController
 
       $accounts = null;
       if(($accountType == 'user' || $accountType == 'USER') && $flag == false){
-        $result[0]['flag'] = true;
+        if(sizeof($result) > 0){
+          $result[0]['flag'] = true;
+        }
         $accounts = $this->getPartner($username);
       }
 
