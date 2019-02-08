@@ -8,7 +8,7 @@
       <div class="partner-info">
         <label><h5>{{item.account.billing.company}}</h5></label>
         <label><i class="fas fa-map-marker-alt"></i>{{item.account.billing.address}}</label>
-        <label class="text-warning action-link" v-on:click="redirect('/messenger/' + item.username)"><i class="fas fa-envelope"></i>Send Message</label>
+        <label class="text-warning action-link" v-on:click="redirect('/messenger/' + item.account.username)"><i class="fas fa-envelope"></i>Send Message</label>
         <label class="text-danger action-link"><i class="fas fa-store"></i>View Store</label>
       </div>
       <div class="partner-reviews">
