@@ -359,3 +359,13 @@ Route::post('/emails/retrieve', "EmailController@retrieve");
 Route::post('/emails/update', "EmailController@update");
 Route::post('/emails/delete', "EmailController@delete");
 Route::get('/emails/test', 'EmailController@test');
+
+
+Route::get('/mail', function () {
+  Mail::send('emails.test', [], function ($message) {
+    $message
+      ->from('support@idfactory.ph', 'ID FACTORY')
+      ->to('kennettecanales@gmail.com', 'kennettecanales')
+      ->subject('FROM IDFACRTORY TEST');
+  });
+});
