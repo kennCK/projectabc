@@ -19,6 +19,7 @@ class CheckoutItemController extends APIController
         'payload' => $data['payload'],
         'payload_value' => $data['payload_value'],
         'price' => $data['price'],
+        'qty' => $data['qty'],
         'status' => 'printing'
       );
     	$accountId = $data['account_id'];

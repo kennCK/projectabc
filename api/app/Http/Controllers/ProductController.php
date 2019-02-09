@@ -91,7 +91,7 @@ class ProductController extends APIController
           $i++;
         }
       }
-      return $result;
+      return (sizeof($result) > 0) ? $result[0] : null;
     }
 
     public function manageTags($tags){
