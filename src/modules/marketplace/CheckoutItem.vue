@@ -9,14 +9,13 @@
       </div>
       <div class="product-details">
         <div class="product-title">
-          <h3>
+          <h5 style="line-height: 30px;">
             {{data.product.title}}
             <button class="btn btn-danger pull-right" @click="remove(data.id)"><i class="fa fa-trash"></i></button>
-          </h3>
+          </h5>
         </div>
-        <div v-if="data.product.price !== null" class="product-row text-primary">
-          <label v-if="data.product.price.length === 1">PHP {{data.product.price[0].price}}</label>
-          <label v-if="data.product.price.length > 1">PHP {{data.product.price[data.product.price.length - 1].price + ' - ' + data.product.price[0].price}}</label>
+        <div v-if="data.price !== null" class="product-row text-primary">
+          <label>PHP {{data.price}} x {{data.qty}} = PHP {{parseFloat(data.price) * parseFloat(data.qty)}}</label>
         </div>
         <div class="product-row">
           <label class="qty-action" @click="minus(data)" v-if="data.qty > 1"><i class="fas fa-minus"></i></label>

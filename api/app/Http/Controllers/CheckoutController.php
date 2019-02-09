@@ -189,7 +189,9 @@ class CheckoutController extends APIController
               $this->subTotal += $price;
             }
           }else if($payload == 'product'){
+            $this->subTotal += floatval($result[$i]['price']) * floatval($result[$i]['qty']);
             $result[$i]['product'] = app('App\Http\Controllers\ProductController')->retrieveProductById($payloadValue, $accountId);
+            
           }
           $i++;
         }

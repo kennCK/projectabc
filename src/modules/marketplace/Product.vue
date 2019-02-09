@@ -25,6 +25,26 @@
         <div class="product-row text-primary" v-if="data.price !== null">
           <label v-if="data.price.length === 1">PHP {{data.price[0].price}}</label>
           <label v-if="data.price.length > 1">PHP {{data.price[data.price.length - 1].price + ' - ' + data.price[0].price}}</label>
+          <i class="fa fa-chevron-down show-prices" style="padding-left: 20px;" @click="showPrice(true)" v-if="data.price.length > 1 && priceFlag === false"></i>
+          <i class="fa fa-chevron-up show-prices" style="padding-left: 20px;" @click="showPrice(false)" v-if="data.price.length > 1 && priceFlag === true"></i>
+        </div>
+        <div class="product-row" v-if="data.price.length > 1 && priceFlag === true">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <td>Minimum</td>
+                <td>Maximum</td>
+                <td>Price</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item, index in data.price">
+                <td>{{item.minimum}}</td>
+                <td>{{item.maximum}}</td>
+                <td>PHP {{item.price}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="product-row" v-if="data.color !== null">
           <label>COLOR</label>
@@ -139,10 +159,11 @@
     overflow-y: hidden;
   }
   .product-details{
-    height: 50px;
+    min-height: 50px;
     width: 58%;
     margin-left: 2%;
     float: left;
+    overflow-y: hidden;
   }
   .product-title{
     width: 100%;
@@ -254,6 +275,10 @@
   .menu-active{
     color: #000;
   }
+  .show-prices:hover{
+    cursor: pointer;
+    color: #ffaa81;
+  }
 </style>
 <script>
 import ROUTER from '../../router'
@@ -279,7 +304,8 @@ export default {
       ],
       prevMenuIndex: 0,
       selectedImage: null,
-      qty: 1
+      qty: 1,
+      priceFlag: false
     }
   },
   components: {
@@ -336,7 +362,7 @@ export default {
         account_id: this.user.userID,
         payload: 'product',
         payload_value: id,
-        price: 0,
+        price: this.getPrice(),
         qty: this.qty,
         type: 'marketplace'
       }
@@ -348,6 +374,28 @@ export default {
           this.retrieve()
         }
       })
+    },
+    showPrice(flag){
+      this.priceFlag = flag
+    },
+    getPrice(){
+      let price = this.data.price
+      if(price.length > 0){
+        // variable
+        for (var i = 0; i < price.length; i++) {
+          if(this.qty >= price[i].minimum && this.qty <= price[i].maximum){
+            return price[i].price
+          }
+        }
+        if(this.qty > price[price.length - 1].maximum){
+          return price[price.length - 1].maximum
+        }
+      }else if(price.length === 1){
+        if(price[0].type === 'fixed'){
+          return price[0].price
+        }
+      }
+      return 0
     }
   }
 }
