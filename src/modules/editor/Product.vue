@@ -144,6 +144,7 @@ export default {
         payload: 'template',
         payload_value: item.id,
         price: item.price,
+        qty: 1,
         type: 'direct'
       }
       this.APIRequest('checkout_items/create', parameter).then(response => {

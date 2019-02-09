@@ -308,6 +308,7 @@ export default {
         payload: 'employee',
         payload_value: id,
         price: 0,
+        qty: 1,
         type: 'cards'
       }
       this.APIRequest('checkout_items/create', parameter).then(response => {

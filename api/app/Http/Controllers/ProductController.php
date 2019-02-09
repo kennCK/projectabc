@@ -135,7 +135,6 @@ class ProductController extends APIController
       }else{
         return false;
       }
-      return (sizeof($result) > 0) ? true : false;
     }
 
     public function getColor($id){

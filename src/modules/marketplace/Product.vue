@@ -36,13 +36,13 @@
         </div>
         <div class="product-row">
           <label>Quantity</label>
-          <select class="qty-input">
+          <select class="qty-input" v-model="qty">
             <option v-for="i in 20">{{i}}</option>
           </select>
         </div>
         <div class="product-row" v-if="data.checkout_flag === true">
           <span class="alert bg-primary">
-            This product was already added to your cart. Proceed to checkout now!
+            This product was added to your cart. Proceed to checkout now!
           </span>
         </div>
         <div class="product-row">
@@ -278,7 +278,8 @@ export default {
         {title: 'Reviews', flag: false}
       ],
       prevMenuIndex: 0,
-      selectedImage: null
+      selectedImage: null,
+      qty: 1
     }
   },
   components: {
@@ -336,6 +337,7 @@ export default {
         payload: 'product',
         payload_value: id,
         price: 0,
+        qty: this.qty,
         type: 'marketplace'
       }
       $('#loading').css({display: 'block'})

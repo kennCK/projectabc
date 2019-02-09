@@ -48,6 +48,7 @@
       <span class="sidebar pull-right">
         <cards :item="data[0]" :method="method" v-if="data[0].payload === 'cards'"></cards>
         <direct :item="data[0]" :method="method" v-if="data[0].payload === 'direct'"></direct>
+        <marketplace-checkout :item="data[0]" :method="method" v-if="data[0].payload === 'marketplace'"></marketplace-checkout>
       </span>
     </span>
     <checkout-empty v-if="data === null || data[0].items === null" :title="'You don\'t have items on your cart yet!'" :action="'Start checking out items now!'" :icon="'far fa-smile'" :iconColor="'text-primary'"></checkout-empty>
@@ -147,6 +148,7 @@ export default {
     'rating': require('modules/rating/Ratings.vue'),
     'cards': require('modules/checkout/Cards.vue'),
     'direct': require('modules/checkout/Direct.vue'),
+    'marketplace-checkout': require('modules/checkout/Marketplace.vue'),
     'marketplace-product': require('modules/marketplace/CheckoutItem.vue'),
     'checkout-empty': require('modules/empty/EmptyDynamicIcon.vue')
   },

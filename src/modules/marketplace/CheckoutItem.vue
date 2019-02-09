@@ -19,7 +19,9 @@
           <label v-if="data.product.price.length > 1">PHP {{data.product.price[data.product.price.length - 1].price + ' - ' + data.product.price[0].price}}</label>
         </div>
         <div class="product-row">
-          
+          <label class="qty-action" @click="minus(data)" v-if="data.qty > 1"><i class="fas fa-minus"></i></label>
+          <label class="qty-label">{{data.qty}}</label>
+          <label class="qty-action" @click="plus(data)"><i class="fas fa-plus"></i></label>
         </div>
       </div>
     </div>
@@ -69,6 +71,27 @@
     font-weight: 600;
     line-height: 40px;
   }
+  .qty-action{
+    font-size: 20px;
+    line-height: 38px;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: solid 1px #ddd;
+    color: #ffaa81;
+  }
+  .qty-action:hover{
+    border: solid 1px #ffaa81;
+    cursor: pointer;
+  }
+  .qty-label{
+    font-size: 20px;
+    line-height: 38px;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: solid 1px #ddd;
+  }
 </style>
 <script>
 import ROUTER from '../../router'
@@ -89,6 +112,32 @@ export default {
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    plus(data){
+      let qty = parseInt(data.qty) + 1
+      let parameter = {
+        id: data.id,
+        qty: qty
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest(this.route + '/update', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        AUTH.checkAuthentication(null)
+        this.$parent.retrieve()
+      })
+    },
+    minus(data){
+      let qty = parseInt(data.qty) - 1
+      let parameter = {
+        id: data.id,
+        qty: qty
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest(this.route + '/update', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        AUTH.checkAuthentication(null)
+        this.$parent.retrieve()
+      })
     },
     remove(id){
       let parameter = {
