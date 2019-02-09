@@ -7,6 +7,9 @@ use App\Product;
 use App\ProductAttribute;
 use App\Pricing;
 use App\AccountImage;
+use App\Wishlist;
+use App\CheckoutItem;
+use App\Checkout;
 class ProductController extends APIController
 {
     function __construct(){
@@ -37,6 +40,7 @@ class ProductController extends APIController
 
     public function retrieve(Request $request){
       $data = $request->all();
+      $accountId = $data['account_id'];
       $this->model = new Product();
       $this->retrieveDB($data);
       $result = $this->response['data'];
@@ -50,15 +54,57 @@ class ProductController extends APIController
           $this->response['data'][$i]['size'] = $this->getSize($result[$i]['id']);
           $this->response['data'][$i]['featured'] = $this->getFeaturedImage($result[$i]['id']);
           $this->response['data'][$i]['images'] = $this->getImages($result[$i]['id']);
+          $this->response['data'][$i]['tag_array'] = $this->manageTags($result[$i]['tags']);
+          $this->response['data'][$i]['wishlist_flag'] = $this->checkWishlist($result[$i]['id'], $accountId);
+          $this->response['data'][$i]['checkout_flag'] = $this->checkCheckout($result[$i]['id'], $accountId);
           $i++;
         }
       }
       return $this->response();
     }
 
+    public function manageTags($tags){
+      $result = array();
+      if($tags != null){
+        if(strpos($tags, '#')){
+            $array  = explode('#', $tags);
+            if(sizeof($array) > 0){
+              for ($i=0; $i < sizeof($array) - 1; $i++) { 
+                $resultArray = array(
+                  'title' => $array[$i]
+                );
+                $result[] = $resultArray;
+              }
+              return $result;
+            }else{
+              return null;
+            }
+        }else{
+        }
+      }else{
+        return null;
+      }
+    }
+
     public function getPrice($id){
       $result = Pricing::where('product_id', '=', $id)->orderBy('minimum', 'asc')->get();
       return (sizeof($result) > 0) ? $result : null;
+    }
+
+   public function checkWishlist($id, $accountId){
+      $result = Wishlist::where('payload_value', '=', $id)->where('payload', '=', 'product')->where('account_id', '=', $accountId)->get();
+      return (sizeof($result) > 0) ? true : false;
+    }
+
+    public function checkCheckout($id, $accountId){
+      $result = Checkout::where('account_id', '=', $accountId)->where('status', '=', 'added')->get();
+      if(sizeof($result) > 0){
+        $itemResult = CheckoutItem::where('checkout_id', '=', $result[0]['id'])->where('payload', '=', 'product')->where('payload_value', '=', $id)->get();
+        return (sizeof($itemResult) > 0) ? true : false;
+      }else{
+        return false;
+      }
+      return (sizeof($result) > 0) ? true : false;
     }
 
     public function getColor($id){

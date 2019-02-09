@@ -360,6 +360,13 @@ Route::post('/emails/update', "EmailController@update");
 Route::post('/emails/delete', "EmailController@delete");
 Route::get('/emails/test', 'EmailController@test');
 
+//Wishlists Controller
+Route::post('/wishlists/create', "WishlistController@create");
+Route::post('/wishlists/retrieve', "WishlistController@retrieve");
+Route::post('/emails/update', "WishlistController@update");
+Route::post('/wishlists/delete', "WishlistController@delete");
+Route::get('/wishlists/test', 'WishlistController@test');
+
 
 Route::get('/mail', function () {
   Mail::send('emails.test', [], function ($message) {

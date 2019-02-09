@@ -115,7 +115,8 @@ export default {
           value: 'published',
           column: 'status',
           clause: '='
-        }]
+        }],
+        account_id: this.user.userID
       }
       this.APIRequest('products/retrieve', parameter).then(response => {
         if(response.data.length > 0){

@@ -40,11 +40,22 @@
             <option v-for="i in 20">{{i}}</option>
           </select>
         </div>
+        <div class="product-row" v-if="data.checkout_flag === true">
+          <span class="alert bg-primary">
+            This product was already added to your cart. Proceed to checkout now!
+          </span>
+        </div>
         <div class="product-row">
-          <button class="btn btn-primary"><i class="fa fa-shopping-cart" style="padding-right: 10px;"></i>ADD TO CART</button>
+          <button class="btn btn-primary" @click="addToCart(data.id)" v-if="data.checkout_flag === false"><i class="fa fa-shopping-cart" style="padding-right: 10px;"></i>ADD TO CART</button>
+          <button class="btn btn-danger" @click="addToWishlist(data.id)" v-if="data.wishlist_flag === false && data.checkout_flag === false"><i class="far fa-heart" style="padding-right: 10px;"></i>ADD TO WISHLIST</button>
+          <button class="btn btn-warning" @click="redirect('/checkout')" v-if="data.checkout_flag === true">PROCEED TO CHECKOUT</button>
         </div>
         <div class="product-row-rating" style="margin-top: 5px;">
           <ratings :payload="'product'" :payloadValue="data.id"></ratings>
+        </div>
+        <div class="product-row-tags" v-if="data.tags !== null && data.tag_array !== null">
+          <label style="width: 15%;">Tags</label>
+          <label class="tag-label" v-for="item, index in data.tag_array">{{item.title}}</label>
         </div>
       </div>
     </div>
@@ -60,9 +71,12 @@
         </label>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 1">
-        <label>Shippings</label>
+        <label>Supplier</label>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 2">
+        <label>Shippings</label>
+      </div>
+      <div class="details-holder" v-if="prevMenuIndex === 3">
         <product-comments :payloadValue="data.id" :payload="'product'"></product-comments>
       </div>
     </div>
@@ -146,6 +160,14 @@
     font-size: 16px;
     line-height: 40px;
   }
+  .product-row-tags{
+    width: 100%;
+    float: left;
+    min-height: 40px;
+    overflow-y: hidden;
+    font-weight: 600;
+    line-height: 40px;
+  }
   .product-row-rating{
     width: 100%;
     float: left;
@@ -164,6 +186,21 @@
     float: left;
     border-radius: 5px;
     border: solid 1px #ffaa81;
+    text-align: center !important;
+  }
+  .product-row-tags label{
+    float: left;
+  }
+  .tag-label{
+    height: 35px;
+    line-height: 35px;
+    background: #ffaa81;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #fff;
+    margin-right: 5px;
+    border-radius: 5px;
+    margin-top: 2px;
   }
   .attribute{
     width: 50px;
@@ -203,7 +240,7 @@
   .product-menu li{
     height: 50px;
     float: left;
-    width: 33%;
+    width: 25%;
     line-height: 50px;
     padding-left: 10px;
     font-weight: 600;
@@ -236,6 +273,7 @@ export default {
       code: this.$route.params.code,
       productMenu: [
         {title: 'Product Details', flag: true},
+        {title: 'Supplier', flag: false},
         {title: 'Shippings', flag: false},
         {title: 'Comments', flag: false}
       ],
@@ -271,11 +309,41 @@ export default {
           value: this.code,
           column: 'code',
           clause: '='
-        }]
+        }],
+        account_id: this.user.userID
       }
       this.APIRequest('products/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data[0]
+        }
+      })
+    },
+    addToWishlist(id){
+      let parameter = {
+        payload: 'product',
+        payload_value: id,
+        account_id: this.user.userID
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('wishlists/create', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        this.retrieve()
+      })
+    },
+    addToCart(id){
+      let parameter = {
+        account_id: this.user.userID,
+        payload: 'product',
+        payload_value: id,
+        price: 0,
+        type: 'marketplace'
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('checkout_items/create', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data > 0){
+          AUTH.checkAuthentication(null)
+          this.retrieve()
         }
       })
     }
