@@ -57,7 +57,6 @@
   </div>  
 </template>
 <style>
-
 .main-sidebar, .content-holder{  
   min-height: 200px;
   overflow: hidden;
@@ -66,8 +65,7 @@
   margin-top: 50px;
 }
 .main-sidebar{
-  position: fixed;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 .main-sidebar i{
@@ -206,8 +204,8 @@
     display: block;
   }
   .content-holder{
-    width: 81%;
-    margin: 60px 0% 0 19%;
+    width: 81% !important;
+    margin: 60px 0px 0px 0px;
     float: left;
   }
   /*  Change with Menu Toggled */
@@ -216,7 +214,7 @@
   }
   .content-holder.hidden{
     width: 94%;
-    margin: 60px 0% 0 6%;
+    margin: 60px 0px 0px 0px;
     float: left;
   }
 }
@@ -228,8 +226,8 @@
     float: left;
   }
   .content-holder{
-    width: 72%;
-    margin: 60px 0% 0 25%;
+    width: 72% !important;
+    margin: 60px 0px 0px 0px;
     float: left;
   }
   .main-sidebar.active{
@@ -248,7 +246,7 @@
   }
   .content-holder.hidden{
     width: 94%;
-    margin: 60px 0% 0 6%;
+    margin: 60px 0px 0px 0px;
     float: left;
   }
 }
@@ -299,8 +297,8 @@
     margin-top: 50px;
   }
   .content-holder{
-    width: 10px;
-    min-width: 96%;
+    min-height: 10px;
+    width: 96% !important;
     overflow-y: hidden;
     margin: 60px 2% 0 2%;
     float: left;
@@ -358,7 +356,7 @@
   }
 
   .content-holder{
-    width: 96%;
+    width: 96% !important;
     margin: 60px 2% 0 2%;
     float: left;
   }
@@ -416,7 +414,8 @@ export default {
       {id: 7, users: 'USER', parent_id: 0, description: 'Find Printing', icon: 'fas fa-print', path: 'printings'},
       {id: 21, users: 'PARTNER', parent_id: 0, description: 'Products', icon: 'fa fa-shopping-cart', path: 'products'},
       {id: 22, users: 'PARTNER', parent_id: 0, description: 'Orders', icon: 'fa fa-file', path: 'orders'},
-      {id: 23, users: 'PARTNER', parent_id: 0, description: 'Coupons', icon: 'fa fa-tags', path: 'coupons'}
+      {id: 23, users: 'PARTNER', parent_id: 0, description: 'Coupons', icon: 'fa fa-tags', path: 'coupons'},
+      {id: 24, users: 'ALL', parent_id: 0, description: 'Wishlists', icon: 'fa fa-heart', path: 'wishlists'}
       ],
       toggleSidebar: 'fa fa-toggle-on',
       toggleSidebarFlag: true,

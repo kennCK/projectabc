@@ -247,6 +247,14 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/wishlists',
+    name: 'wishlists',
+    component: resolve => require(['modules/wishlist/Wishlists.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

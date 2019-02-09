@@ -5,7 +5,7 @@
     </transition>
   </div>
 </template>
-<style type="text/css">
+<style scoped>
   .content-holder{
     width: 100%;
     min-height: 400px;

@@ -91,12 +91,9 @@
         </label>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 1">
-        <label>Supplier</label>
-      </div>
-      <div class="details-holder" v-if="prevMenuIndex === 2">
         <label>Shippings</label>
       </div>
-      <div class="details-holder" v-if="prevMenuIndex === 3">
+      <div class="details-holder" v-if="prevMenuIndex === 2">
         <product-comments :payloadValue="data.id" :payload="'product'"></product-comments>
       </div>
     </div>
@@ -298,7 +295,7 @@ export default {
       code: this.$route.params.code,
       productMenu: [
         {title: 'Product Details', flag: true},
-        {title: 'Supplier', flag: false},
+        // {title: 'Supplier', flag: false},
         {title: 'Shippings', flag: false},
         {title: 'Reviews', flag: false}
       ],
