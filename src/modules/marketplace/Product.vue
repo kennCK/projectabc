@@ -275,7 +275,7 @@ export default {
         {title: 'Product Details', flag: true},
         {title: 'Supplier', flag: false},
         {title: 'Shippings', flag: false},
-        {title: 'Comments', flag: false}
+        {title: 'Reviews', flag: false}
       ],
       prevMenuIndex: 0,
       selectedImage: null

@@ -46,7 +46,7 @@ class CheckoutController extends APIController
         foreach ($result as $key) {
           $price = $this->getPrice($result[$i], $data['account_id']);
           $this->response['data'][$i]['partner_details'] = ($result[$i]['partner'] != null && $result[$i]['partner'] != '' && $result[$i]['partner'] > 0) ? $this->retrieveAccountDetails($result[$i]['partner']) : null;
-          $this->response['data'][$i]['items'] = $this->getItems($result[$i]['id'], $price);
+          $this->response['data'][$i]['items'] = $this->getItems($result[$i]['id'], $price, $data['account_id']);
           $this->response['data'][$i]['sub_total'] = $this->subTotal;
           $this->response['data'][$i]['tax'] = $this->tax;
           $this->response['data'][$i]['total'] = $this->subTotal - $this->tax;
@@ -170,7 +170,7 @@ class CheckoutController extends APIController
       }
     }
 
-    public function getItems($checkoutId, $price){
+    public function getItems($checkoutId, $price, $accountId){
       $result = CheckoutItem::where('checkout_id', '=', $checkoutId)->get();
       $this->subTotal = 0;
       if(sizeof($result) > 0){
@@ -188,6 +188,8 @@ class CheckoutController extends APIController
               $result[$i]['employee']['price'] = $price;
               $this->subTotal += $price;
             }
+          }else if($payload == 'product'){
+            $result[$i]['product'] = app('App\Http\Controllers\ProductController')->retrieveProductById($payloadValue, $accountId);
           }
           $i++;
         }

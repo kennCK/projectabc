@@ -63,6 +63,37 @@ class ProductController extends APIController
       return $this->response();
     }
 
+    public function retrieveProductById($id, $accountId){
+      $data = array(
+        'condition' => array(array(
+          'value'   => $id,
+          'column'  => 'id',
+          'clause'  => '='
+        ))
+      );
+
+      $this->model = new Product();
+      $this->retrieveDB($data);
+      $result = $this->response['data'];
+      // details
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $result[$i]['account'] = $this->retrieveAccountDetails($result[$i]['account_id']);
+          $result[$i]['price'] = $this->getPrice($result[$i]['id']);
+          $result[$i]['color'] = $this->getColor($result[$i]['id']);
+          $result[$i]['size'] = $this->getSize($result[$i]['id']);
+          $result[$i]['featured'] = $this->getFeaturedImage($result[$i]['id']);
+          $result[$i]['images'] = $this->getImages($result[$i]['id']);
+          $result[$i]['tag_array'] = $this->manageTags($result[$i]['tags']);
+          $result[$i]['wishlist_flag'] = $this->checkWishlist($result[$i]['id'], $accountId);
+          $result[$i]['checkout_flag'] = $this->checkCheckout($result[$i]['id'], $accountId);
+          $i++;
+        }
+      }
+      return $result;
+    }
+
     public function manageTags($tags){
       $result = array();
       if($tags != null){

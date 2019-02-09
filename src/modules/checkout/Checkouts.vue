@@ -19,6 +19,9 @@
             <objects :objects="item.employee.front_objects" :heightTemplate="parseInt(item.employee.front_template_details.height)" :widthTemplate="parseInt(item.employee.front_template_details.width)"></objects>
             <objects :objects="item.employee.back_objects" :heightTemplate="parseInt(item.employee.front_template_details.height)" :widthTemplate="parseInt(item.employee.front_template_details.width)"></objects>
           </span>
+          <span class="objects-holder" v-if="item.payload === 'product'">
+            
+          </span>
           <span class="details" v-if="item.payload === 'template' || (item.payload === 'employee' && (item.employee.back_objects === null || item.employee.front_objects === null))">
               <label style="margin-top: 10px;" v-if="item.payload === 'employee'">
                 Price: Php {{item.employee.price}}
