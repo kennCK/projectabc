@@ -1,35 +1,38 @@
 <template>
-  <div>
+  <div v-if="data !== null">
     <div class="title">
       <b @click="redirect('/marketplace')">
         <label class="text-primary action-link">Marketplace</label>
       </b>
-      <label class="text-primary">/ {{code}}</label>
+      <label class="text-primary">/ {{data.title}}</label>
     </div>
     <div class="product-item-holder">
       <div class="product-image">
-        <img :src="selectedImage" class="main-image">
-       <div class="images-holder">
-        <div v-for="i in 5" class="image-item" @click="selectImage('../../assets/img/devices.png')">
-          <img :src="selectedImage" class="other-image">
+        <img :src="config.BACKEND_URL + selectedImage" class="main-image" v-if="selectedImage !== null">
+        <img :src="config.BACKEND_URL + data.featured.url" class="main-image" v-if="selectedImage === null && data.featured !== null">
+        <i class="fa fa-image" v-if="selectedImage === null && data.featured === null"></i>
+       <div class="images-holder" v-if="data.images !== null">
+        <div v-for="item, index in data.images" class="image-item" @click="selectImage(item.url)">
+          <img :src="config.BACKEND_URL + item.url" class="other-image">
           <div class="overlay"></div>
         </div>
        </div>
       </div>
       <div class="product-details">
         <div class="product-title">
-          <h3>Sample Product</h3>
+          <h3>{{data.title}}</h3>
         </div>
-        <div class="product-row text-primary">
-          <label>PHP 100</label>
+        <div class="product-row text-primary" v-if="data.price !== null">
+          <label v-if="data.price.length === 1">PHP {{data.price[0].price}}</label>
+          <label v-if="data.price.length > 1">PHP {{data.price[data.price.length - 1].price + ' - ' + data.price[0].price}}</label>
         </div>
-        <div class="product-row">
+        <div class="product-row" v-if="data.color !== null">
           <label>COLOR</label>
-          <span class="attribute" v-for="i in 5"></span>
+          <span v-for="item, index in data.color" v-bind:style="{background: item.payload_value}" class="attribute"></span>
         </div>
-        <div class="product-row">
+        <div class="product-row" v-if="data.size !== null">
           <label>SIZE</label>
-          <span class="attribute" v-for="i in 5"></span>
+          <span class="attribute" v-for="item, index in data.size">{{item.payload_value}}</span>
         </div>
         <div class="product-row">
           <label>Quantity</label>
@@ -41,7 +44,7 @@
           <button class="btn btn-primary"><i class="fa fa-shopping-cart" style="padding-right: 10px;"></i>ADD TO CART</button>
         </div>
         <div class="product-row-rating" style="margin-top: 5px;">
-          <ratings :payload="'product'" :payloadValue="1"></ratings>
+          <ratings :payload="'product'" :payloadValue="data.id"></ratings>
         </div>
       </div>
     </div>
@@ -52,13 +55,15 @@
         </ul>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 0">
-        <label>Product Details</label>
+        <label>
+          <label v-html="data.description"></label>
+        </label>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 1">
         <label>Shippings</label>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 2">
-        <product-comments :payloadValue="1" :payload="'product'"></product-comments>
+        <product-comments :payloadValue="data.id" :payload="'product'"></product-comments>
       </div>
     </div>
   </div>
@@ -80,11 +85,16 @@
     float: left;
     min-height: 410px;
     overflow-y: hidden;
+    text-align: center;
   }
   .product-image .main-image{
     height: 350px;
     float: left;
     width: 100%;
+  }
+  .product-image .fa-image{
+    font-size: 250px;
+    line-height: 350px;
   }
   .product-image .image-item{
     height: 60px;
@@ -215,6 +225,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    this.retrieve()
   },
   data(){
     return {
@@ -229,7 +240,7 @@ export default {
         {title: 'Comments', flag: false}
       ],
       prevMenuIndex: 0,
-      selectedImage: '../../assets/img/devices.png'
+      selectedImage: null
     }
   },
   components: {
@@ -249,6 +260,24 @@ export default {
     },
     selectImage(url){
       this.selectedImage = url
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: 'published',
+          column: 'status',
+          clause: '='
+        }, {
+          value: this.code,
+          column: 'code',
+          clause: '='
+        }]
+      }
+      this.APIRequest('products/retrieve', parameter).then(response => {
+        if(response.data.length > 0){
+          this.data = response.data[0]
+        }
+      })
     }
   }
 }
