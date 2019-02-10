@@ -30,13 +30,12 @@
   margin-bottom: 50px;
 }
 .banner{
-  width: 99%;
+  width: 100%;
   float: left;
   min-height: 50px;
   overflow-y: hidden;
   padding: 20px;
   background: #ffaa81;
-  margin-right: 1%;
 }
 .product-holder{
   width: 100%;
@@ -51,11 +50,10 @@
   overflow-y: hidden;
 }
 .listing .filter{
-  width: 99%;
+  width: 100%;
   float: left;
   height: 50px;
   margin-top: 25px;
-  margin-right: 1%;
 }
 
 .form-control{

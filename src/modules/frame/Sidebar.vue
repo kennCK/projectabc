@@ -1,10 +1,10 @@
 <template>
   <div class="system-body"> 
-     <div class="main-sidebar sidebar-collapse navbar-collapse collapse" v-bind:class="hide + ' ' + toggleOnClick" id="ClassWorx" >
+     <div class="main-sidebar sidebar-collapse navbar-collapse collapse" v-bind:class="hide" id="idfactory" >
       <div class="sidebar">
         <ul class="sidebar-menu">
             <li class="header">
-                <span v-if="toggleSidebarFlag === true" class="profile-photo">
+                <span v-if="menuFlag === true" class="profile-photo">
                   <span class="profile-image-holder"  v-if="user.profile !== null">
                     <img v-bind:src="config.BACKEND_URL + user.profile.profile_url">
                   </span>
@@ -14,21 +14,24 @@
                 </span>
                 <i v-bind:class="toggleSidebar + ' pull-right'" aria-hidden="true" v-on:click="changeToggleSidebarIcon()" id="toggleIcon"></i>
             </li>
-              <li v-for="(item,index) in menu" v-bind:class="{ appActive: isActive(item.id) }" v-on:click="setActive(item.id)" v-if="((item.users === user.type || item.users === 'ALL') && user.type !== 'ADMIN') || user.type === 'ADMIN'" data-toggle="collapse" data-target="#ClassWorx" aria-expanded="false" aria-label="Toggle navigation">
-                <a v-on:click="navigateTo(item.path, true)"  v-bind:class="hide">
-                  <i></i> 
-                  <span v-bind:class="'sm-title'" >{{item.description}}
-                  </span>
-                  <span v-bind:class="'pull-right-container'">  
-                    <i v-bind:class="item.icon + ' pull-right'"></i>
-                  </span>
-                </a>
-              </li>
+            <li v-for="item, index in menu" v-bind:class="{ 'active-menu': item.flag === true }" v-on:click="setActive(index)" v-if="(((item.users === user.type || item.users === 'ALL') && user.type !== 'ADMIN') || user.type === 'ADMIN') && menuFlag === true" class="menu-holder">
+              <i v-bind:class="item.icon" class=" visible"></i> 
+              <label>{{item.description}}</label>
+              <ul class="sub-menu" v-if="item.subMenu !== null">
+                <li v-for="itemSub, indexSub in item.subMenu" v-bind:class="{ 'active-menu': itemSub.flag === true }" v-on:click="setActiveSubMenu(index, indexSub)" v-if="((itemSub.users === user.type || itemSub.users === 'ALL') && itemSub.type !== 'ADMIN') || itemSub.type === 'ADMIN'">
+                  <i v-bind:class="itemSub.icon" class=" visible"></i>
+                  <label>{{itemSub.description}}</label>
+                </li>
+              </ul>
+            </li>
+            <li v-for="item, index in menuOff" v-bind:class="{ 'active-menu': item.flag === true }" v-on:click="setActiveOff(index)" v-if="(((item.users === user.type || item.users === 'ALL') && user.type !== 'ADMIN') || user.type === 'ADMIN') && menuFlag === false" class="menu-holder-hidden">
+              <i v-bind:class="item.icon"></i>
+            </li>
           </ul>
         </div>
       </div>
 
-           <!-- Confirmation Modal -->
+      <!-- Confirmation Modal -->
       <div class="modal" id="timerModal" v-if="confirmation.message !== null">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -45,8 +48,6 @@
           </div>
         </div>
       </div>
-
-
 
       <div class="content-holder" v-bind:class="hide">
         <transition >
@@ -68,45 +69,29 @@
   overflow-y: hidden;
 }
 
-.main-sidebar i{
-  padding:0 10px 0 10px;
+.sidebar-menu{
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
 }
+
 .sidebar-menu .header{
   font-weight: 700; 
   padding: 15px 2% 15px 2%;
   color: #000;
   text-align: center;
 }
-.sidebar-menu, .sidebar-menu  ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  color: #000;
-}
-.header .input-group{
-  width: 80%;
-  float: left;
-}
-.header .input-group div{
-  width: 15%;
-  float: left;
-  font-size: 10px;
-  padding: 0;
-  background: #fff !important;
-}
 
-.header .input-group div i{
-  padding: 0;
-  font-size: 12px;
-}
 .header .switch{
   float: left;
   width: 20%;
 }
+
 .header i{
   font-size: 24px;
   color: #22b173;
-  }/*-- toggle-sidebar i --*/
+}/*-- toggle-sidebar i --*/
+
 .header i:hover{
   cursor: pointer;
   color: #028170;
@@ -125,6 +110,7 @@
   height: 80px;
   text-align: center;
 }
+
 .profile-image-holder img{
   width: 80px;
   height: 80px;
@@ -145,45 +131,65 @@
   padding-right: 0px !important;
 }
 
-
-/*-- .toggle-sidebar i:hover --*/
-.sidebar-menu li{
+.menu-holder{
+  width: 100%;
+  float: left;
   min-height: 40px;
-  overflow-x: hidden;
-  vertical-align: middle;
-  border-bottom: solid #eee 1px;
-}
-.sidebar-menu ul li{
-  min-height: 30px;
-  overflow-x: hidden;
-}
-.sidebar-menu li, .sidebar-menu ul > li {
-  position: relative;
-  margin: 0;
-  padding: 0;
+  line-height: 40px;
+  overflow: hidden;
 }
 
-/*padding: 13px 2% 13px 5%;*/
-.sidebar-menu  li > a{
-  display: block;
-  padding: 13px 2% 13px 2%;
+.menu-holder .visible{
+  width: 10%;
+  float: left;
+  text-align: right;
+  line-height: 40px;
 }
 
-/*padding: 10px 20px 10px 50px;*/
-.sidebar-menu  ul li > a{
-  padding: 10px 5% 10px 3%;
-  display: block;
+.menu-holder label{
+  float: left;
+  width: 86%;
+  margin-left: 4%;
+  line-height: 40px;
 }
-.sidebar-menu li > a:hover,.sidebar-menu ul li > a :hover{
-    cursor: pointer;
-    background: #eaeaea;
-}
-.appActive, .appSubActive{
-  background: #eaeaea;
-}/*-- app-active --*/
 
-.appActive ul{
-  background: #f4f4f4;
+.menu-holder:hover, .menu-holder i:hover, .menu-holder label:hover, .menu-holder-hidden i:hover{
+  cursor: pointer;
+  color: #22b173;
+}
+
+.sub-menu{
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  z-index: 1;
+}
+
+.sub-menu li{
+  width: 95%;
+  float: left;
+  height: 35px;
+  line-height: 35px;
+  margin-left: 5%;
+  color: #212529;
+}
+
+.active-menu{
+  color: #22b173 !important;
+}
+
+.menu-holder-hidden{
+  width: 100%;
+  float: left;
+  min-height: 50px;
+  line-height: 50px;
+  overflow: hidden;
+  text-align: right;
+}
+
+.menu-holder-hidden i{
+  font-size: 20px;
+  padding-right: 5px;
 }
 
 /*---------------------------------------------------------          
@@ -204,17 +210,17 @@
     display: block;
   }
   .content-holder{
-    width: 81% !important;
+    width: 81%;
     margin: 60px 0px 0px 0px;
     float: left;
   }
   /*  Change with Menu Toggled */
   .main-sidebar.hidden{
-    margin-left: -14%;
+    width: 5%;
   }
   .content-holder.hidden{
     width: 94%;
-    margin: 60px 0px 0px 0px;
+    margin: 60px 0px 0px 1%;
     float: left;
   }
 }
@@ -226,7 +232,7 @@
     float: left;
   }
   .content-holder{
-    width: 72% !important;
+    width: 72%;
     margin: 60px 0px 0px 0px;
     float: left;
   }
@@ -242,11 +248,11 @@
 
   /*  Change with Menu Toggled */
   .main-sidebar.hidden{
-    margin-left: -18%;
+    width: 5%;
   }
   .content-holder.hidden{
     width: 94%;
-    margin: 60px 0px 0px 0px;
+    margin: 60px 0px 0px 1%;
     float: left;
   }
 }
@@ -298,7 +304,7 @@
   }
   .content-holder{
     min-height: 10px;
-    width: 96% !important;
+    width: 96%;
     overflow-y: hidden;
     margin: 60px 2% 0 2%;
     float: left;
@@ -316,7 +322,7 @@
     display: none;
   }
   .main-sidebar.hidden{
-    margin-left: 0;
+    
   }
   .header .input-group{
     width: 90%;
@@ -356,7 +362,7 @@
   }
 
   .content-holder{
-    width: 96% !important;
+    width: 96%;
     margin: 60px 2% 0 2%;
     float: left;
   }
@@ -375,7 +381,7 @@
     display: none;
   }
   .main-sidebar.hidden{
-    margin-left: 0;
+    
   }
   .header .input-group{
     width: 90%;
@@ -401,80 +407,106 @@ export default {
     return{
       user: AUTH.user,
       config: CONFIG,
-      activeItem: '',
-      activeSubItem: '',
       menu: [
       // {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
-      {id: 2, users: 'ALL', parent_id: 0, description: 'Templates', icon: 'fas fa-file', path: 'templates'},
-      {id: 3, users: 'ALL', parent_id: 0, description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries'},
-      {id: 4, users: 'ALL', parent_id: 0, description: 'Images', icon: 'fas fa-image', path: 'images'},
-      {id: 5, users: 'ALL', parent_id: 0, description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace'},
-      // {id: 5, users: 'ALL', parent_id: 0, description: 'Billings', icon: 'fas fa-credit-card', path: 'billings'},
-      // {id: 6, users: 'PARTNER', parent_id: 0, description: 'Pricings', icon: 'fas fa-money', path: 'pricings'},
-      {id: 7, users: 'USER', parent_id: 0, description: 'Find Printing', icon: 'fas fa-print', path: 'printings'},
-      {id: 21, users: 'PARTNER', parent_id: 0, description: 'Products', icon: 'fa fa-shopping-cart', path: 'products'},
-      {id: 22, users: 'PARTNER', parent_id: 0, description: 'Orders', icon: 'fa fa-file', path: 'orders'},
-      {id: 23, users: 'PARTNER', parent_id: 0, description: 'Coupons', icon: 'fa fa-tags', path: 'coupons'},
-      {id: 24, users: 'ALL', parent_id: 0, description: 'Wishlists', icon: 'fa fa-heart', path: 'wishlists'}
+        {users: 'ALL', description: 'Templates', icon: 'fas fa-file', path: 'templates', flag: true, subMenu: null},
+        {users: 'ALL', description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries', flag: false, subMenu: null},
+        {users: 'ALL', description: 'Images', icon: 'fas fa-image', path: 'images', flag: false, subMenu: null},
+        {users: 'USER', description: 'Find Printing', icon: 'fas fa-print', path: 'printings', flag: false, subMenu: null},
+        {users: 'ALL', description: 'Store', icon: 'fas fa-store', path: 'marketplace', flag: false, subMenu: [{users: 'ALL', description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace', flag: false}, {users: 'PARTNER', description: 'Products', icon: 'fa fa-shopping-cart', path: 'products', flag: false}, {users: 'PARTNER', description: 'Orders', icon: 'fa fa-file', path: 'orders', flag: false}, {users: 'PARTNER', description: 'Coupons', icon: 'fa fa-tags', path: 'coupons', flag: false}, {users: 'ALL', description: 'Wishlists', icon: 'fa fa-heart', path: 'wishlists', flag: false}]
+        }
+      ],
+      menuOff: [
+      // {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
+        {users: 'ALL', description: 'Templates', icon: 'fas fa-file', path: 'templates', flag: false, subMenu: null},
+        {users: 'ALL', description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries', flag: false, subMenu: null},
+        {users: 'ALL', description: 'Images', icon: 'fas fa-image', path: 'images', flag: false, subMenu: null},
+        {users: 'USER', description: 'Find Printing', icon: 'fas fa-print', path: 'printings', flag: false, subMenu: null},
+        {users: 'ALL', description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace', flag: false, subMenu: null},
+        {users: 'PARTNER', description: 'Products', icon: 'fa fa-shopping-cart', path: 'products', flag: false, subMenu: null},
+        {users: 'PARTNER', description: 'Orders', icon: 'fa fa-file', path: 'orders', flag: false, subMenu: null},
+        {users: 'PARTNER', description: 'Coupons', icon: 'fa fa-tags', path: 'coupons', flag: false, subMenu: null},
+        {users: 'ALL', description: 'Wishlists', icon: 'fa fa-heart', path: 'wishlists', flag: false, subMenu: null}
       ],
       toggleSidebar: 'fa fa-toggle-on',
-      toggleSidebarFlag: true,
       hide: '',
-      toggleOnClick: '',
-      alignAtHide: 'pull-right',
-      search: '',
       flag: false,
       confirmation: {
         message: null,
         action: null
-      }
+      },
+      prevMenu: 0,
+      subPrevMenu: 0,
+      menuFlag: true
     }
   },
   methods: {
-    getMenu(){
-      let parameter = {
-        'sort': {
-          'id': 'asc'
+    setActive(index){
+      if(this.prevMenu !== index){
+        this.menu[this.prevMenu].flag = false
+        this.menu[index].flag = true
+        if(this.menu[this.prevMenu].subMenu !== null){
+          this.menu[this.prevMenu].subMenu[this.subPrevMenu].flag = false
+        }
+        this.prevMenu = index
+      }
+      if(this.menu[index].subMenu === null){
+        ROUTER.push('/' + this.menu[this.prevMenu].path)
+        $('.navbar-collapse').collapse('hide')
+      }
+    },
+    setActiveOff(index){
+      if(this.prevMenu !== index){
+        this.menuOff[this.prevMenu].flag = false
+        this.menuOff[index].flag = true
+        this.prevMenu = index
+      }
+      if(this.menuOff[index].subMenu === null){
+        ROUTER.push('/' + this.menuOff[this.prevMenu].path)
+        $('.navbar-collapse').collapse('hide')
+      }
+    },
+    setActiveSubMenu(index, subIndex){
+      if(this.prevMenu !== index){
+        this.menu[this.prevMenu].flag = false
+        this.menu[index].flag = true
+        if(this.menu[index].subMenu !== null){
+          this.menu[index].subMenu[subIndex].flag = true
+        }
+        if(this.menu[this.prevMenu].subMenu !== null){
+          this.menu[this.prevMenu].subMenu[this.subPrevMenu].flag = false
+        }
+        this.prevMenu = index
+        this.subPrevMenu = subIndex
+      }else{
+        if(this.subPrevMenu !== subIndex){
+          this.menu[this.prevMenu].subMenu[this.subPrevMenu].flag = false
+          this.menu[index].subMenu[subIndex].flag = true
+          this.subPrevMenu = subIndex
+        }else{
+          this.subPrevMenu = subIndex
         }
       }
-      this.APIRequest('modules/retrieve', parameter).then(response => {
-        this.menu = response.data
-      })
-    },
-    isActive(menuItem){
-      return this.activeItem === menuItem
-    },
-    setActive(menuItem){
-      this.activeItem = menuItem
-      var intMenu = parseInt(menuItem)
-      var intSubMenu = parseInt(this.activeSubItem)
-      this.activeSubItem = (intSubMenu < (intMenu + 10) && intSubMenu > intMenu) ? this.activeSubItem : ''
-    },
-    isSubActive(menuItem){
-      return this.activeSubItem === menuItem
-    },
-    setSubActive(menuItem){
-      this.activeSubItem = menuItem
-      this.activeItem = ''
-    },
-    navigateTo(method, toggleCondition){
-      this.toggleOnClick = (toggleCondition === true) ? 'collapse' : ''
-      AUTH.redirect('/' + method)
+      ROUTER.push('/' + this.menu[this.prevMenu].subMenu[this.subPrevMenu].path)
+      $('.navbar-collapse').collapse('hide')
     },
     changeToggleSidebarIcon(){
-      this.toggleSidebarFlag = !this.toggleSidebarFlag
-      this.hide = (this.toggleSidebarFlag === true) ? '' : 'hidden'
-      this.alignAtHide = (this.toggleSidebarFlag === false) ? 'text-center' : 'pull-right'
-      var icon = (this.toggleSidebarFlag === true) ? 'on' : 'off'
-      this.toggleSidebar = 'fa fa-toggle-' + icon
-    }
-  },
-  computed: {
-    filteredModules: function(){
-      let regex = new RegExp(this.search.toLowerCase())
-      return this.menu.filter((menu) => {
-        return menu.description.toLowerCase().match(regex)
-      })
+      if(this.menuFlag === false){
+        // from off
+        this.menuOff[this.prevMenu].flag = false
+        this.prevMenu = 0
+      }else{
+        // from on
+        this.menu[this.prevMenu].flag = false
+        if(this.menu[this.prevMenu].subMenu !== null){
+          this.menu[this.prevMenu].subMenu[this.subPrevMenu].flag = false
+        }
+        this.prevMenu = 0
+        this.subPrevMenu = 0
+      }
+      this.menuFlag = !this.menuFlag
+      this.toggleSidebar = (this.menuFlag === false) ? 'fa fa-toggle-off' : 'fa fa-toggle-on'
+      this.hide = (this.menuFlag === false) ? 'hidden' : ''
     }
   }
 }
