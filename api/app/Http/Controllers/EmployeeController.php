@@ -11,8 +11,12 @@ use App\CustomObject;
 use App\Attribute;
 use App\Comment;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 class EmployeeController extends APIController
 {
+    public $thead = array();
+
+
     function __construct(){
       $this->model = new Employee();
 
@@ -184,6 +188,7 @@ class EmployeeController extends APIController
           $this->response['data'][$i]['active'] = false;
           $this->response['data'][$i]['counter'] = $counter;
           $this->response['data'][$i]['checkout'] = $this->getCheckout('employee', $id, $accountId);
+          $this->response['data'][$i]['columns'] = $this->getColumnTableHead($id);
           $counter++;
           $i++;
           if($counter == 2){
@@ -191,6 +196,7 @@ class EmployeeController extends APIController
           } 
         }
       }
+      $this->response['table'] = $this->thead;
       return $this->response();
     }
 
@@ -219,6 +225,24 @@ class EmployeeController extends APIController
         }
       }
       return (sizeof($result) > 0) ? $result : null;
+    }
+
+    public function getColumnTableHead($id){
+      $columns = EmployeeColumn::where('employee_id', '=', $id)->get();
+      if(sizeof($columns) > 0){
+        $j = 0;
+        foreach ($columns as $keyColumn) {
+         if(in_array($columns[$j]['column'], $this->thead) == false){
+            $this->thead[] = $columns[$j]['column'];
+          }else{
+            //
+          }
+          $j++;
+        }
+        return $columns;
+      }else{
+        return null;
+      }
     }
 
 }

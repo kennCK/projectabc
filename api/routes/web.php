@@ -178,6 +178,7 @@ Route::post('/employees/delete', "EmployeeController@delete");
 Route::get('/employees/test', 'EmployeeController@test');
 Route::post('/employees/upload', "EmployeeController@upload");
 Route::post('/employees/retrieve_on_update', "EmployeeController@retrieveOnUpdate");
+Route::post('/employees/retreve_table', "EmployeeController@getEmployeesForTable");
 
 //Employee Columns
 Route::post('/employee_columns/create', "EmployeeColumnController@create");
