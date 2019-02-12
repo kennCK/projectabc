@@ -19,7 +19,7 @@
 				</label>
 			</div>
 			<div class="details" v-if="item.active === true && item.objects !== null">
-				<span class="details-row" v-for="itemO, indexO in item.objects" v-if="itemO.type !== 'division'">
+				<span class="details-row" v-for="itemO, indexO in item.objects">
 					<div class="input-group" v-if="itemO.type === 'text'">
             <span class="input-group-addon">Object ID</span>
             <input type="text" class="form-control form-control-title" placeholder="*first_name" v-model="itemO.name" disabled>
@@ -37,11 +37,12 @@
             </span>
             <span style="width: 170px;"></span>
           </div>
-          <div class="input-group" v-if="itemO.type === 'division'">
+          <div class="input-group" v-if="itemO.type === 'division' && itemO.attributes.background !== null">
             <span class="input-group-addon">Object ID</span>
             <input type="text" class="form-control form-control-title" placeholder="*first_name" v-model="itemO.name" disabled>
             <span class="input-group-addon">Content</span>
-            <input type="text" class="form-control form-control-content" placeholder="*first_name" v-model="itemO.content">
+            <input type="text" class="form-control form-control-content" v-bind:style="{background: itemO.attributes.background, color: (inArrayColor.indexOf(itemO.attributes.background) > 0) ? '#000' : '#fff'}"placeholder="*first_name" v-model="itemO.attributes.background">
+            <button class="btn btn-primary" style="margin: 5px; width: 150px !important;" @click="updateDivision(itemO, index)">Update</button>
           </div>
           <div class="input-group preview" v-if="itemO.type === 'photo' && itemO.content !== null">
             <img :src="config.BACKEND_URL + itemO.content" height="100%">
@@ -168,7 +169,8 @@ export default {
       file: null,
       fileIndex: null,
       selectedItem: null,
-      selectedIndex: null
+      selectedIndex: null,
+      inArrayColor: ['#f', '#ff', '#fff', '#ffff', '#fffff', '#ffffff', 'white']
     }
   },
   props: ['data'],
@@ -235,6 +237,20 @@ export default {
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('objects/update', parameter).done(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data === true){
+          this.$parent.retrieve(index)
+        }
+      })
+    },
+    updateDivision(item, index){
+      let parameter = {
+        attribute: 'background',
+        value: item.attributes.background,
+        payload_value: item.id
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('attributes/update_on_table_view', parameter).done(response => {
         $('#loading').css({'display': 'none'})
         if(response.data === true){
           this.$parent.retrieve(index)
