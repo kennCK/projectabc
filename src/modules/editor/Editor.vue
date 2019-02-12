@@ -216,7 +216,7 @@ export default {
     },
     close(){
       this.item = null
-      this.$parent.retrieve()
+      this.$parent.retrieve(-1)
       $('#templateEditorModal').modal('hide')
     },
     addObject(type){
