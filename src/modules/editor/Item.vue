@@ -153,7 +153,7 @@ export default {
       ROUTER.push(parameter)
     },
     retrieve(){
-      this.$parent.retrieve()
+      this.$parent.retrieve(-1)
     },
     show(item, id){
       for (var i = 0; i < this.$children.length; i++) {
