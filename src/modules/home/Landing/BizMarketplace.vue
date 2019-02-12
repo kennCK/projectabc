@@ -2,17 +2,13 @@
   <div class="cw-bizmarketplace">
     <div class="text text-white">
       <span class="title">
-        <h1>Welcome to Marketplace</h1>
+        <h1>ID Factory Marketplace</h1>
       </span>
       <span class="description">
         <h4>
-          Looking for something? ID Factory Marketplace is the best place to find all things related to printing and other graphics and design related services.
+          We are more than just your production facility. With Marketplace you get to find all things related to printing and other graphics and design related services.
         </h4>
-        <button class="btn btn-warning btn-banner" v-on:click="redirect('/signup')"> Search Marketplace </button>
       </span>
-    </div>
-    <div class="image">
-      <img src="../../../assets/img/banner.png" style="margin-bottom: 5px;" width="100%">
     </div>
   </div>
 </template>
@@ -27,24 +23,24 @@
 .cw-bizmarketplace{
   width: 100%;
   float: left;
-  height: 600px;
-  background: #028170;
+  height: 400px;
+  background: #ffaa81;
 }
 .text{
   width: 45%;
   float: left;
   margin-left: 5%;
-  margin-top: 150px;
+  margin-top: 120px;
 }
 .text .title{
   width: 100%;
   float: left;
 }
 .title h1{
-  font-size: 50px;
+  font-size: 40px;
 }
 .text .description{
-  margin-top: 25px;
+  margin-top: 20px;
   width: 100%;
   float: left;
   text-align: justify;
