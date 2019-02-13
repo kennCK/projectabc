@@ -129,6 +129,7 @@ export default {
     },
     changeConversationStatus(status){
       this.$parent.conversationStatus = status
+      AUTH.messengerSupport.flag = null
     },
     retrieve(){
       if(this.item !== null){
@@ -139,11 +140,16 @@ export default {
             clause: '='
           }]
         }
-        this.APIRequest('messenger_messages/retrieve', parameter).then(response => {
+        this.APIRequest('messenger_messages/retrieve', parameter).done(response => {
           if(response.data.length > 0){
             this.data = response.data
           }else{
             this.data = null
+          }
+          if(AUTH.messengerSupport.flag === true){
+            setTimeout(() => {
+              this.retrieve()
+            }, 1000)
           }
         })
       }

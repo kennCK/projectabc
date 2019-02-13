@@ -134,6 +134,11 @@ export default {
     changeConversationStatus(status, item){
       this.$parent.conversationStatus = status
       this.$parent.group = item
+      if(status === 'conversation'){
+        AUTH.messengerSupport.flag = true
+      }else{
+        AUTH.messengerSupport.flag = null
+      }
     },
     retrieve(){
       let parameter = null

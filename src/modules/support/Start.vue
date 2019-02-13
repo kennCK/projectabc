@@ -132,6 +132,11 @@ export default {
       ROUTER.push(parameter)
     },
     changeConversationStatus(status){
+      if(status === 'new-conversation'){
+        AUTH.messengerSupport.flag = true
+      }else{
+        AUTH.messengerSupport.flag = null
+      }
       this.$parent.conversationStatus = status
     }
   }

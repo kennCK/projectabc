@@ -27,6 +27,9 @@ export default {
   messenger: {
     flag: null
   },
+  messengerSupport: {
+    flag: null
+  },
   notifTimer: {
     timer: null,
     speed: 1000
@@ -212,6 +215,11 @@ export default {
   clearMessenger(){
     if(this.messenger.flag !== null){
       this.messenger.flag = null
+    }
+  },
+  clearMessengerSuuport(){
+    if(this.messengerSupport.flag !== null){
+      this.messengerSupport.flag = null
     }
   },
   playNotificationSound(){
