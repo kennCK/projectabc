@@ -6,7 +6,12 @@
       <conversation v-if="conversationStatus === 'conversation' && group !== null" :item="group"></conversation>
       <previous v-if="conversationStatus === 'previous'"></previous>
     </div>
-    <span class="messenger-icon bg-primary"  @click="changeFlag()">
+    <div class="messenger-content-first" v-if="conversationStatus === 'initial' && flag === false">
+      <label class="username" v-if="user.username.length < 20">Hi {{user.username}}!</label>
+      <label class="username" v-else>Hi {{user.username.substr(0, 17)}}...!</label>
+      <label class="question">Is there anything we can help from you?</label>
+    </div>
+    <span class="messenger-icon"  @click="changeFlag()">
       <i class="fas fa-comment" v-if="flag === false"></i>
       <i class="fa fa-close" v-if="flag === true"></i>
     </span>
@@ -18,8 +23,8 @@
   min-height: 50px;
   overflow: hidden;
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 10px;
+  right: 10px;
   max-width: 325px;
 }
 .messenger-icon{
@@ -27,7 +32,15 @@
   width: 60px;
   float: right;
   border-radius: 50%;
+  background: #22b173;
+  color: #fff;
   text-align: center;
+}
+.messenger-icon:hover{
+  cursor: pointer;
+  color: #22b173;
+  background: #fff;
+  border: solid 1px #22b173;
 }
 .messenger-icon i{
   font-size: 30px;
@@ -42,6 +55,35 @@
   margin-bottom: 20px;
   background: #fff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.messenger-content-first{
+  height: 60px;
+  width: 255px;
+  margin-right: 10px;
+  border-radius: 5px;
+  float: left;
+  background: #22b173;
+  border: solid 1px #ddd;
+  color: #fff;
+}
+.messenger-content-first .username{
+  font-size: 18px;
+  line-height: 12px;
+  float: left;
+  width: 90%;
+  margin-right: 5%;
+  margin-left: 5%;
+  padding-top: 10px;
+  font-weight: 600;
+}
+
+.messenger-content-first .question{
+  line-height: 12px;
+  float: left;
+  width: 90%;
+  margin-right: 5%;
+  margin-left: 5%;
+  font-size: 12px;
 }
 
 </style>
@@ -59,7 +101,7 @@ export default {
       config: CONFIG,
       data: null,
       flag: false,
-      conversationStatus: 'start',
+      conversationStatus: 'initial',
       group: null
     }
   },
@@ -75,6 +117,9 @@ export default {
     },
     changeFlag(){
       this.flag = !this.flag
+      if(this.conversationStatus === 'initial'){
+        this.conversationStatus = 'start'
+      }
     }
   }
 }

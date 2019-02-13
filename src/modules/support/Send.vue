@@ -34,46 +34,25 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      newMessageInput: null,
-      newGroupId: null
+      newMessageInput: null
     }
   },
-  props: ['flag', 'groupId', 'payload'],
-  watch: {
-    groupId: function(newVal, oldVal) { // watch it
-      this.groupId = newVal
-    }
-  },
+  props: ['flag', 'groupId'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
     newmessage(){
-      if((this.newMessageInput !== '' || this.newMessageInput !== null) && this.flag === false && this.payload === 'previous'){
+      if((this.newMessageInput !== '' || this.newMessageInput !== null) && this.flag === false){
         let parameter = {
           messenger_group_id: this.groupId,
           message: this.newMessageInput,
           account_id: this.user.userID
         }
-        console.log('heelo1')
         this.APIRequest('messenger_messages/create', parameter).then(response => {
           if(response.data > 0){
             this.newMessageInput = null
             this.$parent.retrieve()
-          }
-        })
-      }else if((this.newMessageInput !== '' || this.newMessageInput !== null) && this.flag === false && this.payload === 'new'){
-        let parameter = {
-          messenger_group_id: this.groupId,
-          message: this.newMessageInput,
-          account_id: this.user.userID
-        }
-        console.log('heelo')
-        this.APIRequest('messenger_messages/create', parameter).then(response => {
-          console.log('heelo')
-          if(response.data > 0){
-            this.newMessageInput = null
-            this.$parent.retrieveReferrer(this.groupId)
           }
         })
       }else if((this.newMessageInput !== '' || this.newMessageInput !== null) && this.flag === true){

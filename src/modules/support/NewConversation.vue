@@ -13,10 +13,10 @@
     </div>
     <div class="conversation-content">
       <div class="message-holder">
-        <messages :groupId="null"></messages>
+        <messages :data="data"  v-if="data !== null"></messages>
       </div>
       <div class="input-holder">
-        <send :flag="flag" :groupId="groupId" :payload="'new'"></send>
+        <send :flag="flag" :groupId="groupId"></send>
       </div>
     </div>
   </div>
@@ -113,6 +113,8 @@
   width: 100%;
   float: left;
   background: #fff;
+  display: flex;
+  flex-direction: column-reverse;
 }
 .input-holder{
   height: 60px;
@@ -146,7 +148,7 @@ export default {
   watch: {
     groupId: function(newVal, oldVal) { // watch it
       this.groupId = newVal
-      this.retrieveReferrer(newVal)
+      this.retrieve()
     }
   },
   methods: {
@@ -156,19 +158,22 @@ export default {
     changeConversationStatus(status){
       this.$parent.conversationStatus = status
     },
-    retrieveReferrer(id){
-      console.log('hi')
-      for (var i = 0; i < this.$children.length; i++) {
-        if(this.$children[i].$el.id === 'messenger'){
-          this.$children[i].retrieveWithParams(id)
-        }
-      }
-    },
     retrieve(){
-      for (var i = 0; i < this.$children.length; i++) {
-        if(this.$children[i].$el.id === 'messenger'){
-          this.$children[i].retrieve()
+      if(this.groupId !== null){
+        let parameter = {
+          condition: [{
+            column: 'messenger_group_id',
+            value: this.groupId,
+            clause: '='
+          }]
         }
+        this.APIRequest('messenger_messages/retrieve', parameter).then(response => {
+          if(response.data.length > 0){
+            this.data = response.data
+          }else{
+            this.data = null
+          }
+        })
       }
     }
   }

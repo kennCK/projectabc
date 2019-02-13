@@ -6,7 +6,8 @@
         <label><b>ID FACTORY</b></label>
       </div>
       <div class="messenger-info">
-        <h3>Hi {{user.username}}!</h3>
+        <h3 v-if="user.username.length < 20">Hi {{user.username}}!</h3>
+        <h3 v-else>Hi {{user.username.substr(0, 17)}}...!</h3>
         <p>
           Hello! What question do you have about ID Factory? We'd love to help you.
         </p>

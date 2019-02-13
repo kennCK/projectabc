@@ -1,9 +1,9 @@
 <template>
   <div v-if="item !== null">
     <div class="messenger-header">
-      <label class="back-icon" @click="changeConversationStatus('start')"><i class="fa fa-chevron-left"></i></label>
+      <label class="back-icon" @click="changeConversationStatus('previous')"><i class="fa fa-chevron-left"></i></label>
       <div class="profile" v-if="item.last_message.account !== null">
-        <img :src="config.BACKEND_URL + item.last_message.account.profile.profile_url" v-if="item.last_message.account.profile === null">
+        <img :src="config.BACKEND_URL + item.last_message.account.profile.profile_url" v-if="item.last_message.account.profile !== null">
         <i class="fa fa-user-circle-o text-green" v-else></i>
       </div>
       <span class="details">
@@ -13,10 +13,10 @@
     </div>
     <div class="conversation-content">
         <div class="message-holder">
-          <messages :groupId="item.id"></messages>
+          <messages :data="data" v-if="data !== null"></messages>
         </div>
         <div class="input-holder">
-          <send :flag="false" :groupId="item.id" :payload="'previous'"></send>
+          <send :flag="false" :groupId="item.id"></send>
         </div>
     </div>
   </div>
@@ -90,6 +90,8 @@
   width: 100%;
   float: left;
   background: #fff;
+  display: flex;
+  flex-direction: column-reverse;
 }
 .input-holder{
   height: 60px;
@@ -107,6 +109,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    this.retrieve()
   },
   data(){
     return {
@@ -128,10 +131,21 @@ export default {
       this.$parent.conversationStatus = status
     },
     retrieve(){
-      for (var i = 0; i < this.$children.length; i++) {
-        if(this.$children[i].$el.id === 'messenger'){
-          this.$children[i].retrieve()
+      if(this.item !== null){
+        let parameter = {
+          condition: [{
+            column: 'messenger_group_id',
+            value: this.item.id,
+            clause: '='
+          }]
         }
+        this.APIRequest('messenger_messages/retrieve', parameter).then(response => {
+          if(response.data.length > 0){
+            this.data = response.data
+          }else{
+            this.data = null
+          }
+        })
       }
     }
   }

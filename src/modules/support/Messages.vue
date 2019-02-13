@@ -2,10 +2,10 @@
   <div id="messenger">
     <div class="holder" v-if="data !== null">
       <div class="message-row" v-for="item, index in data">
-        <div class="template" v-if="item.account_id !== user.userID">
+        <div class="template" v-if="parseInt(item.account_id) !== user.userID">
           <div class="header">
             <div class="profile">
-              <img :src="config.BACKEND_URL + item.account.profile.profile_url" v-if="item.account.profile === null">
+              <img :src="config.BACKEND_URL + item.account.profile.profile_url" v-if="item.account.profile !== null">
               <i class="fa fa-user-circle-o text-green" v-else></i>
             </div>
             <span class="details" v-if="item.account !== null">
@@ -22,7 +22,7 @@
       <div class="template">
         <div class="header-right">
           <div class="profile">
-            <img :src="config.BACKEND_URL + item.account.profile.profile_url" v-if="item.account.profile === null">
+            <img :src="config.BACKEND_URL + item.account.profile.profile_url" v-if="item.account.profile !== null">
             <i class="fa fa-user-circle-o text-green" v-else></i>
           </div>
           <span class="details" v-if="item.account !== null">
@@ -141,55 +141,17 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
-    this.retrieve()
   },
   data(){
     return {
       user: AUTH.user,
-      config: CONFIG,
-      data: null
+      config: CONFIG
     }
   },
-  props: ['groupId'],
+  props: ['data'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
-    },
-    retrieve(){
-      if(this.groupId !== null){
-        let parameter = {
-          condition: [{
-            column: 'messenger_group_id',
-            value: this.groupId,
-            clause: '='
-          }]
-        }
-        this.APIRequest('messenger_messages/retrieve', parameter).then(response => {
-          if(response.data.length > 0){
-            this.data = response.data
-          }else{
-            this.data = null
-          }
-        })
-      }
-    },
-    retrieveWithParams(id){
-      if(id !== null){
-        let parameter = {
-          condition: [{
-            column: 'messenger_group_id',
-            value: id,
-            clause: '='
-          }]
-        }
-        this.APIRequest('messenger_messages/retrieve', parameter).then(response => {
-          if(response.data.length > 0){
-            this.data = response.data
-          }else{
-            this.data = null
-          }
-        })
-      }
     }
   }
 }
