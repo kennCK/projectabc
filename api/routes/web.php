@@ -159,6 +159,7 @@ Route::post('/objects/retrieve_dynamic_without_attributes', 'ObjectController@re
 Route::post('/attributes/create', "AttributeController@create");
 Route::post('/attributes/retrieve', "AttributeController@retrieve");
 Route::post('/attributes/update', "AttributeController@update");
+Route::post('/attributes/update_on_table_view', "AttributeController@updateTableView");
 Route::post('/attributes/delete', "AttributeController@delete");
 Route::get('/attributes/test', 'AttributeController@test');
 
