@@ -12,26 +12,30 @@
     </div>
     <div class="buttons-menu">
       <button class="btn btn-warning btn-banner" v-on:click="redirect('/signup')"> Register</button>
-       <button class="btn btn-warning btn-banner1" v-on:click="redirect('/signup')"> Login</button>
+       <button class="btn btn-warning btn-banner1" v-on:click="redirect('/login')"> Login</button>
     </div>
   </div>
 </template>
 <style scoped>
 .btn-banner {
   padding-top: 0px !important;
+  padding: 50px;
   margin-top: 25px;
   font-size: 20px !important;
   height: 50px !important;
   line-height: 50px !important;
-  margin-left: 47%;
+  margin-left: 43%;
+  border-radius: 98px;
 }
 .btn-banner1 {
   padding-top: 0px !important;
+  padding: 50px;
   margin-top: 25px;
   font-size: 20px !important;
   height: 50px !important;
   line-height: 50px !important;
   margin-left: 1%;
+  border-radius: 98px;
 }
 .cw-bizmarketplace{
   width: 100%;
@@ -92,7 +96,8 @@
   .buttons-menu{
     width: 90%;
     float: left;
-    margin-left: -10%;
+    margin-top: 5%;
+    margin-left: -15%;
   }
 }
 </style>
