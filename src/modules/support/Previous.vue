@@ -136,19 +136,33 @@ export default {
       this.$parent.group = item
     },
     retrieve(){
-      let parameter = {
-        condition: [{
-          column: 'account_id',
-          value: this.user.userID,
-          clause: '='
-        },
-        {
-          column: 'payload',
-          value: 'support',
-          clause: '='
-        }],
-        sort: {
-          created_at: 'desc'
+      let parameter = null
+      if(this.user.type === 'PARTNER' || this.user.type === 'USER'){
+        parameter = {
+          condition: [{
+            column: 'account_id',
+            value: this.user.userID,
+            clause: '='
+          },
+          {
+            column: 'payload',
+            value: 'support',
+            clause: '='
+          }],
+          sort: {
+            created_at: 'desc'
+          }
+        }
+      }else{
+        parameter = {
+          condition: [{
+            column: 'payload',
+            value: 'support',
+            clause: '='
+          }],
+          sort: {
+            created_at: 'desc'
+          }
         }
       }
       this.APIRequest('messenger_groups/retrieve_my_issue', parameter).then(response => {

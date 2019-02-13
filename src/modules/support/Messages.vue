@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <div class="template">
+      <div class="template" v-else>
         <div class="header-right">
           <div class="profile">
             <img :src="config.BACKEND_URL + item.account.profile.profile_url" v-if="item.account.profile !== null">
@@ -29,7 +29,7 @@
             <label><b>{{item.account.username}}</b></label>
           </span>
         </div>
-        <div class="content">
+        <div class="content-right">
           <label>
             <bdi>
               <label v-html="item.message"></label>
@@ -126,9 +126,16 @@
   float: left;
   width: 100%;
   overflow-y: hidden;
+  text-align: justify;
+}
+.template .content-right{
+  min-height: 10px;
+  float: left;
+  width: 100%;
+  overflow-y: hidden;
   text-align: right;
 }
-.template .content label{
+.template .content label, .template .content-righ label{
   line-height: 18px;
 }
 

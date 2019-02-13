@@ -9,7 +9,8 @@
     <div class="messenger-content-first" v-if="conversationStatus === 'initial' && flag === false">
       <label class="username" v-if="user.username.length < 20">Hi {{user.username}}!</label>
       <label class="username" v-else>Hi {{user.username.substr(0, 17)}}...!</label>
-      <label class="question">Is there anything we can help from you?</label>
+      <label class="question" v-if="user.type !== 'ADMIN' && user.type !== 'SUPPORT'">Is there anything we can help for you?</label>
+      <label class="question" v-else>Please answers the inquiries.</label>
     </div>
     <span class="messenger-icon"  @click="changeFlag()">
       <i class="fas fa-comment" v-if="flag === false"></i>
