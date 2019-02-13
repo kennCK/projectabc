@@ -27,6 +27,7 @@
   bottom: 10px;
   right: 10px;
   max-width: 325px;
+  z-index: 1000;
 }
 .messenger-icon{
   height: 60px;
