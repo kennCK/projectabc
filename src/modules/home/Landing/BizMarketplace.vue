@@ -24,7 +24,7 @@
   font-size: 20px !important;
   height: 50px !important;
   line-height: 50px !important;
-  margin-left: 43%;
+  margin-left: 40%;
   border-radius: 98px;
 }
 .btn-banner1 {

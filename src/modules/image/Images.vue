@@ -5,7 +5,7 @@
     </button>
     <div class="image-list" v-if="data !== null">
       <div class="card" v-for="item, index in data">
-        <img class="card-img-top" :src="config.BACKEND_URL + item.url" alt="Card image cap">
+        <img class="card-img-top" :src="config.BACKEND_URL + item.url" alt="Card image cap" height="142" width="142">
         <div class="card-body">
           <ul>
             <li @click="download(item)">Download</li>
