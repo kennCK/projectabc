@@ -2,7 +2,7 @@
   <div>
     <div class="item">
       <span class="header">
-        <label>Photo</label>
+        <label>Advanced Settings</label>
       </span>
       <span class="settings">
         
@@ -201,8 +201,7 @@
   line-height: 30px;
 }
 .settings{
-  min-height: 100px;
-  max-height: 300px;
+  height: 220px;
   float: left;
   width: 100%;
   overflow-y: scroll;

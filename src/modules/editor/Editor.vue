@@ -1,7 +1,7 @@
 <template>
   <div id="editor">
     <div class="modal fade" id="templateEditorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="item !== null">
-      <div class="modal-dialog modal-md" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
             <h5 class="modal-title" id="exampleModalLabel">{{item.title}}</h5>
@@ -49,6 +49,9 @@
                     <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)">
                   </span>
                 </span>
+                <span class="object-contents" v-if="selected !== null">
+                  <basic-text v-if="selected !== null && selected.type === 'text'" :object="selected" :index="selectedIndex"></basic-text>
+                </span>
                 <span class="object-settings" v-if="selected !== null">
                   <division v-if="selected !== null && selected.type === 'division'" :object="selected" :index="selectedIndex"></division>
                   <photo v-if="selected !== null && selected.type === 'photo'" :object="selected" :index="selectedIndex"></photo>
@@ -76,7 +79,7 @@
 .editor-holder{
   width: 100%;
   float: left;
-  min-height: 400px;
+  min-height: 500px;
   overflow-y: hidden;
 }
 .tools{
@@ -147,18 +150,30 @@ ul li:hover{
 .layers-holder .item:hover{
   cursor: pointer;
 }
+
 .card-holder{
   position: absolute;
   border: solid 1px #ddd;
 }
-.object-settings{
-  width: 225px;
-  min-height: 10px;
-  overflow-y: hidden;
+.object-contents{
+  width: 250px;
+  height: 200px;
   position: absolute;
   border: solid 1px #ddd;
   right: 10px;
+  top: 10px;
 }
+
+.object-settings{
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  border: solid 1px #ddd;
+  right: 10px;
+  top: 220px;
+}
+
+
 
 .division, .text, .photo{
   position: absolute;
@@ -208,7 +223,8 @@ export default {
   components: {
     'division': require('modules/editor/Div.vue'),
     'photo': require('modules/editor/Photo.vue'),
-    'c-text': require('modules/editor/Text.vue')
+    'c-text': require('modules/editor/Text.vue'),
+    'basic-text': require('modules/editor/BasicText.vue')
   },
   methods: {
     redirect(parameter){

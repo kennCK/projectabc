@@ -2,40 +2,10 @@
   <div>
     <div class="item">
       <span class="header">
-        <label>Text</label>
+        <label>Advanced Settings</label>
       </span>
       <span class="settings">
-        
-        <span class="item-setting">
-          <span class="title">
-            Id
-          </span>
-          <span class="input">
-            <input type="text" class="form-control" v-model="object.name">
-          </span>
-        </span>
 
-        <span class="item-setting">
-          <span class="title">
-            Content
-          </span>
-          <span class="input">
-            <input type="text" class="form-control" v-model="object.content">
-          </span>
-        </span>
-
-
-        <span class="item-setting">
-          <span class="title">
-            Setting
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.settings">
-              <option value="static">Static</option>
-              <option value="dynamic">Dynamic</option>
-            </select>
-          </span>
-        </span>   
 
         <span class="item-setting">
           <span class="title">
@@ -107,27 +77,6 @@
             <select class="form-control" v-model="object.attributes.fontWeight">
               <option v-for="i in 9" v-bind:value="350 + (i * 50)">{{350 + (i * 50)}}</option>
             </select>
-          </span>
-        </span>
-
-
-
-        <span class="item-setting">
-          <span class="title">
-            Background
-          </span>
-          <span class="input">
-            <input  class="form-control" v-bind:style="{color: (object.attributes.background === 'white' || object.attributes.background === '#fff' || object.attributes.background === '#ffffff') ? '#000' : '#ffffff', background: (object.attributes.background === '' || object.attributes.background === null) ? '#028170' : object.attributes.background}" type="text" v-model="object.attributes.background">
-          </span>
-        </span>
-
-
-        <span class="item-setting">
-          <span class="title">
-            Color
-          </span>
-          <span class="input">
-            <input  class="form-control" v-bind:style="{color: (object.attributes.color === 'white' || object.attributes.color === '#fff' || object.attributes.color === '#ffffff') ? '#000' : '#ffffff', background: (object.attributes.color === '' || object.attributes.color === null) ? '#028170' : object.attributes.color}" type="text" v-model="object.attributes.color">
           </span>
         </span>
 
@@ -341,8 +290,7 @@
   line-height: 30px;
 }
 .settings{
-  min-height: 100px;
-  max-height: 300px;
+  height: 220px;
   float: left;
   width: 100%;
   overflow-y: scroll;
