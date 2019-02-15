@@ -114,6 +114,55 @@
           </span>
         </span>
       </span>
+
+
+      <span class="settings" v-if="menu[prevIndex].title === 'Size'">
+        <span class="item-setting">
+          <span class="input-paragraph-text" style="width: 50%;">
+            <label>Width</label>
+            <input type="text" v-model="object.attributes.width" class="form-control form-control-custom">
+          </span>
+          <span class="input-paragraph-text" style="width: 50%;">
+            <label>Height</label>
+            <input type="text" v-model="object.attributes.height" class="form-control form-control-custom">
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="input-paragraph-text" style="width: 50%;">
+            <label>Top</label>
+            <input type="text" v-model="object.attributes.top" class="form-control form-control-custom">
+          </span>
+          <span class="input-paragraph-text" style="width: 50%;">
+            <label>Bottom</label>
+            <input type="text" v-model="object.attributes.bottom" class="form-control form-control-custom">
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="input-paragraph-text" style="width: 50%;">
+            <label>Left</label>
+            <input type="text" v-model="object.attributes.left" class="form-control form-control-custom">
+          </span>
+          <span class="input-paragraph-text" style="width: 50%;">
+            <label>Right</label>
+            <input type="text" v-model="object.attributes.right" class="form-control form-control-custom">
+          </span>
+        </span>
+
+        <span class="item-setting">
+          <span class="input-paragraph-text" style="width: 50%;">
+            <label>Rounded</label>
+            <input type="text" v-model="object.attributes.borderRadius" class="form-control form-control-custom">
+          </span>
+          <span class="input-paragraph-text" style="width: 50%;">
+            <label>Rotate</label>
+            <select class="form-control form-control-custom" v-model="object.attributes.transform">
+              <option v-for="i in 361" v-bind:value="'rotate(' + (i - 1) + 'deg)'">{{(i - 1) + '%'}}</option>
+            </select>
+          </span>
+        </span>
+      </span>
     </div>
   </div>
 </template>
@@ -139,7 +188,7 @@
   list-style: none;
 }
 .header-menu li{
-  width: 30%;
+  width: 25%;
   float: left;
   font-size: 10px;
   font-weight: 600;
@@ -254,6 +303,32 @@
 .active-pharagraph{
   color: #22b173 !important;
 }
+.input-paragraph-text{
+  width: 33%;
+  float: left;
+  height: 30px;
+}
+.input-paragraph-text label{
+  line-height: 30px;
+  float: left;
+  width: 40%;
+  text-align: center;
+}
+.input-paragraph-text i{
+  font-size: 20px;
+  line-height: 30px;
+  width: 40%;
+  float: left;
+  text-align: center;
+}
+.input-paragraph-text .form-control-custom{
+  width: 60%;
+  float: left;
+  height: 25px !important;
+  margin-top: 2px;
+  font-size: 10px !important;
+  padding-top: 3px !important;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -269,7 +344,8 @@ export default {
       menu: [
       {title: 'Content', flag: true},
       {title: 'Color', flag: false},
-      {title: 'Pharagraph', flag: false}
+      {title: 'Pharagraph', flag: false},
+      {title: 'Size', flag: false}
       ],
       prevIndex: 0
     }

@@ -6,64 +6,12 @@
       </span>
       <span class="settings">
 
-        <span class="item-setting">
-          <span class="title">
-            Top
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.top">
-              <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
-            </select>
-          </span>
-        </span>
 
 
-        <span class="item-setting">
-          <span class="title">
-            Bottom
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.bottom">
-              <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
-            </select>
-          </span>
-        </span>
 
 
-        <span class="item-setting">
-          <span class="title">
-            Left
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.left">
-              <option v-for="i in 100" v-bind:value="((101 - i) * -1) + '%'">{{((101 - i) * -1) + '%'}}</option>
-              <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
-            </select>
-          </span>
-        </span>
 
 
-        <span class="item-setting">
-          <span class="title">
-            Right
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.right">
-              <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
-            </select>
-          </span>
-        </span>
-
-        <span class="item-setting">
-          <span class="title">
-            Radius
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.borderRadius">
-              <option v-for="i in 101" v-bind:value="(i - 1) + '%'">{{(i - 1) + '%'}}</option>
-            </select>
-          </span>
-        </span>
 
 
         <span class="item-setting">
@@ -72,37 +20,6 @@
           </span>
           <span class="input">
             <input type="text" class="form-control" v-model="object.attributes.zIndex">
-          </span>
-        </span>
-
-        <span class="item-setting">
-          <span class="title">
-            Height
-          </span>
-          <span class="input">
-            <input type="text" class="form-control" v-model="object.attributes.height">
-          </span>
-        </span>
-
-        <span class="item-setting">
-          <span class="title">
-            Width
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.width">
-              <option v-for="i in 100" v-bind:value="i + '%'">{{i + '%'}}</option>
-            </select>
-          </span>
-        </span>
-
-        <span class="item-setting">
-          <span class="title">
-            Rotate
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.transform">
-              <option v-for="i in 361" v-bind:value="'rotate(' + (i - 1) + 'deg)'">{{(i - 1) + '%'}}</option>
-            </select>
           </span>
         </span>
 
@@ -155,7 +72,7 @@
 
         <span class="item-setting">
           <span class="title">
-            P. Left
+            Padding Left
           </span>
           <span class="input">
             <input type="text" class="form-control" v-model="object.attributes.paddingLeft">
