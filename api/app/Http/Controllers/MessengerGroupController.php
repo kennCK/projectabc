@@ -200,7 +200,7 @@ class MessengerGroupController extends APIController
       $result = DB::table('messenger_members as T1')
         ->join('messenger_groups as T2', 'T2.id', '=', 'T1.messenger_group_id')
         ->where('T1.account_id', '=', $accountId)
-        ->where('T1.payload', '!=', 'support')
+        ->where('T2.payload', '!=', 'support')
         ->select('T2.*')
         ->get();
       $result = json_decode($result, true);
