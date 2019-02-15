@@ -51,6 +51,8 @@
                 </span>
                 <span class="object-contents" v-if="selected !== null">
                   <basic-text v-if="selected !== null && selected.type === 'text'" :object="selected" :index="selectedIndex"></basic-text>
+                  <basic-photo v-if="selected !== null && selected.type === 'photo'" :object="selected" :index="selectedIndex"></basic-photo>
+                  <basic-div v-if="selected !== null && selected.type === 'division'" :object="selected" :index="selectedIndex"></basic-div>
                 </span>
                 <span class="object-settings" v-if="selected !== null">
                   <division v-if="selected !== null && selected.type === 'division'" :object="selected" :index="selectedIndex"></division>
@@ -157,7 +159,7 @@ ul li:hover{
 }
 .object-contents{
   width: 250px;
-  height: 200px;
+  height: 210px;
   position: absolute;
   border: solid 1px #ddd;
   right: 10px;
@@ -166,11 +168,11 @@ ul li:hover{
 
 .object-settings{
   width: 250px;
-  height: 250px;
+  height: 200px;
   position: absolute;
   border: solid 1px #ddd;
   right: 10px;
-  top: 220px;
+  top: 250px;
 }
 
 
@@ -224,7 +226,9 @@ export default {
     'division': require('modules/editor/Div.vue'),
     'photo': require('modules/editor/Photo.vue'),
     'c-text': require('modules/editor/Text.vue'),
-    'basic-text': require('modules/editor/BasicText.vue')
+    'basic-text': require('modules/editor/BasicText.vue'),
+    'basic-photo': require('modules/editor/BasicPhoto.vue'),
+    'basic-div': require('modules/editor/BasicDiv.vue')
   },
   methods: {
     redirect(parameter){
@@ -277,7 +281,8 @@ export default {
             borderBottom: '0px',
             borderLeft: '0px',
             borderRight: '0px',
-            paddingLeft: '0px'
+            paddingLeft: '0px',
+            textSpacing: '0px'
           }
         }
       }else if(type === 'division'){

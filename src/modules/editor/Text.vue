@@ -6,80 +6,6 @@
       </span>
       <span class="settings">
 
-
-        <span class="item-setting">
-          <span class="title">
-            Family
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.fontFamily">
-              <option value="Arial">Arial</option>
-              <option value="Helvetica">Helvetica</option>
-              <option value="Times New Roman">Times New Roman</option>
-            </select>
-          </span>
-        </span>
-
-        <span class="item-setting">
-          <span class="title">
-            Size
-          </span>
-          <span class="input">
-            <input type="text" class="form-control" v-model="object.attributes.fontSize">
-          </span>
-        </span>
-
-        <span class="item-setting">
-          <span class="title">
-            Style
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.fontStyle">
-              <option value="normal">Normal</option>
-              <option value="italic">Italic</option>
-              <option value="oblique">Oblique</option>
-            </select>
-          </span>
-        </span>
-
-        <span class="item-setting">
-          <span class="title">
-            Transform
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.textTransform">
-              <option value="uppercase">Uppercase</option>
-              <option value="lowercase">Lowercase</option>
-              <option value="capitalize">Capitalize</option>
-            </select>
-          </span>
-        </span>
-
-        <span class="item-setting">
-          <span class="title">
-            Decoration
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.textDecoration">
-              <option value="default">Normal</option>
-              <option value="overline">Overline</option>
-              <option value="line-through">Line-through</option>
-              <option value="underline">Underline</option>
-            </select>
-          </span>
-        </span>
-
-        <span class="item-setting">
-          <span class="title">
-            Bold
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.fontWeight">
-              <option v-for="i in 9" v-bind:value="350 + (i * 50)">{{350 + (i * 50)}}</option>
-            </select>
-          </span>
-        </span>
-
         <span class="item-setting">
           <span class="title">
             Top
@@ -139,19 +65,6 @@
           </span>
         </span>
 
-        <span class="item-setting">
-          <span class="title">
-            Align
-          </span>
-          <span class="input">
-            <select class="form-control" v-model="object.attributes.textAlign">
-              <option value="center">Center</option>
-              <option value="justify">Justify</option>
-              <option value="left">Left</option>
-              <option value="right">Right</option>
-            </select>
-          </span>
-        </span>
 
         <span class="item-setting">
           <span class="title">
@@ -179,15 +92,6 @@
             <select class="form-control" v-model="object.attributes.width">
               <option v-for="i in 100" v-bind:value="i + '%'">{{i + '%'}}</option>
             </select>
-          </span>
-        </span>
-
-        <span class="item-setting">
-          <span class="title">
-            Line Height
-          </span>
-          <span class="input">
-            <input type="text" class="form-control" v-model="object.attributes.lineHeight">
           </span>
         </span>
 
@@ -290,10 +194,10 @@
   line-height: 30px;
 }
 .settings{
-  height: 220px;
+  height: 170px;
   float: left;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .item-setting{
   width: 100%;
