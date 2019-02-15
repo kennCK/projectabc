@@ -20,10 +20,12 @@
 <style scoped>
 .btn-banner {
   padding-top: 0px !important;
+  padding: 50px;
   margin-top: 20px;
   font-size: 20px !important;
   height: 50px !important;
   line-height: 50px !important;
+  border-radius: 98px;
 }
 .cw-banner{
   width: 100%;
