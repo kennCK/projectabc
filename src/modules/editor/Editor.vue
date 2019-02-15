@@ -26,12 +26,12 @@
                   <li @click="unSelected()">
                     <i class="fas fa-close"></i>
                   </li>
-                  <li>
+<!--                   <li>
                     <i class="fas fa-search-plus"></i>
                   </li>
                   <li>
                     <i class="fas fa-search-minus"></i>
-                  </li>
+                  </li> -->
                 </ul>
               </span>
               <span class="preview">
