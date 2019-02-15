@@ -219,6 +219,8 @@
   line-height: 30px;
   float: left;
   width: 40%;
+  font-weight: 600;
+  color: #22b173;
   text-align: center;
 }
 .input .form-control{
