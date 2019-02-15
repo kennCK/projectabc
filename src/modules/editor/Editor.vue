@@ -43,10 +43,10 @@
                 </span>
                 <span v-bind:style="{height: parseInt(item.height) + 'px', width: parseInt(item.width)  + 'px', left: (parseInt(item.height) === config.PORTRAIT) ? '35%' : '29%'}" class="card-holder">
                   <span v-for="item, index in objects">
-                    <span class="division" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'division'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">
+                    <span class="division" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'division'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">
                     </span>
-                    <label class="text" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'text'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">{{item.content}}</label>
-                    <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)">
+                    <label class="text" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'text'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">{{item.content}}</label>
+                    <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">
                   </span>
                 </span>
                 <span class="object-contents" v-if="selected !== null">
@@ -219,7 +219,9 @@ export default {
       selected: null,
       selectedIndex: null,
       objects: null,
-      saveFlag: 0
+      saveFlag: 0,
+      posX: 0,
+      posY: 0
     }
   },
   components: {
@@ -398,6 +400,14 @@ export default {
       this.objects.splice(index, 1)
       this.prevIndex = null
       this.setSelectedObject(this.objects[0], 0)
+    },
+    moveObject(event){
+      this.posX = event.layerX
+      this.posY = event.layerY
+      console.log(event)
+    },
+    dragEnd(event){
+      console.log(event)
     }
   }
 }

@@ -236,8 +236,10 @@ export default {
     }
   },
   checkPlan(){
-    if(this.user.plan.title === 'Expired' && this.user.type !== 'ADMIN'){
-      ROUTER.push('/plan')
+    if(this.user.plan !== null){
+      if(this.user.plan.title === 'Expired' && this.user.type !== 'ADMIN'){
+        ROUTER.push('/plan')
+      }
     }
   },
   redirect(path){
