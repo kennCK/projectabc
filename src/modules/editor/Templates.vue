@@ -102,13 +102,15 @@ export default {
       this.viewIcon = parameter
     },
     retrieve(index){
+      let tempData = (this.data !== null) ? this.data.length : 0
+      this.prevIndex = tempData
       let parameter = {
         condition: [{
           value: this.user.userID,
           column: 'account_id',
           clause: '='
         }],
-        active: index
+        active: (index === false) ? tempData : index
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('templates/retrieve', parameter).then(response => {
