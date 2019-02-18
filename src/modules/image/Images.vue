@@ -5,10 +5,12 @@
     </button>
     <div class="image-list" v-if="data !== null">
       <div class="card" v-for="item, index in data">
-        <img class="card-img-top" :src="config.BACKEND_URL + item.url" alt="Card image cap" height="142" width="142">
+        <img class="card-img-top" :src="config.BACKEND_URL + item.url" alt="Card image cap" height="217">
         <div class="card-body">
           <ul>
-            <li @click="download(item)">Download</li>
+            <a id='download-btn' href='/api/storage/app/images'
+   download='MyToy.jpeg' class="button">Download</a>
+            <li @click="download()" download="1.jpeg">Download</li>
             <li style="border-right: 0px;" @click="remove(item)">Delete</li>
           </ul>
         </div>
