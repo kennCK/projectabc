@@ -26,7 +26,7 @@
             Keep me logged in
           </label>
         </div> -->
-        <button class="btn btn-login-warning btn-block btn-login login-spacer" v-on:click="redirect('/request_reset_password')">Forget your Password?</button>
+        <button class="btn btn-login-warning btn-block btn-login login-spacer" v-on:click="redirect('/request_reset_password')">Forgot your Password?</button>
         <br>
         <div class="container-fluid separator">
             or

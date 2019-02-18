@@ -38,89 +38,6 @@
 
   </div>
 </template>
-<script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-import CONFIG from '../../config.js'
-export default {
-  mounted(){
-    // this.getSchools()
-  },
-  data(){
-    return {
-      username: '',
-      email: '',
-      password: '',
-      cpassword: '',
-      type: 'USER',
-      errorMessage: '',
-      user: AUTH.user,
-      tokenData: AUTH.tokenData,
-      flag: false,
-      schools: null,
-      schoolIndex: null
-    }
-  },
-  methods: {
-    signUp(){
-      this.validate()
-      let parameter = {
-        username: this.username,
-        email: this.email,
-        password: this.password,
-        config: CONFIG,
-        account_type: this.type
-      }
-      if(this.flag === true){
-        $('#loading').css({'display': 'block'})
-        this.APIRequest('accounts/create', parameter).then(response => {
-          $('#loading').css({'display': 'none'})
-          if(response.error !== null){
-            if(response.error.status === 100){
-              let message = response.error.message
-              if(typeof message.username !== undefined && typeof message.username !== 'undefined'){
-                this.errorMessage = message.username[0]
-              }else if(typeof message.email !== undefined && typeof message.email !== 'undefined'){
-                this.errorMessage = message.email[0]
-              }
-            }else if(response.data !== null){
-              if(response.data > 0){
-                this.login()
-              }
-            }
-          }
-          // this.redirect('/verification/' + this.email)
-          // this.login()
-        })
-      }
-    },
-    redirect(parameter){
-      ROUTER.push(parameter)
-    },
-    validate(){
-      if(this.username.length >= 6 && this.email !== null && this.password !== null && this.password.localeCompare(this.cpassword) === 0 && this.type !== null){
-        this.flag = true
-      }else if(this.username.length < 6){
-        this.errorMessage = 'Username must be atleast 6 characters.'
-      }else if(this.password.length < 6){
-        this.errorMessage = 'Password must be atleast 6 characters'
-      }else if(this.password.localeCompare(this.cpassword) !== 0){
-        this.errorMessage = 'Password did not matched'
-      }else{
-        this.errorMessage = 'Please fill in all required fields.'
-        this.flag = false
-      }
-    },
-    login(){
-      AUTH.authenticate(this.username, this.password, (response) => {
-        ROUTER.push('dashboard')
-      }, (response, status) => {
-        this.errorMessage = (status === 401) ? 'Your username and password did not matched.' : 'Cannot log in? Contact us through email: support@idfactories.com'
-      })
-    }
-  }
-}
-</script>
 <style scoped>
 
 
@@ -211,3 +128,86 @@ export default {
   }
 }
 </style>
+<script>
+import ROUTER from '../../router'
+import AUTH from '../../services/auth'
+import CONFIG from '../../config.js'
+export default {
+  mounted(){
+    // this.getSchools()
+  },
+  data(){
+    return {
+      username: '',
+      email: '',
+      password: '',
+      cpassword: '',
+      type: 'USER',
+      errorMessage: '',
+      user: AUTH.user,
+      tokenData: AUTH.tokenData,
+      flag: false,
+      schools: null,
+      schoolIndex: null
+    }
+  },
+  methods: {
+    signUp(){
+      this.validate()
+      let parameter = {
+        username: this.username,
+        email: this.email,
+        password: this.password,
+        config: CONFIG,
+        account_type: this.type
+      }
+      if(this.flag === true){
+        $('#loading').css({'display': 'block'})
+        this.APIRequest('accounts/create', parameter).then(response => {
+          $('#loading').css({'display': 'none'})
+          if(response.error !== null){
+            if(response.error.status === 100){
+              let message = response.error.message
+              if(typeof message.username !== undefined && typeof message.username !== 'undefined'){
+                this.errorMessage = message.username[0]
+              }else if(typeof message.email !== undefined && typeof message.email !== 'undefined'){
+                this.errorMessage = message.email[0]
+              }
+            }else if(response.data !== null){
+              if(response.data > 0){
+                this.login()
+              }
+            }
+          }
+          // this.redirect('/verification/' + this.email)
+          // this.login()
+        })
+      }
+    },
+    redirect(parameter){
+      ROUTER.push(parameter)
+    },
+    validate(){
+      if(this.username.length >= 6 && this.email !== null && this.password !== null && this.password.localeCompare(this.cpassword) === 0 && this.type !== null){
+        this.flag = true
+      }else if(this.username.length < 6){
+        this.errorMessage = 'Username must be atleast 6 characters.'
+      }else if(this.password.length < 6){
+        this.errorMessage = 'Password must be atleast 6 characters'
+      }else if(this.password.localeCompare(this.cpassword) !== 0){
+        this.errorMessage = 'Password did not matched'
+      }else{
+        this.errorMessage = 'Please fill in all required fields.'
+        this.flag = false
+      }
+    },
+    login(){
+      AUTH.authenticate(this.username, this.password, (response) => {
+        ROUTER.push('dashboard')
+      }, (response, status) => {
+        this.errorMessage = (status === 401) ? 'Your username and password did not matched.' : 'Cannot log in? Contact us through email: support@idfactories.com'
+      })
+    }
+  }
+}
+</script>

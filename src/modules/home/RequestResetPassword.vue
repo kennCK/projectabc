@@ -1,15 +1,12 @@
 <template>
   <div class="row">
     <div class="col-lg-4 col-md-6 mx-auto custom-holder">
-      <div class="site-title">
-          <img src="../../assets/img/logo.png">
-          <span class="app-name">
-            <label class="text-primary">
-              <b class="text-primary">ID FACTORY</b>
-            </label> 
-          </span>
-        </div>
-      <span class="text-center login-spacer"><h6 class="text-center text-primary">Request to Reset</h6></span>
+      <div class="signup-header" style="margin-top: 50px;">
+        <img src="../../assets/img/logo.png" v-on:click="redirect('/')">
+      </div>
+      <span style="width:100%;float:left;text-align:center;font-size:20px;margin-bottom:20px;">
+        Request to Reset
+      </span>
       <div class="input-holder">
         <div class="login-message-holder login-spacer" v-if="errorMessage != ''">
             <span class="text-danger text-center" v-if="successMessage === null && errorMessage !== null"><b>Oops!</b> {{errorMessage}}</span>
@@ -28,53 +25,25 @@
     </div>
   </div>
 </template>
-<script>
-import ROUTER from '../../router'
-export default {
-  name: '',
-  components: {
-    'input-group': require('components/input_field/InputGroup.vue')
-  },
-  mounted(){
-  },
-  data(){
-    return{
-      email: null,
-      flag: false,
-      errorMessage: null,
-      successMessage: null,
-      hide: false
-    }
-  },
-  methods: {
-    request(){
-      this.validate()
-      let parameter = {
-        email: this.email
-      }
-      if(this.flag === true){
-        this.APIRequest('accounts/request_reset', parameter).then(response => {
-          this.hide = true
-        })
-      }
-    },
-    validate(){
-      if(this.email === null || this.email === ''){
-        this.flag = false
-        this.errorMessage = 'Please enter your Email Address'
-      }else{
-        this.flag = true
-      }
-    },
-    redirect(parameter){
-      ROUTER.push(parameter)
-    }
-  }
-}
-</script>
-<style>
+<style scoped>
 .custom-holder{
   margin-top: 100px;
+}
+
+.signup-header{
+  height: 100px;
+  color: #006600;
+  width: 100%;
+  float: left;
+  text-align: center;
+}
+.signup-header img{
+  width: 70px;
+  height: 70px;
+}
+
+.signup-header img:hover{
+  cursor: pointer;
 }
 
 .header-title{
@@ -130,3 +99,48 @@ export default {
   }
 }
 </style>
+
+<script>
+import ROUTER from '../../router'
+export default {
+  name: '',
+  components: {
+    'input-group': require('components/input_field/InputGroup.vue')
+  },
+  mounted(){
+  },
+  data(){
+    return{
+      email: null,
+      flag: false,
+      errorMessage: null,
+      successMessage: null,
+      hide: false
+    }
+  },
+  methods: {
+    request(){
+      this.validate()
+      let parameter = {
+        email: this.email
+      }
+      if(this.flag === true){
+        this.APIRequest('accounts/request_reset', parameter).then(response => {
+          this.hide = true
+        })
+      }
+    },
+    validate(){
+      if(this.email === null || this.email === ''){
+        this.flag = false
+        this.errorMessage = 'Please enter your Email Address'
+      }else{
+        this.flag = true
+      }
+    },
+    redirect(parameter){
+      ROUTER.push(parameter)
+    }
+  }
+}
+</script>

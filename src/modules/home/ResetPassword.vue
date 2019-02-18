@@ -1,14 +1,13 @@
 <template>
   <div class="row">
     <div class="col-lg-4 col-md-6 mx-auto custom-holder">
-      <div class="site-title">
-          <img src="../../assets/img/logo.png">
-          <span class="app-name">
-            <label class="text-primary">
-              <b class="text-primary">ID FACTORY</b>
-            </label> 
-          </span>
-        </div>
+      <div class="signup-header" style="margin-top: 50px;">
+        <img src="../../assets/img/logo.png" v-on:click="redirect('/')">
+      </div>
+      <span style="width:100%;float:left;text-align:center;font-size:20px;margin-bottom:20px;">
+        Request to Reset
+      </span>
+
       <span class="text-center form-spacer"><h6 class="text-center text-primary">Reset Password</h6></span>
       <div class="input-holder">
         <div class="login-message-holder login-spacer" v-if="errorMessage != '' && updateFlag === false">
