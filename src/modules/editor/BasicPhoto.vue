@@ -31,8 +31,8 @@
           <button class="btn btn-primary" @click="addImage()">Upload
             <input type="file" class="form-control" id="photoImage"   @change="setUpFileUpload($event)" accept="image/*">
           </button>
-         <!--  <label>or</label>
-          <button class="btn btn-primary">Select from Images</button> -->
+          <label>or</label>
+          <button class="btn btn-primary" @click="browseImages()">Select from Images</button>
         </span>
         <span v-if="object.content !== null" class="image-holder">
           <img :src="config.BACKEND_URL + object.content">
@@ -378,6 +378,9 @@ export default {
           this.object.content = response.data.data
         }
       })
+    },
+    browseImages(){
+      this.$parent.browseImagesFlag = true
     }
   }
 }

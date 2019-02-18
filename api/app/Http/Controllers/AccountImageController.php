@@ -13,4 +13,18 @@ class AccountImageController extends APIController
       	'payload', 'payload_value', 'status'
       );
     }
+
+    public function retrieve(Request $request){
+    	$data = $request->all();
+    	$this->model = new AccountImage();
+    	$this->retrieveDB($data);
+    	if(sizeof($this->response['data']) > 0){
+    		$i = 0;
+    		foreach ($this->response['data'] as $key) {
+    			$this->response['data'][$i]['active'] = false;
+    			$i++;
+    		}
+    	}
+    	return $this->response();
+    }
 }

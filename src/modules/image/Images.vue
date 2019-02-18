@@ -38,6 +38,10 @@ button input{
   float: left;
   margin-bottom: 25px;
 }
+.card img{
+  max-height: 200px;
+  max-width: 100%;
+}
 .card:hover{
   cursor: pointer;
   border: solid 1px #22b173;

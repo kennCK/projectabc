@@ -49,6 +49,9 @@
                     <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">
                   </span>
                 </span>
+                <span class="browse-images-holder" v-if="selected !== null && browseImagesFlag === true">
+                  <browse-images :object="selected"></browse-images>
+                </span>
                 <span class="object-contents" v-if="selected !== null">
                   <basic-text v-if="selected !== null && selected.type === 'text'" :object="selected" :index="selectedIndex"></basic-text>
                   <basic-photo v-if="selected !== null && selected.type === 'photo'" :object="selected" :index="selectedIndex"></basic-photo>
@@ -157,6 +160,14 @@ ul li:hover{
   position: absolute;
   border: solid 1px #ddd;
 }
+.browse-images-holder{
+  width: 200px;
+  height: 300px;
+  position: absolute;
+  border: solid 1px #ddd;
+  right: 270px;
+  top: 10px;
+}
 .object-contents{
   width: 250px;
   height: 210px;
@@ -221,7 +232,9 @@ export default {
       objects: null,
       saveFlag: 0,
       posX: 0,
-      posY: 0
+      posY: 0,
+      accountImage: null,
+      browseImagesFlag: false
     }
   },
   components: {
@@ -230,13 +243,15 @@ export default {
     'c-text': require('modules/editor/Text.vue'),
     'basic-text': require('modules/editor/BasicText.vue'),
     'basic-photo': require('modules/editor/BasicPhoto.vue'),
-    'basic-div': require('modules/editor/BasicDiv.vue')
+    'basic-div': require('modules/editor/BasicDiv.vue'),
+    'browse-images': require('modules/editor/BrowseImages.vue')
   },
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
     close(){
+      this.browseImagesFlag = false
       this.item = null
       this.$parent.retrieve()
       $('#templateEditorModal').modal('hide')
@@ -341,6 +356,7 @@ export default {
       this.setSelectedObject(this.objects[this.objects.length - 1], this.objects.length - 1)
     },
     setSelectedObject(object, index){
+      this.browseImagesFlag = false
       this.saveFlag = 1
       if(this.prevIndex === null){
         this.prevIndex = index
@@ -363,6 +379,7 @@ export default {
       this.selectedIndex = null
     },
     retrieve(){
+      this.browseImagesFlag = false
       if(this.item !== null){
         let parameter = {
           condition: [{
