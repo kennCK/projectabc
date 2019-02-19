@@ -75,7 +75,8 @@ import axios from 'axios'
 export default {
   mounted(){
     AUTH.checkPlan()
-    this.retrieve(-1)
+    this.prevIndex = 0
+    this.retrieve(0)
   },
   data(){
     return {

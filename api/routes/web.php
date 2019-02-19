@@ -367,9 +367,17 @@ Route::get('/emails/test', 'EmailController@test');
 //Wishlists Controller
 Route::post('/wishlists/create', "WishlistController@create");
 Route::post('/wishlists/retrieve', "WishlistController@retrieve");
-Route::post('/emails/update', "WishlistController@update");
+Route::post('/wishlists/update', "WishlistController@update");
 Route::post('/wishlists/delete', "WishlistController@delete");
 Route::get('/wishlists/test', 'WishlistController@test');
+
+
+//Wishlists Controller
+Route::post('/shipping_addresses/create', "ShippingAddressController@create");
+Route::post('/shipping_addresses/retrieve', "ShippingAddressController@retrieve");
+Route::post('/shipping_addresses/update', "ShippingAddressController@update");
+Route::post('/shipping_addresses/delete', "ShippingAddressController@delete");
+Route::get('/shipping_addresses/test', 'ShippingAddressController@test');
 
 
 Route::get('/mail', function () {
