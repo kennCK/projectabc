@@ -2,7 +2,7 @@
   <div class="cw-banner bg-green">
     <div class="text text-white">
       <span class="title">
-        <h1>Easy Communication with our Printing Partners</h1>
+        <h1>Experience our Communication Tools.</h1>
       </span>
       <span class="description">
         <h4>
@@ -11,7 +11,7 @@
       </span>
     </div>
     <div class="image">
-      <img src="../../../assets/img/banner.png" style="margin-bottom: 5px;" width="100%">
+      <img src="../../../assets/img/communication.png" style="margin-bottom: 5px;" width="100%">
     </div>
   </div>
 </template>

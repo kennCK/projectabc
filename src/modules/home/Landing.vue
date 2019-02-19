@@ -1,8 +1,8 @@
 <template>
 	<div class="body">
 		<landing-banner></landing-banner>
-    <landing-bizmarketplace></landing-bizmarketplace>
     <landing-steps></landing-steps>
+    <landing-bizmarketplace></landing-bizmarketplace>
     <landing-mc></landing-mc>
     <landing-features></landing-features>
 	</div>

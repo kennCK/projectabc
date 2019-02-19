@@ -5,14 +5,13 @@
     </div>
     <div class="card-holder">
       <div class="card" v-for="item, index in data" v-if="data !== null">
-        <img class="card-img-top" src="../../../assets/img/step.png" v-if="index === 0">
-        <img class="card-img-top" src="../../../assets/img/step.png" v-if="index === 1">
-        <img class="card-img-top" src="../../../assets/img/step.png" v-if="index === 2">
-        <img class="card-img-top" src="../../../assets/img/step.png" v-if="index === 3">
+        <img class="card-img-top" src="../../../assets/img/template.png" v-if="index === 0">
+        <img class="card-img-top" src="../../../assets/img/entry.png" v-if="index === 1">
+        <img class="card-img-top" src="../../../assets/img/review.png" v-if="index === 2">
+        <img class="card-img-top" src="../../../assets/img/checkout.png" v-if="index === 3">
         <div class="card-body">
-          <h5 class="card-title text-green">{{item.title}}</h5>
+          <h5 class="card-title text-green">Step {{index + 1}}: {{item.title}}</h5>
           <p class="card-text">{{item.description}}</p>
-          <button class="btn btn-primary">Step {{index + 1}}</button>
         </div>
       </div>
     </div>
