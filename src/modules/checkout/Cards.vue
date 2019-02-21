@@ -146,7 +146,7 @@ export default {
         production: 'Ad3i7TApZLrGnTTF_BWrXZYFlz1sDUMRjWGeGn6ED8POGj1gp6Z43n4ph31ASUqlPtZguFqR7KMp2ZqH'
       },
       myStyle: {
-        label: 'checkout',
+        label: '',
         size: 'responsive',
         shape: 'pill',
         color: 'gold'

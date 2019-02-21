@@ -17,6 +17,7 @@ use App\CustomObject;
 use App\Attribute;
 use App\PaypalTransaction;
 use App\StripeWebhook;
+use App\ShippingAddress;
 use Carbon\Carbon;
 class CheckoutController extends APIController
 {
@@ -46,10 +47,12 @@ class CheckoutController extends APIController
         foreach ($result as $key) {
           $price = $this->getPrice($result[$i], $data['account_id']);
           $this->response['data'][$i]['partner_details'] = ($result[$i]['partner'] != null && $result[$i]['partner'] != '' && $result[$i]['partner'] > 0) ? $this->retrieveAccountDetails($result[$i]['partner']) : null;
+          $this->response['data'][$i]['account_details'] = $this->retrieveAccountDetails($data['account_id']); 
           $this->response['data'][$i]['items'] = $this->getItems($result[$i]['id'], $price, $data['account_id']);
           $this->response['data'][$i]['sub_total'] = $this->subTotal;
           $this->response['data'][$i]['tax'] = $this->tax;
           $this->response['data'][$i]['total'] = $this->subTotal - $this->tax;
+          $this->response['data'][$i]['shipping_address'] = $this->getShippingAddress($result[$i]['id']);
           if($result[$i]['payment_type'] == 'authorized' && $result[$i]['payment_payload'] == 'credit_card'){
             $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_payload_value']);
           }else{
@@ -61,6 +64,11 @@ class CheckoutController extends APIController
       
       $this->response['method'] = $cards;
       return $this->response();
+    }
+
+    public function getShippingAddress($checkoutId){
+      $result = ShippingAddress::where('checkout_id', '=', $checkoutId)->get();
+      return (sizeof($result) > 0) ? $result[0] : null;
     }
 
     public function retrieveOrderItems(Request $request){

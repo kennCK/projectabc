@@ -22,6 +22,27 @@
       <label><b>Total</b></label>
       <label class="pull-right" style="padding-right: 10px;"><b>PHP {{item.total}}</b></label>
     </span>
+
+    <span class="item" style="border-bottom: 0px;">
+      <label><b>Ship to</b></label>
+      <label class="pull-right"><i class="fa fa-edit text-danger" @click="shippingAddress()"></i></label>
+    </span>
+    <span class="item2">
+      <label v-if="item.shipping_address === null && item.account_details.billing !== null && item.account_details.billing.company !== null">
+        {{item.account_details.billing.company}}, {{item.account_details.billing.address + ',' + item.account_details.billing.city + ' ' + item.account_details.billing.postal_code}}
+        <br />
+        {{item.account_details.billing.state + ', ' + item.account_details.billing.country}}
+      </label>
+    </span>
+    <span class="item" style="border-bottom: 0px;">
+      <label><b>Shipping Note</b></label>
+    </span>
+    <span class="item2" style="border-bottom: 0px;" v-if="item.shipping_address !== null">
+      <textarea class="form-control" rows="5" placeholder="Additional information here..." v-model="item.shipping_address.notes"></textarea>
+    </span>
+    <span class="item2" style="border-bottom: 0px;" v-if="item.shipping_address === null">
+      <textarea class="form-control" rows="5" placeholder="Additional information here..." v-model="notes"></textarea>
+    </span>
     <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
       <label>Active Payment Method</label>
       
@@ -57,6 +78,7 @@
     <cancelled-paypal></cancelled-paypal>
     <express-credit-card></express-credit-card>
     <apply-coupon></apply-coupon>
+    <shipping-address :item="item"></shipping-address>
   </div>
 </template>
 <style scoped>
@@ -71,6 +93,20 @@
   line-height: 50px;
   border-bottom: solid 1px #eee;
   padding-left: 10px;
+}
+.sidebar .item2{
+  min-height: 50px;
+  width: 100%;
+  float: left;
+  border-bottom: solid 1px #eee;
+  padding-left: 10px;
+  overflow-y: hidden;
+  text-align: justify;
+}
+
+.sidebar .item2 label{
+  width: 100%;
+  float: left;
 }
 .sidebar .title{
   font-size: 24px;
@@ -126,7 +162,8 @@ export default {
         shape: 'pill',
         color: 'gold'
       },
-      success: null
+      success: null,
+      notes: null
     }
   },
   props: ['item', 'method'],
@@ -134,6 +171,7 @@ export default {
     'cancelled-paypal': require('modules/checkout/CancelPaypal.vue'),
     'express-credit-card': require('modules/checkout/CreditCard.vue'),
     'apply-coupon': require('modules/coupon/Apply.vue'),
+    'shipping-address': require('modules/checkout/ShippingAddress.vue'),
     PayPal
   },
   methods: {
@@ -152,7 +190,8 @@ export default {
           tax: this.item.tax,
           account_id: this.user.userID,
           email: this.user.email,
-          order_number: this.item.order_number
+          order_number: this.item.order_number,
+          notes: (this.item.shipping_address !== null) ? this.item.shipping_address.notes : this.notes
         }
         this.updateRequest(parameter)
       }
@@ -171,7 +210,8 @@ export default {
           coupon_id: (this.coupon !== null) ? this.coupon.id : null,
           account_id: this.user.userID,
           email: this.user.email,
-          order_number: this.item.order_number
+          order_number: this.item.order_number,
+          notes: (this.item.shipping_address !== null) ? this.item.shipping_address.notes : this.notes
         }
         this.updateRequest(parameter)
       }
@@ -192,7 +232,8 @@ export default {
           coupon_id: (this.coupon !== null) ? this.coupon.id : null,
           account_id: this.user.userID,
           email: this.user.email,
-          order_number: this.item.order_number
+          order_number: this.item.order_number,
+          notes: (this.item.shipping_address !== null) ? this.item.shipping_address.notes : this.notes
         }
         this.updateRequest(parameter)
       }
@@ -229,6 +270,9 @@ export default {
         }
         this.item.total -= this.discount
       }
+    },
+    shippingAddress(){
+      $('#shippingAddressModal').modal('show')
     }
   }
 }
