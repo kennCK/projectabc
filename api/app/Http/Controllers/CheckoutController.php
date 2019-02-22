@@ -18,6 +18,7 @@ use App\Attribute;
 use App\PaypalTransaction;
 use App\StripeWebhook;
 use App\ShippingAddress;
+use App\BillingInformation;
 use Carbon\Carbon;
 class CheckoutController extends APIController
 {
@@ -68,7 +69,21 @@ class CheckoutController extends APIController
 
     public function getShippingAddress($checkoutId){
       $result = ShippingAddress::where('checkout_id', '=', $checkoutId)->get();
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          if($result[$i]['payload'] == 'billing'){
+            $result[$i]['payload_details'] = $this->getBillingInformation($result[$i]['payload_value']);
+          }
+          $i++;
+        }
+      }
       return (sizeof($result) > 0) ? $result[0] : null;
+    }
+
+    public function getBillingInformation($billingId){
+      $billing = BillingInformation::where('id', '=', $billingId)->get();
+      return (sizeof($billing) > 0) ? $billing[0] : null;
     }
 
     public function retrieveOrderItems(Request $request){

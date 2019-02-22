@@ -27,21 +27,26 @@
       <label><b>Ship to</b></label>
       <label class="pull-right"><i class="fa fa-edit text-danger" @click="shippingAddress()"></i></label>
     </span>
-    <span class="item2">
+    <span class="item2 alert alert-success">
       <label v-if="item.shipping_address === null && item.account_details.billing !== null && item.account_details.billing.company !== null">
         {{item.account_details.billing.company}}, {{item.account_details.billing.address + ',' + item.account_details.billing.city + ' ' + item.account_details.billing.postal_code}}
         <br />
         {{item.account_details.billing.state + ', ' + item.account_details.billing.country}}
       </label>
+      <label v-if="item.shipping_address !== null && item.shipping_address.payload === 'billing'">
+        {{item.shipping_address.payload_details.company}}, {{item.shipping_address.payload_details.address + ',' + item.shipping_address.payload_details.city + ' ' + item.shipping_address.payload_details.postal_code}}
+        <br />
+        {{item.shipping_address.payload_details.state + ', ' + item.shipping_address.payload_details.country}}
+      </label>
+      <label v-if="item.shipping_address !== null && item.shipping_address.payload === 'other'">
+         {{item.shipping_address.payload_value}}
+      </label>
     </span>
-    <span class="item" style="border-bottom: 0px;">
+    <span class="item" style="border-bottom: 0px;" v-if="item.shipping_address !== null && item.shipping_address.notes !== null">
       <label><b>Shipping Note</b></label>
     </span>
-    <span class="item2" style="border-bottom: 0px;" v-if="item.shipping_address !== null">
-      <textarea class="form-control" rows="5" placeholder="Additional information here..." v-model="item.shipping_address.notes"></textarea>
-    </span>
-    <span class="item2" style="border-bottom: 0px;" v-if="item.shipping_address === null">
-      <textarea class="form-control" rows="5" placeholder="Additional information here..." v-model="notes"></textarea>
+    <span class="item2  alert alert-danger" style="border-bottom: 0px;" v-if="item.shipping_address !== null && item.shipping_address.notes !== null">
+      <label>{{item.shipping_address.notes}}</label>
     </span>
     <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
       <label>Active Payment Method</label>
@@ -131,6 +136,9 @@
   cursor: pointer;
   color: #22b173;
 }
+.alert{
+  margin: 0px !important;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -162,8 +170,7 @@ export default {
         shape: 'pill',
         color: 'gold'
       },
-      success: null,
-      notes: null
+      success: null
     }
   },
   props: ['item', 'method'],
@@ -273,6 +280,9 @@ export default {
     },
     shippingAddress(){
       $('#shippingAddressModal').modal('show')
+    },
+    retrieve(){
+      this.$parent.retrieve()
     }
   }
 }
