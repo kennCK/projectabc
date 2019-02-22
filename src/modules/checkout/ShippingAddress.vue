@@ -78,7 +78,7 @@ export default {
       ROUTER.push(parameter)
     },
     update(){
-      if(this.item.shipping_addresses === null){
+      if(this.item.shipping_address === null){
         let parameter = {
           checkout_id: this.item.id,
           payload: this.address,

@@ -197,8 +197,7 @@ export default {
           tax: this.item.tax,
           account_id: this.user.userID,
           email: this.user.email,
-          order_number: this.item.order_number,
-          notes: (this.item.shipping_address !== null) ? this.item.shipping_address.notes : this.notes
+          order_number: this.item.order_number
         }
         this.updateRequest(parameter)
       }
@@ -217,8 +216,7 @@ export default {
           coupon_id: (this.coupon !== null) ? this.coupon.id : null,
           account_id: this.user.userID,
           email: this.user.email,
-          order_number: this.item.order_number,
-          notes: (this.item.shipping_address !== null) ? this.item.shipping_address.notes : this.notes
+          order_number: this.item.order_number
         }
         this.updateRequest(parameter)
       }
@@ -239,8 +237,7 @@ export default {
           coupon_id: (this.coupon !== null) ? this.coupon.id : null,
           account_id: this.user.userID,
           email: this.user.email,
-          order_number: this.item.order_number,
-          notes: (this.item.shipping_address !== null) ? this.item.shipping_address.notes : this.notes
+          order_number: this.item.order_number
         }
         this.updateRequest(parameter)
       }
