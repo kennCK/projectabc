@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="product-holder" v-for="i in 20" @click="redirect('marketplace/product/12312312')">
+    <div class="product-holder" @click="redirect('marketplace/product/122313')">
       <div class="product-image">
        <img src="../../assets/img/devices.png">
       </div>
       <div class="product-details">
         <div class="product-title">
-          <label style="padding-top: 5px;"><b>Sample Product</b></label>
+          <label style="padding-top: 5px;"><b>Sample</b></label>
           <label>Best for sample product</label>
         </div>
         <div class="product-price">
@@ -87,10 +87,12 @@ export default {
       data: null,
       categoryValue: null,
       searchValue: null
+
     }
   },
   components: {
   },
+  props: ['params'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)

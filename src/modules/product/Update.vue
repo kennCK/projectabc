@@ -29,7 +29,8 @@
               <label for="exampleInputEmail1">Featured Image</label>
               <div class="product-images">
                 <div class="new-image text-primary">
-                  <i class="fa fa-plus"></i>
+                    <input type="file" id="file" ref="file" accept="image/*" v-on:change="handleFileUpload()"/>
+                    <img class="fImage"v-bind:src="imagePreview" v-show="showPreview"/>
                 </div>
               </div>
             </div>
@@ -38,7 +39,9 @@
               <label for="exampleInputEmail1">Other Images</label>
               <div class="product-images">
                 <div class="new-image text-primary">
-                  <i class="fa fa-plus"></i>
+                  <button class="btn" @click="addImage()"><i class="fa fa-plus"></i> Upload Image
+                    <input type="file" @change="setUpFileUpload($event)" id="newImage">
+                  </button>
                 </div>
               </div>
             </div>
@@ -92,7 +95,6 @@
   height: 200px;
   margin-bottom: 10px;
 }
-
 .featured-image .options{
   width: 100%;
   float: left;
@@ -158,12 +160,49 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      item: null
+      item: null,
+      file: '',
+      showPreview: false,
+      imagePreview: ''
     }
   },
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    handleFileUpload(){
+      this.file = this.$refs.file.files[0]
+      let reader = new FileReader()
+      this.imagePreview = this.file.name
+      // reader.addEventListener('load', function () {
+      //   this.showPreview = true
+      //   this.imagePreview = reader.result
+      // }.bind(this), false)
+
+      if(this.file){
+
+        if (/\.(jpe?g|png|gif)$/i.test(this.file.name)) {
+
+          reader.readAsDataURL(this.file)
+        }
+      }
+    },
+    addImage(){
+      $('#newImage')[0].click()
+    },
+    createFile(file){
+      let fileReader = new FileReader()
+      fileReader.readAsDataURL(event.target.files[0])
+      this.upload()
+    },
+    setUpFileUpload(event){
+      let files = event.target.files || event.dataTransfer.files
+      if(!files.length){
+        return false
+      }else{
+        this.file = files[0]
+        this.createFile(files[0])
+      }
     },
     update(){
       if(this.validate()){
