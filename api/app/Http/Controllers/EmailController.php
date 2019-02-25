@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
 use Illuminate\Http\Request;
 
-use App\Jobs\MailChimpEmailHandler;
 class EmailController extends APIController
 {
     public function test(){
-			dispatch(new MailChimpEmailHandler());
+    	Mail::send('email.welcome', ['user' => null], function ($m){
+          $m->from('support@idfactory.ph', 'ID Factory');
+
+          $m->to('kennettecanales@gmail.com', 'Kennette Canales')->subject('Your Reminder!');
+      });
     }
 }

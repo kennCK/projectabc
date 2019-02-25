@@ -378,13 +378,3 @@ Route::post('/shipping_addresses/retrieve', "ShippingAddressController@retrieve"
 Route::post('/shipping_addresses/update', "ShippingAddressController@update");
 Route::post('/shipping_addresses/delete', "ShippingAddressController@delete");
 Route::get('/shipping_addresses/test', 'ShippingAddressController@test');
-
-
-Route::get('/mail', function () {
-  Mail::send('emails.test', [], function ($message) {
-    $message
-      ->from('support@idfactory.ph', 'ID FACTORY')
-      ->to('kennettecanales@gmail.com', 'kennettecanales')
-      ->subject('FROM IDFACRTORY TEST');
-  });
-});

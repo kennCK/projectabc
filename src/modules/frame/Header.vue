@@ -36,7 +36,7 @@
                 <label>Personal</label>
               </span>
               <span class="dropdown-item" v-on:click="redirect('/my_orders')">
-                <i class="fa fa-tag"></i>
+                <i class="fa fa-shopping-cart"></i>
                 <label>My Orders</label>
               </span>
               <span class="dropdown-item" v-on:click="redirect('/profile')">
