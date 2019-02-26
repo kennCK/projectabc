@@ -14,7 +14,6 @@
         <style>
             html, body {
                 background-color: #fff;
-                color: #636b6f;
                 font-family: 'Raleway', sans-serif;
                 font-weight: 100;
                 height: 100vh;
@@ -40,10 +39,10 @@
                 float: left;
             }
             .text-primary{
-                color:#028170;   
+                color:#22b173;   
             }
             .text-secondary{
-                color:#028170;
+                color:#22b173;
             }
             .text{
                 color: #555;
@@ -89,13 +88,13 @@
             <br>
             Click the button below to:
             <br>
-            <a href="http://idfactory.ph/#/reset_password/".{{$user->username}}.'/'.{{$user->code}}>
+            <a href="http://idfactory.ph/#/reset_password/{{$user->username}}/{{$user->code}}">
                 <button class="button">Reset</button>
             </a>
             <br>
         </span>
         <span class="text">
-            If you did not make this change, please <a href="http://idfactory.ph/#/reset_password/".{{$user->username}}.'/'.{{$user->code}}>reset</a> your password to secure your account and reply to this message to notify us.
+            If you did not make this change, please <a href="http://idfactory.ph/#/reset_password/{{$user->username}}/{{$user->code}}">reset</a> your password to secure your account and reply to this message to notify us.
         </span>
         <span class="footer">
             <label>Copyright @IDFACTORY.PH 2018</label>

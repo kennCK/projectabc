@@ -363,6 +363,8 @@ Route::post('/emails/retrieve', "EmailController@retrieve");
 Route::post('/emails/update', "EmailController@update");
 Route::post('/emails/delete', "EmailController@delete");
 Route::post('/emails/reset_password', 'EmailController@resetPassword');
+Route::post('/emails/verification', 'EmailController@verification');
+Route::post('/emails/changed_password', 'EmailController@changedPassword');
 
 //Wishlists Controller
 Route::post('/wishlists/create', "WishlistController@create");

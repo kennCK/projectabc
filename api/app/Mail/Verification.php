@@ -8,9 +8,10 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Carbon\Carbon;
 
-class ResetPassword extends Mailable
+class Verification extends Mailable
 {
     use Queueable, SerializesModels;
+
     public $user;
     public $date;
 
@@ -33,6 +34,6 @@ class ResetPassword extends Mailable
 
     public function build()
     {
-        return $this->from('support@idfactory.ph')->view('email.resetpassword');
+        return $this->from('support@idfactory.ph')->view('email.verification');
     }
 }
