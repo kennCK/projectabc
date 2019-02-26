@@ -44,7 +44,7 @@ class EmailController extends APIController
         $data = $request->all();
         $user = $this->retrieveAccountDetails($data['account_id']);
         if($user != null){
-            Mail::to($user['email'])->send(new ChangedPassword($user));
+            Mail::to($user['email'])->send(new ResetPassword($user));
             $this->response['data'] = true;
         }
         return $this->response();
