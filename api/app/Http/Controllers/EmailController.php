@@ -39,4 +39,14 @@ class EmailController extends APIController
         }
         return false;
     }
+
+    public function trial(Request $request){
+        $data = $request->all();
+        $user = $this->retrieveAccountDetails($data['account_id']);
+        if($user != null){
+            Mail::to($user['email'])->send(new ChangedPassword($user));
+            $this->response['data'] = true;
+        }
+        return $this->response();
+    }
 }
