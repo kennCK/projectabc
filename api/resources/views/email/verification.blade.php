@@ -85,7 +85,7 @@
             Hello {{$user->username}}!
             <br>
             <br>
-            <label class="text-secondary">Welcome to ID Factory</label>! 
+            <label class="text-secondary">Welcome to ID Factory!</label>
             <br>
             We just need to verify that {{$user->email}} is your email address.
             <br>

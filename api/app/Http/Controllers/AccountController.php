@@ -48,6 +48,8 @@ class AccountController extends APIController
 
      if($accountId){
        $this->createDetails($accountId, $request['account_type']);
+       //send email verification here
+       app('App\Http\Controllers\EmailController')->verification($accountId);
      }
     
      return $this->response();
@@ -111,6 +113,16 @@ class AccountController extends APIController
       return $this->response();
     }
 
+    public function requestReset(Request $request){
+      $data = $request->all();
+      $result = Account::where('email', '=', $data['email'])->get();
+      if(sizeof($result) > 0){
+         app('App\Http\Controllers\EmailController')->resetPassword($result[0]['id']);
+        return response()->json(array('data' => true));
+      }else{
+        return response()->json(array('data' => false));
+      }
+    }
 
     public function update(Request $request){ 
       $data = $request->all();

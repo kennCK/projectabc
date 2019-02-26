@@ -13,33 +13,30 @@ class EmailController extends APIController
     function __construct(){  
     }
 
-    public function resetPassword(Request $request){
-    	$data = $request->all();
-    	$user = $this->retrieveAccountDetails($data['account_id']);
+    public function resetPassword($id){
+    	$user = $this->retrieveAccountDetails($id);
     	if($user != null){
     		Mail::to($user['email'])->send(new ResetPassword($user));
-    		$this->response['data'] = true;
+    		return true;
     	}
-    	return $this->response();
+    	return false;
     }
 
-    public function verification(Request $request){
-        $data = $request->all();
-        $user = $this->retrieveAccountDetails($data['account_id']);
+    public function verification($id){
+        $user = $this->retrieveAccountDetails($id);
         if($user != null){
             Mail::to($user['email'])->send(new Verification($user));
-            $this->response['data'] = true;
+            return true;
         }
-        return $this->response();
+        return false;
     }
 
-    public function changedPassword(Request $request){
-        $data = $request->all();
-        $user = $this->retrieveAccountDetails($data['account_id']);
+    public function changedPassword($id){
+        $user = $this->retrieveAccountDetails($id);
         if($user != null){
             Mail::to($user['email'])->send(new ChangedPassword($user));
-            $this->response['data'] = true;
+            return true;
         }
-        return $this->response();
+        return false;
     }
 }
