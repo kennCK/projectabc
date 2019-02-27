@@ -4,10 +4,16 @@
       <div class="header text-primary">
         <b>Invite your friends to ID Factory</b>
       </div>
+      <span class="alert alert-success" v-if="successMessage !== null">
+        {{successMessage}}
+      </span>
+      <span class="alert alert-danger" v-if="errorMessage !== null">
+        {{errorMessage}}
+      </span>
       <div class="inputs">
         <input type="email" class="form-control" placeholder="Type email address here..." v-model="email">
         <textarea class="form-control" rows="10" placeholder="Type your message here..." v-model="message"></textarea>
-        <button class="btn btn-primary" @click="send()">Send Invitation</button>
+        <button class="btn btn-primary btn-block" @click="send()">Send Invitation</button>
       </div>
     </div>
     <div class="results" v-if="data !== null">
@@ -16,10 +22,17 @@
           <tr>
             <td><b>Email</b></td>
             <td><b>Rewards</b></td>
+            <td><b>Status</b></td>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item, index in data" v-if="data !== null" class="item">
+            <td>{{item.address}}</td>
+            <td>
+              <label v-if="item.status === 'confirmed'">Free Subscription(Month)</label>
+              <label v-else>Waiting</label>
+            </td>
+            <td>{{item.status.toUpperCase()}}</td>
           </tr>
         </tbody>
       </table>
@@ -63,7 +76,19 @@
   .inputs input, .inputs textarea, .inputs button{
     margin-top: 10px !important;
   }
-
+  .inputs button, .inputs input{
+    height: 50px !important;
+  }
+  .alert{
+    width: 100%;
+    float: left;
+  }
+  @media (max-width: 992px){
+    .holder, .results, .invitation{
+      width: 100%;
+      margin: 0%;
+    }
+  }
 </style>
 <script>
 import ROUTER from '../../router'
@@ -73,15 +98,17 @@ import axios from 'axios'
 export default {
   mounted(){
     AUTH.checkPlan()
+    this.retrieve()
   },
   data(){
     return {
       user: AUTH.user,
       config: CONFIG,
-      errorMessage: null,
       data: null,
       email: null,
-      message: null
+      message: 'I\'d like to invite you on ID Factory. They help me ease on providing ID\'s to my employees and It\'s very easy to use. Register now!',
+      successMessage: null,
+      errorMessage: null
     }
   },
   components: {
@@ -91,6 +118,24 @@ export default {
     redirect(parameter){
       ROUTER.push(parameter)
     },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.user.userID,
+          column: 'account_id',
+          clause: '='
+        }]
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('invitations/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.data = response.data
+        }else{
+          this.data = null
+        }
+      })
+    },
     send(){
       if(AUTH.validateEmail(this.email) === true && this.message !== null){
         let parameter = {
@@ -98,15 +143,26 @@ export default {
           to_email: this.email,
           content: this.message
         }
-        this.APIRequest('emails/referral', parameter).done(response => {
-          if(response.data === true){
+        $('#loading').css({display: 'block'})
+        this.APIRequest('invitations/create', parameter).done(response => {
+          if(response.data > 0 && response.data !== null){
             // success message here
+            this.email = null
+            this.message = 'I\'d like to invite you on ID Factory. They help me ease on providing ID\'s to my employees and It\'s very easy to use. Register now!'
+            this.successMessage = 'Invitation Sent!'
+            this.errorMessage = null
+            this.retrieve()
           }else{
             // error message here
+            this.successMessage = null
+            this.errorMessage = response.error
+            $('#loading').css({display: 'none'})
           }
         })
       }else{
         // error message here
+        this.successMessage = null
+        this.errorMessage = 'Invalid email address. Please check and try again!'
       }
     }
   }

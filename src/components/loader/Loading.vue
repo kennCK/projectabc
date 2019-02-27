@@ -12,7 +12,7 @@
 <style scoped>
 .customModal{
   position: fixed;
-  background: rgba(254, 254, 254, 0.5);
+  background: rgba(254, 254, 254, 0);
   top: 0;
   right: 0;
   bottom: 0;
@@ -35,10 +35,8 @@
   margin-right: 40%;
   text-align: center;
   color: #22b173;
-  background: #fff;
   line-height: 30vh;
   border-radius: 5px;
-  border: solid 1px #eee;
 }
 .fa-spin{
 }

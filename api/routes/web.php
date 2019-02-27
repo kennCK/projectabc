@@ -382,3 +382,10 @@ Route::post('/shipping_addresses/retrieve', "ShippingAddressController@retrieve"
 Route::post('/shipping_addresses/update', "ShippingAddressController@update");
 Route::post('/shipping_addresses/delete', "ShippingAddressController@delete");
 Route::get('/shipping_addresses/test', 'ShippingAddressController@test');
+
+//Wishlists Controller
+Route::post('/invitations/create', "InvitationController@create");
+Route::post('/invitations/retrieve', "InvitationController@retrieve");
+Route::post('/invitations/update', "InvitationController@update");
+Route::post('/invitations/delete', "InvitationController@delete");
+Route::get('/invitations/test', 'InvitationController@test');
