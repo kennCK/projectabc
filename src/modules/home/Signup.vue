@@ -159,7 +159,8 @@ export default {
         email: this.email,
         password: this.password,
         config: CONFIG,
-        account_type: this.type
+        account_type: this.type,
+        referral_code: null
       }
       if(this.flag === true){
         $('#loading').css({'display': 'block'})

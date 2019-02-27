@@ -263,6 +263,14 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/refer_register/:email/:code',
+    name: 'referRegister',
+    component: resolve => require(['modules/home/referral.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
   }
   ]
 }

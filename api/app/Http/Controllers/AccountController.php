@@ -32,6 +32,7 @@ class AccountController extends APIController
 
     public function create(Request $request){
      $request = $request->all();
+     $referralCode = $request['referral_code'];
      $dataAccount = array(
       'code'  => $this->generateCode(),
       'password'        => Hash::make($request['password']),
@@ -50,6 +51,9 @@ class AccountController extends APIController
        $this->createDetails($accountId, $request['account_type']);
        //send email verification here
        app('App\Http\Controllers\EmailController')->verification($accountId);
+       if($referralCode != null){
+          app('App\Http\Controllers\InvitationController')->confirmReferral($referralCode);
+       }
      }
     
      return $this->response();
@@ -82,7 +86,7 @@ class AccountController extends APIController
       $code = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 32);
       $codeExist = Product::where('id', '=', $code)->get();
       if(sizeof($codeExist) > 0){
-        $this->generateCode();
+        $this->generateProductCode();
       }else{
         return $code;
       }

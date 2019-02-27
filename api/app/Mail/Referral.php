@@ -15,17 +15,19 @@ class Referral extends Mailable
     public $date;
     public $content;
     public $toEmail;
+    public $details;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user, $content, $toEmail)
+    public function __construct($user, $content, $toEmail, $details)
     {
         $this->user = $user;
         $this->content = $content;
         $this->toEmail = $toEmail;
+        $this->details = $details;
         $this->date = Carbon::now()->copy()->tz('Asia/Manila')->format('F j, Y');
     }
 

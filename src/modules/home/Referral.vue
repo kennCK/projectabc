@@ -6,8 +6,13 @@
           <img src="../../assets/img/logo.png" v-on:click="redirect('/')">
         </div>
         <span style="width:100%;float:left;text-align:center;font-size:20px;margin-bottom:20px;">
-          Register as partner to <b class="text-primary">ID FACTORY</b>
+          Register to <b class="text-primary">ID FACTORY</b>
         </span>
+        <span class="options">
+          <button v-bind:class="{'btn-primary': type === 'USER'}" class="btn btn-default" @click="type = 'USER'" style="margin-right: 1%;">Register me as Customer</button>
+          <button v-bind:class="{'btn-primary': type === 'PARTNER'}" class="btn btn-default" @click="type = 'PARTNER'" style="margin-left: 1%;">Register me as Partner</button>
+        </span>
+        
         <div class="signup-holder">
           <div class="login-message-holder login-spacer text-center" v-if="errorMessage != ''">
             <span class="text-danger text-center"><b>Oops!</b> {{errorMessage}}</span>
@@ -19,7 +24,7 @@
             </div>
             <div class="input-group login-spacer">
               <span class="input-group-addon" id="addon-1"><i class="fa fa-envelope"></i></span>
-              <input type="text" class="form-control form-control-login" placeholder="Email" aria-describedby="addon-1" v-model="email">
+              <input type="text" class="form-control form-control-login" placeholder="Email" aria-describedby="addon-1" v-model="email" disabled>
             </div>
             <div class="input-group login-spacer">
               <span class="input-group-addon" id="addon-2"><i class="fa fa-key"></i></span>
@@ -29,8 +34,7 @@
               <span class="input-group-addon" id="addon-2"><i class="fa fa-key"></i></span>
               <input type="password" class="form-control form-control-login" placeholder="Confirm Password" aria-describedby="addon-2" v-model="cpassword">
             </div>
-            <button class="btn btn-login-primary btn-block btn-login login-spacer" v-on:click="signUp()">Signup</button>
-            <button class="btn btn-login-danger btn-block btn-login login-spacer" v-on:click="redirect('/login')">Back to Login</button>  
+            <button class="btn btn-login-primary btn-block btn-login login-spacer" v-on:click="signUp()">Register</button>
           </div>
         </div>
       </div>
@@ -69,8 +73,8 @@
 }
 
 .signup-holder{
-  width: 80%;
-  margin: 0 10% 0 10%;
+  width: 90%;
+  margin: 0 5% 0 5%;
   float: left;
 }
 
@@ -120,6 +124,16 @@
 .account-type{
   width: 120px !important;
 }
+.options{
+  width: 90%;
+  margin:  0 5% 0 5%;
+  float: left;
+}
+.options button{
+  width: 49% !important;
+  float: left !important;
+  height: 60px !important;
+}
 /*-------------- Extra Small Screen for Mobile Phones --------------*/
 @media (max-width: 991px){
   .custom-holder{
@@ -138,11 +152,12 @@ export default {
   },
   data(){
     return {
+      code: this.$route.params.code,
       username: '',
-      email: '',
+      email: this.$route.params.email,
       password: '',
       cpassword: '',
-      type: 'PARTNER',
+      type: 'USER',
       errorMessage: '',
       user: AUTH.user,
       tokenData: AUTH.tokenData,
@@ -160,7 +175,7 @@ export default {
         password: this.password,
         config: CONFIG,
         account_type: this.type,
-        referral_code: null
+        referral_code: this.code
       }
       if(this.flag === true){
         $('#loading').css({'display': 'block'})

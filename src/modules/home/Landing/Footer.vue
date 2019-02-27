@@ -12,6 +12,7 @@
         <li class="link"><a @click="openModal('#termsAndConditionsModal')">Terms & Conditions</a></li>
         <li class="link"><a @click="openModal('#privacyModal')">Privacy Policy</a></li>
         <li class="link"><a @click="openModal('#termsAndConditionsModal')">Billing Terms</a></li>
+        <!-- <li class="link" @click="redirect('/refer_register/support@idfactory.ph/B0Z9DAKFGXHOLV8YPEIWCSRM53Q27T14N6UJ')">Referral</li> -->
       </ul>
        <ul class="footer-widget">
         <li class="title"><b>Resources</b></li>
