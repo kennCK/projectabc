@@ -5,18 +5,16 @@
     </button>
     <div class="image-list" v-if="data !== null">
       <div class="card" v-for="item, index in data">
-        <img class="card-img-top" :src="config.BACKEND_URL + item.url" alt="Card image cap" height="217">
+        <img class="card-img-top" v-bind:id="'card-img-top' + index" :src="config.BACKEND_URL + item.url" alt="Card image cap" height="217" download>
         <div class="card-body">
           <ul>
-            <a id='download-btn' href='/api/storage/app/images'
-   download='MyToy.jpeg' class="button">Download</a>
-            <li @click="download()" download="1.jpeg">Download</li>
-            <li style="border-right: 0px;" @click="remove(item)">Delete</li>
+            <li @click="download(config.BACKEND_URL + item.url, index)">Download</li>
+            <li style="border-right: 0px;" @click="remove(item.id)">Delete</li>
           </ul>
         </div>
       </div>
     </div>
-      <empty v-if="data === null" :title="'Looks like you have not uploaded an images!'" :action="'Click the Upload Image Button to get started.'">
+      <empty v-if="data === null" :title="'Looks like you have not uploaded an image!'" :action="'Click the Upload Image Button to get started.'">
       </empty>
   </div>
 </template>
@@ -153,11 +151,27 @@ export default {
         }
       })
     },
-    download(){
-      //
+    download(url, index){
+      // alert('Hello ')
+      // var canvas = document.getElementById('card-img-top1')
+      // var image = canvas[0].toDataURL('image/png')
+      // var link = document.createElement('a')
+      // link.download = 'my-image1.png'
+      // link.href = image
+      // link.click()
+      var x = document.createElement('a')
+      x.download = 'card-img-top' + index
+      x.href = url
+      document.body.appendChild(x)
+      x.click()
     },
-    remove(){
-      //
+    remove(id){
+      let parameter = {
+        id: id
+      }
+      this.APIRequest('account_images/delete', parameter).then(response => {
+        this.retrieve()
+      })
     }
   }
 }
