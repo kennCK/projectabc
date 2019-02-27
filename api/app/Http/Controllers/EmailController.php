@@ -6,6 +6,7 @@ use Mail;
 use App\Mail\ResetPassword;
 use App\Mail\Verification;
 use App\Mail\ChangedPassword;
+use App\Mail\Referral;
 use Illuminate\Http\Request;
 
 class EmailController extends APIController
@@ -38,6 +39,16 @@ class EmailController extends APIController
             return true;
         }
         return false;
+    }
+
+    public function referral(Request $request){
+        $data = $request->all();
+        $user = $this->retrieveAccountDetails($data['account_id']);
+        if($user != null){
+            Mail::to($data['email'])->send(new Referral($user, $data['message'], $data['email']));
+            $this->response['data'] = true;
+        }
+        return $this->response();
     }
 
     public function trial(Request $request){

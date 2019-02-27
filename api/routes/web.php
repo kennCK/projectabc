@@ -365,6 +365,7 @@ Route::post('/emails/delete', "EmailController@delete");
 Route::post('/emails/reset_password', 'EmailController@resetPassword');
 Route::post('/emails/verification', 'EmailController@verification');
 Route::post('/emails/changed_password', 'EmailController@changedPassword');
+Route::post('/emails/referral', 'EmailController@referral');
 Route::post('/emails/trial', 'EmailController@trial');
 
 //Wishlists Controller

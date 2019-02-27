@@ -255,6 +255,14 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/referrals',
+    name: 'referrals',
+    component: resolve => require(['modules/referral/Referrals.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
