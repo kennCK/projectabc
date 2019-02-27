@@ -13,7 +13,7 @@ class Referral extends Mailable
     use Queueable, SerializesModels;
     public $user;
     public $date;
-    public $referrerMessage;
+    public $content;
     public $toEmail;
 
     /**
@@ -21,10 +21,10 @@ class Referral extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $referrerMessage, $toEmail)
+    public function __construct($user, $content, $toEmail)
     {
         $this->user = $user;
-        $this->referrerMessage = $referrerMessage;
+        $this->content = $content;
         $this->toEmail = $toEmail;
         $this->date = Carbon::now()->copy()->tz('Asia/Manila')->format('F j, Y');
     }

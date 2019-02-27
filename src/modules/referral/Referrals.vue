@@ -95,8 +95,8 @@ export default {
       if(AUTH.validateEmail(this.email) === true && this.message !== null){
         let parameter = {
           account_id: this.user.userID,
-          email: this.email,
-          message: this.message
+          to_email: this.email,
+          content: this.message
         }
         this.APIRequest('emails/referral', parameter).done(response => {
           if(response.data === true){

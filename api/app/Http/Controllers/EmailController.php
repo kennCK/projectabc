@@ -45,7 +45,7 @@ class EmailController extends APIController
         $data = $request->all();
         $user = $this->retrieveAccountDetails($data['account_id']);
         if($user != null){
-            Mail::to($data['email'])->send(new Referral($user, $data['message'], $data['email']));
+            Mail::to($data['to_email'])->send(new Referral($user, $data['content'], $data['to_email']));
             $this->response['data'] = true;
         }
         return $this->response();

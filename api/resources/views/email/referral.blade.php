@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Invitation from {{$user->email}} to join ID Factory</title>
+        <title>Invitation from ID Factory</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -89,7 +89,7 @@
             <br>
             You have been invited by {{$user->email}} to join the ID Factory.
             <br>
-            {{$referrerMessage}}
+            {{$content}}
             <br>
             Click the button below to:
             <br>
