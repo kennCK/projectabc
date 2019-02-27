@@ -88,13 +88,13 @@
             <br>
             Click the button below to:
             <br>
-            <a href="http://idfactory.ph/#/reset_password/{{$user->code}}">
+            <a href="http://idfactory.ph/#/reset_password/{{$user->username}}/{{$user->code}}">
                 <button class="button">Reset</button>
             </a>
             <br>
         </span>
         <span class="text">
-            If you did not make this change, please <a href="http://idfactory.ph/#/reset_password/{{$user->code}}">reset</a> your password to secure your account and reply to this message to notify us.
+            If you did not make this change, please <a href="http://idfactory.ph/#/reset_password/{{$user->username}}/{{$user->code}}">reset</a> your password to secure your account and reply to this message to notify us.
         </span>
         <span class="footer">
             <label>Copyright @IDFACTORY.PH 2018</label>
