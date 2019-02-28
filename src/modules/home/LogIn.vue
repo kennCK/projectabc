@@ -7,7 +7,7 @@
       <span style="width:100%;float:left;text-align:center;font-size:20px;margin-bottom:20px;">
         Login to <b class="text-primary">ID FACTORY</b>
       </span>
-      <div class="login-message-holder login-spacer" v-if="errorMessage != ''">
+      <div class="login-message-holder login-spacer" v-if="errorMessage != null">
         <span class="text-danger"><b>Oops!</b> {{errorMessage}}</span>
       </div>
       <div>
@@ -224,7 +224,7 @@ export default {
     return {
       username: null,
       password: null,
-      errorMessage: '',
+      errorMessage: null,
       user: AUTH.user,
       tokenData: AUTH.tokenData,
       otpCode: null,
@@ -265,7 +265,7 @@ export default {
           column: 'code',
           clause: '='
         }, {
-          value: this.user.userID,
+          value: AUTH.otpDataHolder.userInfo.id,
           column: 'account_id',
           clause: '='
         }]
@@ -276,7 +276,7 @@ export default {
         if(response.data.length > 0){
           this.otpErrorCode = null
           $('#otpModal').modal('hide')
-          ROUTER.push('/templates')
+          AUTH.proceedToLogin()
         }else{
           // display invalid code here.
           this.otpErrorCode = 'Invalid OTP Code.'

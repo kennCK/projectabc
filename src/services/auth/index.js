@@ -43,6 +43,10 @@ export default {
     tokenTimer: false,
     verifyingToken: false
   },
+  otpDataHolder: {
+    userInfo: null,
+    data: null
+  },
   currentPath: false,
   setUser(userID, username, email, type, status, profile, checkout, plan, notifSetting){
     if(userID === null){
@@ -98,12 +102,11 @@ export default {
           }]
         }
         vue.APIRequest('accounts/retrieve', parameter).then(response => {
-          let profile = response.data[0].account_profile
-          let checkout = response.data[0].checkout
-          let plan = response.data[0].plan
-          let notifSetting = response.data[0].notification_settings
-          this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout, plan, notifSetting)
-          this.checkOtp()
+          if(response.data.length > 0){
+            this.otpDataHolder.userInfo = userInfo
+            this.otpDataHolder.data = response.data
+            this.checkOtp(response.data[0].notification_settings)
+          }
         })
         // this.retrieveNotifications(userInfo.id)
         this.retrieveMessages(userInfo.id, userInfo.account_type)
@@ -263,9 +266,9 @@ export default {
       return true
     }
   },
-  checkOtp(){
-    if(this.user.notifSetting !== null){
-      if(parseInt(this.user.notifSetting.email_otp) === 1 || parseInt(this.user.notifSetting.sms_otp) === 1){
+  checkOtp(setting){
+    if(setting !== null){
+      if(parseInt(setting.email_otp) === 1 || parseInt(setting.sms_otp) === 1){
         // ask otp code here
         $('#otpModal').modal({
           backdrop: 'static',
@@ -273,10 +276,20 @@ export default {
           show: true
         })
       }else{
-        ROUTER.push('/templates')
+        this.proceedToLogin()
       }
     }else{
-      ROUTER.push('/templates')
+      this.proceedToLogin()
     }
+  },
+  proceedToLogin(){
+    let userInfo = this.otpDataHolder.userInfo
+    let data = this.otpDataHolder.data
+    let profile = data[0].account_profile
+    let checkout = data[0].checkout
+    let plan = data[0].plan
+    let notifSetting = data[0].notification_settings
+    this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout, plan, notifSetting)
+    ROUTER.push('/templates')
   }
 }
