@@ -389,3 +389,11 @@ Route::post('/invitations/retrieve', "InvitationController@retrieve");
 Route::post('/invitations/update', "InvitationController@update");
 Route::post('/invitations/delete', "InvitationController@delete");
 Route::get('/invitations/test', 'InvitationController@test');
+
+
+//Notification Settings Controller
+Route::post('/notification_settings/create', "NotificationSettingController@create");
+Route::post('/notification_settings/retrieve', "NotificationSettingController@retrieve");
+Route::post('/notification_settings/update', "NotificationSettingController@update");
+Route::post('/notification_settings/delete', "NotificationSettingController@delete");
+Route::get('/notification_settings/test', 'NotificationSettingController@test');

@@ -7,6 +7,8 @@ use App\Mail\ResetPassword;
 use App\Mail\Verification;
 use App\Mail\ChangedPassword;
 use App\Mail\Referral;
+use App\Mail\LoginEmail;
+use App\Mail\OtpEmail;
 use Illuminate\Http\Request;
 
 class EmailController extends APIController
@@ -36,6 +38,24 @@ class EmailController extends APIController
         $user = $this->retrieveAccountDetails($id);
         if($user != null){
             Mail::to($user['email'])->send(new ChangedPassword($user));
+            return true;
+        }
+        return false;
+    }
+
+    public function loginEmail($id){
+        $user = $this->retrieveAccountDetails($id);
+        if($user != null){
+            Mail::to($user['email'])->send(new LoginEmail($user));
+            return true;
+        }
+        return false;
+    }
+
+    public function otpEmail($id, $otpCode){
+        $user = $this->retrieveAccountDetails($id);
+        if($user != null){
+            Mail::to($user['email'])->send(new OtpEmail($user, $otpCode));
             return true;
         }
         return false;

@@ -19,9 +19,9 @@
   left: 0;
   width: 100%;
   z-index: 100000 !important;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
+  -webkit-transition: all 0.1s;
+  -moz-transition: all 0.1s;
+  transition: all 0.1s;
   text-align: center;
   display: none;
 }
@@ -39,5 +39,6 @@
   border-radius: 5px;
 }
 .fa-spin{
+  animation-duration: 0.50s;
 }
 </style>

@@ -20,12 +20,6 @@
           <input type="password" class="form-control form-control-login" placeholder="********" aria-describedby="addon-2" v-model="password" @keyup.enter="logIn()">
         </div>
         <button class="btn btn-login-primary btn-block btn-login login-spacer" v-on:click="logIn()">Login</button>
-        <!-- <div class="form-check">
-          <label class="form-check-label">
-            <input type="checkbox" class="form-check-input">
-            Keep me logged in
-          </label>
-        </div> -->
         <button class="btn btn-login-warning btn-block btn-login login-spacer" v-on:click="redirect('/request_reset_password')">Forgot your Password?</button>
         <br>
         <div class="container-fluid separator">
@@ -33,7 +27,31 @@
         </div>
         <br>
         <button class="btn btn-blue btn-block btn-login login-spacer" v-on:click="redirect('/signup')">Create Account Now!</button>
-        <!-- <button class="btn btn-blue btn-block btn-login login-spacer" v-on:click="redirect('/login_verification/kennette/A-7FYU9RAIZSDGP2WL05H1XJVN3EKCBOMQT864')">Recover Now!</button> -->
+      </div>
+    </div>
+    <div class="modal fade" id="otpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-primary">
+            <h5 class="modal-title" id="exampleModalLabel">OTP Confirmation</h5>
+            <button type="button" class="close" @click="cancelOTP()" aria-label="Close">
+              <span aria-hidden="true" class="text-white">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <span v-if="otpErrorCode !== null" class="text-danger text-center">
+                <label><b>Opps! </b>{{otpErrorCode}}</label>
+            </span>
+            <div class="form-group">
+              <label for="exampleInputEmail1">OTP Code</label>
+              <input type="text" class="form-control" placeholder="Type code here..." v-model="otpCode">
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-danger" @click="cancelOTP()">Cancel</button>
+              <button type="button" class="btn btn-primary" @click="continueLoginViaOTP()">Continue</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -208,7 +226,9 @@ export default {
       password: null,
       errorMessage: '',
       user: AUTH.user,
-      tokenData: AUTH.tokenData
+      tokenData: AUTH.tokenData,
+      otpCode: null,
+      otpErrorCode: null
     }
   },
   methods: {
@@ -218,7 +238,6 @@ export default {
         AUTH.authenticate(this.username, this.password, (response) => {
           this.errorMessage = null
           $('#loading').css({'display': 'none'})
-          ROUTER.push('/account_settings')
         }, (response, status) => {
           $('#loading').css({'display': 'none'})
           this.errorMessage = (status === 401) ? 'Username and Password did not matched.' : 'Cannot log in? Contact us through email: support@idfactories.com'
@@ -232,6 +251,36 @@ export default {
     },
     request(parameter){
       this.APIRequest(parameter, {}).then(response => {
+      })
+    },
+    cancelOTP(){
+      AUTH.deaunthenticate()
+      $('#otpModal').modal('hide')
+    },
+    continueLoginViaOTP(){
+      // compare otp here
+      let parameter = {
+        condition: [{
+          value: this.otpCode,
+          column: 'code',
+          clause: '='
+        }, {
+          value: this.user.userID,
+          column: 'account_id',
+          clause: '='
+        }]
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('notification_settings/retrieve', parameter).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data.length > 0){
+          this.otpErrorCode = null
+          $('#otpModal').modal('hide')
+          ROUTER.push('/templates')
+        }else{
+          // display invalid code here.
+          this.otpErrorCode = 'Invalid OTP Code.'
+        }
       })
     }
   }

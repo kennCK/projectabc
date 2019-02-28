@@ -18,6 +18,7 @@ export default {
       current: null,
       prevCurrent: null
     },
+    notifSetting: null,
     messages: {
       data: null,
       current: 1,
@@ -43,7 +44,7 @@ export default {
     verifyingToken: false
   },
   currentPath: false,
-  setUser(userID, username, email, type, status, profile, checkout, plan){
+  setUser(userID, username, email, type, status, profile, checkout, plan, notifSetting){
     if(userID === null){
       username = null
       email = null
@@ -52,6 +53,7 @@ export default {
       profile = null
       checkout = 0
       plan = null
+      notifSetting = null
     }
     this.user.userID = userID * 1
     this.user.username = username
@@ -61,6 +63,7 @@ export default {
     this.user.profile = profile
     this.user.checkout = checkout
     this.user.plan = plan
+    this.user.notifSetting = notifSetting
     localStorage.setItem('account_id', this.user.userID)
   },
   setToken(token){
@@ -98,8 +101,9 @@ export default {
           let profile = response.data[0].account_profile
           let checkout = response.data[0].checkout
           let plan = response.data[0].plan
-          this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout, plan)
-          ROUTER.push('/templates')
+          let notifSetting = response.data[0].notification_settings
+          this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout, plan, notifSetting)
+          this.checkOtp()
         })
         // this.retrieveNotifications(userInfo.id)
         this.retrieveMessages(userInfo.id, userInfo.account_type)
@@ -131,7 +135,8 @@ export default {
           let profile = response.data[0].account_profile
           let checkout = response.data[0].checkout
           let plan = response.data[0].plan
-          this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout, plan)
+          let notifSetting = response.data[0].notification_settings
+          this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout, plan, notifSetting)
         }).done(response => {
           this.tokenData.verifyingToken = false
           let location = window.location.href
@@ -256,6 +261,22 @@ export default {
       return false
     }else{
       return true
+    }
+  },
+  checkOtp(){
+    if(this.user.notifSetting !== null){
+      if(parseInt(this.user.notifSetting.email_otp) === 1 || parseInt(this.user.notifSetting.sms_otp) === 1){
+        // ask otp code here
+        $('#otpModal').modal({
+          backdrop: 'static',
+          keyboard: true,
+          show: true
+        })
+      }else{
+        ROUTER.push('/templates')
+      }
+    }else{
+      ROUTER.push('/templates')
     }
   }
 }

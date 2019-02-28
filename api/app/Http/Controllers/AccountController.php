@@ -11,6 +11,7 @@ use App\Product;
 use App\CheckoutItem;
 use App\Plan;
 use App\Rating;
+use App\NotificationSetting;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -183,6 +184,7 @@ class AccountController extends APIController
           $result[$i]['account_profile'] = (sizeof($accountProfileResult) > 0) ? $accountProfileResult[0] : null;
           $result[$i]['checkout'] = $this->getCheckoutItem($accountId);
           $result[$i]['plan'] = $this->getCurrentPlan($accountId, $result[$i]['created_at']);
+          $result[$i]['notification_settings'] = $this->getNotificationSettings($accountId);
           $i++;
         }
         return response()->json(array('data' => $result));
@@ -250,6 +252,11 @@ class AccountController extends APIController
         }
       }
       return response()->json($response);
+    }
+
+    public function getNotificationSettings($accountId){
+      $result = NotificationSetting::where('account_id', '=', $accountId)->get();
+      return (sizeof($result) > 0) ? $result[0] : null;
     }
 
     public function checkPlan($accountId){
