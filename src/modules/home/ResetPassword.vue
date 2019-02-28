@@ -143,7 +143,9 @@ export default {
           'code': this.code,
           'password': this.password
         }
+        $('#loading').css({display: 'block'})
         this.APIRequest('accounts/update', parameter).then(response => {
+          $('#loading').css({display: 'none'})
           if(response.data === true){
             this.updateFlag = true
           }else{

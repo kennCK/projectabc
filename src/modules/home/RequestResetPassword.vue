@@ -125,7 +125,9 @@ export default {
         email: this.email
       }
       if(this.flag === true){
+        $('#loading').css({display: 'block'})
         this.APIRequest('accounts/request_reset', parameter).then(response => {
+          $('#loading').css({display: 'none'})
           this.hide = true
         })
       }
