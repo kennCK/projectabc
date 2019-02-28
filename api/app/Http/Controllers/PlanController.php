@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Plan;
 use App\PaypalTransaction;
 use App\StripeWebhook;
+use App\Invitation;
 use Carbon\Carbon;
 class PlanController extends APIController
 {
@@ -221,5 +222,49 @@ class PlanController extends APIController
       }else{
         return 'IDFO-0001';
       }
+    }
+
+    public function applyRewards(Request $request){
+      $data = $request->all();
+      $accountId = $data['account_id'];
+      $result = Plan::where('account_id', '=', $accountId)->where('status', '=', 'completed')->orderBy('end')->first();
+      $insertData = array(
+        'account_id' => $accountId,
+        'coupon'     => null,
+        'payment_type' => 'reward',
+        'payment_payload' => null,
+        'payment_payload_value' => null,
+        'order_number' => $this->getOrderNumber(),
+        'price' => 0,
+        'tax' => 0,
+        'total_amount'  => 0,
+        'discount' => 0,
+        'status'  => 'completed',
+        'created_at'  => Carbon::now()
+      );
+      if($result){
+        $insertData['start'] = Carbon::createFromFormat('Y-m-d H:i:s', $result->end)->addDay(1);
+        $insertData['end'] = Carbon::createFromFormat('Y-m-d H:i:s', $result->end)->addDay(1)->addMonth(1);
+        $insertData['title'] = $result->title;
+        $insertData['sub_total'] = $result->price;
+        $insertData['price'] = $result->price;
+      }else{
+        $insertData['start'] = Carbon::now();
+        $insertData['end'] = Carbon::now()->addMonth(1);
+        $insertData['title'] = 'basic';
+        $insertData['sub_total'] = 499;
+        $insertData['price'] = 499;
+      }
+
+      $this->model = new Plan();
+      $this->insertDB($insertData);
+
+      if($this->response['data'] > 0){
+        Invitation::where('id', '=', $data['id'])->update(array(
+          'status'  => $data['status'],
+          'updated_at' => Carbon::now()
+        ));
+      }
+      return $this->response();
     }
 }

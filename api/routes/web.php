@@ -337,6 +337,7 @@ Route::post('/plans/create', "PlanController@create");
 Route::post('/plans/retrieve', "PlanController@retrieve");
 Route::post('/plans/retrieve_summary', "PlanController@retrieveSummary");
 Route::post('/plans/update', "PlanController@update");
+Route::post('/plans/apply_rewards', "PlanController@applyRewards");
 Route::post('/plans/delete', "PlanController@delete");
 Route::get('/plans/test', 'PlanController@test');
 
@@ -387,6 +388,7 @@ Route::get('/shipping_addresses/test', 'ShippingAddressController@test');
 Route::post('/invitations/create', "InvitationController@create");
 Route::post('/invitations/retrieve', "InvitationController@retrieve");
 Route::post('/invitations/update', "InvitationController@update");
+Route::post('/invitations/apply', "InvitationController@apply");
 Route::post('/invitations/delete', "InvitationController@delete");
 Route::get('/invitations/test', 'InvitationController@test');
 

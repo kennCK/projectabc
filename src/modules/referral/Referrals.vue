@@ -17,22 +17,25 @@
       </div>
     </div>
     <div class="results" v-if="data !== null">
-      <table class="table table-bordered table-hover table-responsive" style="margin-top: 25px;">
+      <table class="table table-bordered table-responsive" style="margin-top: 25px;">
         <thead>
           <tr>
             <td><b>Email</b></td>
             <td><b>Rewards</b></td>
-            <td><b>Status</b></td>
+            <td><b>Action</b></td>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item, index in data" v-if="data !== null" class="item">
             <td>{{item.address}}</td>
             <td>
-              <label v-if="item.status === 'confirmed'">Free Subscription(Month)</label>
+              <label v-if="item.status === 'confirmed' || item.status === 'used'">Free Subscription(Month)</label>
               <label v-else>Waiting</label>
             </td>
-            <td>{{item.status.toUpperCase()}}</td>
+            <td>
+              <button v-if="item.status === 'confirmed'" class="btn btn-primary" @click="apply(item)">Apply</button>
+              <label v-if="item.status === 'used'" class="text-danger">Applied</label>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -50,15 +53,14 @@
 	  margin-top: 25px;
 	  margin-bottom: 50px;
 	}
-  .results, .invitation{
-    width: 48%;
-    float: left;
-  }
   .results{
-    margin-left: 2%;
+    float: left;
+    width: 68%;
   }
   .invitation{
     margin-right: 2%;
+    float: left;
+    width: 30%;
   }
   .item:hover{
     cursor: pointer;
@@ -164,6 +166,18 @@ export default {
         this.successMessage = null
         this.errorMessage = 'Invalid email address. Please check and try again!'
       }
+    },
+    apply(item){
+      let parameter = {
+        id: item.id,
+        account_id: this.user.userID,
+        status: 'used'
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('plans/apply_rewards', parameter).then(response => {
+        this.retrieve()
+        AUTH.checkAuthentication()
+      })
     }
   }
 }
