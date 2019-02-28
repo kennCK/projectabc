@@ -53,8 +53,8 @@
   text-align: center;
 }
 .signup-header img{
-  width: 70px;
-  height: 70px;
+  height: 100px !important;
+  width: 100px !important;
 }
 
 .signup-header img:hover{

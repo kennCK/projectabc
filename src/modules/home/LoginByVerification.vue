@@ -2,25 +2,11 @@
   <div class="row">
     <div class="col-md-6 col-lg-4 mx-auto signup-container">
       <div class="login-wrapper">
-        <div class="site-title">
-          <img src="../../assets/img/logo.png">
-          <span class="app-name">
-            <label class="text-primary">
-              <b class="text-primary">ID FACTORY</b>
-            </label> 
-          </span>
+        <div class="signup-header" style="margin-top: 50px;">
+          <img src="../../assets/img/logo.png" v-on:click="redirect('/')">
         </div>
-        <br>
-        <br>
-<!--         <span class="login-spacer">
-          <h1 class="text-primary text-center">
-            <i class="fa fa-check-circle"></i>
-          </h1>
-        </span> -->
-        <span class="login-spacer">
-          <h6 class="text-center text-primary">
-            Verification
-          </h6>
+        <span style="width:100%;float:left;text-align:center;font-size:20px;margin-bottom:10px;">
+          Verification
         </span>
         <div class="signup-holder">
           <br>  
@@ -36,100 +22,26 @@
     </div>
   </div>
 </template>
-<script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-export default {
-  mounted(){
-    this.username = this.$route.params.username
-    this.code = this.$route.params.code
-    this.retrieveAccount()
-    this.setMessage()
-    if(this.account !== null){
-      this.validate()
-    }
-  },
-  data(){
-    return {
-      username: this.$route.params.username,
-      code: this.$route.params.code,
-      account: null,
-      flag: null,
-      message: null,
-      user: AUTH.user,
-      verified: false
-    }
-  },
-  methods: {
-    setMessage(){
-      this.message = 'Hi ' + this.username + '! Please click the button to verify your email address here in ClassWorx'
-    },
-    retrieveAccount(){
-      let parameter = {
-        'condition': [
-          {
-            'column': 'username',
-            'value': this.username,
-            'clause': '='
-          },
-          {
-            'column': 'code',
-            'value': this.code,
-            'clause': '='
-          }
-        ]
-      }
-      this.APIRequest('accounts/retrieve', parameter).then(response => {
-        if(response.data.length > 0){
-          this.account = response.data[0]
-        }else{
-          this.account = null
-        }
-      })
-    },
-    update(){
-      this.retrieveAccount()
-      console.log(this.account)
-      if(this.validate() === true && this.account !== null){
-        let parameter = {
-          'id': this.account.id,
-          'status': 'VERIFIED'
-        }
-        this.APIRequest('accounts/update_verification', parameter).then(response => {
-          if(response.data === true){
-            this.message = 'Congratulations! You\'ve have successfully verified your account. Kindly click Continue Button to login.'
-            this.flag = true
-            this.verified = true
-          }else{
-            this.flag = false
-            this.verified = false
-            this.message = 'Sorry! Internal Error. Kindly verify again or contact the system support.'
-          }
-        })
-      }else{
-        this.flag = false
-        this.message = 'Sorry! Internal Error. Kindly verify again or contact the system support.'
-      }
-    },
-    validate(){
-      if(this.username !== null || this.code !== null){
-        this.flag = true
-        return true
-      }else{
-        this.flag = false
-        return false
-      }
-    },
-    redirect(parameter){
-      ROUTER.push(parameter)
-    }
-  }
-}
-</script>
-<style>
+<style scoped>
 .signup-container{
   margin-top: 50px;
 }
+.signup-header{
+  height: 100px;
+  color: #006600;
+  width: 100%;
+  float: left;
+  text-align: center;
+}
+
+.signup-header img{
+  height: 100px !important;
+  width: 100px !important;
+}
+.signup-header img:hover{
+  cursor: pointer;
+}
+
 
 .header-title{
   width: 90%;
@@ -187,3 +99,92 @@ export default {
   }
 }
 </style>
+<script>
+import ROUTER from '../../router'
+import AUTH from '../../services/auth'
+export default {
+  mounted(){
+    this.username = this.$route.params.username
+    this.code = this.$route.params.code
+    this.retrieveAccount()
+    this.setMessage()
+    if(this.account !== null){
+      this.validate()
+    }
+  },
+  data(){
+    return {
+      username: this.$route.params.username,
+      code: this.$route.params.code,
+      account: null,
+      flag: null,
+      message: null,
+      user: AUTH.user,
+      verified: false
+    }
+  },
+  methods: {
+    setMessage(){
+      this.message = 'Hi ' + this.username + '! Please click the button to verify your email address here in ClassWorx'
+    },
+    retrieveAccount(){
+      let parameter = {
+        'condition': [
+          {
+            'column': 'username',
+            'value': this.username,
+            'clause': '='
+          },
+          {
+            'column': 'code',
+            'value': this.code,
+            'clause': '='
+          }
+        ]
+      }
+      this.APIRequest('accounts/retrieve', parameter).then(response => {
+        if(response.data.length > 0){
+          this.account = response.data[0]
+        }else{
+          this.account = null
+        }
+      })
+    },
+    update(){
+      this.retrieveAccount()
+      if(this.validate() === true && this.account !== null){
+        let parameter = {
+          'id': this.account.id,
+          'status': 'VERIFIED'
+        }
+        this.APIRequest('accounts/update_verification', parameter).then(response => {
+          if(response.data === true){
+            this.message = 'Congratulations! You\'ve have successfully verified your account. Kindly click Continue Button to login.'
+            this.flag = true
+            this.verified = true
+          }else{
+            this.flag = false
+            this.verified = false
+            this.message = 'Sorry! Internal Error. Kindly verify again or contact the system support.'
+          }
+        })
+      }else{
+        this.flag = false
+        this.message = 'Sorry! Internal Error. Kindly verify again or contact the system support.'
+      }
+    },
+    validate(){
+      if(this.username !== null || this.code !== null){
+        this.flag = true
+        return true
+      }else{
+        this.flag = false
+        return false
+      }
+    },
+    redirect(parameter){
+      ROUTER.push(parameter)
+    }
+  }
+}
+</script>

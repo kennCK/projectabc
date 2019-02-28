@@ -5,10 +5,8 @@
         <img src="../../assets/img/logo.png" v-on:click="redirect('/')">
       </div>
       <span style="width:100%;float:left;text-align:center;font-size:20px;margin-bottom:20px;">
-        Request to Reset
+        Reset Password
       </span>
-
-      <span class="text-center form-spacer"><h6 class="text-center text-primary">Reset Password</h6></span>
       <div class="input-holder">
         <div class="login-message-holder login-spacer" v-if="errorMessage != '' && updateFlag === false">
             <span class="text-danger text-center" v-if="errorMessage !== null"><b>Oops!</b> {{errorMessage}}</span>
@@ -33,6 +31,86 @@
     </div>
   </div>
 </template>
+<style scoped>
+.custom-holder{
+  margin-top: 100px;
+}
+
+.signup-header{
+  height: 100px;
+  color: #006600;
+  width: 100%;
+  float: left;
+  text-align: center;
+}
+
+.signup-header img{
+  height: 100px !important;
+  width: 100px !important;
+}
+.signup-header img:hover{
+  cursor: pointer;
+}
+
+.header-title{
+  width: 90%;
+  margin:  25px 5% 0 5%;
+  font-size: 24px;
+  font-weight: 700px;
+}
+.input-holder{
+  width: 90%;
+  margin:  0 5% 0 5%;
+}
+
+.form-control{
+  height: 45px !important;
+}
+.btn-login-primary{
+  background: #22b173;
+  color: #fff;
+  height: 45px !important;
+}
+.btn-login-primary:hover{
+  border: solid 1px #3f0050;
+}
+.btn-login-danger{
+  background: #ff0000;
+  color: #fff;
+  height: 45px !important;
+}
+.btn-login-danger:hover{
+  border: solid 1px #a90201;
+}
+.site-title{
+  margin-top: 25px;
+  width: 100%;
+  float: left;
+}
+.site-title img{
+  width: 50px;
+  width: 50px;
+  float: left;
+  margin-right: 10px;
+  margin-left: 5%;
+}
+.site-title .app-name{
+  float: left;
+}
+.recover-addon{
+  width: 170px;
+}
+.form-spacer{
+  margin-top: 10px;
+}
+/*-------------- Extra Small Screen for Mobile Phones --------------*/
+@media (max-width: 991px){
+  .custom-holder{
+    box-shadow: 0 0 0 0 #fff !important;
+    margin-top: 50px !important;
+  }
+}
+</style>
 <script>
 import ROUTER from '../../router'
 export default {
@@ -95,67 +173,3 @@ export default {
   }
 }
 </script>
-<style>
-.custom-holder{
-  margin-top: 100px;
-}
-
-.header-title{
-  width: 90%;
-  margin:  25px 5% 0 5%;
-  font-size: 24px;
-  font-weight: 700px;
-}
-.input-holder{
-  width: 90%;
-  margin:  0 5% 0 5%;
-}
-
-.form-control{
-  height: 45px !important;
-}
-.btn-login-primary{
-  background: #22b173;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-primary:hover{
-  border: solid 1px #3f0050;
-}
-.btn-login-danger{
-  background: #ff0000;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-danger:hover{
-  border: solid 1px #a90201;
-}
-.site-title{
-  margin-top: 25px;
-  width: 100%;
-  float: left;
-}
-.site-title img{
-  width: 50px;
-  width: 50px;
-  float: left;
-  margin-right: 10px;
-  margin-left: 5%;
-}
-.site-title .app-name{
-  float: left;
-}
-.recover-addon{
-  width: 170px;
-}
-.form-spacer{
-  margin-top: 10px;
-}
-/*-------------- Extra Small Screen for Mobile Phones --------------*/
-@media (max-width: 991px){
-  .custom-holder{
-    box-shadow: 0 0 0 0 #fff !important;
-    margin-top: 50px !important;
-  }
-}
-</style>
