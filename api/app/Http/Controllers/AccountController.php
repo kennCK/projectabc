@@ -313,7 +313,7 @@ class AccountController extends APIController
       }else{
         return array(
           'title' => 'Trial',
-          'end_human' => Carbon::createFromFormat('Y-m-d H:i:s', $createdAt)->copy()->tz('Asia/Manila')->format('F j, Y')
+          'end_human' => Carbon::createFromFormat('Y-m-d H:i:s', $createdAt)->addMonth()->copy()->tz('Asia/Manila')->format('F j, Y')
         );
       }
     }
