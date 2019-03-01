@@ -69,5 +69,11 @@ class InvitationController extends APIController
          'status' => 'confirmed',
          'updated_at' => Carbon::now()
       ));
+
+      $referrral = Invitation::where('code', '=', $code)->get();
+      
+      if(sizeof($referrral) > 0){
+         app('App\Http\Controllers\EmailController')->notifyReferrer($referrral[0]['account_id']);
+      }
    }
 }

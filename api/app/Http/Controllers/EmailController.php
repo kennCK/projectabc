@@ -9,6 +9,7 @@ use App\Mail\ChangedPassword;
 use App\Mail\Referral;
 use App\Mail\LoginEmail;
 use App\Mail\OtpEmail;
+use App\Mail\NotifyReferrer;
 use Illuminate\Http\Request;
 
 class EmailController extends APIController
@@ -52,6 +53,15 @@ class EmailController extends APIController
         return false;
     }
 
+    public function notifyReferrer($id){
+        $user = $this->retrieveAccountDetails($id);
+        if($user != null){
+            Mail::to($user['email'])->send(new NotifyReferrer($user));
+            return true;
+        }
+        return false;
+    }
+
     public function otpEmail($id, $otpCode){
         $user = $this->retrieveAccountDetails($id);
         if($user != null){
@@ -75,7 +85,7 @@ class EmailController extends APIController
         $data = $request->all();
         $user = $this->retrieveAccountDetails($data['account_id']);
         if($user != null){
-            Mail::to($user['email'])->send(new ResetPassword($user));
+            Mail::to($user['email'])->send(new NotifyReferrer($user));
             $this->response['data'] = true;
         }
         return $this->response();

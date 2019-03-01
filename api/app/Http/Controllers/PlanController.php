@@ -252,8 +252,8 @@ class PlanController extends APIController
         $insertData['start'] = Carbon::now();
         $insertData['end'] = Carbon::now()->addMonth(1);
         $insertData['title'] = 'basic';
-        $insertData['sub_total'] = 499;
-        $insertData['price'] = 499;
+        $insertData['sub_total'] = 399;
+        $insertData['price'] = 399;
       }
 
       $this->model = new Plan();
