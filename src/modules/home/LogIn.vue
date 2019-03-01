@@ -240,7 +240,7 @@ export default {
           $('#loading').css({'display': 'none'})
         }, (response, status) => {
           $('#loading').css({'display': 'none'})
-          this.errorMessage = (status === 401) ? 'Username and Password did not matched.' : 'Cannot log in? Contact us through email: support@idfactories.com'
+          this.errorMessage = (status === 401) ? 'Username and Password did not matched.' : 'Cannot log in? Contact us through email: support@idfactory.ph'
         })
       }else{
         this.errorMessage = 'Please fill up all the required fields.'
