@@ -1,5 +1,5 @@
 <template>
-	<div class="cw-banner">
+	<div class="cw-banner bg-secondary">
     <div class="text text-white">
       <span class="title">
         <h1>Design an ID. We Print.</h1>
@@ -31,7 +31,6 @@
   width: 100%;
   float: left;
   height: 600px;
-  background: #028170;
 }
 .text{
   width: 45%;

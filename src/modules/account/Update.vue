@@ -12,9 +12,9 @@
       <profile v-if="menu[0].flag === true"></profile>
       <account v-if="menu[1].flag === true"></account>
       <payment v-if="menu[2].flag === true"></payment>
-      <billing-information v-if="menu[3].flag === true"></billing-information>
-      <merchant v-if="menu[4].flag === true"></merchant>
-      <notification v-if="menu[5].flag === true"></notification>
+      <!-- <billing-information v-if="menu[3].flag === true"></billing-information> -->
+      <merchant v-if="menu[3].flag === true"></merchant>
+      <notification v-if="menu[4].flag === true"></notification>
     </div>
   </div>
 
@@ -100,7 +100,7 @@ export default {
         {title: 'Profile', flag: true, type: 'profile'},
         {title: 'Account', flag: false, type: 'account'},
         {title: 'Payment Accounts', flag: false, type: 'payment_method'},
-        {title: 'Billing Information', flag: false, type: 'billing_information'},
+        // {title: 'Billing Information', flag: false, type: 'billing_information'},
         {title: 'Merchant Setting', flag: false, type: 'merchant'},
         {title: 'Notifications', flag: false, type: 'notification'}
       ],

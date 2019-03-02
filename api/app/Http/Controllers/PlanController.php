@@ -227,6 +227,7 @@ class PlanController extends APIController
     public function applyRewards(Request $request){
       $data = $request->all();
       $accountId = $data['account_id'];
+      $account = $this->retrieveAccountDetails($accountId);
       $result = Plan::where('account_id', '=', $accountId)->where('status', '=', 'completed')->orderBy('end')->first();
       $insertData = array(
         'account_id' => $accountId,
@@ -249,8 +250,18 @@ class PlanController extends APIController
         $insertData['sub_total'] = $result->price;
         $insertData['price'] = $result->price;
       }else{
-        $insertData['start'] = Carbon::now();
-        $insertData['end'] = Carbon::now()->addMonth(1);
+        $current = Carbon::now();
+        $dayInMonth = Carbon::createFromFormat('Y-m-d H:i:s', $account['created_at'])->daysInMonth;
+        $accountDate = Carbon::createFromFormat('Y-m-d H:i:s', $account['created_at']);
+        $diff = $accountDate->diffInDays($current, false);
+        if($diff <= $dayInMonth){
+          $insertData['start'] = Carbon::createFromFormat('Y-m-d H:i:s', $account['created_at'])->addDay(1);
+          $insertData['end'] = Carbon::createFromFormat('Y-m-d H:i:s', $account['created_at'])->addDay(1)->addMonth(1);
+        }else{
+          $insertData['start'] = Carbon::now();
+          $insertData['end'] = Carbon::now()->addMonth(1);
+        }
+        
         $insertData['title'] = 'basic';
         $insertData['sub_total'] = 399;
         $insertData['price'] = 399;
