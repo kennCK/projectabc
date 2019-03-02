@@ -30,13 +30,15 @@
 .cw-banner{
   width: 100%;
   float: left;
-  height: 600px;
+  min-height: 100px;
+  overflow-y: hidden;
 }
 .text{
   width: 45%;
   float: left;
   margin-left: 5%;
   margin-top: 150px;
+  margin-bottom: 100px;
 }
 .text .title{
   width: 100%;
@@ -73,6 +75,13 @@
 
   .image{
     display: none;
+  }
+  .btn-banner{
+    width: 100%;
+    float: left;
+    margin-left: 0%;
+    margin-right: 0%;
+    padding: 0;
   }
 }
 </style>
