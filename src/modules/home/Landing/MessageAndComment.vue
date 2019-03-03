@@ -48,8 +48,9 @@
   margin-right: 5%;
   margin-left: 5%;
   float: left;
-  margin-top: 150px;
   display: block;
+  margin-top: 50px;
+  margin-bottom: 100px;
 }
 
 @media screen and (max-width: 992px){

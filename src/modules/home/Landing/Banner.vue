@@ -13,7 +13,7 @@
       </span>
     </div>
     <div class="image">
-      <img src="../../../assets/img/banner.png" style="margin-bottom: 5px;" width="100%">
+      <img src="../../../assets/img/banner.png" width="100%">
     </div>
 	</div>
 </template>
@@ -32,6 +32,7 @@
   float: left;
   min-height: 100px;
   overflow-y: hidden;
+  position: relative;
 }
 .text{
   width: 45%;
@@ -55,11 +56,10 @@
 }
 .image{
   width: 40%;
-  margin-right: 5%;
-  float: left;
-  margin-left: 5%;
-  margin-top: 100px;
+  right: 10%;
+  bottom: -10px;
   display: block;
+  position: absolute;
 }
 
 @media screen and (max-width: 992px){
