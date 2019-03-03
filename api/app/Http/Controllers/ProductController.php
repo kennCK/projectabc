@@ -86,8 +86,10 @@ class ProductController extends APIController
           $result[$i]['featured'] = $this->getFeaturedImage($result[$i]['id']);
           $result[$i]['images'] = $this->getImages($result[$i]['id']);
           $result[$i]['tag_array'] = $this->manageTags($result[$i]['tags']);
-          $result[$i]['wishlist_flag'] = $this->checkWishlist($result[$i]['id'], $accountId);
-          $result[$i]['checkout_flag'] = $this->checkCheckout($result[$i]['id'], $accountId);
+          if($accountId != null){
+            $result[$i]['wishlist_flag'] = $this->checkWishlist($result[$i]['id'], $accountId);
+            $result[$i]['checkout_flag'] = $this->checkCheckout($result[$i]['id'], $accountId);
+          }
           $i++;
         }
       }

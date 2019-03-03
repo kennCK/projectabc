@@ -45,7 +45,7 @@
     <span class="item" style="border-bottom: 0px;" v-if="item.shipping_address !== null && item.shipping_address.notes !== null">
       <label><b>Shipping Note</b></label>
     </span>
-    <span class="item2  alert alert-danger" style="border-bottom: 0px;" v-if="item.shipping_address !== null && item.shipping_address.notes !== null">
+    <span class="item2  alert alert-danger" style="border-bottom: 0px; margin-bottom: 10px !important;" v-if="item.shipping_address !== null && item.shipping_address.notes !== null">
       <label>{{item.shipping_address.notes}}</label>
     </span>
     <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
