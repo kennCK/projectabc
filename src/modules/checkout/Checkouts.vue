@@ -60,6 +60,7 @@
   float: left;
   margin-right: 2%;
   margin-top: 25px;
+  margin-bottom: 100px;
 }
 .list{
   width: 100%;

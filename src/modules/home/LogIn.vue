@@ -19,14 +19,14 @@
           <span class="input-group-addon" id="addon-2"><i class="fa fa-key"></i></span>
           <input type="password" class="form-control form-control-login" placeholder="********" aria-describedby="addon-2" v-model="password" @keyup.enter="logIn()">
         </div>
-        <button class="btn btn-login-primary btn-block btn-login login-spacer" v-on:click="logIn()">Login</button>
-        <button class="btn btn-login-warning btn-block btn-login login-spacer" v-on:click="redirect('/request_reset_password')">Forgot your Password?</button>
+        <button class="btn btn-primary btn-block login-spacer" v-on:click="logIn()">Login</button>
+        <button class="btn btn-warning btn-block login-spacer" v-on:click="redirect('/request_reset_password')">Forgot your Password?</button>
         <br>
         <div class="container-fluid separator">
             or
         </div>
         <br>
-        <button class="btn btn-blue btn-block btn-login login-spacer" v-on:click="redirect('/signup')">Create Account Now!</button>
+        <button class="btn btn-secondary btn-block login-spacer" v-on:click="redirect('/signup')">Create Account Now!</button>
       </div>
     </div>
     <div class="modal fade" id="otpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -62,7 +62,6 @@
   margin: 0 10% 50px 10%;
 }
 
-
 .login-header{
   height: 100px;
   color: #006600;
@@ -70,9 +69,6 @@
   float: left;
   text-align: center;
 }
-
-/*-- login-header --*/
-
 
 .login-header img{
   height: 100px !important;
@@ -103,24 +99,24 @@
   color: #009900 !important;
 }
 
+.btn{
+  height: 50px !important;
+}
+
 .input-group-addon{
   width: 50px;
 }
-/*----------------------------------------
 
-            Forms
-
-------------------------------------------*/
 .form-control-login{
   height: 45px !important;
 }
-
 
 /*    Line with text on top  */
 .separator>*{
   display: inline-block;
   vertical-align: middle;
 }
+
 .separator {
     text-align: center;
     border: 0;
@@ -130,6 +126,7 @@
     padding: 0;
     margin: 0;
 }
+
 .separator:before, .separator:after {
     content: "";
     height: 1px;
@@ -139,72 +136,13 @@
     display: inline-block;
     vertical-align: middle;
 }
+
 .separator:before {
     margin-left: -100%;
 }
+
 .separator:after {
     margin-right: -100%;
-}
-
-.btn-login-primary{
-  background: #22b173;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-primary:hover{
-  border: solid 1px #3f0050;
-}
-
-.btn-login-warning{
-  color: #fff;
-  background: #FCCD04;
-  height: 45px !important;
-}
-.btn-login-warning:hover{
-  color: #fff;
-  border: solid 1px #bb9800;
-}
-.btn-blue{
-  background: #028170;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-blue:hover{
-  border: solid 1px #026759;
-}
-
-.banner{
-  width: 90%;
-  float: left;
-  margin-left: 10%;
-}
-.banner h2{
-  text-transform: uppercase;
-  font-weight: 600;
-  color: #3f0050;
-  float: left;
-  width: 100%;
-}
-.banner span{
-  width: 100%;
-  float: left;
-  font-size: 24px;
-  color: #888;
-}
-.banner ul{
-  list-style: none;
-  width: 100%;
-  margin-top: 100px;
-}
-.banner ul li{
-  font-size: 20px;
-  color: #888;
-  margin-top: 10px;
-}
-.banner ul li i{
-  padding-right: 10px;
-  color: #FCCD04;
-  font-weight: 700;
 }
 
 @media (max-width: 992px){
@@ -240,7 +178,7 @@ export default {
           $('#loading').css({'display': 'none'})
         }, (response, status) => {
           $('#loading').css({'display': 'none'})
-          this.errorMessage = (status === 401) ? 'Username and Password did not matched.' : 'Cannot log in? Contact us through email: support@idfactories.com'
+          this.errorMessage = (status === 401) ? 'Username and Password did not matched.' : 'Cannot log in? Contact us through email: support@idfactory.ph'
         })
       }else{
         this.errorMessage = 'Please fill up all the required fields.'

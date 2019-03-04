@@ -120,6 +120,17 @@ class CheckoutController extends APIController
 
     public function retrieveSummary(Request $request){
       $data = $request->all();
+      $this->summary($data);
+      return $this->response();
+    }
+
+    public function retrieveSummaryReceipt($data){
+      $this->summary($data);
+      return $this->response['data'];
+    }
+
+    public function summary($data){
+      $this->model = new Checkout();
       $this->retrieveDB($data);
       $result = $this->response['data'];
       $cards = $this->getPaymentMethod('account_id', $data['account_id']);
@@ -129,6 +140,7 @@ class CheckoutController extends APIController
           $price = $this->getPrice($result[$i]['id'], $data['account_id']);
           $coupon = ($result[$i]['coupon_id'] != null) ? $this->getCoupon($result[$i]['coupon_id']) : null;
           $this->response['data'][$i]['templates'] = $this->getItemBy($result[$i]['id'], 'template', null);
+          $this->response['data'][$i]['products'] = $this->getItemBy($result[$i]['id'], 'product', null);
           $this->response['data'][$i]['employees'] = $this->getItemBy($result[$i]['id'], 'employee', $price);
           $this->response['data'][$i]['coupon'] = $coupon;
           if(($result[$i]['payment_type'] == 'authorized' || $result[$i]['payment_type'] == 'express') && $result[$i]['payment_payload'] == 'credit_card'){
@@ -141,7 +153,6 @@ class CheckoutController extends APIController
           $i++;
         }
       }
-      return $this->response();
     }
 
     public function getPrice($checkout, $accountId){
@@ -184,6 +195,8 @@ class CheckoutController extends APIController
               $result[$i]['employee']['price'] = $price;
               $this->subTotal += $price;
             }
+          }else if($payload == 'product'){
+            $result[$i]['product'] = app('App\Http\Controllers\ProductController')->retrieveProductById($payloadValue, null);
           }
           $i++;
         }
@@ -341,6 +354,20 @@ class CheckoutController extends APIController
           $this->model = new Checkout();
           $this->updateDB($updateData);
           $this->managePurchasedTemplate($updateData['id']);
+          // send receipt
+          $dataReceiptCondition = array(
+            'condition' => array(
+              array(
+                'value' => $id,
+                'column'  => 'id',
+                'clause' => '='
+              )
+            ),
+              'account_id' => $accountId
+          );
+          $dataReceipt = $this->retrieveSummaryReceipt($dataReceiptCondition);
+          app('App\Http\Controllers\EmailController')->receipt($accountId, $dataReceipt);
+          $this->response['data'] = true;
           return $this->response();
         }else{
           return response()->json(array(
@@ -369,6 +396,20 @@ class CheckoutController extends APIController
           $this->model = new Checkout();
           $this->updateDB($updateData);
           $this->managePurchasedTemplate($updateData['id']);
+          // send receipt
+          $dataReceiptCondition = array(
+            'condition' => array(
+              array(
+                'value' => $id,
+                'column'  => 'id',
+                'clause' => '='
+              )
+            ),
+            'account_id' => $accountId
+          );
+          $dataReceipt = $this->retrieveSummaryReceipt($dataReceiptCondition);
+          app('App\Http\Controllers\EmailController')->receipt($accountId, $dataReceipt);
+          $this->response['data'] = true;
           return $this->response();
         }else{
           return response()->json(array(

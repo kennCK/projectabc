@@ -253,7 +253,7 @@ export default {
     close(){
       this.browseImagesFlag = false
       this.item = null
-      this.$parent.retrieve()
+      this.$parent.retrieve(true)
       $('#templateEditorModal').modal('hide')
     },
     addObject(type){

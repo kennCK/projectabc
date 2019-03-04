@@ -14,8 +14,8 @@
             <div  style="margin-bottom: 25px !important;text-align: justify;" v-bind:class="{'text-danger': flag === false}" class="login-spacer">
               {{message}}
             </div>
-            <button class="btn btn-login-primary btn-block btn-login login-spacer" v-on:click="update()" v-if="verified === false">Continue</button>  
-            <button class="btn btn-login-danger btn-block btn-login login-spacer" v-on:click="redirect('/')" v-if="verified === true && user.userID <= 0">Back to Login</button>
+            <button class="btn btn-primary btn-block login-spacer" v-on:click="update()" v-if="verified === false">Continue</button>  
+            <button class="btn btn-danger btn-block login-spacer" v-on:click="redirect('/')" v-if="verified === true && user.userID <= 0">Back to Login</button>
           </div>
         </div>
       </div>
@@ -57,21 +57,8 @@
 .form-control{
   height: 45px !important;
 }
-.btn-login-primary{
-  background: #22b173;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-primary:hover{
-  border: solid 1px #3f0050;
-}
-.btn-login-danger{
-  background: #ff0000;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-danger:hover{
-  border: solid 1px #a90201;
+.btn{
+  height: 50px !important;
 }
 .input-group{
   margin-top: 5px;

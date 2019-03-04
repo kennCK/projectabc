@@ -86,7 +86,7 @@ export default {
         this.APIRequest('guides/update', parameter).then(response => {
           if(response.data === true){
             $('#createGuideModal').modal('hide')
-            this.$parent.retrieve()
+            this.$parent.retrieve(true)
           }
         })
       }

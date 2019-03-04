@@ -34,7 +34,7 @@
               <span class="input-group-addon" id="addon-2"><i class="fa fa-key"></i></span>
               <input type="password" class="form-control form-control-login" placeholder="Confirm Password" aria-describedby="addon-2" v-model="cpassword">
             </div>
-            <button class="btn btn-login-primary btn-block btn-login login-spacer" v-on:click="signUp()">Register</button>
+            <button class="btn btn-primary btn-block login-spacer" v-on:click="signUp()">Register</button>
           </div>
         </div>
       </div>
@@ -46,7 +46,6 @@
 .signup-container{
   margin-top: 25px;
 }
-
 .signup-header{
   height: 100px;
   color: #006600;
@@ -58,47 +57,29 @@
   height: 100px !important;
   width: 100px !important;
 }
-
 .signup-header img:hover{
   cursor: pointer;
 }
-
 .header-title{
   width: 90%;
   margin:  25px 5% 0 5%;
   font-size: 24px;
   font-weight: 700px;
 }
-
 .signup-holder{
   width: 90%;
   margin: 0 5% 0 5%;
   float: left;
 }
-
 .input-holder{
   width: 90%;
   margin:  0 5% 0 5%;
 }
-
 .form-control{
   height: 45px !important;
 }
-.btn-login-primary{
-  background: #22b173;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-primary:hover{
-  border: solid 1px #3f0050;
-}
-.btn-login-danger{
-  background: #ff0000;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-danger:hover{
-  border: solid 1px #a90201;
+.btn{
+  height: 50px !important;
 }
 .input-group{
   margin-top: 5px;
@@ -118,7 +99,6 @@
 .site-title .app-name{
   float: left;
 }
-
 .account-type{
   width: 120px !important;
 }

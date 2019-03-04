@@ -20,13 +20,15 @@
   width: 100%;
   float: left;
   background: #22b173;
-  height: 650px;
+  min-height: 150px;
+  overflow-y: hidden;
 }
 .text{
   width: 45%;
   float: left;
   margin-left: 5%;
-  margin-top: 200px;
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 .text .title{
   width: 100%;
@@ -46,8 +48,9 @@
   margin-right: 5%;
   margin-left: 5%;
   float: left;
-  margin-top: 150px;
   display: block;
+  margin-top: 50px;
+  margin-bottom: 100px;
 }
 
 @media screen and (max-width: 992px){

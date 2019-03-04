@@ -29,8 +29,8 @@
               <span class="input-group-addon" id="addon-2"><i class="fa fa-key"></i></span>
               <input type="password" class="form-control form-control-login" placeholder="Confirm Password" aria-describedby="addon-2" v-model="cpassword">
             </div>
-            <button class="btn btn-login-primary btn-block btn-login login-spacer" v-on:click="signUp()">Signup</button>
-            <button class="btn btn-login-danger btn-block btn-login login-spacer" v-on:click="redirect('/login')">Back to Login</button>  
+            <button class="btn btn-primary btn-block login-spacer" v-on:click="signUp()">Signup</button>
+            <button class="btn btn-danger btn-block login-spacer" v-on:click="redirect('/login')">Back to Login</button>  
           </div>
         </div>
       </div>
@@ -82,21 +82,8 @@
 .form-control{
   height: 45px !important;
 }
-.btn-login-primary{
-  background: #22b173;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-primary:hover{
-  border: solid 1px #3f0050;
-}
-.btn-login-danger{
-  background: #ff0000;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-danger:hover{
-  border: solid 1px #a90201;
+.btn{
+  height: 50px !important;
 }
 .input-group{
   margin-top: 5px;

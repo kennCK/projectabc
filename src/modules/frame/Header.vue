@@ -49,7 +49,7 @@
               </span>
               <span class="dropdown-item" v-on:click="redirect('/referrals')">
                 <i class="fa fa-users"></i>
-                <label>My Referrals</label>
+                <label>Invite Friends</label>
               </span>
               <span class="dropdown-item dropdown-item-menu-title">
                 <label>Documents</label>

@@ -295,9 +295,10 @@ class AccountController extends APIController
 
     public function getCurrentPlan($accountId, $createdAt){
       $current = Carbon::now();
+      $dayInMonth = Carbon::parse($createdAt)->daysInMonth;
       $accountDate = Carbon::createFromFormat('Y-m-d H:i:s', $createdAt);
       $diff = $accountDate->diffInDays($current, false);
-      if($diff >= 30){
+      if($diff >= $dayInMonth){
         $result = Plan::where('account_id', '=', $accountId)->whereDate('end', '>=', Carbon::now())->where('status', '=', 'completed')->orderBy('created_at', 'asc')->first();
         if($result){
           return array(
@@ -313,7 +314,7 @@ class AccountController extends APIController
       }else{
         return array(
           'title' => 'Trial',
-          'end_human' => Carbon::createFromFormat('Y-m-d H:i:s', $createdAt)->copy()->tz('Asia/Manila')->format('F j, Y')
+          'end_human' => Carbon::createFromFormat('Y-m-d H:i:s', $createdAt)->addMonth()->copy()->tz('Asia/Manila')->format('F j, Y')
         );
       }
     }

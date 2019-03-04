@@ -1,5 +1,8 @@
 <template>
 	<div class="holder">
+    <div class="alert alert-success">
+      Hi <b>{{user.username}}!</b> Invite your friends to ID Factory to get a month of free subscription based on your current plan. If you are currently on trial account you will get the <b>basic</b> subscription plan reward.
+    </div>
     <div class="invitation">
       <div class="header text-primary">
         <b>Invite your friends to ID Factory</b>

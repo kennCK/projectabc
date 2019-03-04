@@ -1,5 +1,5 @@
 <template>
-  <div class="cw-banner bg-secondary">
+	<div class="cw-banner bg-secondary">
     <div class="text text-white">
       <span class="title">
         <h1>Design an ID. We Print.</h1>

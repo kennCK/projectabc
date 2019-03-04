@@ -18,7 +18,7 @@
         </div>
         <input type="text" name="username" placeholder="Type your Email Address" class="form-control" v-model="email" v-if="hide === false">
         <br>
-        <button class="btn btn-login-primary btn-block btn-login login-spacer" v-on:click="request()" v-if="hide === false">Send Request</button><button class="btn btn-login-danger btn-block btn-login login-spacer" v-on:click="redirect('/')">Back to Login</button>
+        <button class="btn btn-primary btn-block login-spacer" v-on:click="request()" v-if="hide === false">Send Request</button><button class="btn btn-danger btn-block login-spacer" v-on:click="redirect('/')">Back to Login</button>
         <br>
         <br>
      </div>
@@ -37,6 +37,7 @@
   float: left;
   text-align: center;
 }
+
 .signup-header img{
   width: 70px;
   height: 70px;
@@ -52,30 +53,20 @@
   font-size: 24px;
   font-weight: 700px;
 }
+
 .input-holder{
   width: 90%;
   margin:  0 5% 0 5%;
 }
 
+.btn{
+  height: 50px !important;
+}
+
 .form-control{
   height: 45px !important;
 }
-.btn-login-primary{
-  background: #22b173;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-primary:hover{
-  border: solid 1px #3f0050;
-}
-.btn-login-danger{
-  background: #ff0000;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-danger:hover{
-  border: solid 1px #a90201;
-}
+
 .site-title{
   margin-top: 25px;
   width: 100%;
