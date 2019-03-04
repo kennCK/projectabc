@@ -29,7 +29,9 @@
               <label for="exampleInputEmail1">Featured Image</label>
               <div class="product-images">
                 <div class="new-image text-primary">
-                  <i class="fa fa-plus"></i>
+                    <button class="btn btn-primary pull-right" style="margin-left: 10px;" @click="addImage()"><i class="fa fa-plus"></i> Upload Image
+                      <input type="file" @change="setUpFileUpload($event)" id="featureImage">
+                    </button>
                 </div>
               </div>
             </div>
@@ -165,6 +167,49 @@ export default {
     redirect(parameter){
       ROUTER.push(parameter)
     },
+    addImage(){
+      $('#featureImage')[0].click()
+    },
+    setUpFileUpload(event){
+      let files = event.target.files || event.dataTransfer.files
+      if(!files.length){
+        return false
+      }else{
+        this.file = files[0]
+        this.createFile(files[0])
+      }
+    },
+    createFile(file){
+      let fileReader = new FileReader()
+      fileReader.readAsDataURL(event.target.files[0])
+      this.upload()
+    },
+    upload(){
+      let formData = new FormData()
+      formData.append('file', this.file)
+      formData.append('file_url', this.file.name)
+      formData.append('account_id', this.user.userID)
+      $('#loading').css({'display': 'block'})
+      axios.post(this.config.BACKEND_URL + '/employees/upload', formData).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data !== null){
+          this.retrieve()
+        }
+      })
+    },
+    // upload(){
+    //   let formData = new FormData()
+    //   formData.append('file', this.file)
+    //   formData.append('url', this.file.name)
+    //   formData.append('account_id', this.user.userID)
+    //   $('#loading').css({display: 'block'})
+    //   axios.post(this.config.BACKEND_URL + '/account_images/create', formData).then(response => {
+    //     if(response.data.data > 0){
+    //       AUTH.checkAuthentication(null)
+    //       $('#loading').css({display: 'none'})
+    //     }
+    //   })
+    // },
     update(){
       if(this.validate()){
         this.APIRequest('products/update', this.item).then(response => {
@@ -174,6 +219,24 @@ export default {
           }
         })
       }
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.user.userID,
+          column: 'account_id',
+          clause: '='
+        }]
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('account_images/retrieve', parameter).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data.length > 0){
+          this.data = response.data
+        }else{
+          this.data = null
+        }
+      })
     },
     validate(){
       let i = this.item
