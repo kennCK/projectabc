@@ -111,10 +111,11 @@ export default {
           column: 'account_id',
           clause: '='
         }],
-        active: (index === false) ? tempData : index
+        active: (index !== false) ? index : tempData
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('templates/retrieve', parameter).then(response => {
+        this.prevIndex = (index !== false) ? index : tempData
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data

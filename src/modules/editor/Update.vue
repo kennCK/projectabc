@@ -145,7 +145,7 @@ export default {
         this.APIRequest('templates/update', parameter).then(response => {
           if(response.data > 0){
             $('#updateTemplateModal').modal('hide')
-            this.$parent.retrieve()
+            this.$parent.retrieve(true)
           }
         })
       }
