@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div v-bind:style="(globalVariables.showModal) ? 'overflow-y:hidden; height:'+deviceHeight+'px!important': ''">
-      <div v-if="tokenData.token !== null">
+      <div v-if="tokenData.token !== null && parseInt(user.userID) > 0">
        <system-header></system-header>
        <system-sidebar></system-sidebar>
        <support-messenger></support-messenger>

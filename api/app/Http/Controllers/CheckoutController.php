@@ -17,6 +17,8 @@ use App\CustomObject;
 use App\Attribute;
 use App\PaypalTransaction;
 use App\StripeWebhook;
+use App\ShippingAddress;
+use App\BillingInformation;
 use Carbon\Carbon;
 class CheckoutController extends APIController
 {
@@ -46,10 +48,12 @@ class CheckoutController extends APIController
         foreach ($result as $key) {
           $price = $this->getPrice($result[$i], $data['account_id']);
           $this->response['data'][$i]['partner_details'] = ($result[$i]['partner'] != null && $result[$i]['partner'] != '' && $result[$i]['partner'] > 0) ? $this->retrieveAccountDetails($result[$i]['partner']) : null;
+          $this->response['data'][$i]['account_details'] = $this->retrieveAccountDetails($data['account_id']); 
           $this->response['data'][$i]['items'] = $this->getItems($result[$i]['id'], $price, $data['account_id']);
           $this->response['data'][$i]['sub_total'] = $this->subTotal;
           $this->response['data'][$i]['tax'] = $this->tax;
           $this->response['data'][$i]['total'] = $this->subTotal - $this->tax;
+          $this->response['data'][$i]['shipping_address'] = $this->getShippingAddress($result[$i]['id']);
           if($result[$i]['payment_type'] == 'authorized' && $result[$i]['payment_payload'] == 'credit_card'){
             $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_payload_value']);
           }else{
@@ -61,6 +65,25 @@ class CheckoutController extends APIController
       
       $this->response['method'] = $cards;
       return $this->response();
+    }
+
+    public function getShippingAddress($checkoutId){
+      $result = ShippingAddress::where('checkout_id', '=', $checkoutId)->get();
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          if($result[$i]['payload'] == 'billing'){
+            $result[$i]['payload_details'] = $this->getBillingInformation($result[$i]['payload_value']);
+          }
+          $i++;
+        }
+      }
+      return (sizeof($result) > 0) ? $result[0] : null;
+    }
+
+    public function getBillingInformation($billingId){
+      $billing = BillingInformation::where('id', '=', $billingId)->get();
+      return (sizeof($billing) > 0) ? $billing[0] : null;
     }
 
     public function retrieveOrderItems(Request $request){
@@ -97,6 +120,17 @@ class CheckoutController extends APIController
 
     public function retrieveSummary(Request $request){
       $data = $request->all();
+      $this->summary($data);
+      return $this->response();
+    }
+
+    public function retrieveSummaryReceipt($data){
+      $this->summary($data);
+      return $this->response['data'];
+    }
+
+    public function summary($data){
+      $this->model = new Checkout();
       $this->retrieveDB($data);
       $result = $this->response['data'];
       $cards = $this->getPaymentMethod('account_id', $data['account_id']);
@@ -106,6 +140,7 @@ class CheckoutController extends APIController
           $price = $this->getPrice($result[$i]['id'], $data['account_id']);
           $coupon = ($result[$i]['coupon_id'] != null) ? $this->getCoupon($result[$i]['coupon_id']) : null;
           $this->response['data'][$i]['templates'] = $this->getItemBy($result[$i]['id'], 'template', null);
+          $this->response['data'][$i]['products'] = $this->getItemBy($result[$i]['id'], 'product', null);
           $this->response['data'][$i]['employees'] = $this->getItemBy($result[$i]['id'], 'employee', $price);
           $this->response['data'][$i]['coupon'] = $coupon;
           if(($result[$i]['payment_type'] == 'authorized' || $result[$i]['payment_type'] == 'express') && $result[$i]['payment_payload'] == 'credit_card'){
@@ -118,7 +153,6 @@ class CheckoutController extends APIController
           $i++;
         }
       }
-      return $this->response();
     }
 
     public function getPrice($checkout, $accountId){
@@ -161,6 +195,8 @@ class CheckoutController extends APIController
               $result[$i]['employee']['price'] = $price;
               $this->subTotal += $price;
             }
+          }else if($payload == 'product'){
+            $result[$i]['product'] = app('App\Http\Controllers\ProductController')->retrieveProductById($payloadValue, null);
           }
           $i++;
         }
@@ -318,6 +354,20 @@ class CheckoutController extends APIController
           $this->model = new Checkout();
           $this->updateDB($updateData);
           $this->managePurchasedTemplate($updateData['id']);
+          // send receipt
+          $dataReceiptCondition = array(
+            'condition' => array(
+              array(
+                'value' => $id,
+                'column'  => 'id',
+                'clause' => '='
+              )
+            ),
+              'account_id' => $accountId
+          );
+          $dataReceipt = $this->retrieveSummaryReceipt($dataReceiptCondition);
+          app('App\Http\Controllers\EmailController')->receipt($accountId, $dataReceipt);
+          $this->response['data'] = true;
           return $this->response();
         }else{
           return response()->json(array(
@@ -346,6 +396,20 @@ class CheckoutController extends APIController
           $this->model = new Checkout();
           $this->updateDB($updateData);
           $this->managePurchasedTemplate($updateData['id']);
+          // send receipt
+          $dataReceiptCondition = array(
+            'condition' => array(
+              array(
+                'value' => $id,
+                'column'  => 'id',
+                'clause' => '='
+              )
+            ),
+            'account_id' => $accountId
+          );
+          $dataReceipt = $this->retrieveSummaryReceipt($dataReceiptCondition);
+          app('App\Http\Controllers\EmailController')->receipt($accountId, $dataReceipt);
+          $this->response['data'] = true;
           return $this->response();
         }else{
           return response()->json(array(

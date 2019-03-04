@@ -152,8 +152,8 @@ export default {
     redirect(parameter){
       ROUTER.push(parameter)
     },
-    retrieve(){
-      this.$parent.retrieve(-1)
+    retrieve(parameter){
+      this.$parent.retrieve((parameter === true) ? this.index : false)
     },
     show(item, id){
       for (var i = 0; i < this.$children.length; i++) {

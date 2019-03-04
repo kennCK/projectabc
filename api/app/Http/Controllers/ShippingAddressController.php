@@ -13,4 +13,5 @@ class ShippingAddressController extends APIController
       	'payload', 'payload_value', 'contact_number', 'notes'
       );
     }
+
 }

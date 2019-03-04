@@ -15,7 +15,7 @@
         </div>
         <div class="results">
           <products v-if="data !== null" :data="data"></products>
-          <empty v-if="data === null" :title="'No products yet!'" :action="'Please be back soon.'" :icon="'far fa-smile'" :iconColor="'text-primary'"></empty>
+          <dynamic-empty v-if="data === null" :title="'No products yet!'" :action="'Please be back soon.'" :icon="'far fa-smile'" :iconColor="'text-primary'"></dynamic-empty>
         </div>
       </div>
     </div>
@@ -101,7 +101,7 @@ export default {
   },
   components: {
     'products': require('modules/marketplace/Products.vue'),
-    'empty': require('modules/empty/EmptyDynamicIcon.vue')
+    'dynamic-empty': require('modules/empty/EmptyDynamicIcon.vue')
   },
   methods: {
     redirect(parameter){

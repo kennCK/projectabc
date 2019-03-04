@@ -87,7 +87,7 @@ export default {
       }
       this.APIRequest('templates/delete', parameter).then(response => {
         $('#deleteTemplateModal').modal('hide')
-        this.$parent.retrieve()
+        this.$parent.retrieve(false)
       })
     },
     close(){

@@ -22,6 +22,32 @@
       <label><b>Total</b></label>
       <label class="pull-right" style="padding-right: 10px;"><b>PHP {{item.total}}</b></label>
     </span>
+
+    <span class="item" style="border-bottom: 0px;">
+      <label><b>Ship to</b></label>
+      <label class="pull-right"><i class="fa fa-edit text-danger" @click="shippingAddress()"></i></label>
+    </span>
+    <span class="item2 alert alert-success">
+      <label v-if="item.shipping_address === null && item.account_details.billing !== null && item.account_details.billing.company !== null">
+        {{item.account_details.billing.company}}, {{item.account_details.billing.address + ',' + item.account_details.billing.city + ' ' + item.account_details.billing.postal_code}}
+        <br />
+        {{item.account_details.billing.state + ', ' + item.account_details.billing.country}}
+      </label>
+      <label v-if="item.shipping_address !== null && item.shipping_address.payload === 'billing'">
+        {{item.shipping_address.payload_details.company}}, {{item.shipping_address.payload_details.address + ',' + item.shipping_address.payload_details.city + ' ' + item.shipping_address.payload_details.postal_code}}
+        <br />
+        {{item.shipping_address.payload_details.state + ', ' + item.shipping_address.payload_details.country}}
+      </label>
+      <label v-if="item.shipping_address !== null && item.shipping_address.payload === 'other'">
+         {{item.shipping_address.payload_value}}
+      </label>
+    </span>
+    <span class="item" style="border-bottom: 0px;" v-if="item.shipping_address !== null && item.shipping_address.notes !== null">
+      <label><b>Shipping Note</b></label>
+    </span>
+    <span class="item2  alert alert-danger" style="border-bottom: 0px; margin-bottom: 10px !important;" v-if="item.shipping_address !== null && item.shipping_address.notes !== null">
+      <label>{{item.shipping_address.notes}}</label>
+    </span>
     <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null">
       <label>Active Payment Method</label>
       
@@ -57,6 +83,7 @@
     <cancelled-paypal></cancelled-paypal>
     <express-credit-card></express-credit-card>
     <apply-coupon></apply-coupon>
+    <shipping-address :item="item"></shipping-address>
   </div>
 </template>
 <style scoped>
@@ -71,6 +98,20 @@
   line-height: 50px;
   border-bottom: solid 1px #eee;
   padding-left: 10px;
+}
+.sidebar .item2{
+  min-height: 50px;
+  width: 100%;
+  float: left;
+  border-bottom: solid 1px #eee;
+  padding-left: 10px;
+  overflow-y: hidden;
+  text-align: justify;
+}
+
+.sidebar .item2 label{
+  width: 100%;
+  float: left;
 }
 .sidebar .title{
   font-size: 24px;
@@ -94,6 +135,9 @@
 .fa-edit:hover{
   cursor: pointer;
   color: #22b173;
+}
+.alert{
+  margin: 0px !important;
 }
 </style>
 <script>
@@ -134,6 +178,7 @@ export default {
     'cancelled-paypal': require('modules/checkout/CancelPaypal.vue'),
     'express-credit-card': require('modules/checkout/CreditCard.vue'),
     'apply-coupon': require('modules/coupon/Apply.vue'),
+    'shipping-address': require('modules/checkout/ShippingAddress.vue'),
     PayPal
   },
   methods: {
@@ -229,6 +274,12 @@ export default {
         }
         this.item.total -= this.discount
       }
+    },
+    shippingAddress(){
+      $('#shippingAddressModal').modal('show')
+    },
+    retrieve(){
+      this.$parent.retrieve()
     }
   }
 }

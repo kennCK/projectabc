@@ -2,25 +2,11 @@
   <div class="row">
     <div class="col-md-6 col-lg-4 mx-auto signup-container">
       <div class="login-wrapper">
-        <div class="site-title">
-          <img src="../../assets/img/logo.png">
-          <span class="app-name">
-            <label class="text-primary">
-              <b class="text-primary">ID FACTORY</b>
-            </label> 
-          </span>
+        <div class="signup-header" style="margin-top: 50px;">
+          <img src="../../assets/img/logo.png" v-on:click="redirect('/')">
         </div>
-        <br>
-        <br>
-<!--         <span class="login-spacer">
-          <h1 class="text-primary text-center">
-            <i class="fa fa-check-circle"></i>
-          </h1>
-        </span> -->
-        <span class="login-spacer">
-          <h6 class="text-center text-primary">
-            Verification
-          </h6>
+        <span style="width:100%;float:left;text-align:center;font-size:20px;margin-bottom:10px;">
+          Verification
         </span>
         <div class="signup-holder">
           <br>  
@@ -28,14 +14,78 @@
             <div  style="margin-bottom: 25px !important;text-align: justify;" v-bind:class="{'text-danger': flag === false}" class="login-spacer">
               {{message}}
             </div>
-            <button class="btn btn-login-primary btn-block btn-login login-spacer" v-on:click="update()" v-if="verified === false">Continue</button>  
-            <button class="btn btn-login-danger btn-block btn-login login-spacer" v-on:click="redirect('/')" v-if="verified === true && user.userID <= 0">Back to Login</button>
+            <button class="btn btn-primary btn-block login-spacer" v-on:click="update()" v-if="verified === false">Continue</button>  
+            <button class="btn btn-danger btn-block login-spacer" v-on:click="redirect('/')" v-if="verified === true && user.userID <= 0">Back to Login</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+<style scoped>
+.signup-container{
+  margin-top: 50px;
+}
+.signup-header{
+  height: 100px;
+  color: #006600;
+  width: 100%;
+  float: left;
+  text-align: center;
+}
+
+.signup-header img{
+  height: 100px !important;
+  width: 100px !important;
+}
+.signup-header img:hover{
+  cursor: pointer;
+}
+
+
+.header-title{
+  width: 90%;
+  margin:  25px 5% 0 5%;
+  font-size: 24px;
+  font-weight: 700px;
+}
+.input-holder{
+  width: 90%;
+  margin:  0 5% 0 5%;
+}
+
+.form-control{
+  height: 45px !important;
+}
+.btn{
+  height: 50px !important;
+}
+.input-group{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.site-title{
+  margin-top: 25px;
+  width: 100%;
+  float: left;
+}
+.site-title img{
+  width: 50px;
+  width: 50px;
+  float: left;
+  margin-right: 10px;
+}
+.site-title .app-name{
+  float: left;
+}
+/*-------------- Extra Small Screen for Mobile Phones --------------*/
+@media (max-width: 991px){
+  .custom-holder{
+    box-shadow: 0 0 0 0 #fff !important;
+    margin-top: 50px !important;
+  }
+}
+</style>
 <script>
 import ROUTER from '../../router'
 import AUTH from '../../services/auth'
@@ -89,13 +139,14 @@ export default {
     },
     update(){
       this.retrieveAccount()
-      console.log(this.account)
       if(this.validate() === true && this.account !== null){
         let parameter = {
           'id': this.account.id,
           'status': 'VERIFIED'
         }
+        $('#loading').css({display: 'block'})
         this.APIRequest('accounts/update_verification', parameter).then(response => {
+          $('#loading').css({display: 'none'})
           if(response.data === true){
             this.message = 'Congratulations! You\'ve have successfully verified your account. Kindly click Continue Button to login.'
             this.flag = true
@@ -126,64 +177,3 @@ export default {
   }
 }
 </script>
-<style>
-.signup-container{
-  margin-top: 50px;
-}
-
-.header-title{
-  width: 90%;
-  margin:  25px 5% 0 5%;
-  font-size: 24px;
-  font-weight: 700px;
-}
-.input-holder{
-  width: 90%;
-  margin:  0 5% 0 5%;
-}
-
-.form-control{
-  height: 45px !important;
-}
-.btn-login-primary{
-  background: #22b173;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-primary:hover{
-  border: solid 1px #3f0050;
-}
-.btn-login-danger{
-  background: #ff0000;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-danger:hover{
-  border: solid 1px #a90201;
-}
-.input-group{
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-.site-title{
-  margin-top: 25px;
-  width: 100%;
-  float: left;
-}
-.site-title img{
-  width: 50px;
-  width: 50px;
-  float: left;
-  margin-right: 10px;
-}
-.site-title .app-name{
-  float: left;
-}
-/*-------------- Extra Small Screen for Mobile Phones --------------*/
-@media (max-width: 991px){
-  .custom-holder{
-    box-shadow: 0 0 0 0 #fff !important;
-    margin-top: 50px !important;
-  }
-}
-</style>

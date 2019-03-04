@@ -11,6 +11,7 @@ use App\Product;
 use App\CheckoutItem;
 use App\Plan;
 use App\Rating;
+use App\NotificationSetting;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +33,7 @@ class AccountController extends APIController
 
     public function create(Request $request){
      $request = $request->all();
+     $referralCode = $request['referral_code'];
      $dataAccount = array(
       'code'  => $this->generateCode(),
       'password'        => Hash::make($request['password']),
@@ -48,6 +50,11 @@ class AccountController extends APIController
 
      if($accountId){
        $this->createDetails($accountId, $request['account_type']);
+       //send email verification here
+       app('App\Http\Controllers\EmailController')->verification($accountId);
+       if($referralCode != null){
+          app('App\Http\Controllers\InvitationController')->confirmReferral($referralCode);
+       }
      }
     
      return $this->response();
@@ -80,7 +87,7 @@ class AccountController extends APIController
       $code = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 32);
       $codeExist = Product::where('id', '=', $code)->get();
       if(sizeof($codeExist) > 0){
-        $this->generateCode();
+        $this->generateProductCode();
       }else{
         return $code;
       }
@@ -111,6 +118,16 @@ class AccountController extends APIController
       return $this->response();
     }
 
+    public function requestReset(Request $request){
+      $data = $request->all();
+      $result = Account::where('email', '=', $data['email'])->get();
+      if(sizeof($result) > 0){
+         app('App\Http\Controllers\EmailController')->resetPassword($result[0]['id']);
+        return response()->json(array('data' => true));
+      }else{
+        return response()->json(array('data' => false));
+      }
+    }
 
     public function update(Request $request){ 
       $data = $request->all();
@@ -167,6 +184,7 @@ class AccountController extends APIController
           $result[$i]['account_profile'] = (sizeof($accountProfileResult) > 0) ? $accountProfileResult[0] : null;
           $result[$i]['checkout'] = $this->getCheckoutItem($accountId);
           $result[$i]['plan'] = $this->getCurrentPlan($accountId, $result[$i]['created_at']);
+          $result[$i]['notification_settings'] = $this->getNotificationSettings($accountId);
           $i++;
         }
         return response()->json(array('data' => $result));
@@ -236,6 +254,11 @@ class AccountController extends APIController
       return response()->json($response);
     }
 
+    public function getNotificationSettings($accountId){
+      $result = NotificationSetting::where('account_id', '=', $accountId)->get();
+      return (sizeof($result) > 0) ? $result[0] : null;
+    }
+
     public function checkPlan($accountId){
       $result = Plan::where('account_id', '=', $accountId)->whereDate('end', '>=', Carbon::now())->get();
       return (sizeof($result) > 0) ? true : false;
@@ -272,9 +295,10 @@ class AccountController extends APIController
 
     public function getCurrentPlan($accountId, $createdAt){
       $current = Carbon::now();
+      $dayInMonth = Carbon::parse($createdAt)->daysInMonth;
       $accountDate = Carbon::createFromFormat('Y-m-d H:i:s', $createdAt);
       $diff = $accountDate->diffInDays($current, false);
-      if($diff >= 30){
+      if($diff >= $dayInMonth){
         $result = Plan::where('account_id', '=', $accountId)->whereDate('end', '>=', Carbon::now())->where('status', '=', 'completed')->orderBy('created_at', 'asc')->first();
         if($result){
           return array(
@@ -290,7 +314,7 @@ class AccountController extends APIController
       }else{
         return array(
           'title' => 'Trial',
-          'end_human' => Carbon::createFromFormat('Y-m-d H:i:s', $createdAt)->copy()->tz('Asia/Manila')->format('F j, Y')
+          'end_human' => Carbon::createFromFormat('Y-m-d H:i:s', $createdAt)->addMonth()->copy()->tz('Asia/Manila')->format('F j, Y')
         );
       }
     }

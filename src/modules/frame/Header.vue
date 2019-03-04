@@ -36,7 +36,7 @@
                 <label>Personal</label>
               </span>
               <span class="dropdown-item" v-on:click="redirect('/my_orders')">
-                <i class="fa fa-tag"></i>
+                <i class="fa fa-shopping-cart"></i>
                 <label>My Orders</label>
               </span>
               <span class="dropdown-item" v-on:click="redirect('/profile')">
@@ -46,6 +46,10 @@
               <span class="dropdown-item" v-on:click="redirect('/plan')">
                 <i class="fa fa-tag"></i>
                 <label>My Plan</label>
+              </span>
+              <span class="dropdown-item" v-on:click="redirect('/referrals')">
+                <i class="fa fa-users"></i>
+                <label>Invite Friends</label>
               </span>
               <span class="dropdown-item dropdown-item-menu-title">
                 <label>Documents</label>

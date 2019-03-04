@@ -12,6 +12,9 @@
         <li class="link"><a @click="openModal('#termsAndConditionsModal')">Terms & Conditions</a></li>
         <li class="link"><a @click="openModal('#privacyModal')">Privacy Policy</a></li>
         <li class="link"><a @click="openModal('#termsAndConditionsModal')">Billing Terms</a></li>
+<!--         <li class="link" @click="redirect('/refer_register/support@idfactory.ph/B0Z9DAKFGXHOLV8YPEIWCSRM53Q27T14N6UJ')">Referral</li>
+        <li class="link" @click="redirect('/login_verification/kennette/IDF-Y89ALBGKXEMQ176HWCZ5RJ2UVOID')">Verification</li>
+        <li class="link" @click="redirect('/reset_password/kennette/IDF-Y89ALBGKXEMQ176HWCZ5RJ2UVOID')">Reset</li> -->
       </ul>
        <ul class="footer-widget">
         <li class="title"><b>Resources</b></li>

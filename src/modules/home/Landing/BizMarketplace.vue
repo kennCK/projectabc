@@ -1,19 +1,22 @@
 <template>
   <div class="cw-bizmarketplace">
-    <div class="text text-white">
-      <span class="title">
-        <h1>Find products on our Marketplace</h1>
-      </span>
-      <span class="description">
-        <h4>
-          We are more than just your production facility. With Marketplace you get to find all things related to printing and other graphics and design related services.
-        </h4>
-      </span>
+    <div class="mp-content">
+      <div class="text text-white">
+        <span class="title">
+          <h1>Find products on our Marketplace</h1>
+        </span>
+        <span class="description">
+          <h4>
+            We are more than just your production facility. With Marketplace you get to find all things related to printing and other graphics and design related services.
+          </h4>
+        </span>
+      </div>
+      <div class="buttons-menu">
+        <button class="btn btn-warning btn-banner" v-on:click="redirect('/signup')"> Register</button>
+         <button class="btn btn-primary btn-banner1" v-on:click="redirect('/login')"> Login</button>
+      </div>
     </div>
-    <div class="buttons-menu">
-      <button class="btn btn-warning btn-banner" v-on:click="redirect('/signup')"> Register</button>
-       <button class="btn btn-primary btn-banner1" v-on:click="redirect('/login')"> Login</button>
-    </div>
+    <img src="../../../assets/img/marketplace.png" style="margin-bottom: 5px;">
   </div>
 </template>
 <style scoped>
@@ -39,8 +42,23 @@
 .cw-bizmarketplace{
   width: 100%;
   float: left;
-  height: 300px;
+  min-height: 300px;
+  position: relative;
+  overflow-y: hidden;
   background: #ffaa81;
+}
+.cw-bizmarketplace img{
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  position: absolute;
+  z-index: 1;
+  margin-top: 50px;
+}
+.mp-content{
+  z-index: 10;
+  position: absolute;
+  overflow-y: hidden;
 }
 .text{
   width: 90%;
@@ -81,10 +99,10 @@
 
 @media screen and (max-width: 992px){
   .cw-bizmarketplace{
-    width: 100%;
-    float: left;
-    height: 370px;
-    background: #ffaa81;
+    min-height: 550px;
+  }
+  .cw-bizmarketplace img{
+    display: none;
   }
   .text{
     width: 90%;

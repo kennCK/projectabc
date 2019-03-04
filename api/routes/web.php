@@ -337,6 +337,7 @@ Route::post('/plans/create', "PlanController@create");
 Route::post('/plans/retrieve', "PlanController@retrieve");
 Route::post('/plans/retrieve_summary', "PlanController@retrieveSummary");
 Route::post('/plans/update', "PlanController@update");
+Route::post('/plans/apply_rewards', "PlanController@applyRewards");
 Route::post('/plans/delete', "PlanController@delete");
 Route::get('/plans/test', 'PlanController@test');
 
@@ -362,7 +363,11 @@ Route::post('/emails/create', "EmailController@create");
 Route::post('/emails/retrieve', "EmailController@retrieve");
 Route::post('/emails/update', "EmailController@update");
 Route::post('/emails/delete', "EmailController@delete");
-Route::get('/emails/test', 'EmailController@test');
+Route::post('/emails/reset_password', 'EmailController@resetPassword');
+Route::post('/emails/verification', 'EmailController@verification');
+Route::post('/emails/changed_password', 'EmailController@changedPassword');
+Route::post('/emails/referral', 'EmailController@referral');
+Route::post('/emails/trial', 'EmailController@trial');
 
 //Wishlists Controller
 Route::post('/wishlists/create', "WishlistController@create");
@@ -379,12 +384,18 @@ Route::post('/shipping_addresses/update', "ShippingAddressController@update");
 Route::post('/shipping_addresses/delete', "ShippingAddressController@delete");
 Route::get('/shipping_addresses/test', 'ShippingAddressController@test');
 
+//Wishlists Controller
+Route::post('/invitations/create', "InvitationController@create");
+Route::post('/invitations/retrieve', "InvitationController@retrieve");
+Route::post('/invitations/update', "InvitationController@update");
+Route::post('/invitations/apply', "InvitationController@apply");
+Route::post('/invitations/delete', "InvitationController@delete");
+Route::get('/invitations/test', 'InvitationController@test');
 
-Route::get('/mail', function () {
-  Mail::send('emails.test', [], function ($message) {
-    $message
-      ->from('support@idfactory.ph', 'ID FACTORY')
-      ->to('kennettecanales@gmail.com', 'kennettecanales')
-      ->subject('FROM IDFACRTORY TEST');
-  });
-});
+
+//Notification Settings Controller
+Route::post('/notification_settings/create', "NotificationSettingController@create");
+Route::post('/notification_settings/retrieve', "NotificationSettingController@retrieve");
+Route::post('/notification_settings/update', "NotificationSettingController@update");
+Route::post('/notification_settings/delete', "NotificationSettingController@delete");
+Route::get('/notification_settings/test', 'NotificationSettingController@test');

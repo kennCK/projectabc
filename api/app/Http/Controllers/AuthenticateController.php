@@ -51,6 +51,9 @@ class AuthenticateController extends Controller
       $credentials = array("username" => $data['username'], 'password' => $data['password']);
       $result = Account::where('username', '=', $data['username'])->get();
     }
+    if(sizeof($result) > 0){
+      app('App\Http\Controllers\NotificationSettingController')->manageNotification($result[0]['id']);
+    }
     try {
       // verify the credentials and create a token for the user
       if (! $token = JWTAuth::attempt($credentials)) {
