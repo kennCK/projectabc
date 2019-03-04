@@ -5,7 +5,7 @@
     </button>
     <div class="image-list" v-if="data !== null">
       <div class="card" v-for="item, index in data">
-        <img class="card-img-top" v-bind:id="'card-img-top' + index" :src="config.BACKEND_URL + item.url" alt="Card image cap" height="217" download>
+        <img class="card-img-top" v-bind:id="'card-img-top' + index" :src="config.BACKEND_URL + item.url" alt="Card image cap" height="217">
         <div class="card-body">
           <ul>
             <li @click="download(config.BACKEND_URL + item.url, index)">Download</li>
@@ -28,7 +28,7 @@ button input{
   margin-right: 2%;
 }
 .image-list{
-  width: 100%;
+  width: 1000px;
   float: left;
   margin-top: 25px;
 }
@@ -160,9 +160,10 @@ export default {
       // link.href = image
       // link.click()
       var x = document.createElement('a')
-      x.download = 'card-img-top' + index
-      x.href = url
+      x.download = 'untitled.jpg'
+      // x.href = url
       document.body.appendChild(x)
+      document.write(url)
       x.click()
     },
     remove(id){
