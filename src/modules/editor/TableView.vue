@@ -19,8 +19,41 @@
 				</label>
 			</div>
 			<div class="details" v-if="item.active === true && item.objects !== null">
-				<span class="details-row" v-for="itemO, indexO in item.objects">
-					<div class="input-group" v-if="itemO.type === 'text'">
+				<span v-for="itemO, indexO in item.objects">
+          <div class="object-holder" v-if="itemO.type === 'text'">
+            <span class="object-header">
+              <label v-if="itemO.name !== null && itemO.name !== ''">{{itemO.name}}</label>
+              <label v-else>Empty ID</label>
+            </span>
+            <span class="object-content">
+              <textarea class="object-input" v-model="itemO.content"></textarea>
+            </span>
+<!--             <span class="object-action">
+              <label>Color</label>
+              <input type="text" class="form-control">
+            </span> -->
+            <span class="object-action">
+              <button class="btn btn-primary pull-right" @click="updateText(itemO, index)">Update</button>
+            </span>
+          </div>
+          <div class="object-holder" v-if="itemO.type === 'photo'">
+            <span class="object-header">
+              <label v-if="itemO.name !== null && itemO.name !== ''">{{itemO.name}}</label>
+              <label v-else>Empty ID</label>
+            </span>
+            <span class="object-content">
+              <span class="object-input" style="text-align: center;">
+                <img :src="config.BACKEND_URL + itemO.content">
+              </span>
+            </span>
+            <span class="object-action">
+              <button class="btn btn-primary"@click="addImage('image' + indexO, indexO, itemO, index)">Upload new photo
+                <input type="file" class="form-control" v-bind:id="'image' + indexO" @change="setUpFileUpload($event)" accept="image/*" >
+              </button>
+              <button class="btn btn-warning pull-right" style="margin-right: 5px;">Select from images</button>
+            </span>
+          </div>
+<!-- 					<div class="input-group" v-if="itemO.type === 'text'">
             <span class="input-group-addon">Object ID</span>
             <input type="text" class="form-control form-control-title" placeholder="*first_name" v-model="itemO.name" disabled>
             <span class="input-group-addon">Content</span>
@@ -41,12 +74,12 @@
             <span class="input-group-addon">Object ID</span>
             <input type="text" class="form-control form-control-title" placeholder="*first_name" v-model="itemO.name" disabled>
             <span class="input-group-addon">Content</span>
-            <input type="text" class="form-control form-control-content" v-bind:style="{background: itemO.attributes.background, color: (inArrayColor.indexOf(itemO.attributes.background) > 0) ? '#000' : '#fff'}"placeholder="*first_name" v-model="itemO.attributes.background">
+            <input type="text" class="form-control form-control-content" placeholder="*first_name" v-model="itemO.attributes.background">
             <button class="btn btn-primary" style="margin: 5px; width: 150px !important;" @click="updateDivision(itemO, index)">Update</button>
           </div>
           <div class="input-group preview" v-if="itemO.type === 'photo' && itemO.content !== null">
             <img :src="config.BACKEND_URL + itemO.content" height="100%">
-          </div>  
+          </div>  --> 
 				</span>
 			</div>
 		</div>
@@ -104,6 +137,7 @@
 	min-height: 50px;
 	overflow-y: hidden;
 	width: 100%;
+  margin-bottom: 25px;
 
 }
 .details-row{
@@ -151,6 +185,83 @@
   height: 100px;
   width: 100%;
   float: left;
+}
+.object-holder{
+  width: 24%;
+  float: left;
+  margin-right: 1%;
+  min-height: 100px;
+  overflow-y: hidden;
+  border: solid 1px #ddd;
+  margin-top: 0px;
+}
+.object-header{
+  height: 30px;
+  width: 100%;
+  line-height: 30px;
+  float: left;
+  border-bottom: solid 1px #ddd;
+  text-align: center;
+}
+.object-header label{
+  line-height: 30px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  float: left;
+}
+.object-content{
+  width: 100%;
+  float: left;
+  height: 100px;
+}
+.object-content .object-input{
+  width: 100%;
+  float: left;
+  height: 100px;
+  max-height: 100px;
+  border: 0;
+}
+
+.object-input img{
+  max-height: 100px;
+  max-width: 100%;
+}
+
+.object-action{
+  width: 100%;
+  float: left;
+  border-top: solid 1px #ddd;
+  height: 40px;
+}
+.object-action .btn{
+  height: 30px !important;
+  padding-top: 5px !important; 
+  margin-top: 5px;
+  font-size: 10px !important;
+  margin-left: 5px;
+  font-size: 10px;
+}
+.object-action .btn input{
+  height: 30px;
+  line-height: 30px;
+  float: left;
+  width: 100%;
+}
+.object-action .btn input{
+  display: none;
+}
+.object-action label{
+  width: 50%;
+  float: left;
+  height: 40px;
+  line-height: 40px;
+}
+.object-action input{
+  float: left !important;
+  width: 50% !important;
+  height: 30px !important;
+  margin-top: 5px !important;
 }
 </style>
 <script>
