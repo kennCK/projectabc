@@ -33,7 +33,7 @@
               <input type="text" class="form-control">
             </span> -->
             <span class="object-action">
-              <button class="btn btn-primary pull-right" @click="updateText(itemO, index)">Update</button>
+              <button class="btn btn-primary pull-right" @click="updateText(itemO, index)" style="margin-right: 5px;">Update</button>
             </span>
           </div>
           <div class="object-holder" v-if="itemO.type === 'photo'">
@@ -50,7 +50,10 @@
               <button class="btn btn-primary"@click="addImage('image' + indexO, indexO, itemO, index)">Upload new photo
                 <input type="file" class="form-control" v-bind:id="'image' + indexO" @change="setUpFileUpload($event)" accept="image/*" >
               </button>
-              <button class="btn btn-warning pull-right" style="margin-right: 5px;">Select from images</button>
+              <button class="btn btn-warning pull-right" style="margin-right: 5px;" @click="selectedBrowseImage = indexO">Select from images</button>
+            </span>
+            <span class="object-browse-images" v-if="selectedBrowseImage === indexO">
+              <browse-images :object="itemO" :view="'table-view'" :index="index"></browse-images>
             </span>
           </div>
 <!-- 					<div class="input-group" v-if="itemO.type === 'text'">
@@ -194,6 +197,7 @@
   overflow-y: hidden;
   border: solid 1px #ddd;
   margin-top: 0px;
+  margin-bottom: 25px;
 }
 .object-header{
   height: 30px;
@@ -220,6 +224,7 @@
   float: left;
   height: 100px;
   max-height: 100px;
+  min-height: 100px;
   border: 0;
 }
 
@@ -241,6 +246,7 @@
   font-size: 10px !important;
   margin-left: 5px;
   font-size: 10px;
+  margin-bottom: 5px !important;
 }
 .object-action .btn input{
   height: 30px;
@@ -263,6 +269,14 @@
   height: 30px !important;
   margin-top: 5px !important;
 }
+.object-browse-images{
+  width: 200px;
+  height: 300px;
+  position: absolute;
+  border: solid 1px #ddd;
+  background: #fff;
+  margin-left: -200px;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -281,16 +295,21 @@ export default {
       fileIndex: null,
       selectedItem: null,
       selectedIndex: null,
-      inArrayColor: ['#f', '#ff', '#fff', '#ffff', '#fffff', '#ffffff', 'white']
+      inArrayColor: ['#f', '#ff', '#fff', '#ffff', '#fffff', '#ffffff', 'white'],
+      selectedBrowseImage: null
     }
   },
   props: ['data'],
+  components: {
+    'browse-images': require('modules/editor/BrowseImages.vue')
+  },
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
     makeActive(index){
       this.$parent.makeActive(index)
+      this.selectedBrowseImage = null
     },
     addImage(id, index, item, indexInner){
       $('#' + id)[0].click()
