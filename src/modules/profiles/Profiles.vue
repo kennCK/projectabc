@@ -86,7 +86,7 @@
         </tbody>
       </table>
     </div>
-    <empty v-if="data === null" :title="'Looks like you have not added an employee to your template!'" :action="'Click the  New Employee Button to get started.'"></empty>
+    <empty v-if="data === null" :title="'Looks like you have not added an profiles to your template!'" :action="'Click the  New or Import Button to get started.'"></empty>
     <update></update>
     <editor></editor>
     <edit></edit>
@@ -323,7 +323,7 @@ export default {
         }]
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('employees/retrieve', parameter).then(response => {
+      this.APIRequest('profiles/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data
@@ -382,7 +382,7 @@ export default {
         id: id,
         status: status
       }
-      this.APIRequest('employees/update', parameter).then(response => {
+      this.APIRequest('profiles/update', parameter).then(response => {
         if(response.data === true){
           this.retrieve()
         }
@@ -409,7 +409,7 @@ export default {
         id: id
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('employees/delete', parameter).then(response => {
+      this.APIRequest('profiles/delete', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data > 0){
           AUTH.checkAuthentication(null)
