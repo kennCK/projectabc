@@ -411,6 +411,7 @@ export default {
       // {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
         {users: 'ALL', description: 'Templates', icon: 'fas fa-file', path: 'templates', flag: true, subMenu: null},
         {users: 'ALL', description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries', flag: false, subMenu: null},
+        {users: 'ALL', description: 'Profiles', icon: 'fas fa-users', path: 'profiles', flag: false, subMenu: null},
         {users: 'ALL', description: 'Images', icon: 'fas fa-image', path: 'images', flag: false, subMenu: null},
         {users: 'USER', description: 'Find Printing', icon: 'fas fa-print', path: 'printings', flag: false, subMenu: null},
         {users: 'ALL', description: 'Store', icon: 'fas fa-store', path: 'marketplace', flag: false, subMenu: [{users: 'ALL', description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace', flag: false}, {users: 'PARTNER', description: 'Products', icon: 'fa fa-shopping-cart', path: 'products', flag: false}, {users: 'PARTNER', description: 'Orders', icon: 'fa fa-file', path: 'orders', flag: false}, {users: 'PARTNER', description: 'Coupons', icon: 'fa fa-tags', path: 'coupons', flag: false}, {users: 'ALL', description: 'Wishlists', icon: 'fa fa-heart', path: 'wishlists', flag: false}]
@@ -420,6 +421,7 @@ export default {
       // {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
         {users: 'ALL', description: 'Templates', icon: 'fas fa-file', path: 'templates', flag: false, subMenu: null},
         {users: 'ALL', description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries', flag: false, subMenu: null},
+        {users: 'ALL', description: 'Profiles', icon: 'fas fa-users', path: 'profiles', flag: false, subMenu: null},
         {users: 'ALL', description: 'Images', icon: 'fas fa-image', path: 'images', flag: false, subMenu: null},
         {users: 'USER', description: 'Find Printing', icon: 'fas fa-print', path: 'printings', flag: false, subMenu: null},
         {users: 'ALL', description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace', flag: false, subMenu: null},

@@ -46,11 +46,11 @@ button input{
   position: relative;
   height: 240px;
 }
-.card img{
+.card-holder img{
   max-height: 200px;
   max-width: 100%;
 }
-.card:hover{
+.card-holder:hover{
   cursor: pointer;
   border: solid 1px #22b173;
 }
