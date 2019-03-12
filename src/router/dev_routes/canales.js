@@ -277,7 +277,7 @@ export default{
     name: 'profiles',
     component: resolve => require(['modules/profiles/Profiles.vue'], resolve),
     meta: {
-      tokenRequired: false
+      tokenRequired: true
     }
   }
   ]
