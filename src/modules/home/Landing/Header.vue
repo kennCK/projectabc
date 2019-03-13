@@ -15,6 +15,7 @@
           <li class="nav-item" v-on:click="redirect('/signup_partner')"><a class="nav-link">Be our Partner</a></li>
           <li class="nav-item" v-on:click="redirect('/signup')"><a class="nav-link">Register</a></li>
           <li class="nav-item" v-on:click="redirect('/login')"><a class="nav-link">Login</a></li>
+          <li class="nav-item" v-on:click="redirect('/signup')"><a class="btn hidden-xs hidden-sm hs-rebranded-btn hs-btn-success" href="/signup">Start Free 30 Day Trial</a></li>
         </ul>
       </span>
     </div>
@@ -144,6 +145,24 @@ export default {
   font-size: 24px;
   margin-bottom: 0px;
 }
+.hs-rebranded-btn {
+  padding: 8px 17px;
+  border: 2px solid transparent;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 2px;
+  font-family: "Ubuntu", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.hs-rebranded-btn.hs-btn-success {
+  color: #fff;
+  background-color: #FBCD03;
+  border-color: #0CDFA3;
+}
+.hs-btn-success:hover {
+    color: #fff;
+    background-color: #18d06b;
+    border-color: #18d06b;
+}
 
 @media screen and (max-width: 992px){
   .header-section{
@@ -199,6 +218,24 @@ export default {
   }
   .navbar-collapse .show{
     display: block !important;
+  }
+  .hs-rebranded-btn {
+    padding: 8px 17px;
+    border: 2px solid transparent;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 2px;
+    font-family: "Ubuntu", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  .hs-rebranded-btn.hs-btn-success {
+    color: #fff;
+    background-color: #0CDFA3;
+    border-color: #0CDFA3;
+  }
+  .hs-btn-success:hover {
+    color: #fff;
+    background-color: #18d06b;
+    border-color: #18d06b;
   }
 }
 </style>

@@ -29,7 +29,7 @@ button input{
   margin-bottom: 100px;
 }
 .image-list{
-  width: 100%;
+  width: 1000px;
   float: left;
   margin-top: 25px;
 }
@@ -160,17 +160,10 @@ export default {
       })
     },
     download(url, index){
-      // alert('Hello ')
-      // var canvas = document.getElementById('card-img-top1')
-      // var image = canvas[0].toDataURL('image/png')
-      // var link = document.createElement('a')
-      // link.download = 'my-image1.png'
-      // link.href = image
-      // link.click()
       var x = document.createElement('a')
-      x.download = 'card-img-top' + index
-      x.href = url
+      x.download = 'untitled.jpg'
       document.body.appendChild(x)
+      document.write(url)
       x.click()
     },
     remove(id){

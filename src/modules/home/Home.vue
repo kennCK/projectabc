@@ -1,7 +1,4 @@
 <template>
-  <div>
-    Page content goes here.
-  </div>
 </template>
 <script>
   import Vue from 'vue'
@@ -32,5 +29,9 @@
   margin-left: 0;
   text-align: left;
   width: 50%;
+}
+.jumbotron {
+  background-color: #f4511e;
+  color: #ffffff;
 }
 </style>

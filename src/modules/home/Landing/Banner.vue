@@ -15,7 +15,7 @@
     <div class="image">
       <img src="../../../assets/img/banner.png" width="100%">
     </div>
-	</div>
+  </div>
 </template>
 <style scoped>
 .btn-banner {
@@ -61,7 +61,6 @@
   display: block;
   position: absolute;
 }
-
 @media screen and (max-width: 992px){
   .text{
     width: 90%;
@@ -72,7 +71,6 @@
   .title{
     text-align: center;
   }
-
   .image{
     display: none;
   }
