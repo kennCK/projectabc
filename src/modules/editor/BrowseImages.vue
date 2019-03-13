@@ -3,7 +3,8 @@
     <div class="item">
       <span class="header">
         Saved Images
-        <i class="fa fa-close pull-right" @click="close()"></i>
+        <i class="fa fa-close pull-right" @click="close()" v-if="view === 'editor'"></i>
+        <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view === 'table-view'"></i>
       </span>
       <span class="search">
         <input type="text" class="form-control form-control-custom" v-model="searchValue" placeholder="Search something..." @keyup.enter="search()">
@@ -133,7 +134,7 @@ export default {
       default: this.object.content
     }
   },
-  props: ['object'],
+  props: ['object', 'view', 'index'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
@@ -183,14 +184,21 @@ export default {
     },
     apply(){
       this.object.content = this.data[this.prevIndex].url
+      if(this.view === 'table-view'){
+        this.$parent.selectedBrowseImage = null
+        this.$parent.updateText(this.object, this.index)
+      }
     },
     cancel(){
       this.object.content = this.default
     },
     close(){
-      this.object.content = this.default
       this.prevIndex = null
       this.$parent.browseImagesFlag = false
+    },
+    closeTableView(){
+      this.prevIndex = null
+      this.$parent.selectedBrowseImage = null
     }
   }
 }

@@ -5,11 +5,11 @@
     </button>
     <div class="image-list" v-if="data !== null">
       <div class="card" v-for="item, index in data">
-        <img class="card-img-top" v-bind:id="'card-img-top' + index" :src="config.BACKEND_URL + item.url" alt="Card image cap" height="217">
-        <div class="card-body">
-          <ul>
-            <li @click="download(config.BACKEND_URL + item.url, index)">Download</li>
-            <li style="border-right: 0px;" @click="remove(item.id)">Delete</li>
+        <div class="card-holder">
+          <img class="card-img-top" v-bind:id="'card-img-top' + index" :src="config.BACKEND_URL + item.url" alt="Card image cap" download>
+          <ul class="card-body">
+            <li @click="remove(item.id)">Delete</li>
+            <li style="border-right: 0px;" @click="download(config.BACKEND_URL + item.url, index)">Download</li>
           </ul>
         </div>
       </div>
@@ -26,6 +26,7 @@ button input{
   width: 98%;
   float: left;
   margin-right: 2%;
+  margin-bottom: 100px;
 }
 .image-list{
   width: 1000px;
@@ -37,28 +38,35 @@ button input{
   margin-right: 1%;
   float: left;
   margin-bottom: 25px;
+  height: 240px;
 }
-.card img{
+
+.card-holder{
+  width: 100%;
+  position: relative;
+  height: 240px;
+}
+.card-holder img{
   max-height: 200px;
   max-width: 100%;
 }
-.card:hover{
+.card-holder:hover{
   cursor: pointer;
   border: solid 1px #22b173;
 }
+
 .card-body{
-  padding: 0px !important;
-}
-ul{
   list-style: none;
   width: 100%;
-  float: left;
+  position: absolute;
   height: 40px;
   margin: 0px;
   padding: 0px;
   line-height: 40px;
   background: #22b173;
   color: #fff;
+  padding: 0px !important;
+  bottom: 0;
 }
 ul li{
   width: 50%;
@@ -152,16 +160,8 @@ export default {
       })
     },
     download(url, index){
-      // alert('Hello ')
-      // var canvas = document.getElementById('card-img-top1')
-      // var image = canvas[0].toDataURL('image/png')
-      // var link = document.createElement('a')
-      // link.download = 'my-image1.png'
-      // link.href = image
-      // link.click()
       var x = document.createElement('a')
       x.download = 'untitled.jpg'
-      // x.href = url
       document.body.appendChild(x)
       document.write(url)
       x.click()
