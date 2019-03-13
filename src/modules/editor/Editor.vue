@@ -50,7 +50,7 @@
                   </span>
                 </span>
                 <span class="browse-images-holder" v-if="selected !== null && browseImagesFlag === true">
-                  <browse-images :object="selected"></browse-images>
+                  <browse-images :object="selected" :view="'editor'" :index="selectedIndex"></browse-images>
                 </span>
                 <span class="object-contents" v-if="selected !== null">
                   <basic-text v-if="selected !== null && selected.type === 'text'" :object="selected" :index="selectedIndex"></basic-text>

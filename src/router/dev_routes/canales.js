@@ -271,6 +271,14 @@ export default{
     meta: {
       tokenRequired: false
     }
+  },
+  {
+    path: '/profiles',
+    name: 'profiles',
+    component: resolve => require(['modules/profiles/Profiles.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
