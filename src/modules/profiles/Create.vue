@@ -1,7 +1,7 @@
 <template>
   <div>
     <button class="btn btn-primary pull-right" @click="modal()"><i class="fa fa-user"></i> New</button>
-    <button class="btn btn-primary pull-right" @click="modal()" style="margin-right: 5px;"><i class="fa fa-users"></i> Import</button>
+    <import-profiles></import-profiles>
     <div class="modal fade" id="createProfileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
@@ -206,6 +206,9 @@ export default {
       file: null,
       government: []
     }
+  },
+  components: {
+    'import-profiles': require('modules/profiles/Import.vue')
   },
   methods: {
     redirect(parameter){
