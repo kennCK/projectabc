@@ -161,9 +161,8 @@ export default {
     },
     download(url, index){
       var x = document.createElement('a')
-      x.download = 'untitled.jpg'
       document.body.appendChild(x)
-      document.write(url)
+      document.write(index)
       x.click()
     },
     remove(id){
