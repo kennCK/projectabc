@@ -14,7 +14,7 @@
         <ul class="header-primary-menu">
 <!--           <li class="nav-item" v-on:click="redirect('/signup_partner')"><a class="nav-link">Be our Partner</a></li>
           <li class="nav-item" v-on:click="redirect('/signup')"><a class="nav-link">Register</a></li> -->
-          <li class="nav-item" v-on:click="redirect('/signup')"><a class="btn hidden-xs hidden-sm hs-rebranded-btn hs-btn-success" href="/signup">Start Free 30 Day Trial</a></li>
+          <li class="nav-item btn btn-warning" v-on:click="redirect('/signup')"> Start Free 30 Day Trial</li>
           <li class="nav-item" v-on:click="redirect('/login')"><a class="nav-link">Login</a></li>
         </ul>
       </span>
@@ -28,23 +28,6 @@
     </div>
   </div>
 </template>
-<script>
-import ROUTER from '../../../router'
-import AUTH from '../../../services/auth'
-export default {
-  mounted(){
-  },
-  data(){
-    return {
-    }
-  },
-  methods: {
-    redirect(parameter){
-      ROUTER.push(parameter)
-    }
-  }
-}
-</script>
 <style scoped>
 .header{
   width: 100%;
@@ -239,3 +222,20 @@ export default {
   }
 }
 </style>
+<script>
+import ROUTER from '../../../router'
+import AUTH from '../../../services/auth'
+export default {
+  mounted(){
+  },
+  data(){
+    return {
+    }
+  },
+  methods: {
+    redirect(parameter){
+      ROUTER.push(parameter)
+    }
+  }
+}
+</script>
