@@ -413,3 +413,9 @@ Route::post('/governments/retrieve', "GovernmentController@retrieve");
 Route::post('/governments/update', "GovernmentController@update");
 Route::post('/governments/delete', "GovernmentController@delete");
 Route::get('/governments/test', 'GovernmentController@test');
+
+// Google Spreadsheets
+Route::get('/gsheets/create', 'GoogleSheetController@generate');
+Route::post('/gsheets/auth', 'GoogleSheetController@getAuthUrl');
+Route::post('/gsheets/save_token', 'GoogleSheetController@setAccessToken');
+Route::get('/gsheets/sample', 'GoogleSheetController@sample');
