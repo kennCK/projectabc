@@ -68,6 +68,7 @@ class GoogleSheetController extends APIController
       $code = $this->extractCode($url);
       $this->getConfigByExecute($url);
       $code = str_replace('%', '/', $code);
+      return redirect($this->redirectUrl);
     }
 
     public function extractCode($url){
@@ -78,10 +79,10 @@ class GoogleSheetController extends APIController
 
     public function getConfigByExecute($url){
       $array = explode('/', $url);
-      if($array[2] == 'classworx.co' || $array[2] == 'www.classworx.co'){
-        $this->redirectUrl = 'http://classworx.co/#/reports/ft';
+      if($array[2] == 'idfactory.ph' || $array[2] == 'www.idfactory.ph'){
+        $this->redirectUrl = 'https://idfactory.ph/#/profiles';
       }else{
-        $this->redirectUrl = 'http://localhost:8080/#/reports/ft';
+        $this->redirectUrl = 'http://localhost:8080/#/profiles';
       }
     }
 
