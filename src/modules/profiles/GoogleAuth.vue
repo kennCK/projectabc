@@ -11,13 +11,23 @@ import AUTH from '../../services/auth'
 import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
+  mounted(){
+    this.setCode()
+  },
   data(){
     return {
       user: AUTH.user,
-      config: CONFIG
+      config: CONFIG,
+      google: AUTH.google
     }
   },
   methods: {
+    setCode(){
+      if(this.$route.params.code !== undefined && this.$route.params.scope !== undefined){
+        AUTH.setGoogleCode(this.$route.params.code, this.$route.params.scope)
+        ROUTER.push('/profiles')
+      }
+    },
     redirect(parameter){
       ROUTER.push(parameter)
     },

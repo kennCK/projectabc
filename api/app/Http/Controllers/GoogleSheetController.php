@@ -65,24 +65,47 @@ class GoogleSheetController extends APIController
 
     public function generate(Request $request){
       $url =  $request->fullUrl();
-      $code = $this->extractCode($url);
+      $code = null;
+      $scope = null;
+      
       $this->getConfigByExecute($url);
-      $code = str_replace('%', '/', $code);
-      return redirect($this->redirectUrl);
+      
+
+      $parameter = $this->extract($url);
+     	if(strpos($parameter[1], '&')){
+        $parameter = explode('&', $parameter[1]);
+      }
+      
+      if(strpos($parameter[0], '=')){
+        $temp = explode('=', $parameter[0]);
+        // $code = str_replace('%', '/', $temp[1]);
+        $code = $temp[1];
+      }
+
+			if(strpos($parameter[1], '=')){
+        $temp = explode('=', $parameter[1]);
+        // $scope = str_replace('%', '/', $temp[1]);
+        $scope = $temp[1];
+      }
+
+     	echo $code.'/'.$scope;
+      return redirect($this->redirectUrl.$code.'/'.$scope);
     }
 
     public function extractCode($url){
       $parameter = $this->extract($url);
-      $code = explode('=', $parameter[1]);
-      return $code[1];
+     	if(strpos($parameter[1], '&')){
+        $parameter = explode('&', $parameter[1]);
+      }
+      echo json_encode($parameter);
     }
 
     public function getConfigByExecute($url){
       $array = explode('/', $url);
       if($array[2] == 'idfactory.ph' || $array[2] == 'www.idfactory.ph'){
-        $this->redirectUrl = 'https://idfactory.ph/#/profiles';
+        $this->redirectUrl = 'https://idfactory.ph/#/profiles/';
       }else{
-        $this->redirectUrl = 'http://localhost:8080/#/profiles';
+        $this->redirectUrl = 'http://localhost:8080/#/profiles/';
       }
     }
 

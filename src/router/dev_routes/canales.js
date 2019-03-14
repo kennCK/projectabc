@@ -273,7 +273,7 @@ export default{
     }
   },
   {
-    path: '/profiles',
+    path: '/profiles/:code?/:scope?',
     name: 'profiles',
     component: resolve => require(['modules/profiles/Profiles.vue'], resolve),
     meta: {

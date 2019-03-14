@@ -1,7 +1,7 @@
 <template>
   <div>
     <button class="btn btn-primary pull-right" @click="modal()"><i class="fa fa-user"></i> New</button>
-    <import-profiles></import-profiles>
+    <google-auth></google-auth>
     <div class="modal fade" id="createProfileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
@@ -208,7 +208,7 @@ export default {
     }
   },
   components: {
-    'import-profiles': require('modules/profiles/Import.vue')
+    'google-auth': require('modules/profiles/GoogleAuth.vue')
   },
   methods: {
     redirect(parameter){

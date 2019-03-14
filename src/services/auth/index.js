@@ -35,9 +35,6 @@ export default {
     timer: null,
     speed: 1000
   },
-  google: {
-    code: null
-  },
   tokenData: {
     token: null,
     tokenTimer: false,
@@ -46,6 +43,10 @@ export default {
   otpDataHolder: {
     userInfo: null,
     data: null
+  },
+  google: {
+    code: null,
+    scope: null
   },
   currentPath: false,
   setUser(userID, username, email, type, status, profile, checkout, plan, notifSetting){
@@ -151,6 +152,7 @@ export default {
         })
         // this.retrieveNotifications(userInfo.id)
         this.retrieveMessages(userInfo.id, userInfo.account_type)
+        this.getGoogleCode()
       }, (response) => {
         this.setToken(null)
         this.tokenData.verifyingToken = false
@@ -169,6 +171,8 @@ export default {
   deaunthenticate(){
     localStorage.removeItem('usertoken')
     localStorage.removeItem('account_id')
+    localStorage.removeItem('google_code')
+    localStorage.removeItem('google_scope')
     this.setUser(null)
     let vue = new Vue()
     vue.APIRequest('authenticate/invalidate')
@@ -291,5 +295,15 @@ export default {
     let notifSetting = data[0].notification_settings
     this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout, plan, notifSetting)
     ROUTER.push('/templates')
+  },
+  setGoogleCode(code, scope){
+    localStorage.setItem('google_code', code)
+    localStorage.setItem('google_scope', scope)
+    this.google.code = code
+    this.google.scope = scope
+  },
+  getGoogleCode(){
+    this.google.code = localStorage.getItem('google_code')
+    this.google.scope = localStorage.getItem('google_scope')
   }
 }
