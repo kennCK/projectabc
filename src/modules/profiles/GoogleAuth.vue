@@ -25,23 +25,27 @@ export default {
     setCode(){
       if(this.$route.params.code !== undefined && this.$route.params.scope !== undefined){
         AUTH.setGoogleCode(this.$route.params.code, this.$route.params.scope)
-        ROUTER.push('/profiles')
+        ROUTER.push('/import')
       }
     },
     redirect(parameter){
       ROUTER.push(parameter)
     },
     importProfiles(){
-      $('#loading').css({display: 'block'})
-      let parameter = {
-        GOOGLE_URL: this.config.GOOGLE_URL
-      }
-      this.APIRequest('gsheets/auth', parameter).then(url => {
-        $('#loading').css({display: 'none'})
-        if(url.redirect !== null){
-          window.location.href = url.redirect
+      if(AUTH.google.code !== null && AUTH.google.scope !== null){
+        ROUTER.push('/import')
+      }else{
+        $('#loading').css({display: 'block'})
+        let parameter = {
+          GOOGLE_URL: this.config.GOOGLE_URL
         }
-      })
+        this.APIRequest('gsheets/auth', parameter).then(url => {
+          $('#loading').css({display: 'none'})
+          if(url.redirect !== null){
+            window.location.href = url.redirect
+          }
+        })
+      }
     }
   }
 }

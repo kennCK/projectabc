@@ -279,6 +279,14 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/import',
+    name: 'import',
+    component: resolve => require(['modules/profiles/Import.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

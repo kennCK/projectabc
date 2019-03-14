@@ -11,6 +11,7 @@ use Google_Service_Sheets_BatchUpdateSpreadsheetRequest;
 use Google_Service_Sheets_ValueRange;
 use Google_Service_Sheets_BatchUpdateValuesRequest;
 use Carbon\Carbon;
+use App\AccountGoogleSheet;
 class GoogleSheetController extends APIController
 {
 
@@ -49,15 +50,14 @@ class GoogleSheetController extends APIController
       return $this->response();
     }
 
-    public function setAccessToken($code, $data){
+    public function setAccessToken($code){
       if($code != null){
         $this->client->authenticate($code);
         $access_token = $this->client->getAccessToken();
-        $this->client->setAccessToken($access_token['access_token']);
+        $this->client->setAccessToken($access_token);
         if($this->client->isAccessTokenExpired()){
           $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
         }
-        Report::where('id', '=', $data['id'])->update(array('token' => $access_token['access_token']));
       }else{
         echo 'Emty code';
       }
@@ -122,5 +122,80 @@ class GoogleSheetController extends APIController
       return $parameter;
     }
 
-   
+    public function createNewGoogleSheet(Request $request){
+    	$data = $request->all();
+    	$accountId = $data['account_id'];
+    	$this->setAccessToken($data['code']);
+      $service = new Google_Service_Sheets($this->client);
+      $requestBody = new Google_Service_Sheets_Spreadsheet();
+      $spreadsheet = $service->spreadsheets->create($requestBody);
+
+
+      $date = Carbon::now();
+      $title = 'IDF-'.$accountId.' - '.$date->format('F j, Y');
+      $updateTitle = [
+        // Change the spreadsheet's title.
+        new Google_Service_Sheets_Request([
+            'updateSpreadsheetProperties' => [
+                'properties' => [
+                    'title' => $title
+                ],
+                'fields' => 'title'
+            ]
+        ])
+      ];
+			$batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest([
+          'requests' => $updateTitle
+      ]);
+
+      $response = $service->spreadsheets->batchUpdate($spreadsheet['spreadsheetId'], $batchUpdateRequest);
+
+      $rowValues = array(
+      	['email', 'employment_code', 'first_name', 'last_name',
+      	'middle_name', 'birth_date', 'sex', 'contact_number', 'address',
+      	'position', 'department', 'emergency_contact_name', 'emergency_contact_number',
+      	'profile', 'signature']
+      );
+
+      // $rowValues = array(
+      // 	['email'], ['employment_code'], ['first_name']
+      // );
+
+			$data = [];
+			$data[] = new Google_Service_Sheets_ValueRange([
+			    'values' => $rowValues,
+			    'range'  => 'A1'
+			]);
+
+			$body = new Google_Service_Sheets_BatchUpdateValuesRequest([
+			    'valueInputOption' => 'USER_ENTERED',
+			    'data' => $data
+			]);
+
+			$result = $service->spreadsheets_values->batchUpdate($spreadsheet['spreadsheetId'], $body);
+
+      $id = $this->checkIfExist($accountId);
+      if($id == null){
+      	$this->model = new AccountGoogleSheet();
+	      $insertData = array(
+	      	'account_id'	=> $accountId,
+	      	'sheet'				=> $spreadsheet['spreadsheetId']
+	      );
+	      $this->insertDB($insertData);
+      }else{
+      	$this->model = new AccountGoogleSheet();
+	      $updateData = array(
+	      	'id'	=> $id,
+	      	'sheet'				=> $spreadsheet['spreadsheetId']
+	      );
+	      $this->updateDB($updateData);
+      }
+      
+      return $this->response();
+    }
+
+    public function checkIfExist($accountId){
+    	$result = AccountGoogleSheet::where('account_id', '=', $accountId)->get();
+    	return (sizeof($result) > 0) ? $result[0]['id'] : null;
+    }
 }
