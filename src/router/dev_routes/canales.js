@@ -273,9 +273,17 @@ export default{
     }
   },
   {
-    path: '/profiles',
+    path: '/profiles/:code?/:scope?',
     name: 'profiles',
     component: resolve => require(['modules/profiles/Profiles.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/import',
+    name: 'import',
+    component: resolve => require(['modules/profiles/Import.vue'], resolve),
     meta: {
       tokenRequired: true
     }
