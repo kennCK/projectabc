@@ -16,7 +16,27 @@
       <button class="btn btn-primary custom-button" @click="createNewGSheet()">Create New Google Sheet</button>
     </div>
     <div class="item">
-      <button class="btn btn-primary" v-if="data !== null">Sync</button>
+      <button class="btn btn-primary" v-if="data !== null" @click="sync(data.sheet)">Sync</button>
+    </div>
+    <div class="item">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <td>Email</td>
+              <td>Last Name</td>
+              <td>First Name</td>
+              <td>Status</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item, index in profiles">
+              <td>{{item.email}}</td>
+              <td>{{item.last_name}}</td>
+              <td>{{item.first_name}}</td>
+              <td v-bind:class="{'text-primary': item.status === 'created', 'text-warning': item.status === 'updated'}">{{item.status}}</td>
+            </tr>
+          </tbody>
+        </table>
     </div>
 	</div>
 </template>
@@ -69,7 +89,9 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      data: null
+      data: null,
+      profiles: null,
+      profileHeader: null
     }
   },
   components: {
@@ -108,6 +130,20 @@ export default {
     open(id){
       let url = 'https://docs.google.com/spreadsheets/d/' + id
       window.open(url, '_blank')
+    },
+    sync(id){
+      let parameter = {
+        code: AUTH.google.code,
+        scope: AUTH.google.scope,
+        sheet: id,
+        account_id: this.user.userID
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('gsheets/read_file', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        this.profileHeader = response.dataHeader
+        this.profiles = response.data
+      })
     }
   }
 }
