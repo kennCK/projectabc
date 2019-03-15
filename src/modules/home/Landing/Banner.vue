@@ -6,10 +6,10 @@
       </span>
       <span class="description">
         <h4>
-          ID Factory lets you design and create custom professional-looking IDs. Ideal for companies, corporate events and many more.
-          (Create. Archive. Print. All in one place.)
+          ID Factory lets you design and create custom professional-looking IDs. Ideal for companies, corporate events, condos and many more.
+          (Create. Print. Manage. All in one place.)
         </h4>
-        <button class="btn btn-warning btn-banner" v-on:click="redirect('/signup')"> Get started for 30 days trial</button>
+        <button class="btn btn-warning btn-banner" v-on:click="redirect('/signup')"> Create an ID</button>
       </span>
     </div>
     <div class="image">
