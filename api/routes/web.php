@@ -418,6 +418,7 @@ Route::get('/governments/test', 'GovernmentController@test');
 Route::get('/gsheets/create', 'GoogleSheetController@generate');
 Route::post('/gsheets/auth', 'GoogleSheetController@getAuthUrl');
 Route::post('/gsheets/create_file', 'GoogleSheetController@createNewGoogleSheet');
+Route::post('/gsheets/read_file', 'GoogleSheetController@readGoogleSheet');
 Route::post('/gsheets/save_token', 'GoogleSheetController@setAccessToken');
 Route::get('/gsheets/sample', 'GoogleSheetController@sample');
 

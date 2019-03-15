@@ -198,4 +198,86 @@ class GoogleSheetController extends APIController
     	$result = AccountGoogleSheet::where('account_id', '=', $accountId)->get();
     	return (sizeof($result) > 0) ? $result[0]['id'] : null;
     }
+
+    public function readGoogleSheet(Request $request){
+    	$data = $request->all();
+    	$spreadsheetId = $data['sheet'];
+    	$this->setAccessToken($data['code']);
+    	$accountId = $data['account_id'];
+
+      $service = new Google_Service_Sheets($this->client);
+      $flag = true;
+      $ascii = 65;
+      $row = 1;
+      $totalColumn = 0;
+      $response = array();
+      $responseHeader = array();
+      $inner = array();
+      $counter = 0;
+      while ($flag) {
+      	$counter++;
+      	$range = chr($ascii).$row;
+      	$result = $service->spreadsheets_values->get($spreadsheetId, $range);
+
+      	if($ascii == 65 && $row > 1 && $result->getValues() == null){
+      		$flag = false;
+      		break;
+      	}
+
+      	if($row == 1){
+      		$ascii++;
+      		if($result->getValues() !== null){
+      			$inner[] = array(
+      				'title' => $result->getValues()[0][0]
+      			);
+      		}
+      	}else if($row > 1 && $counter < $totalColumn){
+      		$ascii++;
+      		$inner[$responseHeader[0][$counter - 1]['title']] = ($result->getValues() == null) ? null : $result->getValues()[0][0];
+      	}
+    		
+      	if($result->getValues() == null && $row == 1){
+      		$totalColumn = $counter;
+      		$counter = 0;
+      		$row++;
+      		$responseHeader[] = $inner;
+      		$ascii = 65;
+      		$inner = array();
+      	}
+
+      	if($counter == $totalColumn && $row > 1){
+      		$row++;
+      		$response[] = $inner;
+      		$ascii = 65;
+      		$inner = array();
+      	}
+      }
+      
+      // echo json_encode($response);
+			if(sizeof($response) > 0){
+				for ($i=0; $i < sizeof($response); $i++) { 
+					$email = $response[$i]['email'];
+					$lastName = $response[$i]['last_name'];
+					$firstName = $response[$i]['first_name'];
+					$result = app('App\Http\Controllers\ProfileController')->checkIfExist($email, $firstName, $lastName);
+					$response[$i]['account_id'] = $accountId;
+					if($result !== null){
+						$response[$i]['id'] = $result['id'];
+						app('App\Http\Controllers\ProfileController')->updateFromController($response[$i]);
+						$response[$i]['status'] = 'updated';
+					}else{
+						$id = app('App\Http\Controllers\ProfileController')->createFromController($response[$i]);
+						$response[$i]['id'] = $id;
+						$response[$i]['status'] = 'created';
+					}
+				}
+			}
+
+			return response()->json(array(
+				'dataHeader'	=> $responseHeader,
+				'data'	=> $response,
+				'timestamp' => Carbon::now(),
+				'error'	=> null
+			));
+    }
 }
