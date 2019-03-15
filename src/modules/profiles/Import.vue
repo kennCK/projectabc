@@ -18,7 +18,7 @@
     <div class="item">
       <button class="btn btn-primary" v-if="data !== null" @click="sync(data.sheet)">Sync</button>
     </div>
-    <div class="item">
+    <div class="item" style="margin-bottom: 100px;">
         <table class="table table-bordered table-hover">
           <thead>
             <tr>
@@ -31,9 +31,9 @@
           <tbody>
             <tr v-for="item, index in profiles">
               <td>{{item.email}}</td>
-              <td>{{item.last_name}}</td>
-              <td>{{item.first_name}}</td>
-              <td v-bind:class="{'text-primary': item.status === 'created', 'text-warning': item.status === 'updated'}">{{item.status}}</td>
+              <td style="text-transform: capitalize">{{item.last_name}}</td>
+              <td style="text-transform: capitalize">{{item.first_name}}</td>
+              <td v-bind:class="{'text-primary': item.status === 'created', 'text-danger': item.status === 'updated'}" style="text-transform: capitalize">{{item.status}}</td>
             </tr>
           </tbody>
         </table>
