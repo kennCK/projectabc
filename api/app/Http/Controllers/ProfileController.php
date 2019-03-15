@@ -17,7 +17,7 @@ class ProfileController extends APIController
 
     public function checkIfExist($email, $firstName, $lastName){
       $result = Profile::where('email', '=', $email)->where('first_name', '=', $firstName)->where('last_name', '=', $lastName)->get();
-      return (sizeof($result) > 0) ? $profile[0] : null;
+      return (sizeof($result) > 0) ? $result[0] : null;
     }
 
     public function updateFromController($data){

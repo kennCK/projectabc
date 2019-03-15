@@ -214,46 +214,24 @@ class GoogleSheetController extends APIController
       $responseHeader = array();
       $inner = array();
       $counter = 0;
-      while ($flag) {
-      	$counter++;
-      	$range = chr($ascii).$row;
-      	$result = $service->spreadsheets_values->get($spreadsheetId, $range);
+      $result = $service->spreadsheets_values->get($spreadsheetId, "Sheet1");
+      $responseHeader = $result->getValues()[0];
+      $resultTemp = $result->getValues();
 
-      	if($ascii == 65 && $row > 1 && $result->getValues() == null){
-      		$flag = false;
-      		break;
-      	}
-
-      	if($row == 1){
-      		$ascii++;
-      		if($result->getValues() !== null){
-      			$inner[] = array(
-      				'title' => $result->getValues()[0][0]
-      			);
+      if(sizeof($resultTemp) > 1){
+      	for ($i=1; $i < sizeof($resultTemp); $i++) { 
+      		$array = array();
+      		if(count($resultTemp[$i]) > 0){
+      			for ($j=0; $j < sizeof($resultTemp[$i]); $j++) { 
+      				$array[$responseHeader[$j]] = $resultTemp[$i][$j];
+      			}
+      		}else{
+      			$array = null;
       		}
-      	}else if($row > 1 && $counter < $totalColumn){
-      		$ascii++;
-      		$inner[$responseHeader[0][$counter - 1]['title']] = ($result->getValues() == null) ? null : $result->getValues()[0][0];
-      	}
-    		
-      	if($result->getValues() == null && $row == 1){
-      		$totalColumn = $counter;
-      		$counter = 0;
-      		$row++;
-      		$responseHeader[] = $inner;
-      		$ascii = 65;
-      		$inner = array();
-      	}
-
-      	if($counter == $totalColumn && $row > 1){
-      		$row++;
-      		$response[] = $inner;
-      		$ascii = 65;
-      		$inner = array();
+      		$response[] = $array;
       	}
       }
       
-      // echo json_encode($response);
 			if(sizeof($response) > 0){
 				for ($i=0; $i < sizeof($response); $i++) { 
 					$email = $response[$i]['email'];

@@ -32,20 +32,30 @@ export default {
       ROUTER.push(parameter)
     },
     importProfiles(){
-      if(AUTH.google.code !== null && AUTH.google.scope !== null){
-        ROUTER.push('/import')
-      }else{
-        $('#loading').css({display: 'block'})
-        let parameter = {
-          GOOGLE_URL: this.config.GOOGLE_URL
-        }
-        this.APIRequest('gsheets/auth', parameter).then(url => {
-          $('#loading').css({display: 'none'})
-          if(url.redirect !== null){
-            window.location.href = url.redirect
-          }
-        })
+      $('#loading').css({display: 'block'})
+      let parameter = {
+        GOOGLE_URL: this.config.GOOGLE_URL
       }
+      this.APIRequest('gsheets/auth', parameter).then(url => {
+        $('#loading').css({display: 'none'})
+        if(url.redirect !== null){
+          window.location.href = url.redirect
+        }
+      })
+      // if(AUTH.google.code !== null && AUTH.google.scope !== null){
+      //   ROUTER.push('/import')
+      // }else{
+      //   $('#loading').css({display: 'block'})
+      //   let parameter = {
+      //     GOOGLE_URL: this.config.GOOGLE_URL
+      //   }
+      //   this.APIRequest('gsheets/auth', parameter).then(url => {
+      //     $('#loading').css({display: 'none'})
+      //     if(url.redirect !== null){
+      //       window.location.href = url.redirect
+      //     }
+      //   })
+      // }
     }
   }
 }
