@@ -3,10 +3,11 @@
     <div class="alert alert-success">
       Hi <b>{{user.username}}!</b> Welcome to our import profiles. This will allow you to quickly sync or upload multiple profile.
     </div>
+    <div class="alert alert-danger" v-if="errorMessage !== null"><b>Opps! </b>{{errorMessage}}</div>
     <div class="item" v-if="data !== null">
-      <div class="file" @click="open(data.sheet)">
+      <div class="file bordered-hover-primary" @click="open(data.sheet)">
         <i class="far fa-file-excel text-green"></i>
-        <label>{{data.sheet}}</label>
+        <label>{{data.title}}</label>
       </div>
     </div>
     <div class="item" v-if="data !== null">
@@ -18,7 +19,7 @@
     <div class="item">
       <button class="btn btn-primary" v-if="data !== null" @click="sync(data.sheet)">Sync</button>
     </div>
-    <div class="item" style="margin-bottom: 100px;">
+    <div class="item" style="margin-bottom: 100px;" v-if="profiles !== null">
         <table class="table table-bordered table-hover">
           <thead>
             <tr>
@@ -125,6 +126,7 @@ export default {
       // $('#loading').css({display: 'block'})
       this.APIRequest('gsheets/create_file', parameter).then(response => {
         // $('#loading').css({display: 'none'})
+        this.errorMessage = response.error
       })
     },
     open(id){
@@ -143,6 +145,7 @@ export default {
         $('#loading').css({display: 'none'})
         this.profileHeader = response.dataHeader
         this.profiles = response.data
+        this.errorMessage = response.error
       })
     }
   }
