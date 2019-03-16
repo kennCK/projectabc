@@ -93,8 +93,8 @@ class GoogleSheetController extends APIController
         $scope = $temp[1];
       }
 
-     	echo $code.'/'.$scope;
-      // return redirect($this->redirectUrl.$code.'/'.$scope);
+     	// echo $code.'/'.$scope;
+      return redirect($this->redirectUrl.$code.'/'.$scope);
     }
 
     public function extractCode($url){
@@ -107,8 +107,7 @@ class GoogleSheetController extends APIController
 
     public function getConfigByExecute($url){
       $array = explode('/', $url);
-      echo json_encode($array);
-      if($array[2] == 'idfactory.ph' || $array[2] == 'www.idfactory.ph'){
+      if($array[2] == 'idfactory.ph' || $array[2] == 'www.idfactory.ph' || $array[2] == 'api.idfactory.ph'){
         $this->redirectUrl = 'https://www.idfactory.ph/#/profiles/';
       }else{
         $this->redirectUrl = 'http://localhost:8080/#/profiles/';
