@@ -160,11 +160,33 @@ export default {
       })
     },
     download(url, index){
-      var x = document.createElement('a')
-      x.download = 'untitled.jpg'
+ /*   var x = document.createElement('textarea')
+      x.value = url
+      x.setAttribute('readonly', '')
+      x.style.position = 'absolute'
+      x.style.left = '100px'
       document.body.appendChild(x)
-      document.write(url)
-      x.click()
+      document.execCommand('copy')
+      document.body.removeChild(x)
+      x.click() */
+      /* const el = document.createElement('TEXTAREA')
+      el.value = url
+      el.setAttribute('readonly', '')
+      el.style.position = 'relative'
+      el.style.left = '309px'
+      el.style.padding = '40px'
+      document.body.appendChild(el)
+      const selected =
+      el.select(url)
+      document.execCommand('copy')
+      document.body.removeChild(el)
+      el.download(el) */
+      var link = document.createElement('a')
+      link.href = 'url'
+      link.download = '1.jpeg'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     },
     remove(id){
       let parameter = {
