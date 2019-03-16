@@ -94,7 +94,7 @@ class GoogleSheetController extends APIController
       }
 
      	echo $code.'/'.$scope;
-      return redirect($this->redirectUrl.$code.'/'.$scope);
+      // return redirect($this->redirectUrl.$code.'/'.$scope);
     }
 
     public function extractCode($url){
