@@ -63,7 +63,7 @@ button input{
   border-radius: 1px;
   height: 50px;
   padding-top: 6%;
-  background-color: lightgrey;
+  background-color: #22b173;
 }
 .card-holder:hover{
   cursor: pointer;
@@ -176,15 +176,6 @@ export default {
       })
     },
     copyURL(url, index){
-   /*   var x = document.createElement('textarea')
-      x.value = url
-      x.setAttribute('readonly', '')
-      x.style.position = 'absolute'
-      x.style.left = '100px'
-      document.body.appendChild(x)
-      document.execCommand('copy')
-      document.body.removeChild(x)
-      x.click() */
       const el = document.createElement('TEXTAREA')
       el.value = url
       el.setAttribute('readonly', '')
@@ -193,7 +184,6 @@ export default {
       el.style.padding = '5px'
       el.style.top = -40 %
       document.body.appendChild(el)
-      const selected =
       el.select(url)
       document.execCommand('copy')
       document.body.removeChild(el)
@@ -203,13 +193,26 @@ export default {
       }, 2000)
       el.click()
     },
-    remove(id){
+    remove1(id){
       let parameter = {
         id: id
       }
       this.APIRequest('account_images/delete', parameter).then(response => {
         this.retrieve()
       })
+    },
+    remove(id){
+      var x = confirm('Are you sure you want to delete this image?')
+      if (x === true){
+        let parameter = {
+          id: id
+        }
+        this.APIRequest('account_images/delete', parameter).then(response => {
+          this.retrieve()
+        })
+      }else{
+        return false
+      }
     }
   }
 }
