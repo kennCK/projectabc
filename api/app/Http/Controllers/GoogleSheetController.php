@@ -93,7 +93,7 @@ class GoogleSheetController extends APIController
         $scope = $temp[1];
       }
 
-     	echo $code.'/'.$scope;
+     	// echo $code.'/'.$scope;
       return redirect($this->redirectUrl.$code.'/'.$scope);
     }
 
@@ -107,8 +107,8 @@ class GoogleSheetController extends APIController
 
     public function getConfigByExecute($url){
       $array = explode('/', $url);
-      if($array[2] == 'idfactory.ph' || $array[2] == 'www.idfactory.ph'){
-        $this->redirectUrl = 'https://idfactory.ph/#/profiles/';
+      if($array[2] == 'idfactory.ph' || $array[2] == 'www.idfactory.ph' || $array[2] == 'api.idfactory.ph'){
+        $this->redirectUrl = 'https://www.idfactory.ph/#/profiles/';
       }else{
         $this->redirectUrl = 'http://localhost:8080/#/profiles/';
       }
@@ -275,16 +275,16 @@ class GoogleSheetController extends APIController
 					$email = $response[$i]['email'];
 					$lastName = $response[$i]['last_name'];
 					$firstName = $response[$i]['first_name'];
-					$result = app('App\Http\Controllers\ProfileController')->checkIfExist($email, $firstName, $lastName);
+					$result = app('App\Http\Controllers\ProfileController')->checkIfExist($accountId, $email, $firstName, $lastName);
 					$response[$i]['account_id'] = $accountId;
 					if($result !== null){
 						$response[$i]['id'] = $result['id'];
 						app('App\Http\Controllers\ProfileController')->updateFromController($response[$i]);
 						$response[$i]['status'] = 'updated';
 					}else{
-						$id = app('App\Http\Controllers\ProfileController')->createFromController($response[$i]);
-						$response[$i]['id'] = $id;
-						$response[$i]['status'] = 'created';
+						$insertResult = app('App\Http\Controllers\ProfileController')->createFromController($response[$i]);
+						$response[$i]['id'] = ($insertResult['data'] > 0) ? $insertResult['data'] : null;
+						$response[$i]['status'] = ($insertResult['data'] > 0) ? 'created' : $insertResult['error']['message']['email'][0];
 					}
 					$this->otherColumnsManager($response[$i]['id'], $otherColumns[$i]);
 				}
