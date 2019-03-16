@@ -107,8 +107,9 @@ class GoogleSheetController extends APIController
 
     public function getConfigByExecute($url){
       $array = explode('/', $url);
+      echo json_encode($array);
       if($array[2] == 'idfactory.ph' || $array[2] == 'www.idfactory.ph'){
-        $this->redirectUrl = 'https://idfactory.ph/#/profiles/';
+        $this->redirectUrl = 'https://www.idfactory.ph/#/profiles/';
       }else{
         $this->redirectUrl = 'http://localhost:8080/#/profiles/';
       }
