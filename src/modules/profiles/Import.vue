@@ -30,7 +30,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item, index in profiles">
+            <tr v-for="item, index in profiles" v-bind:class="{'bg-danger text-white': item.status !== 'created' && item.status !== 'updated'}">
               <td>{{item.email}}</td>
               <td style="text-transform: capitalize">{{item.last_name}}</td>
               <td style="text-transform: capitalize">{{item.first_name}}</td>
@@ -89,6 +89,7 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
+      google: AUTH.google,
       errorMessage: null,
       data: null,
       profiles: null,
@@ -146,6 +147,23 @@ export default {
         this.profileHeader = response.dataHeader
         this.profiles = response.data
         this.errorMessage = response.error
+        if(response.error !== null){
+          setTimeout(() => {
+            this.auth()
+          }, 2000)
+        }
+      })
+    },
+    auth(){
+      $('#loading').css({display: 'block'})
+      let parameter = {
+        GOOGLE_URL: this.config.GOOGLE_URL
+      }
+      this.APIRequest('gsheets/auth', parameter).then(url => {
+        $('#loading').css({display: 'none'})
+        if(url.redirect !== null){
+          window.location.href = url.redirect
+        }
       })
     }
   }

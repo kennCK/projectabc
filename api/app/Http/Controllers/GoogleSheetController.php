@@ -275,16 +275,16 @@ class GoogleSheetController extends APIController
 					$email = $response[$i]['email'];
 					$lastName = $response[$i]['last_name'];
 					$firstName = $response[$i]['first_name'];
-					$result = app('App\Http\Controllers\ProfileController')->checkIfExist($email, $firstName, $lastName);
+					$result = app('App\Http\Controllers\ProfileController')->checkIfExist($accountId, $email, $firstName, $lastName);
 					$response[$i]['account_id'] = $accountId;
 					if($result !== null){
 						$response[$i]['id'] = $result['id'];
 						app('App\Http\Controllers\ProfileController')->updateFromController($response[$i]);
 						$response[$i]['status'] = 'updated';
 					}else{
-						$id = app('App\Http\Controllers\ProfileController')->createFromController($response[$i]);
-						$response[$i]['id'] = $id;
-						$response[$i]['status'] = 'created';
+						$insertResult = app('App\Http\Controllers\ProfileController')->createFromController($response[$i]);
+						$response[$i]['id'] = ($insertResult['data'] > 0) ? $insertResult['data'] : null;
+						$response[$i]['status'] = ($insertResult['data'] > 0) ? 'created' : $insertResult['error']['message']['email'][0];
 					}
 					$this->otherColumnsManager($response[$i]['id'], $otherColumns[$i]);
 				}
