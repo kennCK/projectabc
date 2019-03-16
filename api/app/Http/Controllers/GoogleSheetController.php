@@ -54,12 +54,17 @@ class GoogleSheetController extends APIController
       if($code != null){
         $this->client->authenticate($code);
         $access_token = $this->client->getAccessToken();
-        $this->client->setAccessToken($access_token);
-        if($this->client->isAccessTokenExpired()){
-          $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+        if($access_token){
+        	$this->client->setAccessToken($access_token);
+	        if($this->client->isAccessTokenExpired()){
+	          $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+	        }
+	        return true;
+        }else{
+        	return false;
         }
       }else{
-        echo 'Emty code';
+        return false;
       }
     }
 
@@ -125,7 +130,16 @@ class GoogleSheetController extends APIController
     public function createNewGoogleSheet(Request $request){
     	$data = $request->all();
     	$accountId = $data['account_id'];
-    	$this->setAccessToken($data['code']);
+    	$flag = $this->setAccessToken($data['code']);
+
+    	if($flag == false){
+    		return response()->json(array(
+					'data'	=> null,
+					'timestamp' => Carbon::now(),
+					'error'	=> 'Your google token was expired. Please go to profiles then click import again to reset your token.'
+				));
+    	}
+
       $service = new Google_Service_Sheets($this->client);
       $requestBody = new Google_Service_Sheets_Spreadsheet();
       $spreadsheet = $service->spreadsheets->create($requestBody);
@@ -179,14 +193,16 @@ class GoogleSheetController extends APIController
       	$this->model = new AccountGoogleSheet();
 	      $insertData = array(
 	      	'account_id'	=> $accountId,
-	      	'sheet'				=> $spreadsheet['spreadsheetId']
+	      	'sheet'				=> $spreadsheet['spreadsheetId'],
+	      	'title'				=> $title
 	      );
 	      $this->insertDB($insertData);
       }else{
       	$this->model = new AccountGoogleSheet();
 	      $updateData = array(
 	      	'id'	=> $id,
-	      	'sheet'				=> $spreadsheet['spreadsheetId']
+	      	'sheet'				=> $spreadsheet['spreadsheetId'],
+	      	'title'				=> $title
 	      );
 	      $this->updateDB($updateData);
       }
@@ -202,8 +218,18 @@ class GoogleSheetController extends APIController
     public function readGoogleSheet(Request $request){
     	$data = $request->all();
     	$spreadsheetId = $data['sheet'];
-    	$this->setAccessToken($data['code']);
+    	$flag = $this->setAccessToken($data['code']);
+
+    	if($flag == false){
+    		return response()->json(array(
+					'dataHeader'	=> null,
+					'data'	=> null,
+					'timestamp' => Carbon::now(),
+					'error'	=> 'Your google token was expired. Please go to profiles then click import again to reset your token.'
+				));
+    	}
     	$accountId = $data['account_id'];
+    	$defineColumns = ['email', 'profile', 'employment_code', 'first_name', 'last_name', 'middle_name', 'birth_date', 'sex', 'contact_number', 'address', 'position', 'department', 'emergency_contact_name', 'emergency_contact_number', 'signature'];
 
       $service = new Google_Service_Sheets($this->client);
       $flag = true;
@@ -217,19 +243,31 @@ class GoogleSheetController extends APIController
       $result = $service->spreadsheets_values->get($spreadsheetId, "Sheet1");
       $responseHeader = $result->getValues()[0];
       $resultTemp = $result->getValues();
+      $otherColumns = array(); // payload, value, profile_id
 
       if(sizeof($resultTemp) > 1){
       	for ($i=1; $i < sizeof($resultTemp); $i++) { 
       		$array = array();
+      		$otherColumnArray = array();
       		if(count($resultTemp[$i]) > 0){
-      			for ($j=0; $j < sizeof($resultTemp[$i]); $j++) { 
-      				$array[$responseHeader[$j]] = $resultTemp[$i][$j];
+      			for ($j=0; $j < sizeof($resultTemp[$i]); $j++) {
+      				if(in_array($responseHeader[$j], $defineColumns)){
+      					$array[$responseHeader[$j]] = $resultTemp[$i][$j];
+      				}else{
+      					$otherColumnArray[] = array(
+      						'payload' => $responseHeader[$j],
+      						'payload_value' =>  $resultTemp[$i][$j]
+      					);
+      				}
       			}
       		}else{
       			$array = null;
       		}
+      		$otherColumns[] = $otherColumnArray;
       		$response[] = $array;
       	}
+      }else{
+      	$response = null;
       }
       
 			if(sizeof($response) > 0){
@@ -248,6 +286,7 @@ class GoogleSheetController extends APIController
 						$response[$i]['id'] = $id;
 						$response[$i]['status'] = 'created';
 					}
+					$this->otherColumnsManager($response[$i]['id'], $otherColumns[$i]);
 				}
 			}
 
@@ -257,5 +296,20 @@ class GoogleSheetController extends APIController
 				'timestamp' => Carbon::now(),
 				'error'	=> null
 			));
+    }
+
+    public function otherColumnsManager($profileId, $data){
+    	if(sizeof($data) > 0){
+    		for ($i=0; $i < sizeof($data); $i++) { 
+    			$result = app('App\Http\Controllers\GovernmentController')->checkIfExist($profileId, $data[$i]['payload']);
+					if($result !== null){
+						$data[$i]['id'] = $result['id'];
+						app('App\Http\Controllers\GovernmentController')->updateFromController($data[$i]);
+					}else{
+						$data[$i]['profile_id'] = $profileId;
+						$id = app('App\Http\Controllers\GovernmentController')->createFromController($data[$i]);
+					}
+    		}
+    	}
     }
 }
