@@ -128,6 +128,11 @@ export default {
       this.APIRequest('gsheets/create_file', parameter).then(response => {
         // $('#loading').css({display: 'none'})
         this.errorMessage = response.error
+        if(response.error !== null){
+          setTimeout(() => {
+            this.auth()
+          }, 2000)
+        }
       })
     },
     open(id){
