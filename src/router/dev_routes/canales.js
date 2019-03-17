@@ -287,6 +287,22 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/privacy',
+    name: 'privacy',
+    component: resolve => require(['modules/docs/PrivacyContent.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
+  },
+  {
+    path: '/terms_and_conditions',
+    name: 'termsAndConditions',
+    component: resolve => require(['modules/docs/TermsContent.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
   }
   ]
 }
