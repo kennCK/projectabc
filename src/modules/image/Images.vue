@@ -7,7 +7,7 @@
       <div class="card" v-for="item, index in data">
         <div class="card-holder">
           <img class="card-img-top" v-bind:id="'card-img-top' + index" :src="config.BACKEND_URL + item.url" alt="Card image cap" download>
-          <label v-if="copiedIndex === index">Copied!</label>
+          <label v-if="copiedIndex === index" class="copied"><label class="holder bg-warning">Copied!</label></label>
           <ul class="card-body">
             <li @click="remove(item.id)">Delete</li>
             <li style="border-right: 0px;" @click="copyURL(item.url, index)">Copy URL</li>
@@ -52,7 +52,7 @@ button input{
   max-height: 200px;
   max-width: 100%;
 }
-.card-holder label{
+.card-holder .copied{
   position: absolute;
   width: 100%;
   top: 35%;
@@ -62,8 +62,11 @@ button input{
   border-left: ;
   border-radius: 1px;
   height: 50px;
-  padding-top: 6%;
-  background-color: #22b173;
+}
+.copied .holder{
+  line-height: 40px;
+  border-radius: 5px;
+  padding: 0 10px 0 10px;
 }
 .card-holder:hover{
   cursor: pointer;
