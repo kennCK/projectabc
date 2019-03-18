@@ -135,7 +135,7 @@ export default {
     },
     createFile(file){
       let fileReader = new FileReader()
-      fileReader.readAsDataURL(event.target.files[0])
+      fileReader.readAsDataURL(file)
       this.upload()
     },
     setUpFileUpload(event){
