@@ -7,11 +7,13 @@
       <div class="card" v-for="item, index in data">
         <div class="card-holder">
           <img class="card-img-top" v-bind:id="'card-img-top' + index" :src="config.BACKEND_URL + item.url" alt="Card image cap" download>
+          <label v-if="copiedIndex === index" class="copied"><label class="holder bg-warning">Copied!</label></label>
           <ul class="card-body">
             <li @click="remove(item.id)">Delete</li>
-            <li style="border-right: 0px;" @click="download(config.BACKEND_URL + item.url, index)">Download</li>
+            <li style="border-right: 0px;" @click="copyURL(item.url, index)">Copy URL</li>
           </ul>
         </div>
+         <p id="demo"></p>
       </div>
     </div>
       <empty v-if="data === null" :title="'Looks like you have not uploaded an image!'" :action="'Click the Upload Image Button to get started.'">
@@ -29,7 +31,7 @@ button input{
   margin-bottom: 100px;
 }
 .image-list{
-  width: 100%;
+  width: 1000px;
   float: left;
   margin-top: 25px;
 }
@@ -49,6 +51,22 @@ button input{
 .card-holder img{
   max-height: 200px;
   max-width: 100%;
+}
+.card-holder .copied{
+  position: absolute;
+  width: 100%;
+  top: 35%;
+  z-index: 1;
+  text-align: center;
+  color: white;
+  border-left: ;
+  border-radius: 1px;
+  height: 50px;
+}
+.copied .holder{
+  line-height: 40px;
+  border-radius: 5px;
+  padding: 0 10px 0 10px;
 }
 .card-holder:hover{
   cursor: pointer;
@@ -101,7 +119,8 @@ export default {
       config: CONFIG,
       errorMessage: null,
       data: null,
-      file: null
+      file: null,
+      copiedIndex: null
     }
   },
   components: {
@@ -159,27 +178,44 @@ export default {
         }
       })
     },
-    download(url, index){
-      // alert('Hello ')
-      // var canvas = document.getElementById('card-img-top1')
-      // var image = canvas[0].toDataURL('image/png')
-      // var link = document.createElement('a')
-      // link.download = 'my-image1.png'
-      // link.href = image
-      // link.click()
-      var x = document.createElement('a')
-      x.download = 'card-img-top' + index
-      x.href = url
-      document.body.appendChild(x)
-      x.click()
+    copyURL(url, index){
+      const el = document.createElement('TEXTAREA')
+      el.value = url
+      el.setAttribute('readonly', '')
+      el.style.position = 'relative'
+      el.style.left = '-30px'
+      el.style.padding = '5px'
+      el.style.top = -40 %
+      document.body.appendChild(el)
+      el.select(url)
+      document.execCommand('copy')
+      document.body.removeChild(el)
+      this.copiedIndex = index
+      setTimeout(() => {
+        this.copiedIndex = null
+      }, 2000)
+      el.click()
     },
-    remove(id){
+    remove1(id){
       let parameter = {
         id: id
       }
       this.APIRequest('account_images/delete', parameter).then(response => {
         this.retrieve()
       })
+    },
+    remove(id){
+      var x = confirm('Are you sure you want to delete this image?')
+      if (x === true){
+        let parameter = {
+          id: id
+        }
+        this.APIRequest('account_images/delete', parameter).then(response => {
+          this.retrieve()
+        })
+      }else{
+        return false
+      }
     }
   }
 }
