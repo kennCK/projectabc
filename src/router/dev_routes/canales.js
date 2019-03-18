@@ -271,6 +271,38 @@ export default{
     meta: {
       tokenRequired: false
     }
+  },
+  {
+    path: '/profiles/:code?/:scope?',
+    name: 'profiles',
+    component: resolve => require(['modules/profiles/Profiles.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/import',
+    name: 'import',
+    component: resolve => require(['modules/profiles/Import.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/privacy',
+    name: 'privacy',
+    component: resolve => require(['modules/docs/PrivacyContent.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
+  },
+  {
+    path: '/terms_and_conditions',
+    name: 'termsAndConditions',
+    component: resolve => require(['modules/docs/TermsContent.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
   }
   ]
 }

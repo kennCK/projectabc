@@ -399,3 +399,32 @@ Route::post('/notification_settings/retrieve', "NotificationSettingController@re
 Route::post('/notification_settings/update', "NotificationSettingController@update");
 Route::post('/notification_settings/delete', "NotificationSettingController@delete");
 Route::get('/notification_settings/test', 'NotificationSettingController@test');
+
+//Profile Controller
+Route::post('/profiles/create', "ProfileController@create");
+Route::post('/profiles/retrieve', "ProfileController@retrieve");
+Route::post('/profiles/update', "ProfileController@update");
+Route::post('/profiles/delete', "ProfileController@delete");
+Route::get('/profiles/test', 'ProfileController@test');
+
+//Government Controller
+Route::post('/governments/create', "GovernmentController@create");
+Route::post('/governments/retrieve', "GovernmentController@retrieve");
+Route::post('/governments/update', "GovernmentController@update");
+Route::post('/governments/delete', "GovernmentController@delete");
+Route::get('/governments/test', 'GovernmentController@test');
+
+// Google Spreadsheets
+Route::get('/gsheets/create', 'GoogleSheetController@generate');
+Route::post('/gsheets/auth', 'GoogleSheetController@getAuthUrl');
+Route::post('/gsheets/create_file', 'GoogleSheetController@createNewGoogleSheet');
+Route::post('/gsheets/read_file', 'GoogleSheetController@readGoogleSheet');
+Route::post('/gsheets/save_token', 'GoogleSheetController@setAccessToken');
+Route::get('/gsheets/sample', 'GoogleSheetController@sample');
+
+//Account Google Sheet Controller
+Route::post('/account_gsheets/create', "AccountGoogleSheetController@create");
+Route::post('/account_gsheets/retrieve', "AccountGoogleSheetController@retrieve");
+Route::post('/account_gsheets/update', "AccountGoogleSheetController@update");
+Route::post('/account_gsheets/delete', "AccountGoogleSheetController@delete");
+Route::get('/account_gsheets/test', 'AccountGoogleSheetController@test');

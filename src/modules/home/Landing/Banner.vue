@@ -6,16 +6,16 @@
       </span>
       <span class="description">
         <h4>
-          ID Factory is an online application that lets you design and create custom IDs. Ideal for companies, corporate events and many more.
-          (Create. Archive. Print. All in one place.)
+          ID Factory lets you design and create custom professional-looking IDs. Ideal for companies, corporate events, condos and many more.
+          (Create. Print. Manage. All in one place.)
         </h4>
-        <button class="btn btn-warning btn-banner" v-on:click="redirect('/signup')"> Get started for 30 days trial</button>
+        <button class="btn btn-warning btn-banner" v-on:click="redirect('/signup')"> Create an ID</button>
       </span>
     </div>
     <div class="image">
       <img src="../../../assets/img/banner.png" width="100%">
     </div>
-	</div>
+  </div>
 </template>
 <style scoped>
 .btn-banner {
@@ -61,7 +61,6 @@
   display: block;
   position: absolute;
 }
-
 @media screen and (max-width: 992px){
   .text{
     width: 90%;
@@ -72,7 +71,6 @@
   .title{
     text-align: center;
   }
-
   .image{
     display: none;
   }

@@ -8,6 +8,10 @@
         <span style="width:100%;float:left;text-align:center;font-size:20px;margin-bottom:20px;">
           Register to <b class="text-primary">ID FACTORY</b>
         </span>
+        <span class="options">
+          <button v-bind:class="{'btn-primary': type === 'USER'}" class="btn btn-default" @click="type = 'USER'" style="margin-right: 1%;">Register me as Customer</button>
+          <button v-bind:class="{'btn-primary': type === 'PARTNER'}" class="btn btn-default" @click="type = 'PARTNER'" style="margin-left: 1%;">Register me as Partner</button>
+        </span>
         <div class="signup-holder">
           <div class="login-message-holder login-spacer text-center" v-if="errorMessage != ''">
             <span class="text-danger text-center"><b>Oops!</b> {{errorMessage}}</span>
@@ -69,8 +73,8 @@
 }
 
 .signup-holder{
-  width: 80%;
-  margin: 0 10% 0 10%;
+  width: 90%;
+  margin: 0 5% 0 5%;
   float: left;
 }
 
@@ -106,6 +110,17 @@
 
 .account-type{
   width: 120px !important;
+}
+
+.options{
+  width: 90%;
+  margin:  0 5% 0 5%;
+  float: left;
+}
+.options button{
+  width: 49% !important;
+  float: left !important;
+  height: 60px !important;
 }
 /*-------------- Extra Small Screen for Mobile Phones --------------*/
 @media (max-width: 991px){

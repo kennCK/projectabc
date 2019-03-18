@@ -272,6 +272,7 @@ body{
   float: right;
   color: #fff;
   display: inline;
+  padding-top: 0px !important;
 }
 .left-menu-icons, right-menu-icons{
   height: 50px;
