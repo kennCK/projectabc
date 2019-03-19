@@ -29,9 +29,9 @@
               <label for="exampleInputEmail1">Featured Image</label>
               <div class="product-images">
                 <div class="new-image text-primary">
-                    <button class="btn btn-primary pull-right" style="margin-left: 10px;" @click="addImage()"><i class="fa fa-plus"></i> Upload Image
-                      <input type="file" @change="setUpFileUpload($event)" id="featureImage">
-                    </button>
+                    <button class="btn btn-primary pull-right" @click="addImage()"><i class="fa fa-plus"></i> Upload Image
+                    <input type="file" @change="setUpFileUpload($event)" id="featureImage">
+                  </button>
                 </div>
               </div>
             </div>
@@ -45,18 +45,7 @@
               </div>
             </div>
 
-
-            <div class="form-group">
-              <label for="exampleInputEmail1">Prices</label>
-              <div>
-                <select class="form-control" style="width: 40%; float: left;">
-                  <option value="fixed">Fixed</option>
-                  <option value="variable">Variable</option>
-                </select>
-                <button class="btn btn-primary" style="margin-left: 10px;"><i class="fa fa-plus"></i></button>
-              </div>
-            </div>
-
+            <prices></prices>
 
             <div class="form-group">
               <label for="exampleInputEmail1">Attributes</label>
@@ -131,8 +120,15 @@
   min-height: 10px;
   overflow-y: hidden;
 }
-.new-image{
+/*.new-image{
   height: 80px;
+  width: 80px;
+  border-radius: 5px;
+  border: solid 1px #ddd;
+  float: left;
+  text-align: center;
+}*/
+.new-image button{
   width: 80px;
   border-radius: 5px;
   border: solid 1px #ddd;
@@ -160,8 +156,12 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      item: null
+      item: null,
+      file: null
     }
+  },
+  components: {
+    'prices': require('modules/product/Prices.vue')
   },
   methods: {
     redirect(parameter){
