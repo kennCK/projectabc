@@ -36,26 +36,7 @@
     </div>
   </div>
 </template>
-<script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-export default {
-  mounted(){
-    this.email = this.$route.params.email
-  },
-  data(){
-    return {
-      email: this.$route.params.email
-    }
-  },
-  methods: {
-    redirect(parameter){
-      ROUTER.push(parameter)
-    }
-  }
-}
-</script>
-<style>
+<style scoped>
 .signup-container{
   margin-top: 50px;
 }
@@ -116,3 +97,22 @@ export default {
   }
 }
 </style>
+<script>
+import ROUTER from '../../router'
+import AUTH from '../../services/auth'
+export default {
+  mounted(){
+    this.email = this.$route.params.email
+  },
+  data(){
+    return {
+      email: this.$route.params.email
+    }
+  },
+  methods: {
+    redirect(parameter){
+      ROUTER.push(parameter)
+    }
+  }
+}
+</script>

@@ -12,28 +12,40 @@
 			<label><b>Products</b></label>
 			<label><b>Quantity</b></label>
 			<label><b>Price</b></label>
+			<label><b>Total</b></label>
 		</span>
 		<span class="thank-you-item" v-if="data.templates !== null" v-for="item, index in data.templates">
 			<label>Template: {{item.template.title}}</label>
 			<label>1</label>
 			<label>{{item.price}}</label>
+			<label>{{parseFloat(item.price) * 1}}</label>
+		</span>
+		<span class="thank-you-item" v-if="data.products !== null" v-for="item, index in data.products">
+			<label>{{item.product.title}}</label>
+			<label>{{item.qty}}</label>
+			<label>{{item.price}}</label>
+			<label>{{parseFloat(item.price) * parseInt(item.qty)}}</label>
 		</span>
 		<span class="thank-you-item"  v-if="data.employees !== null">
 			<label>ID's</label>
 			<label>{{data.employees.length}}</label>
 			<label>100</label>
+			<label>{{data.employees.length * 100}}</label>
 		</span>
 		<span class="thank-you-item">
+			<label></label>
 			<label></label>
 			<label>Subtotal</label>
       <label class="pull-right" style="padding-right: 10px;">PHP {{data.sub_total}}</label>
 		</span>
 		<span class="thank-you-item">
 			<label></label>
+			<label></label>
 			<label>Tax</label>
       <label class="pull-right" style="padding-right: 10px;">PHP {{data.tax}}</label>
 		</span>
 		<span class="thank-you-item" v-if="data !== null && data.coupon !== null">
+		 	<label></label>
 		 	<label></label>
       <label class="text-primary">
         <b>Promo Code</b>: <b v-if="data.coupon !== null">{{data.coupon.code.toUpperCase()}}</b>
@@ -46,10 +58,12 @@
     </span>
 		<span class="thank-you-item">
 			<label></label>
+			<label></label>
 			<label><b>Total</b></label>
       <label class="pull-right" style="padding-right: 10px;"><b>PHP {{data.total}}</b></label>
 		</span>
 		<span class="thank-you-item">
+			<label></label>
 			<label></label>
 			<label>Payment Method</label>
 			<label class="pull-right" style="padding-right: 10px;" v-if="data.method.stripe !== null"><i class="fa fa-credit-card"></i>********{{data.method.stripe.last4}}</label>
@@ -93,7 +107,7 @@
 	  padding-left: 10px;
 	}
 	.thank-you-item label{
-		width: 33%;
+		width: 25%;
 		float: left;
 	}
 

@@ -13,8 +13,8 @@ import AUTH from '../../services/auth'
 export default {
   components: {
     'landing-banner': require('modules/home/Landing/Banner.vue'),
-    'landing-steps': require('modules/home/Landing/Steps.vue'),
     'landing-bizmarketplace': require('modules/home/Landing/BizMarketplace.vue'),
+    'landing-steps': require('modules/home/Landing/Steps.vue'),
     'landing-features': require('modules/home/Landing/Features.vue'),
     'landing-mc': require('modules/home/Landing/MessageAndComment.vue')
   },

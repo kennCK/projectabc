@@ -2,7 +2,7 @@
   <div class="cw-banner bg-green">
     <div class="text text-white">
       <span class="title">
-        <h1>Easy Communication with our Printing Partners</h1>
+        <h1>Experience our Communication Tools.</h1>
       </span>
       <span class="description">
         <h4>
@@ -11,7 +11,7 @@
       </span>
     </div>
     <div class="image">
-      <img src="../../../assets/img/banner.png" style="margin-bottom: 5px;" width="100%">
+      <img src="../../../assets/img/communication.png" style="margin-bottom: 5px;" width="100%">
     </div>
   </div>
 </template>
@@ -20,13 +20,15 @@
   width: 100%;
   float: left;
   background: #22b173;
-  height: 650px;
+  min-height: 150px;
+  overflow-y: hidden;
 }
 .text{
   width: 45%;
   float: left;
   margin-left: 5%;
-  margin-top: 200px;
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 .text .title{
   width: 100%;
@@ -46,8 +48,9 @@
   margin-right: 5%;
   margin-left: 5%;
   float: left;
-  margin-top: 150px;
   display: block;
+  margin-top: 50px;
+  margin-bottom: 100px;
 }
 
 @media screen and (max-width: 992px){

@@ -56,8 +56,12 @@
             value: this.active
           }
           this.APIRequest('ratings/create', parameter).then(response => {
-            if(response.error !== null){
+            if(response.error.length > 0){
               this.errorMessage = response.error.message
+            }else if(response.data > 0){
+              this.errorMessage = null
+              $('#submitRatingModal').modal('hide')
+              this.$parent.retrieve()
             }else{
               this.errorMessage = null
               $('#submitRatingModal').modal('hide')

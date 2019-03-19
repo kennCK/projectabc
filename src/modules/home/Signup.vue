@@ -8,6 +8,10 @@
         <span style="width:100%;float:left;text-align:center;font-size:20px;margin-bottom:20px;">
           Register to <b class="text-primary">ID FACTORY</b>
         </span>
+        <span class="options">
+          <button v-bind:class="{'btn-primary': type === 'USER'}" class="btn btn-default" @click="type = 'USER'" style="margin-right: 1%;">Register me as Customer</button>
+          <button v-bind:class="{'btn-primary': type === 'PARTNER'}" class="btn btn-default" @click="type = 'PARTNER'" style="margin-left: 1%;">Register me as Partner</button>
+        </span>
         <div class="signup-holder">
           <div class="login-message-holder login-spacer text-center" v-if="errorMessage != ''">
             <span class="text-danger text-center"><b>Oops!</b> {{errorMessage}}</span>
@@ -29,8 +33,8 @@
               <span class="input-group-addon" id="addon-2"><i class="fa fa-key"></i></span>
               <input type="password" class="form-control form-control-login" placeholder="Confirm Password" aria-describedby="addon-2" v-model="cpassword">
             </div>
-            <button class="btn btn-login-primary btn-block btn-login login-spacer" v-on:click="signUp()">Signup</button>
-            <button class="btn btn-login-danger btn-block btn-login login-spacer" v-on:click="redirect('/login')">Back to Login</button>  
+            <button class="btn btn-primary btn-block login-spacer" v-on:click="signUp()">Signup</button>
+            <button class="btn btn-danger btn-block login-spacer" v-on:click="redirect('/login')">Back to Login</button>  
           </div>
         </div>
       </div>
@@ -38,6 +42,94 @@
 
   </div>
 </template>
+<style scoped>
+
+
+.signup-container{
+  margin-top: 25px;
+}
+
+.signup-header{
+  height: 100px;
+  color: #006600;
+  width: 100%;
+  float: left;
+  text-align: center;
+}
+.signup-header img{
+  height: 100px !important;
+  width: 100px !important;
+}
+
+.signup-header img:hover{
+  cursor: pointer;
+}
+
+.header-title{
+  width: 90%;
+  margin:  25px 5% 0 5%;
+  font-size: 24px;
+  font-weight: 700px;
+}
+
+.signup-holder{
+  width: 90%;
+  margin: 0 5% 0 5%;
+  float: left;
+}
+
+.input-holder{
+  width: 90%;
+  margin:  0 5% 0 5%;
+}
+
+.form-control{
+  height: 45px !important;
+}
+.btn{
+  height: 50px !important;
+}
+.input-group{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.site-title{
+  margin-top: 25px;
+  width: 100%;
+  float: left;
+}
+.site-title img{
+  width: 50px;
+  width: 50px;
+  float: left;
+  margin-right: 10px;
+}
+.site-title .app-name{
+  float: left;
+}
+
+.account-type{
+  width: 120px !important;
+}
+
+.options{
+  width: 90%;
+  margin:  0 5% 0 5%;
+  float: left;
+}
+.options button{
+  width: 49% !important;
+  float: left !important;
+  height: 60px !important;
+}
+/*-------------- Extra Small Screen for Mobile Phones --------------*/
+@media (max-width: 991px){
+  .custom-holder{
+    box-shadow: 0 0 0 0 #fff !important;
+    margin-top: 50px !important;
+  }
+}
+</style>
 <script>
 import ROUTER from '../../router'
 import AUTH from '../../services/auth'
@@ -69,7 +161,8 @@ export default {
         email: this.email,
         password: this.password,
         config: CONFIG,
-        account_type: this.type
+        account_type: this.type,
+        referral_code: null
       }
       if(this.flag === true){
         $('#loading').css({'display': 'block'})
@@ -121,93 +214,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-
-
-.signup-container{
-  margin-top: 25px;
-}
-
-.signup-header{
-  height: 100px;
-  color: #006600;
-  width: 100%;
-  float: left;
-  text-align: center;
-}
-.signup-header img{
-  width: 70px;
-  height: 70px;
-}
-
-.signup-header img:hover{
-  cursor: pointer;
-}
-
-.header-title{
-  width: 90%;
-  margin:  25px 5% 0 5%;
-  font-size: 24px;
-  font-weight: 700px;
-}
-
-.signup-holder{
-  width: 80%;
-  margin: 0 10% 0 10%;
-  float: left;
-}
-
-.input-holder{
-  width: 90%;
-  margin:  0 5% 0 5%;
-}
-
-.form-control{
-  height: 45px !important;
-}
-.btn-login-primary{
-  background: #22b173;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-primary:hover{
-  border: solid 1px #3f0050;
-}
-.btn-login-danger{
-  background: #ff0000;
-  color: #fff;
-  height: 45px !important;
-}
-.btn-login-danger:hover{
-  border: solid 1px #a90201;
-}
-.input-group{
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-.site-title{
-  margin-top: 25px;
-  width: 100%;
-  float: left;
-}
-.site-title img{
-  width: 50px;
-  width: 50px;
-  float: left;
-  margin-right: 10px;
-}
-.site-title .app-name{
-  float: left;
-}
-
-.account-type{
-  width: 120px !important;
-}
-/*-------------- Extra Small Screen for Mobile Phones --------------*/
-@media (max-width: 991px){
-  .custom-holder{
-    box-shadow: 0 0 0 0 #fff !important;
-    margin-top: 50px !important;
-  }
-}
-</style>

@@ -7,7 +7,7 @@
       </a>
     </div>
     <nav class="header-navbar">
-      <span class="navbar-menu-toggler-md" v-bind:class="{'active-menu': menuFlag === true}" data-toggle="collapse" data-target="#ClassWorx" aria-controls="ClassWorx" aria-expanded="false" aria-label="Toggle navigation" v-on:click="makeActive('menu')">
+      <span class="navbar-menu-toggler-md" v-bind:class="{'active-menu': menuFlag === true}" data-toggle="collapse" data-target="#idfactory" aria-controls="idfactory" aria-expanded="false" aria-label="Toggle navigation" v-on:click="makeActive('menu')">
           <i class="fa fa-bars" aria-hidden="true"></i>
       </span>
       <span class="left-menu-icons">
@@ -36,7 +36,7 @@
                 <label>Personal</label>
               </span>
               <span class="dropdown-item" v-on:click="redirect('/my_orders')">
-                <i class="fa fa-tag"></i>
+                <i class="fa fa-shopping-cart"></i>
                 <label>My Orders</label>
               </span>
               <span class="dropdown-item" v-on:click="redirect('/profile')">
@@ -46,6 +46,10 @@
               <span class="dropdown-item" v-on:click="redirect('/plan')">
                 <i class="fa fa-tag"></i>
                 <label>My Plan</label>
+              </span>
+              <span class="dropdown-item" v-on:click="redirect('/referrals')">
+                <i class="fa fa-users"></i>
+                <label>Invite Friends</label>
               </span>
               <span class="dropdown-item dropdown-item-menu-title">
                 <label>Documents</label>
@@ -193,7 +197,7 @@ body{
 
   .system-header{
     float: left;
-    height: 8vh;
+    height: 50px;
     font-size: 24px;
     width: 18%;
     background: #028170;
@@ -204,7 +208,7 @@ body{
   
   .header-navbar{
     background: #22b173;
-    height: 8vh;
+    height: 50px;
     float: left;
     width: 82%;
     position: fixed;
@@ -227,7 +231,7 @@ body{
 
 -----------------------------------------------*/
   .header-navbar-nav{
-      height: 8vh;
+      height: 50px;
       float: left;
       color: #fff;
       width: 15%;
@@ -263,14 +267,15 @@ body{
 }
 .nav-item{
   width: 5%;
-  height: 8vh;
+  height: 50px;
   text-align: center;
   float: right;
   color: #fff;
   display: inline;
+  padding-top: 0px !important;
 }
 .left-menu-icons, right-menu-icons{
-  height: 8vh;
+  height: 50px;
   float: left;
   width: 50%;
   position: fixed;

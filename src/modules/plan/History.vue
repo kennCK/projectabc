@@ -15,7 +15,9 @@
       </thead>
       <tbody>
         <tr v-for="item, index in data">
-          <td>{{item.title.toUpperCase()}}</td>
+          <td>{{item.title.toUpperCase()}}
+            <label v-if="item.payment_type === 'reward'">(FREE: Referral Reward)</label>
+          </td>
           <td>{{item.start_human}}</td>
           <td>{{item.end_human}}</td>
           <td>{{item.price}} x {{parseInt(item.sub_total) / parseInt(item.price)}}</td>

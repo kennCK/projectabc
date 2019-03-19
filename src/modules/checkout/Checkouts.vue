@@ -1,11 +1,11 @@
 <template>
   <div class="holder">
-    <span class="list" v-if="data !== null">
+    <span class="list" v-if="data !== null && data[0].items !== null">
       <span class="items">
         <span class="title">
           <b>Your Items</b>
         </span>
-        <span class="item" v-for="item, index in data[0].items" v-if="data[0].items !== null">
+        <span class="item" v-for="item, index in data[0].items" >
           <span class="objects-holder" v-if="item.payload === 'template'">
             <objects :objects="item.objects" v-if="item.objects !== null" :heightTemplate="parseInt(item.template.height)" :widthTemplate="parseInt(item.template.width)"></objects>
           </span>
@@ -18,6 +18,9 @@
           <span class="objects-holder" v-if="item.payload === 'employee' && item.employee.back_objects !== null && parseInt(item.employee.front_template_details.height) === config.LANDSCAPE">
             <objects :objects="item.employee.front_objects" :heightTemplate="parseInt(item.employee.front_template_details.height)" :widthTemplate="parseInt(item.employee.front_template_details.width)"></objects>
             <objects :objects="item.employee.back_objects" :heightTemplate="parseInt(item.employee.front_template_details.height)" :widthTemplate="parseInt(item.employee.front_template_details.width)"></objects>
+          </span>
+          <span class="objects-holder-full" v-if="item.payload === 'product' && item.product !== null">
+            <marketplace-product :data="item" :route="'checkout_items'"></marketplace-product>
           </span>
           <span class="details" v-if="item.payload === 'template' || (item.payload === 'employee' && (item.employee.back_objects === null || item.employee.front_objects === null))">
               <label style="margin-top: 10px;" v-if="item.payload === 'employee'">
@@ -45,8 +48,10 @@
       <span class="sidebar pull-right">
         <cards :item="data[0]" :method="method" v-if="data[0].payload === 'cards'"></cards>
         <direct :item="data[0]" :method="method" v-if="data[0].payload === 'direct'"></direct>
+        <marketplace-checkout :item="data[0]" :method="method" v-if="data[0].payload === 'marketplace'"></marketplace-checkout>
       </span>
     </span>
+    <checkout-empty v-if="data === null || data[0].items === null" :title="'You don\'t have items on your cart yet!'" :action="'Start checking out items now!'" :icon="'far fa-smile'" :iconColor="'text-primary'"></checkout-empty>
   </div>
 </template>
 <style scoped>
@@ -55,6 +60,7 @@
   float: left;
   margin-right: 2%;
   margin-top: 25px;
+  margin-bottom: 100px;
 }
 .list{
   width: 100%;
@@ -83,6 +89,11 @@
   min-height: 100px;
   overflow-y: hidden;
   border-bottom: solid 1px #eee;
+}
+.objects-holder-full{
+  float: left;
+  width: 100%;
+  height: 150px;
 }
 .objects-holder{
   float: left;
@@ -137,7 +148,10 @@ export default {
     'objects': require('modules/object/Objects.vue'),
     'rating': require('modules/rating/Ratings.vue'),
     'cards': require('modules/checkout/Cards.vue'),
-    'direct': require('modules/checkout/Direct.vue')
+    'direct': require('modules/checkout/Direct.vue'),
+    'marketplace-checkout': require('modules/checkout/Marketplace.vue'),
+    'marketplace-product': require('modules/marketplace/CheckoutItem.vue'),
+    'checkout-empty': require('modules/empty/EmptyDynamicIcon.vue')
   },
   methods: {
     redirect(parameter){

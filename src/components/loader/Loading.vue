@@ -12,16 +12,16 @@
 <style scoped>
 .customModal{
   position: fixed;
-  background: rgba(254, 254, 254, 0.5);
+  background: rgba(254, 254, 254, 0);
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   width: 100%;
   z-index: 100000 !important;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
+  -webkit-transition: all 0.1s;
+  -moz-transition: all 0.1s;
+  transition: all 0.1s;
   text-align: center;
   display: none;
 }
@@ -35,11 +35,10 @@
   margin-right: 40%;
   text-align: center;
   color: #22b173;
-  background: #fff;
   line-height: 30vh;
   border-radius: 5px;
-  border: solid 1px #eee;
 }
 .fa-spin{
+  animation-duration: 0.50s;
 }
 </style>

@@ -16,6 +16,7 @@ class TemplateController extends APIController
 
     public function retrieve(Request $request){
       $data = $request->all();
+      $active = intval($data['active']);
       $this->model = new Template();
       $this->retrieveDB($data);
       $result = $this->response['data'];
@@ -24,7 +25,11 @@ class TemplateController extends APIController
         foreach ($result as $key) {
           $this->response['data'][$i]['objects'] = $this->getObjects($result[$i]['id']);
           $this->response['data'][$i]['guide'] = ($result[$i]['status'] == 'purchased') ? $this->getGuide($result[$i]['purchased']) : $this->getGuide($result[$i]['id']);
-          $this->response['data'][$i]['active'] = false;
+          if($active === $i){
+            $this->response['data'][$i]['active'] = true;
+          }else{
+            $this->response['data'][$i]['active'] = false;
+          }
          $i++; 
         }
       }

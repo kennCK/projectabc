@@ -86,7 +86,7 @@ export default {
         {title: 'Comments', description: 'Allows our customers and printing partners to exchange ideas and provide timely feedback through our collaboration feature for design specific concerns.', icon: 'fas fa-comments'},
         {title: 'ID Generator', description: 'Automatically generates ID based on specifications and the ID template created', icon: 'fas fa-id-badge'},
         {title: 'Marketplace', description: 'ID templates and designs can be purchased for a hassle free ID experience. This is also where our printing partners can sell and advertise their products.', icon: 'fas fa-store'},
-        {title: 'Messenger', description: 'Ease of communication between users through an embedded messenger feature within our platform.', icon: 'fas fa-envelope'},
+        {title: 'Messenger', description: 'Ease of communication between users through an embedded messenger feature within our platform.', icon: 'fab fa-facebook-messenger'},
         {title: 'Pricing', description: 'Customers can view the priceing of our different printing partners, as this is one way to promote transparency', icon: 'fas fa-money-bill-alt'},
         {title: 'Printing', description: 'A fully integrated printing experience at just one click of the button. This is possible through integration with printing partners who meet the compatibility requirements.', icon: 'fas fa-print'},
         {title: 'Template Editor', description: 'Creativity knows no bounds just as how you can put your dream IDs into reality through our interactive template editor.', icon: 'fas fa-edit'},

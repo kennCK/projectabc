@@ -76,7 +76,8 @@ export default {
           value: this.user.userID,
           column: 'account_id',
           clause: '='
-        }]
+        }],
+        account_id: this.user.userID
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('products/retrieve', parameter).then(response => {

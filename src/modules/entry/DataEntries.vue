@@ -1,7 +1,16 @@
 <template>
 	<div class="employee-holder">
-		<create></create>
-    <div class="employee-list" v-if="data !==null">
+    <div class="entry-viewer">
+      <label v-bind:class="{'active-menu-icon': viewIcon === 'badge'}" class="menu-icons"  @click="changeViewBy('badge')">
+        <i class="fas fa-id-badge"></i>
+      </label>
+      <label v-bind:class="{'active-menu-icon': viewIcon === 'table'}"  class="menu-icons" @click="changeViewBy('table')">
+         <i class="fas fa-table"></i>
+      </label>
+      <create></create>
+    </div>
+		
+    <div class="employee-list" v-if="data !==null && viewIcon === 'badge'">
       <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data" >
         <span v-bind:style="{height: (parseInt(item.front_template_details.height) === config.LANDSCAPE) ? ((parseInt(item.front_template_details.height) * 2) + 50) + 'px' : (parseInt(item.front_template_details.height) + 50) + 'px', width: (parseInt(item.front_template_details.height) === config.LANDSCAPE) ? (parseInt(item.front_template_details.width) + 2)  + 'px' : ((parseInt(item.front_template_details.width) * 2) + 2)  + 'px'}" class="holder">
           <span class="header">
@@ -60,6 +69,23 @@
         </span>
       </div>
     </div>
+    <div class="employee-list" v-if="data !== null && viewIcon === 'table'">
+      <table class="table table-custom table-hover table-bordered" v-if="tableHead !== null">
+        <thead>
+          <tr>
+            <td v-for="item, index in tableHead" class="table-head-title" v-if="item !== null"><b>{{item.replace('_', ' ')}}</b></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item, index in data">
+            <td v-for="itemI, indexI in item.columns" v-if="item.columns !== null">
+              <label v-if="itemI.type !== 'photo'" class="table-text">{{itemI.value}}</label>
+              <img :src="config.BACKEND_URL + itemI.value" v-if="itemI.type === 'photo'" class="table-photo">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <empty v-if="data === null" :title="'Looks like you have not added an employee to your template!'" :action="'Click the  New Employee Button to get started.'"></empty>
     <update></update>
     <editor></editor>
@@ -72,6 +98,36 @@
   width: 98%;
   float: left;
   margin-right: 2%;
+}
+.entry-viewer{
+  width: 100%;
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  border-bottom: solid 1px #ddd;
+}
+.entry-viewer .menu-icons{
+  height: 40px;
+  width: 40px;
+  float: left;
+  line-height: 40px;
+  text-align: center;
+  margin-top: 5px;
+}
+.menu-icons i{
+  line-height: 40px;
+  font-size: 20px;
+}
+.menu-icons:hover{
+  border-radius: 50%;
+  background: #ddd;
+  cursor: pointer;
+}
+.active-menu-icon{
+  border-radius: 50%;
+  background: #ddd;
+  cursor: pointer;
+  color: #22b173;
 }
 .employee-list{
   width: 100%;
@@ -199,6 +255,29 @@
   color: #555;
 }
 
+.table-head-title{
+  text-transform: capitalize;
+}
+
+.table-custom tr{
+  height: 40px !important;
+  line-height: 40px;
+}
+
+.table-photo{
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.table-text{
+  margin-bottom: 0px;
+}
+
+.table-custom td{
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -216,7 +295,9 @@ export default {
       config: CONFIG,
       errorMessage: null,
       data: null,
-      prevIndex: null
+      prevIndex: null,
+      viewIcon: 'badge',
+      tableHead: null
     }
   },
   components: {
@@ -246,10 +327,15 @@ export default {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data
+          this.tableHead = response.table
         }else{
           this.data = null
+          this.tableHead = null
         }
       })
+    },
+    changeViewBy(parameter){
+      this.viewIcon = parameter
     },
     makeActive(index){
       if(this.prevIndex === null){
@@ -308,6 +394,7 @@ export default {
         payload: 'employee',
         payload_value: id,
         price: 0,
+        qty: 1,
         type: 'cards'
       }
       this.APIRequest('checkout_items/create', parameter).then(response => {

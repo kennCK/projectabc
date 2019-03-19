@@ -110,7 +110,7 @@ export default {
         this.APIRequest('templates/create', parameter).then(response => {
           if(response.data > 0){
             $('#createTemplateModal').modal('hide')
-            this.$parent.retrieve()
+            this.$parent.retrieve(false)
           }
         })
       }

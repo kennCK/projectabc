@@ -1,7 +1,7 @@
 <template>
   <div id="editor">
     <div class="modal fade" id="templateEditorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="item !== null">
-      <div class="modal-dialog modal-md" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
             <h5 class="modal-title" id="exampleModalLabel">{{item.title}}</h5>
@@ -26,12 +26,12 @@
                   <li @click="unSelected()">
                     <i class="fas fa-close"></i>
                   </li>
-                  <li>
+<!--                   <li>
                     <i class="fas fa-search-plus"></i>
                   </li>
                   <li>
                     <i class="fas fa-search-minus"></i>
-                  </li>
+                  </li> -->
                 </ul>
               </span>
               <span class="preview">
@@ -43,11 +43,19 @@
                 </span>
                 <span v-bind:style="{height: parseInt(item.height) + 'px', width: parseInt(item.width)  + 'px', left: (parseInt(item.height) === config.PORTRAIT) ? '35%' : '29%'}" class="card-holder">
                   <span v-for="item, index in objects">
-                    <span class="division" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'division'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">
+                    <span class="division" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'division'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">
                     </span>
-                    <label class="text" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'text'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)">{{item.content}}</label>
-                    <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)">
+                    <label class="text" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'text'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">{{item.content}}</label>
+                    <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">
                   </span>
+                </span>
+                <span class="browse-images-holder" v-if="selected !== null && browseImagesFlag === true">
+                  <browse-images :object="selected" :view="'editor'" :index="selectedIndex"></browse-images>
+                </span>
+                <span class="object-contents" v-if="selected !== null">
+                  <basic-text v-if="selected !== null && selected.type === 'text'" :object="selected" :index="selectedIndex"></basic-text>
+                  <basic-photo v-if="selected !== null && selected.type === 'photo'" :object="selected" :index="selectedIndex"></basic-photo>
+                  <basic-div v-if="selected !== null && selected.type === 'division'" :object="selected" :index="selectedIndex"></basic-div>
                 </span>
                 <span class="object-settings" v-if="selected !== null">
                   <division v-if="selected !== null && selected.type === 'division'" :object="selected" :index="selectedIndex"></division>
@@ -76,18 +84,21 @@
 .editor-holder{
   width: 100%;
   float: left;
-  height: 55vh;
+  min-height: 500px;
+  overflow-y: hidden;
 }
 .tools{
   width: 5%;
   float: left;
-  height: 55vh;
+  min-height: 400px;
+  overflow-y: hidden;
   border-right: solid 1px #eee;
 }
 .preview{
   width: 95%;
   float: left;
-  height: 55vh;
+  min-height: 400px;
+  overflow-y: hidden;
 }
 ul{
   list-style: none;
@@ -144,18 +155,38 @@ ul li:hover{
 .layers-holder .item:hover{
   cursor: pointer;
 }
+
 .card-holder{
   position: absolute;
   border: solid 1px #ddd;
 }
-.object-settings{
-  width: 225px;
-  min-height: 10px;
-  overflow-y: hidden;
+.browse-images-holder{
+  width: 200px;
+  height: 300px;
+  position: absolute;
+  border: solid 1px #ddd;
+  right: 270px;
+  top: 10px;
+}
+.object-contents{
+  width: 250px;
+  height: 210px;
   position: absolute;
   border: solid 1px #ddd;
   right: 10px;
+  top: 10px;
 }
+
+.object-settings{
+  width: 250px;
+  height: 200px;
+  position: absolute;
+  border: solid 1px #ddd;
+  right: 10px;
+  top: 250px;
+}
+
+
 
 .division, .text, .photo{
   position: absolute;
@@ -199,21 +230,30 @@ export default {
       selected: null,
       selectedIndex: null,
       objects: null,
-      saveFlag: 0
+      saveFlag: 0,
+      posX: 0,
+      posY: 0,
+      accountImage: null,
+      browseImagesFlag: false
     }
   },
   components: {
     'division': require('modules/editor/Div.vue'),
     'photo': require('modules/editor/Photo.vue'),
-    'c-text': require('modules/editor/Text.vue')
+    'c-text': require('modules/editor/Text.vue'),
+    'basic-text': require('modules/editor/BasicText.vue'),
+    'basic-photo': require('modules/editor/BasicPhoto.vue'),
+    'basic-div': require('modules/editor/BasicDiv.vue'),
+    'browse-images': require('modules/editor/BrowseImages.vue')
   },
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
     close(){
+      this.browseImagesFlag = false
       this.item = null
-      this.$parent.retrieve()
+      this.$parent.retrieve(true)
       $('#templateEditorModal').modal('hide')
     },
     addObject(type){
@@ -258,7 +298,8 @@ export default {
             borderBottom: '0px',
             borderLeft: '0px',
             borderRight: '0px',
-            paddingLeft: '0px'
+            paddingLeft: '0px',
+            textSpacing: '0px'
           }
         }
       }else if(type === 'division'){
@@ -315,6 +356,7 @@ export default {
       this.setSelectedObject(this.objects[this.objects.length - 1], this.objects.length - 1)
     },
     setSelectedObject(object, index){
+      this.browseImagesFlag = false
       this.saveFlag = 1
       if(this.prevIndex === null){
         this.prevIndex = index
@@ -337,6 +379,7 @@ export default {
       this.selectedIndex = null
     },
     retrieve(){
+      this.browseImagesFlag = false
       if(this.item !== null){
         let parameter = {
           condition: [{
@@ -374,6 +417,14 @@ export default {
       this.objects.splice(index, 1)
       this.prevIndex = null
       this.setSelectedObject(this.objects[0], 0)
+    },
+    moveObject(event){
+      this.posX = event.layerX
+      this.posY = event.layerY
+      console.log(event)
+    },
+    dragEnd(event){
+      console.log(event)
     }
   }
 }

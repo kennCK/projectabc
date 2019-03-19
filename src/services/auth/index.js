@@ -18,6 +18,7 @@ export default {
       current: null,
       prevCurrent: null
     },
+    notifSetting: null,
     messages: {
       data: null,
       current: 1,
@@ -27,20 +28,28 @@ export default {
   messenger: {
     flag: null
   },
+  messengerSupport: {
+    flag: null
+  },
   notifTimer: {
     timer: null,
     speed: 1000
-  },
-  google: {
-    code: null
   },
   tokenData: {
     token: null,
     tokenTimer: false,
     verifyingToken: false
   },
+  otpDataHolder: {
+    userInfo: null,
+    data: null
+  },
+  google: {
+    code: null,
+    scope: null
+  },
   currentPath: false,
-  setUser(userID, username, email, type, status, profile, checkout, plan){
+  setUser(userID, username, email, type, status, profile, checkout, plan, notifSetting){
     if(userID === null){
       username = null
       email = null
@@ -49,6 +58,7 @@ export default {
       profile = null
       checkout = 0
       plan = null
+      notifSetting = null
     }
     this.user.userID = userID * 1
     this.user.username = username
@@ -58,6 +68,7 @@ export default {
     this.user.profile = profile
     this.user.checkout = checkout
     this.user.plan = plan
+    this.user.notifSetting = notifSetting
     localStorage.setItem('account_id', this.user.userID)
   },
   setToken(token){
@@ -92,11 +103,11 @@ export default {
           }]
         }
         vue.APIRequest('accounts/retrieve', parameter).then(response => {
-          let profile = response.data[0].account_profile
-          let checkout = response.data[0].checkout
-          let plan = response.data[0].plan
-          this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout, plan)
-          ROUTER.push('/templates')
+          if(response.data.length > 0){
+            this.otpDataHolder.userInfo = userInfo
+            this.otpDataHolder.data = response.data
+            this.checkOtp(response.data[0].notification_settings)
+          }
         })
         // this.retrieveNotifications(userInfo.id)
         this.retrieveMessages(userInfo.id, userInfo.account_type)
@@ -128,7 +139,8 @@ export default {
           let profile = response.data[0].account_profile
           let checkout = response.data[0].checkout
           let plan = response.data[0].plan
-          this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout, plan)
+          let notifSetting = response.data[0].notification_settings
+          this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout, plan, notifSetting)
         }).done(response => {
           this.tokenData.verifyingToken = false
           let location = window.location.href
@@ -140,6 +152,7 @@ export default {
         })
         // this.retrieveNotifications(userInfo.id)
         this.retrieveMessages(userInfo.id, userInfo.account_type)
+        this.getGoogleCode()
       }, (response) => {
         this.setToken(null)
         this.tokenData.verifyingToken = false
@@ -158,6 +171,8 @@ export default {
   deaunthenticate(){
     localStorage.removeItem('usertoken')
     localStorage.removeItem('account_id')
+    localStorage.removeItem('google_code')
+    localStorage.removeItem('google_scope')
     this.setUser(null)
     let vue = new Vue()
     vue.APIRequest('authenticate/invalidate')
@@ -214,6 +229,11 @@ export default {
       this.messenger.flag = null
     }
   },
+  clearMessengerSuuport(){
+    if(this.messengerSupport.flag !== null){
+      this.messengerSupport.flag = null
+    }
+  },
   playNotificationSound(){
     let audio = require('../../assets/audio/notification.mp3')
     let sound = new Howl({
@@ -228,8 +248,10 @@ export default {
     }
   },
   checkPlan(){
-    if(this.user.plan.title === 'Expired' && this.user.type !== 'ADMIN'){
-      ROUTER.push('/plan')
+    if(this.user.plan !== null){
+      if(this.user.plan.title === 'Expired' && this.user.type !== 'ADMIN'){
+        ROUTER.push('/plan')
+      }
     }
   },
   redirect(path){
@@ -239,5 +261,49 @@ export default {
       this.messenger.flag = true
     }
     ROUTER.push(path)
+  },
+  validateEmail(email){
+    let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+    if(reg.test(email) === false){
+      return false
+    }else{
+      return true
+    }
+  },
+  checkOtp(setting){
+    if(setting !== null){
+      if(parseInt(setting.email_otp) === 1 || parseInt(setting.sms_otp) === 1){
+        // ask otp code here
+        $('#otpModal').modal({
+          backdrop: 'static',
+          keyboard: true,
+          show: true
+        })
+      }else{
+        this.proceedToLogin()
+      }
+    }else{
+      this.proceedToLogin()
+    }
+  },
+  proceedToLogin(){
+    let userInfo = this.otpDataHolder.userInfo
+    let data = this.otpDataHolder.data
+    let profile = data[0].account_profile
+    let checkout = data[0].checkout
+    let plan = data[0].plan
+    let notifSetting = data[0].notification_settings
+    this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout, plan, notifSetting)
+    ROUTER.push('/templates')
+  },
+  setGoogleCode(code, scope){
+    localStorage.setItem('google_code', code)
+    localStorage.setItem('google_scope', scope)
+    this.google.code = code
+    this.google.scope = scope
+  },
+  getGoogleCode(){
+    this.google.code = localStorage.getItem('google_code')
+    this.google.scope = localStorage.getItem('google_scope')
   }
 }

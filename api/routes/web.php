@@ -159,6 +159,7 @@ Route::post('/objects/retrieve_dynamic_without_attributes', 'ObjectController@re
 Route::post('/attributes/create', "AttributeController@create");
 Route::post('/attributes/retrieve', "AttributeController@retrieve");
 Route::post('/attributes/update', "AttributeController@update");
+Route::post('/attributes/update_on_table_view', "AttributeController@updateTableView");
 Route::post('/attributes/delete', "AttributeController@delete");
 Route::get('/attributes/test', 'AttributeController@test');
 
@@ -178,6 +179,7 @@ Route::post('/employees/delete', "EmployeeController@delete");
 Route::get('/employees/test', 'EmployeeController@test');
 Route::post('/employees/upload', "EmployeeController@upload");
 Route::post('/employees/retrieve_on_update', "EmployeeController@retrieveOnUpdate");
+Route::post('/employees/retreve_table', "EmployeeController@getEmployeesForTable");
 
 //Employee Columns
 Route::post('/employee_columns/create', "EmployeeColumnController@create");
@@ -300,8 +302,10 @@ Route::get('/paypal_transactions/test', 'PaypalTransactionController@test');
 
 //Messenger Controller
 Route::post('/messenger_groups/create', "MessengerGroupController@create");
+Route::post('/messenger_groups/create_new_issue', "MessengerGroupController@createNewIssue");
 Route::post('/messenger_groups/retrieve', "MessengerGroupController@retrieve");
 Route::post('/messenger_groups/retrieve_summary', "MessengerGroupController@retrieveSummary");
+Route::post('/messenger_groups/retrieve_my_issue', "MessengerGroupController@retrieveMyIssue");
 Route::post('/messenger_groups/update', "MessengerGroupController@update");
 Route::post('/messenger_groups/delete', "MessengerGroupController@delete");
 Route::get('/messenger_groups/test', 'MessengerGroupController@test');
@@ -333,6 +337,7 @@ Route::post('/plans/create', "PlanController@create");
 Route::post('/plans/retrieve', "PlanController@retrieve");
 Route::post('/plans/retrieve_summary', "PlanController@retrieveSummary");
 Route::post('/plans/update', "PlanController@update");
+Route::post('/plans/apply_rewards', "PlanController@applyRewards");
 Route::post('/plans/delete', "PlanController@delete");
 Route::get('/plans/test', 'PlanController@test');
 
@@ -358,14 +363,68 @@ Route::post('/emails/create', "EmailController@create");
 Route::post('/emails/retrieve', "EmailController@retrieve");
 Route::post('/emails/update', "EmailController@update");
 Route::post('/emails/delete', "EmailController@delete");
-Route::get('/emails/test', 'EmailController@test');
+Route::post('/emails/reset_password', 'EmailController@resetPassword');
+Route::post('/emails/verification', 'EmailController@verification');
+Route::post('/emails/changed_password', 'EmailController@changedPassword');
+Route::post('/emails/referral', 'EmailController@referral');
+Route::post('/emails/trial', 'EmailController@trial');
+
+//Wishlists Controller
+Route::post('/wishlists/create', "WishlistController@create");
+Route::post('/wishlists/retrieve', "WishlistController@retrieve");
+Route::post('/wishlists/update', "WishlistController@update");
+Route::post('/wishlists/delete', "WishlistController@delete");
+Route::get('/wishlists/test', 'WishlistController@test');
 
 
-Route::get('/mail', function () {
-  Mail::send('emails.test', [], function ($message) {
-    $message
-      ->from('support@idfactory.ph', 'ID FACTORY')
-      ->to('kennettecanales@gmail.com', 'kennettecanales')
-      ->subject('FROM IDFACRTORY TEST');
-  });
-});
+//Wishlists Controller
+Route::post('/shipping_addresses/create', "ShippingAddressController@create");
+Route::post('/shipping_addresses/retrieve', "ShippingAddressController@retrieve");
+Route::post('/shipping_addresses/update', "ShippingAddressController@update");
+Route::post('/shipping_addresses/delete', "ShippingAddressController@delete");
+Route::get('/shipping_addresses/test', 'ShippingAddressController@test');
+
+//Wishlists Controller
+Route::post('/invitations/create', "InvitationController@create");
+Route::post('/invitations/retrieve', "InvitationController@retrieve");
+Route::post('/invitations/update', "InvitationController@update");
+Route::post('/invitations/apply', "InvitationController@apply");
+Route::post('/invitations/delete', "InvitationController@delete");
+Route::get('/invitations/test', 'InvitationController@test');
+
+
+//Notification Settings Controller
+Route::post('/notification_settings/create', "NotificationSettingController@create");
+Route::post('/notification_settings/retrieve', "NotificationSettingController@retrieve");
+Route::post('/notification_settings/update', "NotificationSettingController@update");
+Route::post('/notification_settings/delete', "NotificationSettingController@delete");
+Route::get('/notification_settings/test', 'NotificationSettingController@test');
+
+//Profile Controller
+Route::post('/profiles/create', "ProfileController@create");
+Route::post('/profiles/retrieve', "ProfileController@retrieve");
+Route::post('/profiles/update', "ProfileController@update");
+Route::post('/profiles/delete', "ProfileController@delete");
+Route::get('/profiles/test', 'ProfileController@test');
+
+//Government Controller
+Route::post('/governments/create', "GovernmentController@create");
+Route::post('/governments/retrieve', "GovernmentController@retrieve");
+Route::post('/governments/update', "GovernmentController@update");
+Route::post('/governments/delete', "GovernmentController@delete");
+Route::get('/governments/test', 'GovernmentController@test');
+
+// Google Spreadsheets
+Route::get('/gsheets/create', 'GoogleSheetController@generate');
+Route::post('/gsheets/auth', 'GoogleSheetController@getAuthUrl');
+Route::post('/gsheets/create_file', 'GoogleSheetController@createNewGoogleSheet');
+Route::post('/gsheets/read_file', 'GoogleSheetController@readGoogleSheet');
+Route::post('/gsheets/save_token', 'GoogleSheetController@setAccessToken');
+Route::get('/gsheets/sample', 'GoogleSheetController@sample');
+
+//Account Google Sheet Controller
+Route::post('/account_gsheets/create', "AccountGoogleSheetController@create");
+Route::post('/account_gsheets/retrieve', "AccountGoogleSheetController@retrieve");
+Route::post('/account_gsheets/update', "AccountGoogleSheetController@update");
+Route::post('/account_gsheets/delete', "AccountGoogleSheetController@delete");
+Route::get('/account_gsheets/test', 'AccountGoogleSheetController@test');
