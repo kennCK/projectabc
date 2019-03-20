@@ -70,19 +70,7 @@
                 <label for="address">Emergency Contact Person's Number</label>
                 <input type="text" class="form-control" v-model="data.emergency_contact_number" placeholder="Optional">
               </div>
-
-              <div class="form-group">
-                <label for="address">Variables</label>
-                <div class="input-group">
-                  <span class="input-group-addon" id="addon-1">Variable</span>
-                  <input type="text" class="form-control" placeholder="*driver_license" aria-describedby="addon-1">
-                  <span class="input-group-addon" id="addon-1">Value</span>
-                  <input type="text" class="form-control" placeholder="Number" aria-describedby="addon-1">
-                  <button class="btn btn-primary" style="margin-left: 5px;">Add</button>
-                </div>
-                
-              </div>
-          
+            <government-list :data="data"/>          
             </span>
             <span class="sidebar">
               <span class="sidebar-header" style="margin-top: 25px;">Profile Picture</span>
@@ -201,14 +189,15 @@ export default {
         department: null,
         emergency_contact_name: null,
         emergency_contact_number: null,
-        signature: null
+        signature: null,
+        variables: []
       },
-      file: null,
-      government: []
+      file: null
     }
   },
   components: {
-    'google-auth': require('modules/profiles/GoogleAuth.vue')
+    'google-auth': require('modules/profiles/GoogleAuth.vue'),
+    'government-list': require('modules/profiles/VariableList.vue')
   },
   methods: {
     redirect(parameter){
@@ -281,6 +270,9 @@ export default {
         return true
       }
       return false
+    },
+    test(){
+      console.log('test:')
     }
   }
 }
