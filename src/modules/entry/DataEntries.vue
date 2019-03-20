@@ -15,7 +15,7 @@
         <span v-bind:style="{height: (parseInt(item.front_template_details.height) === config.LANDSCAPE) ? ((parseInt(item.front_template_details.height) * 2) + 50) + 'px' : (parseInt(item.front_template_details.height) + 50) + 'px', width: (parseInt(item.front_template_details.height) === config.LANDSCAPE) ? (parseInt(item.front_template_details.width) + 2)  + 'px' : ((parseInt(item.front_template_details.width) * 2) + 2)  + 'px'}" class="holder">
           <span class="header">
             <ul class="menu">
-              <li style="width: 50%;">
+              <li>
                 <label @click="showComments(item.id)" class="option">
                   Comments
                   <span class="badge badge-danger" v-if="parseInt(item.total_comments) > 0">{{item.total_comments}}</span>
@@ -32,6 +32,9 @@
               </li>
               <li>
                 <i v-bind:class="{'gray': item.status === 'not_verified', 'green': item.status === 'verified'}" class="fas fa-check"></i>
+              </li>
+              <li>
+                <i v-bind:class="{'gray': item.status === 'not_verified', 'green': item.status === 'verified'}" class="fas fa-print" @click="print(item)"></i>
               </li>
               <li style="border-right: 0px;">
                 <div class="dropdown">

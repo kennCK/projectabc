@@ -3,7 +3,7 @@ if(isset($_SERVER['HTTP_ORIGIN'])){
   header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
   header('Access-Control-Allow-Credentials: true');
   header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  header('Access-Control-Max-Age: 86400');  
+  header('Access-Control-Max-Age: 86400');
 }
 /**
  * Laravel - A PHP Framework For Web Artisans

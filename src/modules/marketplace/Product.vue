@@ -28,7 +28,7 @@
           <i class="fa fa-chevron-down show-prices" style="padding-left: 20px;" @click="showPrice(true)" v-if="data.price.length > 1 && priceFlag === false"></i>
           <i class="fa fa-chevron-up show-prices" style="padding-left: 20px;" @click="showPrice(false)" v-if="data.price.length > 1 && priceFlag === true"></i>
         </div>
-        <div class="product-row" v-if="data.price.length > 1 && priceFlag === true">
+        <div class="product-row" v-if="data.price !== null && data.price.length > 1 && priceFlag === true">
           <table class="table table-bordered">
             <thead>
               <tr>
