@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\AccountImage;
 class AccountImageController extends APIController
@@ -26,5 +26,38 @@ class AccountImageController extends APIController
     		}
     	}
     	return $this->response();
+    }
+
+    public function upload(Request $request){
+
+      $data = $request->all();
+      
+      $url = null;
+      if(isset($data['file_url'])){
+        $date = Carbon::now()->toDateString();
+        $time = str_replace(':', '_',Carbon::now()->toTimeString());
+        $ext = $request->file('file')->extension();
+        $filename = $data['account_id'].'_'.$date.'_'.$time.'.'.$ext;
+        $result = $request->file('file')->storeAs('images', $filename);
+        $url = '/storage/image/'.$filename;
+        $this->model = new AccountImage();
+        $insertData = array(
+          'account_id'=>$data['account_id'],
+          'url'=>$url,
+          'payload'=>'product',
+          'payload_value'=>$data['payload_value'],
+          'status'=>$data['status']
+        );
+        $this->insertDB($insertData);
+        return $this->response();
+      }else{
+        $url = null;
+      }
+
+      return response()->json(array(
+        'data'  => null,
+        'error' => null,
+        'timestamps' => Carbon::now()
+      ));
     }
 }

@@ -124,6 +124,7 @@ Route::get('/account_profiles/test', 'AccountProfileController@test');
 
 //Account Profiles
 Route::post('/account_images/create', "AccountImageController@create");
+Route::post('/account_images/upload', "AccountImageController@upload");
 Route::post('/account_images/retrieve', "AccountImageController@retrieve");
 Route::post('/account_images/update', "AccountImageController@update");
 Route::post('/account_images/delete', "AccountImageController@delete");
