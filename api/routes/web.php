@@ -124,6 +124,7 @@ Route::get('/account_profiles/test', 'AccountProfileController@test');
 
 //Account Profiles
 Route::post('/account_images/create', "AccountImageController@create");
+Route::post('/account_images/upload', "AccountImageController@upload");
 Route::post('/account_images/retrieve', "AccountImageController@retrieve");
 Route::post('/account_images/update', "AccountImageController@update");
 Route::post('/account_images/delete', "AccountImageController@delete");
@@ -428,3 +429,10 @@ Route::post('/account_gsheets/retrieve', "AccountGoogleSheetController@retrieve"
 Route::post('/account_gsheets/update', "AccountGoogleSheetController@update");
 Route::post('/account_gsheets/delete', "AccountGoogleSheetController@delete");
 Route::get('/account_gsheets/test', 'AccountGoogleSheetController@test');
+
+//Active Template Controller
+Route::post('/active_templates/create', "ActiveTemplateController@create");
+Route::post('/active_templates/retrieve', "ActiveTemplateController@retrieve");
+Route::post('/active_templates/update', "ActiveTemplateController@update");
+Route::post('/active_templates/delete', "ActiveTemplateController@delete");
+Route::get('/active_templates/test', 'ActiveTemplateController@test');

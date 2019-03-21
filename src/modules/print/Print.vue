@@ -14,6 +14,8 @@
               <div v-bind:style="{height: (parseInt(item.front_template_details.height)) + 'px', width: (parseInt(item.front_template_details.width))  + 'px'}" class="holder">
                 <span id="frontObject">
                   <objects :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)"></objects>
+                  <!-- <print-preview :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null" :heightTemplate="'100%'" :widthTemplate="'100%'"></print-preview> -->
+
                 </span>
                 
                 <div v-bind:style="{height: (parseInt(item.front_template_details.height)) + 'px', width: (parseInt(item.front_template_details.width))  + 'px'}" class="display">
@@ -82,10 +84,19 @@
   float: left;
   margin-top: 20px;
 }
-@page { margin: 0; }
-@media print {
-  @page { margin: 0; }
+
+@page{
+  margin: 0;
+  size: auto;
 }
+
+@media print{
+  @page{  
+    margin: 0;
+    size: auto;
+  }
+}
+
 </style>
 <script>
 import ROUTER from '../../router'
@@ -102,7 +113,8 @@ export default {
     }
   },
   components: {
-    'objects': require('modules/object/Objects.vue')
+    'objects': require('modules/object/Objects.vue'),
+    'print-preview': require('modules/object/PrintPreview.vue')
   },
   methods: {
     redirect(parameter){

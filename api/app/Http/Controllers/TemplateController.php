@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Template;
 use App\Guide;
+use App\ActiveTemplate;
 class TemplateController extends APIController
 {
     function __construct(){
@@ -23,6 +24,7 @@ class TemplateController extends APIController
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
+          $this->response['data'][$i]['active_templates'] = $this->getActiveTemplate($result[$i]['settings'], $result[$i]['id'], $data['account_id']);
           $this->response['data'][$i]['objects'] = $this->getObjects($result[$i]['id']);
           $this->response['data'][$i]['guide'] = ($result[$i]['status'] == 'purchased') ? $this->getGuide($result[$i]['purchased']) : $this->getGuide($result[$i]['id']);
           if($active === $i){
@@ -34,6 +36,18 @@ class TemplateController extends APIController
         }
       }
       return $this->response();
+    }
+
+    public function getActiveTemplate($settings, $id, $accountId){
+      $result = null;
+      if($settings == 'front'){
+        $result = ActiveTemplate::where('account_id', '=', $accountId)->where('front', '=', $id)->get();
+      }else{
+        $result = ActiveTemplate::where('account_id', '=', $accountId)->where('back', '=', $id)->get();
+      }
+
+      return (sizeof($result) > 0) ? $result[0] : null;
+            
     }
 
     public function retriveTemplateOnly(Request $request){
