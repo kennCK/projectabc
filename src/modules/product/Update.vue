@@ -29,9 +29,14 @@
               <label for="exampleInputEmail1">Featured Image</label>
               <div class="product-images">
                 <div class="new-image text-primary">
-                    <button class="btn btn-primary pull-right" @click="addImage()"><i class="fa fa-plus"></i> Upload Image
-                    <input type="file" @change="setUpFileUpload($event)" id="featureImage">
+                  <button class="btn btn-primary pull-right" @click="addImage('featured')"><i class="fa fa-plus"></i> Upload
+                    <input type="file" @change="setUpFileUpload($event)" id="Image">
                   </button>
+                </div>
+                <div class="image-preview">
+                  <!-- <span class="image" v-if="item !== null">
+                    <img :src="config.BACKEND_URL + this.file.file_url" height="auto" width="100%" >
+                  </span> -->
                 </div>
               </div>
             </div>
@@ -40,7 +45,9 @@
               <label for="exampleInputEmail1">Other Images</label>
               <div class="product-images">
                 <div class="new-image text-primary">
-                  <i class="fa fa-plus"></i>
+                  <button class="btn btn-primary pull-right" @click="addImage('images')"><i class="fa fa-plus"></i> Upload
+                    <input type="file" @change="setUpFileUpload($event)" id="Image">
+                  </button>
                 </div>
               </div>
             </div>
@@ -83,7 +90,12 @@
   height: 200px;
   margin-bottom: 10px;
 }
-
+.image-preview{
+  width: 80px;
+  height: 80px;
+  padding: 10px;
+  border: solid 1px #ddd;
+}
 .featured-image .options{
   width: 100%;
   float: left;
@@ -128,17 +140,23 @@
   float: left;
   text-align: center;
 }*/
+.new-image input[type='file']{
+  display: none;
+  text-align: center;
+  float: left;
+}
 .new-image button{
-  width: 80px;
+  width: 22%;
+  height: 50%;
   border-radius: 5px;
   border: solid 1px #ddd;
   float: left;
   text-align: center;
 }
-.new-image i{
+/*.new-image i{
   line-height: 80px;
   font-size: 24px;
-}
+}*/
 .new-image:hover{
   cursor: pointer;
 }
@@ -150,6 +168,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    this.retrieve()
   },
   data(){
     return {
@@ -157,7 +176,8 @@ export default {
       config: CONFIG,
       errorMessage: null,
       item: null,
-      file: null
+      file: null,
+      status: null
     }
   },
   components: {
@@ -167,8 +187,9 @@ export default {
     redirect(parameter){
       ROUTER.push(parameter)
     },
-    addImage(){
-      $('#featureImage')[0].click()
+    addImage(status){
+      $('#Image')[0].click()
+      this.status = status
     },
     setUpFileUpload(event){
       let files = event.target.files || event.dataTransfer.files
@@ -189,8 +210,10 @@ export default {
       formData.append('file', this.file)
       formData.append('file_url', this.file.name)
       formData.append('account_id', this.user.userID)
+      formData.append('payload_value', this.item.id)
+      formData.append('status', this.status)
       $('#loading').css({'display': 'block'})
-      axios.post(this.config.BACKEND_URL + '/employees/upload', formData).then(response => {
+      axios.post(this.config.BACKEND_URL + '/account_images/upload', formData).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data !== null){
           this.retrieve()
@@ -226,10 +249,11 @@ export default {
           value: this.user.userID,
           column: 'account_id',
           clause: '='
-        }]
+        }],
+        account_id: this.user.userID
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('account_images/retrieve', parameter).then(response => {
+      this.APIRequest('products/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data
