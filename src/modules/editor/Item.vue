@@ -157,39 +157,23 @@ export default {
       this.$parent.retrieve((parameter === true) ? this.index : false)
     },
     setAsActive(item){
-      if(item.active_templates !== null){
-        let parameter = null
-        if(item.settings === 'front'){
-          parameter = {
-            id: item.active_templates.id,
-            front: item.id
-          }
-        }else{
-          parameter = {
-            id: item.active_templates.id,
-            back: item.id
-          }
+      let parameter = null
+      if(item.settings === 'front'){
+        parameter = {
+          account_id: this.user.userID,
+          front: item.id,
+          settings: 'front'
         }
-        this.APIRequest('active_templates/update', parameter).then(response => {
-          this.retrieve(this.index)
-        })
       }else{
-        let parameter = null
-        if(item.settings === 'front'){
-          parameter = {
-            account_id: this.user.userID,
-            front: item.id
-          }
-        }else{
-          parameter = {
-            account_id: this.user.userID,
-            back: item.id
-          }
+        parameter = {
+          account_id: this.user.userID,
+          back: item.id,
+          settings: 'back'
         }
-        this.APIRequest('active_templates/create', parameter).then(response => {
-          this.retrieve(this.index)
-        })
       }
+      this.APIRequest('active_templates/create', parameter).then(response => {
+        this.retrieve(this.index)
+      })
     },
     show(item, id){
       for (var i = 0; i < this.$children.length; i++) {
