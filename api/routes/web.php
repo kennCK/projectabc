@@ -429,3 +429,10 @@ Route::post('/account_gsheets/retrieve', "AccountGoogleSheetController@retrieve"
 Route::post('/account_gsheets/update', "AccountGoogleSheetController@update");
 Route::post('/account_gsheets/delete', "AccountGoogleSheetController@delete");
 Route::get('/account_gsheets/test', 'AccountGoogleSheetController@test');
+
+//Active Template Controller
+Route::post('/active_templates/create', "ActiveTemplateController@create");
+Route::post('/active_templates/retrieve', "ActiveTemplateController@retrieve");
+Route::post('/active_templates/update', "ActiveTemplateController@update");
+Route::post('/active_templates/delete', "ActiveTemplateController@delete");
+Route::get('/active_templates/test', 'ActiveTemplateController@test');

@@ -24,6 +24,7 @@
                 <span class="dropdown-item" v-on:click="show(item, 'updateSettings')" v-if="user.type === 'ADMIN'">Update</span>
                 <span class="dropdown-item" v-on:click="show(item, 'updateSettings')">Change Contents</span>
                 <span class="dropdown-item" v-on:click="show(item, 'guideViewModal')" v-if="item.guide !== null">View Guide</span>
+                <span class="dropdown-item" v-on:click="setAsActive(item)" v-if="item.active_templates === null">Set as Active</span>
                 <span class="dropdown-item text-danger" v-on:click="show(item, 'deleteModal')" v-if="item.status !== 'purchased'">Delete</span>
               </div>
             </div>
@@ -154,6 +155,41 @@ export default {
     },
     retrieve(parameter){
       this.$parent.retrieve((parameter === true) ? this.index : false)
+    },
+    setAsActive(item){
+      if(item.active_templates !== null){
+        let parameter = null
+        if(item.settings === 'front'){
+          parameter = {
+            id: item.active_templates.id,
+            front: item.id
+          }
+        }else{
+          parameter = {
+            id: item.active_templates.id,
+            back: item.id
+          }
+        }
+        this.APIRequest('active_templates/update', parameter).then(response => {
+          this.retrieve(this.index)
+        })
+      }else{
+        let parameter = null
+        if(item.settings === 'front'){
+          parameter = {
+            account_id: this.user.userID,
+            front: item.id
+          }
+        }else{
+          parameter = {
+            account_id: this.user.userID,
+            back: item.id
+          }
+        }
+        this.APIRequest('active_templates/create', parameter).then(response => {
+          this.retrieve(this.index)
+        })
+      }
     },
     show(item, id){
       for (var i = 0; i < this.$children.length; i++) {

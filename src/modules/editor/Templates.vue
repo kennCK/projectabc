@@ -111,7 +111,8 @@ export default {
           column: 'account_id',
           clause: '='
         }],
-        active: (index !== false) ? index : tempData
+        active: (index !== false) ? index : tempData,
+        account_id: this.user.userID
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('templates/retrieve', parameter).then(response => {
