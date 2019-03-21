@@ -270,9 +270,6 @@ export default {
         return true
       }
       return false
-    },
-    test(){
-      console.log('test:')
     }
   }
 }
