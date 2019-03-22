@@ -1,36 +1,42 @@
 <template>
   <div>
     <div v-bind:class="{'make-active': item !== null && item.active === true}" v-if="item !== null" v-on:click="makeActive()" v-bind:style="{height: (parseInt(item.height) + 90) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="item">
-      <span v-bind:class="{'make-active-header': item.active === true}" class="header">
-        <b>
-          {{item.title}}
-        </b>
-      </span>
-      <span v-bind:style="{height: parseInt(item.height) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="body">
-        <div v-bind:style="{height: parseInt(item.height) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="preview">
-          <objects :objects="item.objects" :heightTemplate="parseInt(item.height)" :widthTemplate="parseInt(item.width)" v-if="item.objects !== null"></objects>
+      <div class="holder">
+        <div class="ribbon-wrapper">
+          <div class="ribbon bg-warning" v-if="item.settings === 'front' && item.active_templates !== null">Front</div>
+          <div class="ribbon bg-danger" v-if="item.settings === 'back' && item.active_templates !== null">Back</div>
         </div>
-        <ul>
-          <li v-on:click="show(item, 'editor')" style="border-left: 0px;">Editor</li>
-          <li>
-            <div class="dropdown">
-              <label id="dropdownMenuSettingsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Settings
-              </label>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuSettingsButton">
-                <span class="dropdown-item disabled">Settings</span>
-                <span class="dropdown-item" v-on:click="show(item, 'guideModal')" v-if="user.type === 'ADMIN'">Edit Guide</span>
-                <!-- <span class="dropdown-item" v-on:click="show(item, 'editSettings')">Edit Settings</span> -->
-                <span class="dropdown-item" v-on:click="show(item, 'updateSettings')" v-if="user.type === 'ADMIN'">Update</span>
-                <span class="dropdown-item" v-on:click="show(item, 'updateSettings')">Change Contents</span>
-                <span class="dropdown-item" v-on:click="show(item, 'guideViewModal')" v-if="item.guide !== null">View Guide</span>
-                <span class="dropdown-item" v-on:click="setAsActive(item)" v-if="item.active_templates === null">Set as Active</span>
-                <span class="dropdown-item text-danger" v-on:click="show(item, 'deleteModal')" v-if="item.status !== 'purchased'">Delete</span>
+        <span v-bind:class="{'make-active-header': item.active === true}" class="header">
+          <b>
+            {{item.title}}
+          </b>
+        </span>
+        <span v-bind:style="{height: parseInt(item.height) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="body">
+          <div v-bind:style="{height: parseInt(item.height) + 'px', width: (parseInt(item.width) + 1)  + 'px'}" class="preview">
+            <objects :objects="item.objects" :heightTemplate="parseInt(item.height)" :widthTemplate="parseInt(item.width)" v-if="item.objects !== null"></objects>
+          </div>
+          <ul>
+            <li v-on:click="show(item, 'editor')" style="border-left: 0px;">Editor</li>
+            <li>
+              <div class="dropdown">
+                <label id="dropdownMenuSettingsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Settings
+                </label>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuSettingsButton">
+                  <span class="dropdown-item disabled">Settings</span>
+                  <span class="dropdown-item" v-on:click="show(item, 'guideModal')" v-if="user.type === 'ADMIN'">Edit Guide</span>
+                  <!-- <span class="dropdown-item" v-on:click="show(item, 'editSettings')">Edit Settings</span> -->
+                  <span class="dropdown-item" v-on:click="show(item, 'updateSettings')" v-if="user.type === 'ADMIN'">Update</span>
+                  <span class="dropdown-item" v-on:click="show(item, 'updateSettings')">Change Contents</span>
+                  <span class="dropdown-item" v-on:click="show(item, 'guideViewModal')" v-if="item.guide !== null">View Guide</span>
+                  <span class="dropdown-item" v-on:click="setAsActive(item)" v-if="item.active_templates === null">Set as Active</span>
+                  <span class="dropdown-item text-danger" v-on:click="show(item, 'deleteModal')" v-if="item.status !== 'purchased'">Delete</span>
+                </div>
               </div>
-            </div>
-          </li>
-        </ul>
-      </span>
+            </li>
+          </ul>
+        </span>
+      </div>
     </div>
     <delete-modal></delete-modal>
     <update></update>
@@ -53,6 +59,38 @@
   cursor: pointer;
   border: solid 1px #22b173;
 }
+.holder{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.ribbon-wrapper {
+  width: 85px;
+  height: 88px;
+  overflow: hidden;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  z-index: 10;
+}
+
+.ribbon-wrapper .ribbon {
+  font: bold 15px sans-serif;
+  color: #333;
+  text-align: center;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform:    rotate(-45deg);
+  -ms-transform:     rotate(-45deg);
+  -o-transform:      rotate(-45deg);
+  position: relative;
+  padding: 7px 0;
+  top: 15px;
+  left: -30px;
+  width: 120px;
+  color: #fff;
+}
+
 .make-active{
   border: solid 1px #22b173;
 }
