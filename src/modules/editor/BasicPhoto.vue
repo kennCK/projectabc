@@ -12,7 +12,10 @@
             Object Id
           </span>
           <span class="input">
-            <input type="text" class="form-control" v-model="object.name">
+            <input type="text" class="form-control" v-model="object.name" @keypress="setTyping(true)">
+            <span class="suggestion" v-if="typing === true">
+              <span class="suggestion-item" v-for="item, index in suggestion" @click="setId(item)">{{item}}</span>
+            </span>
           </span>
         </span>
 
@@ -242,6 +245,32 @@
   margin-top: 1px !important;
   margin-bottom: 1px !important;
 }
+.input .suggestion{
+  width: 60%;
+  position: absolute;
+  height: 120px;
+  border-bottom: solid 1px #ddd;
+  border-left: solid 1px #ddd;
+  border-right: solid 1px #ddd;
+  background: #fff;
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.suggestion .suggestion-item{
+  width: 100%;
+  float: left;
+  height: 30px;
+  line-height: 30px;
+  border-top:   solid 1px #ddd;
+  padding-left: 5px; 
+}
+
+.suggestion-item:hover{
+  cursor: pointer;
+  background: #ccc;
+}
+
 .input i{
   font-size: 20px;
   line-height: 30px;
@@ -330,7 +359,9 @@ export default {
       {title: 'Size', flag: false}
       ],
       prevIndex: 0,
-      file: null
+      file: null,
+      typing: false,
+      suggestion: ['logo', 'profile', 'signature']
     }
   },
   props: ['object', 'index'],
@@ -338,7 +369,15 @@ export default {
     redirect(parameter){
       ROUTER.push(parameter)
     },
+    setTyping(params){
+      this.typing = params
+    },
+    setId(params){
+      this.object.name = params
+      this.setTyping(false)
+    },
     changeMenu(index){
+      this.setTyping(false)
       if(this.prevIndex !== index){
         this.menu[this.prevIndex].flag = false
         this.menu[index].flag = true
