@@ -11,7 +11,7 @@
     </div>
 		
     <div class="employee-list" v-if="data !==null && viewIcon === 'badge'">
-      <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data" >
+<!--       <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data" >
         <span v-bind:style="{height: (parseInt(item.front_template_details.height) === config.LANDSCAPE) ? ((parseInt(item.front_template_details.height) * 2) + 50) + 'px' : (parseInt(item.front_template_details.height) + 50) + 'px', width: (parseInt(item.front_template_details.height) === config.LANDSCAPE) ? (parseInt(item.front_template_details.width) + 2)  + 'px' : ((parseInt(item.front_template_details.width) * 2) + 2)  + 'px'}" class="holder">
           <span class="header">
             <ul class="menu">
@@ -67,21 +67,23 @@
             </objects>
           </span>
         </span>
-      </div>
+      </div> -->
     </div>
     <div class="employee-list" v-if="data !== null && viewIcon === 'table'">
       <table class="table table-custom table-hover table-bordered" v-if="tableHead !== null">
         <thead>
           <tr>
-            <td v-for="item, index in tableHead" class="table-head-title" v-if="item !== null"><b>{{item.replace('_', ' ')}}</b></td>
+            <td>Email</td>
+            <td>First Name</td>
+            <td>Last Name</td>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item, index in data">
-            <td v-for="itemI, indexI in item.columns" v-if="item.columns !== null">
-              <label v-if="itemI.type !== 'photo'" class="table-text">{{itemI.value}}</label>
-              <img :src="config.BACKEND_URL + itemI.value" v-if="itemI.type === 'photo'" class="table-photo">
-            </td>
+            <td>
+              <img :src="config.BACKEND_URL + item.profile" height="40px" width="40px" style="margin-right: 10px;border-radius: 50%; margin-top: 5px; margin-bottom: 5px;">{{item.email}}</td>
+            <td>{{item.first_name}}</td>
+            <td>{{item.last_name}}</td>
           </tr>
         </tbody>
       </table>
@@ -296,7 +298,7 @@ export default {
       errorMessage: null,
       data: null,
       prevIndex: null,
-      viewIcon: 'badge',
+      viewIcon: 'table',
       tableHead: null
     }
   },
