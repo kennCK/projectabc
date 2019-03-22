@@ -27,7 +27,6 @@
                   <span class="dropdown-item" v-on:click="show(item, 'guideModal')" v-if="user.type === 'ADMIN'">Edit Guide</span>
                   <!-- <span class="dropdown-item" v-on:click="show(item, 'editSettings')">Edit Settings</span> -->
                   <span class="dropdown-item" v-on:click="show(item, 'updateSettings')" v-if="user.type === 'ADMIN'">Update</span>
-                  <span class="dropdown-item" v-on:click="show(item, 'updateSettings')">Change Contents</span>
                   <span class="dropdown-item" v-on:click="show(item, 'guideViewModal')" v-if="item.guide !== null">View Guide</span>
                   <span class="dropdown-item" v-on:click="setAsActive(item)" v-if="item.active_templates === null">Set as Active</span>
                   <span class="dropdown-item text-danger" v-on:click="show(item, 'deleteModal')" v-if="item.status !== 'purchased'">Delete</span>
