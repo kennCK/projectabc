@@ -33,6 +33,9 @@
               <span class="input-group-addon" id="addon-2"><i class="fa fa-key"></i></span>
               <input type="password" class="form-control form-control-login" placeholder="Confirm Password" aria-describedby="addon-2" v-model="cpassword">
             </div>
+            <div class="input-group login-spacer">
+              
+            </div>
             <button class="btn btn-primary btn-block login-spacer" v-on:click="signUp()">Signup</button>
             <button class="btn btn-danger btn-block login-spacer" v-on:click="redirect('/login')">Back to Login</button>  
           </div>

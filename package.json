@@ -1,5 +1,5 @@
 {
-  "name": "ClassWorx",
+  "name": "IDFactory",
   "version": "1.0.0",
   "description": "Tutorial",
   "author": "kennCK <kennettecanales@gmail.com>",
@@ -122,6 +122,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://kennCK@bitbucket.org/kennCK/classworx.git"
+    "url": "https://github.com/kennCK/projectabc.git"
   }
 }
