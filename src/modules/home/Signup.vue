@@ -9,8 +9,8 @@
           Register to <b class="text-primary">ID FACTORY</b>
         </span>
         <span class="options">
-          <button v-bind:class="{'btn-primary': type === 'USER'}" class="btn btn-default" @click="type = 'USER'" style="margin-right: 1%;">Register me as Customer</button>
-          <button v-bind:class="{'btn-primary': type === 'PARTNER'}" class="btn btn-default" @click="type = 'PARTNER'" style="margin-left: 1%;">Register me as Partner</button>
+          <button v-bind:class="{'btn-primary': type === 'USER'}" class="btn btn-default" @click="type = 'USER'" style="margin-right: 1%;">Customer</button>
+          <button v-bind:class="{'btn-primary': type === 'PARTNER'}" class="btn btn-default" @click="type = 'PARTNER'" style="margin-left: 1%;">Partner</button>
         </span>
         <div class="signup-holder">
           <div class="login-message-holder login-spacer text-center" v-if="errorMessage != ''">
@@ -33,11 +33,13 @@
               <span class="input-group-addon" id="addon-2"><i class="fa fa-key"></i></span>
               <input type="password" class="form-control form-control-login" placeholder="Confirm Password" aria-describedby="addon-2" v-model="cpassword">
             </div>
-            <div class="input-group login-spacer">
-              
-            </div>
             <button class="btn btn-primary btn-block login-spacer" v-on:click="signUp()">Signup</button>
-            <button class="btn btn-danger btn-block login-spacer" v-on:click="redirect('/login')">Back to Login</button>  
+            <div class="input-group login-spacer">
+              <label>By signing up, you agree to our <b class="text-primary" @click="openModal('#termsAndConditionsModal')">Terms</b> and <b class="text-primary" @click="openModal('#privacyModal')">Privacy Policy</b></label>
+            </div>
+            <div class="input-group login-spacer" style="margin-top: 50px; border-top: solid 1px #ddd;">
+              <label>Have an account? <b class="text-primary" @click="redirect('/login')">Login</b></label>
+            </div>
           </div>
         </div>
       </div>
@@ -124,6 +126,16 @@
   width: 49% !important;
   float: left !important;
   height: 60px !important;
+}
+.input-group label{
+  width: 100%;
+  float: left;
+  line-height: 50px;
+  text-align: center;
+}
+
+.input-group label b:hover{
+  cursor: pointer;
 }
 /*-------------- Extra Small Screen for Mobile Phones --------------*/
 @media (max-width: 991px){
@@ -213,6 +225,9 @@ export default {
       }, (response, status) => {
         this.errorMessage = (status === 401) ? 'Your username and password did not matched.' : 'Cannot log in? Contact us through email: support@idfactories.com'
       })
+    },
+    openModal(id){
+      $(id).modal('show')
     }
   }
 }

@@ -18,7 +18,10 @@
         </div>
         <input type="text" name="username" placeholder="Type your Email Address" class="form-control" v-model="email" v-if="hide === false">
         <br>
-        <button class="btn btn-primary btn-block login-spacer" v-on:click="request()" v-if="hide === false">Send Request</button><button class="btn btn-danger btn-block login-spacer" v-on:click="redirect('/')">Back to Login</button>
+        <button class="btn btn-primary btn-block login-spacer" v-on:click="request()" v-if="hide === false">Send Request</button>    
+        <div class="input-group login-spacer" style="margin-top: 50px; border-top: solid 1px #ddd;">
+          <label><b class="text-primary" @click="redirect('/login')">Back to login</b></label>
+        </div>
         <br>
         <br>
      </div>
@@ -81,6 +84,17 @@
 }
 .site-title .app-name{
   float: left;
+}
+
+.input-group label{
+  width: 100%;
+  float: left;
+  line-height: 50px;
+  text-align: center;
+}
+
+.input-group label b:hover{
+  cursor: pointer;
 }
 /*-------------- Extra Small Screen for Mobile Phones --------------*/
 @media (max-width: 991px){
