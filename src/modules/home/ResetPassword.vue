@@ -24,7 +24,10 @@
         </div>
         <br>
         <button class="btn btn-primary btn-block login-spacer" v-on:click="reset()" v-if="updateFlag === false">Continue</button>
-        <button class="btn btn-primary btn-block login-spacer" v-on:click="redirect('/login')" v-else>Continue to Login</button>
+        
+        <div class="input-group login-spacer" style="margin-top: 50px; border-top: solid 1px #ddd;">
+          <label><b class="text-primary" @click="redirect('/login')">Back to login</b></label>
+        </div>
         <br>
         <br>
      </div>
@@ -89,6 +92,17 @@
 }
 .form-spacer{
   margin-top: 10px;
+}
+
+.input-group label{
+  width: 100%;
+  float: left;
+  line-height: 50px;
+  text-align: center;
+}
+
+.input-group label b:hover{
+  cursor: pointer;
 }
 /*-------------- Extra Small Screen for Mobile Phones --------------*/
 @media (max-width: 991px){
