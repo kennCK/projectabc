@@ -38,6 +38,18 @@ class TemplateController extends APIController
       return $this->response();
     }
 
+    public function retrieveById($id){
+      $result = Template::where('id', '=', $id)->get();
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $result[$i]['objects'] = $this->getObjects($result[$i]['id']);
+         $i++; 
+        }
+      }
+      return (sizeof($result) > 0) ? $result[0] : null;
+    }
+
     public function getActiveTemplate($settings, $id, $accountId){
       $result = null;
       if($settings == 'front'){

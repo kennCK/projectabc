@@ -380,7 +380,7 @@ export default {
       {title: 'Size', flag: false}
       ],
       prevIndex: 0,
-      suggestion: ['address', 'birth_date', 'contact_number', 'department', 'emergency_contact_name', 'emergency_contact_number', 'email', 'employment_code', 'first_name', 'last_name', 'middle_name', 'position', 'sex'],
+      suggestion: ['address', 'birth_date', 'contact_number', 'complete_name', 'department', 'emergency_contact_name', 'emergency_contact_number', 'email', 'employment_code', 'first_name', 'last_name', 'middle_name', 'position', 'sex'],
       typing: false
     }
   },

@@ -34,4 +34,13 @@ class ProfileController extends APIController
       $this->insertDB($data);
       return $this->response;
     }
+
+    public function retrieve(Request $request){
+      $data = $request->all();
+      $accountId = $data['condition'][0]['value'];
+      $this->model = new Profile();
+      $this->retrieveDB($data);
+      $this->response['active_templates'] = app('App\Http\Controllers\ActiveTemplateController')->retrieveByAccountId($accountId);
+      return $this->response();
+    }
 }

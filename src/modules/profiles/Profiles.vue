@@ -10,13 +10,13 @@
       <create></create>
     </div>
 		
-    <div class="employee-list" v-if="data !==null && viewIcon === 'badge'">
-<!--       <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data" >
-        <span v-bind:style="{height: (parseInt(item.front_template_details.height) === config.LANDSCAPE) ? ((parseInt(item.front_template_details.height) * 2) + 50) + 'px' : (parseInt(item.front_template_details.height) + 50) + 'px', width: (parseInt(item.front_template_details.height) === config.LANDSCAPE) ? (parseInt(item.front_template_details.width) + 2)  + 'px' : ((parseInt(item.front_template_details.width) * 2) + 2)  + 'px'}" class="holder">
+    <div class="employee-list" v-if="data !==null && viewIcon === 'badge' && templates !== null">
+      <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data" >
+        <span v-bind:style="{height: (parseInt(templates.front.height) === config.LANDSCAPE) ? ((parseInt(templates.front.height) * 2) + 50) + 'px' : (parseInt(templates.front.height) + 50) + 'px', width: (parseInt(templates.front.height) === config.LANDSCAPE) ? (parseInt(templates.front.width) + 2)  + 'px' : ((parseInt(templates.front.width) * 2) + 2)  + 'px'}" class="holder">
           <span class="header">
             <ul class="menu">
               <li style="width: 50%;">
-                <label @click="showComments(item.id)" class="option">
+<!--                 <label @click="showComments(item.id)" class="option">
                   Comments
                   <span class="badge badge-danger" v-if="parseInt(item.total_comments) > 0">{{item.total_comments}}</span>
                 </label>
@@ -28,10 +28,10 @@
                   <div class="contents">
                     <comments :payloadValue="item.id" :payload="'employees'"></comments>
                   </div>
-                </div>
+                </div> -->
               </li>
               <li>
-                <i v-bind:class="{'gray': item.status === 'not_verified', 'green': item.status === 'verified'}" class="fas fa-check"></i>
+<!--                 <i v-bind:class="{'gray': item.status === 'not_verified', 'green': item.status === 'verified'}" class="fas fa-check"></i> -->
               </li>
               <li style="border-right: 0px;">
                 <div class="dropdown">
@@ -39,38 +39,38 @@
                     <i class="fas fa-cog"></i>
                   </label>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <span class="dropdown-item disabled">Settings</span>
+<!--                       <span class="dropdown-item disabled">Settings</span>
                       <span class="dropdown-item" v-if="item.status === 'verified' && item.checkout === null" @click="addToCart(item.id)">Add to Cart</span>
                       <span class="dropdown-item" v-if="item.status === 'not_verified'" @click="updateStatus('verified', item.id)">Verified</span>
                       <span class="dropdown-item" v-if="item.status === 'verified' || item.status === 'printed'" @click="updateStatus('not_verified', item.id)">Need Verification</span>
                       <span class="dropdown-item" @click="editProfile(item.id)">Edit Profile</span>
-                      <span class="dropdown-item text-danger" @click="remove(item.id)">Delete</span>
+                      <span class="dropdown-item text-danger" @click="remove(item.id)">Delete</span> -->
                   </div>
                 </div>
               </li>
             </ul>
           </span>
 
-          <span v-bind:style="{height: (parseInt(item.front_template_details.height)) + 'px', width: (parseInt(item.front_template_details.width) * 2)  + 'px'}" class="items" v-if="parseInt(item.front_template_details.width) === config.LANDSCAPE">
+          <span v-bind:style="{height: (parseInt(templates.front.height)) + 'px', width: (parseInt(templates.front.width) * 2)  + 'px'}" class="items" v-if="parseInt(templates.front.width) === config.LANDSCAPE">
+            <objects :objects="templates.front.objects" :key="item.id" v-if="templates.front !== null" :heightTemplate="parseInt(templates.front.height)" :widthTemplate="parseInt(templates.front.width)" :profile="item">
+            </objects>
+
+            <objects :objects="templates.back.objects" :key="item.id + 'b'" v-if="templates.back !== null" :heightTemplate="parseInt(templates.back.height)" :widthTemplate="parseInt(templates.back.width)" :profile="item">
+            </objects>
+          </span>
+
+<!--           <span v-bind:style="{height: (parseInt(item.front_template_details.height) * 2) + 'px', width: (parseInt(item.front_template_details.width))  + 'px'}" class="items" v-if="parseInt(item.front_template_details.width) === config.PORTRAIT">
             <objects :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
             </objects>
 
             <objects :objects="item.back_objects" :key="item.id + 'b'" v-if="item.back_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
             </objects>
-          </span>
-
-          <span v-bind:style="{height: (parseInt(item.front_template_details.height) * 2) + 'px', width: (parseInt(item.front_template_details.width))  + 'px'}" class="items" v-if="parseInt(item.front_template_details.width) === config.PORTRAIT">
-            <objects :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
-            </objects>
-
-            <objects :objects="item.back_objects" :key="item.id + 'b'" v-if="item.back_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
-            </objects>
-          </span>
+          </span> -->
         </span>
-      </div> -->
+      </div>
     </div>
     <div class="employee-list" v-if="data !== null && viewIcon === 'table'">
-      <table class="table table-custom table-hover table-bordered" v-if="tableHead !== null">
+      <table class="table table-custom table-hover table-bordered">
         <thead>
           <tr>
             <td>Email</td>
@@ -299,12 +299,12 @@ export default {
       data: null,
       prevIndex: null,
       viewIcon: 'table',
-      tableHead: null
+      templates: null
     }
   },
   components: {
     'create': require('modules/profiles/Create.vue'),
-    'objects': require('modules/object/Objects.vue'),
+    'objects': require('modules/object/BadgeProfile.vue'),
     'update': require('modules/editor/Update.vue'),
     'editor': require('modules/editor/Editor.vue'),
     'comments': require('modules/comment/Comments.vue'),
@@ -329,10 +329,10 @@ export default {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data
-          this.tableHead = response.table
+          this.templates = response.active_templates
         }else{
           this.data = null
-          this.tableHead = null
+          this.templates = null
         }
       })
     },
