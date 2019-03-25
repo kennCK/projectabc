@@ -178,7 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         LaravelQRCode\Providers\QRCodeServiceProvider::class,
-        Increment\Comment\CommentServiceProvider::class,
+        // Increment\Comment\CommentServiceProvider::class,
     ],
 
     /*
