@@ -16,7 +16,7 @@
           <span class="header">
             <ul class="menu">
               <li style="width: 50%;">
-<!--                 <label @click="showComments(item.id)" class="option">
+                <label @click="showComments(item.id)" class="option">
                   Comments
                   <span class="badge badge-danger" v-if="parseInt(item.total_comments) > 0">{{item.total_comments}}</span>
                 </label>
@@ -26,12 +26,12 @@
                     <i class="pull-right fa fa-close" @click="hideComments(item.id)"></i>
                   </div>
                   <div class="contents">
-                    <comments :payloadValue="item.id" :payload="'employees'"></comments>
+                    <comments :payloadValue="item.id" :payload="'profiles'"></comments>
                   </div>
-                </div> -->
+                </div>
               </li>
               <li>
-<!--                 <i v-bind:class="{'gray': item.status === 'not_verified', 'green': item.status === 'verified'}" class="fas fa-check"></i> -->
+                <i v-bind:class="{'gray': item.status === 'not_verified', 'green': item.status === 'verified'}" class="fas fa-check"></i>
               </li>
               <li style="border-right: 0px;">
                 <div class="dropdown">
@@ -39,12 +39,12 @@
                     <i class="fas fa-cog"></i>
                   </label>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-<!--                       <span class="dropdown-item disabled">Settings</span>
+                      <span class="dropdown-item disabled">Settings</span>
                       <span class="dropdown-item" v-if="item.status === 'verified' && item.checkout === null" @click="addToCart(item.id)">Add to Cart</span>
                       <span class="dropdown-item" v-if="item.status === 'not_verified'" @click="updateStatus('verified', item.id)">Verified</span>
                       <span class="dropdown-item" v-if="item.status === 'verified' || item.status === 'printed'" @click="updateStatus('not_verified', item.id)">Need Verification</span>
                       <span class="dropdown-item" @click="editProfile(item.id)">Edit Profile</span>
-                      <span class="dropdown-item text-danger" @click="remove(item.id)">Delete</span> -->
+                      <span class="dropdown-item text-danger" @click="remove(item.id)">Delete</span>
                   </div>
                 </div>
               </li>
@@ -393,7 +393,7 @@ export default {
     addToCart(id){
       let parameter = {
         account_id: this.user.userID,
-        payload: 'employee',
+        payload: 'profile',
         payload_value: id,
         price: 0,
         qty: 1,

@@ -4,15 +4,15 @@
       <span v-bind:style="{height: heightTemplate + 'px', width: widthTemplate + 'px'}" class="body">
         <span v-bind:style="{height: heightTemplate + 'px', width: widthTemplate + 'px'}" class="preview">
           <span v-for="obj, innerIndex in objects" v-if="objects !== null">
-              <div class="division" v-if="obj.type === 'division'" v-bind:style="obj.attributes">
-              </div>
-              <label class="text" v-if="obj.type === 'text' && obj.settings === 'dynamic' && obj.name === 'complete_name'" v-bind:style="obj.attributes">
-              {{profile.first_name + ' ' + profile.middle_name + ' ' + profile.last_name}}</label>
-              <label class="text" v-if="obj.type === 'text' && obj.settings === 'dynamic' && obj.name !== 'complete_name'" v-bind:style="obj.attributes">
-              {{profile[obj.name]}}</label>
-              <label class="text" v-if="obj.type === 'text' && obj.settings === 'static'" v-bind:style="obj.attributes">{{obj.content}}</label>
-              <img class="photo" :src="config.BACKEND_URL + obj.content" v-if="obj.type === 'photo' && obj.settings === 'static'" :style="obj.attributes">
-              <img class="photo" :src="config.BACKEND_URL + profile[obj.name]" v-if="obj.type === 'photo' && obj.settings === 'dynamic'" :style="obj.attributes">
+            <div class="division" v-if="obj.type === 'division'" v-bind:style="obj.attributes">
+            </div>
+            <label class="text" v-if="obj.type === 'text' && obj.settings === 'dynamic' && obj.name === 'complete_name'" v-bind:style="obj.attributes">
+            {{profile.first_name + ' ' + profile.middle_name + ' ' + profile.last_name}}</label>
+            <label class="text" v-if="obj.type === 'text' && obj.settings === 'dynamic' && obj.name !== 'complete_name'" v-bind:style="obj.attributes">
+            {{profile[obj.name]}}</label>
+            <label class="text" v-if="obj.type === 'text' && obj.settings === 'static'" v-bind:style="obj.attributes">{{obj.content}}</label>
+            <img class="photo" :src="config.BACKEND_URL + obj.content" v-if="obj.type === 'photo' && obj.settings === 'static'" :style="obj.attributes">
+            <img class="photo" :src="config.BACKEND_URL + profile[obj.name]" v-if="obj.type === 'photo' && obj.settings === 'dynamic'" :style="obj.attributes">
           </span>
         </span>
       </span>
