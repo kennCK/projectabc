@@ -19,8 +19,8 @@
     <div class="input-group" style="width:49.5%;" v-if="flag === 'fixed'">
       <label class="text-danger" v-if="errorMessage !== null">{{errorMessage}}</label>
       <span class="input-group-addon" id="addon-1">Price</span>
-      <input type="text" class="form-control" placeholder="..." aria-describedby="addon-1" v-model="payload">
-      <button class="btn btn-primary" style="margin-left: 5px;" @click="addGovernmentVariables()">Submit</button>
+      <input type="text" class="form-control" placeholder="..." aria-describedby="addon-1" v-model="price">
+      <button class="btn btn-primary" style="margin-left: 5px;" @click="addPrice()">Submit</button>
     </div>
 
     <div class="input-group" style="width:100%;" v-if="flag === 'variable'">
@@ -30,7 +30,7 @@
       <input type="text" class="form-control" placeholder="..." aria-describedby="addon-1" v-model="payload" >
       <span class="input-group-addon" id="addon-1">Price</span>
       <input type="text" class="form-control" placeholder="..." aria-describedby="addon-1" v-model="payload" >
-      <button class="btn btn-primary" style="margin-left: 5px;" @click="addGovernmentVariables()">Submit</button>
+      <button class="btn btn-primary" style="margin-left: 5px;" @click="addPrice()">Submit</button>
     </div>
   </div>
 </template>
@@ -44,23 +44,46 @@ import axios from 'axios'
 export default {
   mounted(){
   },
-  props: ['product'],
+  props: ['item'],
   data(){
     return {
       user: AUTH.user,
       config: CONFIG,
-<<<<<<< HEAD
       errorMessage: null,
-      flag: null
-=======
-      errorMessage: null
->>>>>>> 1cc7796ebd2b874e40324c6ad33626a370c3d8f4
+      flag: null,
+      price: null,
+      minimum: null,
+      maximum: null
     }
   },
-  props: ['item'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    validate(){
+      let i = this.item
+      if(i.minimum !== null || i.minimum !== '' || i.maximum !== null || i.maximum !== '' || i.price !== null || i.price !== ''){
+        return false
+      }
+      return true
+    },
+    addPrice(){
+      if(parseFloat(this.price) > 0 && this.flag === 'fixed'){
+        this.errorMessage = null
+        let parameter = {
+          account_id: this.user.userID,
+          product_id: this.item.id,
+          type: this.flag,
+          minimum: null,
+          maximum: null,
+          price: this.price
+        }
+        this.APIRequest('pricings/create', parameter).then(response => {
+          if(response.data > 0){
+            this.$parent.retrieve()
+          }
+        })
+      }
     }
   }
 }
