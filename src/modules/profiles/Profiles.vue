@@ -79,7 +79,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item, index in data">
+          <tr v-for="item, index in data" @click="editProfile(item)">
             <td>
               <img :src="config.BACKEND_URL + item.profile" height="40px" width="40px" style="margin-right: 10px;border-radius: 50%; margin-top: 5px; margin-bottom: 5px;">{{item.email}}</td>
             <td>{{item.first_name}}</td>
