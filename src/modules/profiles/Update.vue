@@ -1,8 +1,6 @@
 <template>
-  <div id="editProfile">
-    <button class="btn btn-primary pull-right" @click="modal()"><i class="fa fa-user"></i> New</button>
-    <google-auth></google-auth>
-    <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div id="editProfileModule">
+    <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="data !== null">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
@@ -70,7 +68,7 @@
                 <label for="address">Emergency Contact Person's Number</label>
                 <input type="text" class="form-control" v-model="data.emergency_contact_number" placeholder="Optional">
               </div>
-            <government-list :data="data"/>          
+            <government-list :data="data"></government-list>
             </span>
             <span class="sidebar">
               <span class="sidebar-header" style="margin-top: 25px;">Profile Picture</span>
@@ -178,7 +176,6 @@ export default {
     }
   },
   components: {
-    'google-auth': require('modules/profiles/GoogleAuth.vue'),
     'government-list': require('modules/profiles/VariableList.vue')
   },
   methods: {

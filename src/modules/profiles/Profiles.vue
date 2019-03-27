@@ -88,12 +88,10 @@
         </tbody>
       </table>
     </div>
-    <empty v-if="data === null" :title="'Looks like you have not added an profiles to your template!'" :action="'Click the  New or Import Button to get started.'"></empty>
-    <update></update>
-    <editor></editor>
-    <edit></edit>
     <print></print>
-	</div>
+    <edit-profile></edit-profile>
+    <empty v-if="data === null" :title="'Looks like you have not added an profiles to your template!'" :action="'Click the  New or Import Button to get started.'"></empty>
+  </div>
 </template>
 <style scoped>
 .employee-holder{
@@ -304,11 +302,9 @@ export default {
   },
   components: {
     'create': require('modules/profiles/Create.vue'),
+    'edit-profile': require('modules/profiles/Update.vue'),
     'objects': require('modules/object/BadgeProfile.vue'),
-    'update': require('modules/editor/Update.vue'),
-    'editor': require('modules/editor/Editor.vue'),
     'comments': require('modules/comment/Comments.vue'),
-    'edit': require('modules/profiles/Edit.vue'),
     'print': require('modules/print/Print.vue'),
     'empty': require('modules/empty/Empty.vue')
   },
@@ -373,7 +369,7 @@ export default {
     },
     editProfile(item){
       for (var i = 0; i < this.$children.length; i++) {
-        if(this.$children[i].$el.id === 'editProfile'){
+        if(this.$children[i].$el.id === 'editProfileModule'){
           this.$children[i].data = item
           this.$children[i].modal()
         }

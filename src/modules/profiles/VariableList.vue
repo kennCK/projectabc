@@ -11,9 +11,9 @@
         <button class="btn btn-primary" style="margin-left: 5px;" @click="addGovernmentVariables()">Add</button>
       </div>
     </div>
-    <div class="govList-wrapper" v-if="data.variables.length > 0">
+    <div class="govList-wrapper" v-if="data !== null">
       <div class="container">
-        <div class="row govList-item" v-for="(item, index) in data.variables" :key="index">
+        <div class="row govList-item" v-for="(item, index) in data.variables" :key="index" v-if="data.variables !== null">
           <div class="col">
             {{item.payload}}
           </div>
