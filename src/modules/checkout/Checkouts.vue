@@ -19,6 +19,23 @@
             <objects :objects="item.employee.front_objects" :heightTemplate="parseInt(item.employee.front_template_details.height)" :widthTemplate="parseInt(item.employee.front_template_details.width)"></objects>
             <objects :objects="item.employee.back_objects" :heightTemplate="parseInt(item.employee.front_template_details.height)" :widthTemplate="parseInt(item.employee.front_template_details.width)"></objects>
           </span>
+
+
+          <span class="objects-holder" v-if="item.payload === 'profile' && item.active_templates.front !== null && parseInt(item.active_templates.front.height) === config.LANDSCAPE">
+            <badge-profile :objects="item.active_templates.front.objects" :heightTemplate="parseInt(item.active_templates.front.height)" :widthTemplate="parseInt(item.active_templates.front.width)" :profile="item.profile"></badge-profile>
+            <badge-profile :objects="item.active_templates.back.objects" :heightTemplate="parseInt(item.active_templates.front.height)" :widthTemplate="parseInt(item.active_templates.front.width)" :profile="item.profile"></badge-profile>
+          </span>
+
+          <span class="objects-holder" v-if="item.payload === 'profile' && item.active_templates.front !== null && parseInt(item.active_templates.front.height) === config.PORTRAIT">
+            <badge-profile :objects="item.active_templates.front.objects" :heightTemplate="parseInt(item.active_templates.front.height)" :widthTemplate="parseInt(item.active_templates.front.width)" :profile="item.profile"></badge-profile>
+          </span>
+
+
+          <span class="objects-holder" v-if="item.payload === 'profile' && item.active_templates.back !== null && parseInt(item.active_templates.front.height) === config.PORTRAIT">
+            <badge-profile :objects="item.active_templates.back.objects" :heightTemplate="parseInt(item.active_templates.front.height)" :widthTemplate="parseInt(item.active_templates.front.width)" :profile="item.profile"></badge-profile>
+          </span>
+
+
           <span class="objects-holder-full" v-if="item.payload === 'product' && item.product !== null">
             <marketplace-product :data="item" :route="'checkout_items'"></marketplace-product>
           </span>
@@ -43,6 +60,15 @@
                 <i class="fa fa-trash pull-right text-danger delete" style="font-size: 24px; padding-right: 25px;" @click="remove(item.id)"></i>
               </label>
           </span>
+
+
+          <span class="two-details" v-if="item.payload === 'profile' && item.active_templates.front !== null && item.active_templates.back !== null">
+              <label style="margin-top: 10px;">
+                Price Php {{item.price}}
+                <i class="fa fa-trash pull-right text-danger delete" style="font-size: 24px; padding-right: 25px;" @click="remove(item.id)"></i>
+              </label>
+          </span>
+
         </span>
       </span>
       <span class="sidebar pull-right">
@@ -146,6 +172,7 @@ export default {
   },
   components: {
     'objects': require('modules/object/Objects.vue'),
+    'badge-profile': require('modules/object/BadgeProfile.vue'),
     'rating': require('modules/rating/Ratings.vue'),
     'cards': require('modules/checkout/Cards.vue'),
     'direct': require('modules/checkout/Direct.vue'),

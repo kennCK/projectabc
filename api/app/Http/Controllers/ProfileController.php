@@ -59,4 +59,15 @@ class ProfileController extends APIController
       $this->response['active_templates'] = app('App\Http\Controllers\ActiveTemplateController')->retrieveByAccountId($accountId);
       return $this->response();
     }
+
+    public function retrieveById($id){
+      $result = Profile::where('id', '=', $id)->get();
+      if(sizeof($result) > 0){
+        $i = 0;
+        $result[0]['variables'] =  app('App\Http\Controllers\GovernmentController')->retrieveById($id);
+        return $result[0];
+      }else{
+        return null;
+      }
+    }
 }

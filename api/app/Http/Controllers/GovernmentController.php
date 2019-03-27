@@ -26,4 +26,9 @@ class GovernmentController extends APIController
     $this->insertDB($data);
     return $this->response['data'];
   }
+
+  public function retrieveById($id){
+    $result = Government::where('id', '=', $id)->get();
+    return (sizeof($result) > 0) ? $result : null;
+  }
 }
