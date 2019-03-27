@@ -43,7 +43,7 @@
                       <span class="dropdown-item" v-if="item.status === 'verified' && item.checkout === null" @click="addToCart(item.id)">Add to Cart</span>
                       <span class="dropdown-item" v-if="item.status === 'not_verified'" @click="updateStatus('verified', item.id)">Verified</span>
                       <span class="dropdown-item" v-if="item.status === 'verified' || item.status === 'printed'" @click="updateStatus('not_verified', item.id)">Need Verification</span>
-                      <span class="dropdown-item" @click="editProfile(item.id)">Edit Profile</span>
+                      <span class="dropdown-item" @click="editProfile(item)">Edit Profile</span>
                       <span class="dropdown-item text-danger" @click="remove(item.id)">Delete</span>
                   </div>
                 </div>
@@ -371,10 +371,10 @@ export default {
         }
       }
     },
-    editProfile(id){
+    editProfile(item){
       for (var i = 0; i < this.$children.length; i++) {
         if(this.$children[i].$el.id === 'editProfile'){
-          this.$children[i].id = id
+          this.$children[i].data = item
           this.$children[i].modal()
         }
       }
