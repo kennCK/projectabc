@@ -44,17 +44,12 @@ import axios from 'axios'
 export default {
   mounted(){
   },
-  props: ['product'],
   data(){
     return {
       user: AUTH.user,
       config: CONFIG,
-<<<<<<< HEAD
       errorMessage: null,
       flag: null
-=======
-      errorMessage: null
->>>>>>> 1cc7796ebd2b874e40324c6ad33626a370c3d8f4
     }
   },
   props: ['item'],
