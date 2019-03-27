@@ -9,6 +9,9 @@ class PricingController extends APIController
 {
     function __construct(){
     	$this->model = new Pricing();
+        $this->notRequired = array(
+            'minimum', 'maximum'
+        );
     }
 
     public function retrieve(Request $request){
