@@ -18,7 +18,7 @@
 
               <div class="form-group" style="margin-top: 25px;">
                 <label for="address">Email Address<label class="text-danger">*</label></label>
-                <input type="text" class="form-control" placeholder="Email" v-model="data.email">
+                <input type="text" class="form-control" placeholder="Email" v-model="data.email" disabled>
               </div>
 
               <div class="form-group" style="margin-top: 25px;">
@@ -275,35 +275,17 @@ export default {
     submit(){
       if(this.validateRequiredFields()){
         this.data.account_id = this.user.userID
-        this.APIRequest('profiles/create', this.data).then(res => {
+        this.APIRequest('profiles/update', this.data).then(res => {
           this.$parent.retrieve()
+          if(res.data === true){
+            console.log('here')
+            this.hideModal()
+          }
           let message = res.error.message
           if(typeof message.username !== undefined && typeof message.username !== 'undefined'){
             this.errorMessage = message.username[0]
           }else if(typeof message.email !== undefined && typeof message.email !== 'undefined'){
             this.errorMessage = message.email[0]
-          }
-          if(res.data > 0){
-            this.hideModal()
-            this.errorMessage = null
-            this.data = {
-              account_id: null,
-              email: null,
-              profile: null,
-              employment_code: null,
-              first_name: null,
-              last_name: null,
-              middle_name: null,
-              sex: null,
-              address: null,
-              contact_number: null,
-              birthdate: null,
-              position: null,
-              department: null,
-              emergency_contact_name: null,
-              emergency_contact_number: null,
-              signature: null
-            }
           }
         })
       }

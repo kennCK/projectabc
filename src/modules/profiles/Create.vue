@@ -12,6 +12,9 @@
             </button>
           </div>
           <div class="modal-body">
+            <div class="alert alert-danger" style="padding-top:0; padding-bottom:0;">
+                To create another variable(s) you must create first the profile and then on update you can add variable(s)
+            </div>
             <span v-if="errorMessage !== null" class="text-danger text-center">
                 <label><b>Opps! </b>{{errorMessage}}</label>
             </span>
@@ -69,8 +72,7 @@
               <div class="form-group">
                 <label for="address">Emergency Contact Person's Number</label>
                 <input type="text" class="form-control" v-model="data.emergency_contact_number" placeholder="Optional">
-              </div>
-            <government-list :data="data"/>          
+              </div>          
             </span>
             <span class="sidebar">
               <span class="sidebar-header" style="margin-top: 25px;">Profile Picture</span>
@@ -195,8 +197,7 @@ export default {
     }
   },
   components: {
-    'google-auth': require('modules/profiles/GoogleAuth.vue'),
-    'government-list': require('modules/profiles/VariableList.vue')
+    'google-auth': require('modules/profiles/GoogleAuth.vue')
   },
   methods: {
     redirect(parameter){
