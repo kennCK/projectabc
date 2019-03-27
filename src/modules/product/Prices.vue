@@ -32,10 +32,10 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      errorMessage: null,
-      item: null
+      errorMessage: null
     }
   },
+  props: ['item'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
