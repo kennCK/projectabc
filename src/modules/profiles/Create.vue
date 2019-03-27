@@ -19,13 +19,13 @@
             <span class="inputs" >
 
               <div class="form-group" style="margin-top: 25px;">
-                <label for="address">Email Address</label>
-                <input type="text" class="form-control" placeholder="Optional" v-model="data.email">
+                <label for="address">Email Address<label class="text-danger">*</label></label>
+                <input type="text" class="form-control" placeholder="Email" v-model="data.email">
               </div>
 
               <div class="form-group" style="margin-top: 25px;">
-                <label for="address">First Name</label>
-                <input type="text" class="form-control" placeholder="Optional" v-model="data.first_name">
+                <label for="address">First Name<label class="text-danger">*</label></label>
+                <input type="text" class="form-control" placeholder="First Name" v-model="data.first_name">
               </div>
 
               <div class="form-group">
@@ -34,8 +34,8 @@
               </div>
 
               <div class="form-group">
-                <label for="address">Last Name</label>
-                <input type="text" class="form-control" placeholder="Optional" v-model="data.last_name">
+                <label for="address">Last Name<label class="text-danger">*</label></label>
+                <input type="text" class="form-control" placeholder="Last Name" v-model="data.last_name">
               </div>
 
               <div class="form-group">
@@ -189,8 +189,7 @@ export default {
         department: null,
         emergency_contact_name: null,
         emergency_contact_number: null,
-        signature: null,
-        variables: []
+        signature: null
       },
       file: null
     }
@@ -270,6 +269,64 @@ export default {
         return true
       }
       return false
+    },
+    validateRequiredFields(){
+      let customerData = this.data
+      let conditionFirstName = (customerData.first_name === null || customerData.first_name === '')
+      let conditionLastName = (customerData.last_name === null || customerData.last_name === '')
+      let conditionEmail = (customerData.email === null || customerData.email === '')
+
+      if(conditionFirstName && conditionLastName && conditionEmail){
+        this.errorMessage = 'Please fill up all required fields'
+        return false
+      }else if(conditionFirstName){
+        this.errorMessage = 'Please fill up First Name'
+        return false
+      }else if(conditionLastName){
+        this.errorMessage = 'Please fill up Last Name'
+        return false
+      }else if(conditionEmail){
+        this.errorMessage = 'Please fill up Email'
+        return false
+      }else{
+        return true
+      }
+    },
+    submit(){
+      if(this.validateRequiredFields()){
+        this.data.account_id = this.user.userID
+        this.APIRequest('profiles/create', this.data).then(res => {
+          this.$parent.retrieve()
+          let message = res.error.message
+          if(typeof message.username !== undefined && typeof message.username !== 'undefined'){
+            this.errorMessage = message.username[0]
+          }else if(typeof message.email !== undefined && typeof message.email !== 'undefined'){
+            this.errorMessage = message.email[0]
+          }
+          if(res.data > 0){
+            this.hideModal()
+            this.errorMessage = null
+            this.data = {
+              account_id: null,
+              email: null,
+              profile: null,
+              employment_code: null,
+              first_name: null,
+              last_name: null,
+              middle_name: null,
+              sex: null,
+              address: null,
+              contact_number: null,
+              birthdate: null,
+              position: null,
+              department: null,
+              emergency_contact_name: null,
+              emergency_contact_number: null,
+              signature: null
+            }
+          }
+        })
+      }
     }
   }
 }
