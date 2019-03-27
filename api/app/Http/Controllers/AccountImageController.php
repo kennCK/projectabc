@@ -40,15 +40,39 @@ class AccountImageController extends APIController
         $filename = $data['account_id'].'_'.$date.'_'.$time.'.'.$ext;
         $result = $request->file('file')->storeAs('images', $filename);
         $url = '/storage/image/'.$filename;
-        $this->model = new AccountImage();
-        $insertData = array(
+        if($data['status'] == 'images'){
+          $this->model = new AccountImage();
+          $insertData = array(
           'account_id'=>$data['account_id'],
           'url'=>$url,
           'payload'=>'product',
           'payload_value'=>$data['payload_value'],
           'status'=>$data['status']
-        );
-        $this->insertDB($insertData);
+          );
+          $this->insertDB($insertData);  
+          return $this->response();
+        }
+        $exist = $this->checkIfExist('product', $data['payload_value'], 'featured');
+        
+        if($exist == null){
+          $this->model = new AccountImage();
+          $insertData = array(
+          'account_id'=>$data['account_id'],
+          'url'=>$url,
+          'payload'=>'product',
+          'payload_value'=>$data['payload_value'],
+          'status'=>$data['status']
+          );
+          $this->insertDB($insertData);
+        }else{
+          $this->model = new AccountImage();
+          $uploadData = array(
+            'id' => $exist['id'],
+            'url' => $url
+          );
+          $this->updateDB($uploadData);
+        }
+        
         return $this->response();
       }else{
         $url = null;
@@ -60,4 +84,11 @@ class AccountImageController extends APIController
         'timestamps' => Carbon::now()
       ));
     }
+
+    public function checkIfExist($payload, $payloadValue, $status){
+      $result = AccountImage::where('payload','=', $payload)->where('payload_value','=', $payloadValue)->where('status','=',$status)->get();
+      return (sizeof($result) > 0) ? $result[0] : null;
+    }
+
+
 }
