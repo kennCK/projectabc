@@ -52,7 +52,8 @@
               </div>
             </div>
 
-            <prices></prices>
+            <prices class="form-group"></prices>
+          
 
             <div class="form-group">
               <label for="exampleInputEmail1">Attributes</label>
