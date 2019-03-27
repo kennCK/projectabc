@@ -31,4 +31,9 @@ class GovernmentController extends APIController
     $result = Government::where('id', '=', $id)->get();
     return (sizeof($result) > 0) ? $result : null;
   }
+
+  public function retrieveByColumn($column, $value){
+    $result = Government::where($column, '=', $value)->get();
+    return (sizeof($result) > 0) ? $result : null;
+  }
 }
