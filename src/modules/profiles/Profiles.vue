@@ -10,9 +10,9 @@
       <create></create>
     </div>
 		
-    <div class="employee-list" v-if="data !==null && viewIcon === 'badge'">
+    <div class="employee-list" v-if="data !==null && viewIcon === 'badge' && templates !== null">
       <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data" >
-        <span v-bind:style="{height: (parseInt(item.front_template_details.height) === config.LANDSCAPE) ? ((parseInt(item.front_template_details.height) * 2) + 50) + 'px' : (parseInt(item.front_template_details.height) + 50) + 'px', width: (parseInt(item.front_template_details.height) === config.LANDSCAPE) ? (parseInt(item.front_template_details.width) + 2)  + 'px' : ((parseInt(item.front_template_details.width) * 2) + 2)  + 'px'}" class="holder">
+        <span v-bind:style="{height: (parseInt(templates.front.height) === config.LANDSCAPE) ? ((parseInt(templates.front.height) * 2) + 50) + 'px' : (parseInt(templates.front.height) + 50) + 'px', width: (parseInt(templates.front.height) === config.LANDSCAPE) ? (parseInt(templates.front.width) + 2)  + 'px' : ((parseInt(templates.front.width) * 2) + 2)  + 'px'}" class="holder">
           <span class="header">
             <ul class="menu">
               <li style="width: 50%;">
@@ -26,7 +26,7 @@
                     <i class="pull-right fa fa-close" @click="hideComments(item.id)"></i>
                   </div>
                   <div class="contents">
-                    <comments :payloadValue="item.id" :payload="'employees'"></comments>
+                    <comments :payloadValue="item.id" :payload="'profiles'"></comments>
                   </div>
                 </div>
               </li>
@@ -51,37 +51,39 @@
             </ul>
           </span>
 
-          <span v-bind:style="{height: (parseInt(item.front_template_details.height)) + 'px', width: (parseInt(item.front_template_details.width) * 2)  + 'px'}" class="items" v-if="parseInt(item.front_template_details.width) === config.LANDSCAPE">
+          <span v-bind:style="{height: (parseInt(templates.front.height)) + 'px', width: (parseInt(templates.front.width) * 2)  + 'px'}" class="items" v-if="parseInt(templates.front.width) === config.LANDSCAPE">
+            <objects :objects="templates.front.objects" :key="item.id" v-if="templates.front !== null" :heightTemplate="parseInt(templates.front.height)" :widthTemplate="parseInt(templates.front.width)" :profile="item">
+            </objects>
+
+            <objects :objects="templates.back.objects" :key="item.id + 'b'" v-if="templates.back !== null" :heightTemplate="parseInt(templates.back.height)" :widthTemplate="parseInt(templates.back.width)" :profile="item">
+            </objects>
+          </span>
+
+<!--           <span v-bind:style="{height: (parseInt(item.front_template_details.height) * 2) + 'px', width: (parseInt(item.front_template_details.width))  + 'px'}" class="items" v-if="parseInt(item.front_template_details.width) === config.PORTRAIT">
             <objects :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
             </objects>
 
             <objects :objects="item.back_objects" :key="item.id + 'b'" v-if="item.back_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
             </objects>
-          </span>
-
-          <span v-bind:style="{height: (parseInt(item.front_template_details.height) * 2) + 'px', width: (parseInt(item.front_template_details.width))  + 'px'}" class="items" v-if="parseInt(item.front_template_details.width) === config.PORTRAIT">
-            <objects :objects="item.front_objects" :key="item.id" v-if="item.front_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
-            </objects>
-
-            <objects :objects="item.back_objects" :key="item.id + 'b'" v-if="item.back_objects !== null" :heightTemplate="parseInt(item.front_template_details.height)" :widthTemplate="parseInt(item.front_template_details.width)">
-            </objects>
-          </span>
+          </span> -->
         </span>
       </div>
     </div>
     <div class="employee-list" v-if="data !== null && viewIcon === 'table'">
-      <table class="table table-custom table-hover table-bordered" v-if="tableHead !== null">
+      <table class="table table-custom table-hover table-bordered">
         <thead>
           <tr>
-            <td v-for="item, index in tableHead" class="table-head-title" v-if="item !== null"><b>{{item.replace('_', ' ')}}</b></td>
+            <td>Email</td>
+            <td>First Name</td>
+            <td>Last Name</td>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item, index in data">
-            <td v-for="itemI, indexI in item.columns" v-if="item.columns !== null">
-              <label v-if="itemI.type !== 'photo'" class="table-text">{{itemI.value}}</label>
-              <img :src="config.BACKEND_URL + itemI.value" v-if="itemI.type === 'photo'" class="table-photo">
-            </td>
+            <td>
+              <img :src="config.BACKEND_URL + item.profile" height="40px" width="40px" style="margin-right: 10px;border-radius: 50%; margin-top: 5px; margin-bottom: 5px;">{{item.email}}</td>
+            <td>{{item.first_name}}</td>
+            <td>{{item.last_name}}</td>
           </tr>
         </tbody>
       </table>
@@ -296,13 +298,13 @@ export default {
       errorMessage: null,
       data: null,
       prevIndex: null,
-      viewIcon: 'badge',
-      tableHead: null
+      viewIcon: 'table',
+      templates: null
     }
   },
   components: {
     'create': require('modules/profiles/Create.vue'),
-    'objects': require('modules/object/Objects.vue'),
+    'objects': require('modules/object/BadgeProfile.vue'),
     'update': require('modules/editor/Update.vue'),
     'editor': require('modules/editor/Editor.vue'),
     'comments': require('modules/comment/Comments.vue'),
@@ -327,10 +329,10 @@ export default {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data
-          this.tableHead = response.table
+          this.templates = response.active_templates
         }else{
           this.data = null
-          this.tableHead = null
+          this.templates = null
         }
       })
     },
@@ -391,7 +393,7 @@ export default {
     addToCart(id){
       let parameter = {
         account_id: this.user.userID,
-        payload: 'employee',
+        payload: 'profile',
         payload_value: id,
         price: 0,
         qty: 1,

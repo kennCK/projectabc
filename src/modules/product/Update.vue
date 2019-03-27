@@ -33,10 +33,11 @@
                     <input type="file" @change="setUpFileUpload($event)" id="Image">
                   </button>
                 </div>
-                <div class="image-preview">
+                <div class="image-preview" v-if="item.featured !== null">
                   <!-- <span class="image" v-if="item !== null">
-                    <img :src="config.BACKEND_URL + this.file.file_url" height="auto" width="100%" >
+                    
                   </span> -->
+                  <img :src="config.BACKEND_URL + item.featured[0].url" >
                 </div>
               </div>
             </div>
@@ -49,11 +50,15 @@
                     <input type="file" @change="setUpFileUpload($event)" id="Image">
                   </button>
                 </div>
+                <div class="image-preview">
+                  <span class="image">
+                    <!-- <img :src="config.BACKEND_URL + item.images.url" height="auto" width="100%" > -->
+                  </span>
+                </div>
               </div>
             </div>
 
-            <prices class="form-group"></prices>
-          
+            <prices :item="item"></prices>
 
             <div class="form-group">
               <label for="exampleInputEmail1">Attributes</label>
@@ -85,17 +90,30 @@
   </div>
 </template>
 <style scoped>
-.featured-image{
+/*.featured-image{
   width: 100%;
   float: left;
   height: 200px;
   margin-bottom: 10px;
-}
+}*/
 .image-preview{
-  width: 80px;
-  height: 80px;
-  padding: 10px;
+  position: relative;
+  width: 110px;
+  height: 110px;
+  left: 10px;
   border: solid 1px #ddd;
+  margin-left: auto;
+  margin-right: auto;
+  float: left;
+}
+.image-preview img{
+  height: 100%; 
+  width: 100%;
+  padding: 1px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  vertical-align: middle;
 }
 .featured-image .options{
   width: 100%;
@@ -169,18 +187,17 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
-    this.retrieve()
   },
   data(){
     return {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      item: null,
       file: null,
       status: null
     }
   },
+  props: ['item'],
   components: {
     'prices': require('modules/product/Prices.vue')
   },
@@ -217,7 +234,7 @@ export default {
       axios.post(this.config.BACKEND_URL + '/account_images/upload', formData).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data !== null){
-          this.retrieve()
+          this.$parent.retrieve()
         }
       })
     },
@@ -243,25 +260,6 @@ export default {
           }
         })
       }
-    },
-    retrieve(){
-      let parameter = {
-        condition: [{
-          value: this.user.userID,
-          column: 'account_id',
-          clause: '='
-        }],
-        account_id: this.user.userID
-      }
-      $('#loading').css({'display': 'block'})
-      this.APIRequest('products/retrieve', parameter).then(response => {
-        $('#loading').css({'display': 'none'})
-        if(response.data.length > 0){
-          this.data = response.data
-        }else{
-          this.data = null
-        }
-      })
     },
     validate(){
       let i = this.item

@@ -184,7 +184,7 @@ class EmployeeController extends APIController
           $this->response['data'][$i]['back_objects'] = $this->getObjectsCustom($result[$i]['back_template'], $id);
           $this->response['data'][$i]['front_template_details'] = $this->getTemplateDetails($result[$i]['front_template']);
           $this->response['data'][$i]['back_template_details'] = $this->getTemplateDetails($result[$i]['back_template']);
-          $this->response['data'][$i]['total_comments'] = $this->getComments($id);
+          $this->response['data'][$i]['total_comments'] = $this->getComments('employees', $id);
           $this->response['data'][$i]['active'] = false;
           $this->response['data'][$i]['counter'] = $counter;
           $this->response['data'][$i]['checkout'] = $this->getCheckout('employee', $id, $accountId);

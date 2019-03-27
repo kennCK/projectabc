@@ -12,7 +12,10 @@
             Object Id
           </span>
           <span class="input">
-            <input type="text" class="form-control" v-model="object.name">
+            <input type="text" class="form-control" v-model="object.name" @keypress="setTyping(true)">
+            <span class="suggestion" v-if="typing === true">
+              <span class="suggestion-item" v-for="item, index in suggestion" @click="setId(item)">{{item}}</span>
+            </span>
           </span>
         </span>
 
@@ -259,6 +262,33 @@
   float: left;
   text-align: center;
 }
+
+.input .suggestion{
+  width: 60%;
+  position: absolute;
+  height: 120px;
+  border-bottom: solid 1px #ddd;
+  border-left: solid 1px #ddd;
+  border-right: solid 1px #ddd;
+  background: #fff;
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.suggestion .suggestion-item{
+  width: 100%;
+  float: left;
+  height: 30px;
+  line-height: 30px;
+  border-top:   solid 1px #ddd;
+  padding-left: 5px; 
+}
+
+.suggestion-item:hover{
+  cursor: pointer;
+  background: #ccc;
+}
+
 .item-setting .input-paragraph i{
   font-size: 20px;
   line-height: 30px;
@@ -349,7 +379,9 @@ export default {
       {title: 'Pharagraph', flag: false},
       {title: 'Size', flag: false}
       ],
-      prevIndex: 0
+      prevIndex: 0,
+      suggestion: ['address', 'birth_date', 'contact_number', 'complete_name', 'department', 'emergency_contact_name', 'emergency_contact_number', 'email', 'employment_code', 'first_name', 'last_name', 'middle_name', 'position', 'sex'],
+      typing: false
     }
   },
   props: ['object', 'index'],
@@ -358,6 +390,7 @@ export default {
       ROUTER.push(parameter)
     },
     changeMenu(index){
+      this.setTyping(false)
       if(this.prevIndex !== index){
         this.menu[this.prevIndex].flag = false
         this.menu[index].flag = true
@@ -366,6 +399,13 @@ export default {
     },
     changeTextAlign(align){
       this.object.attributes.textAlign = align
+    },
+    setTyping(params){
+      this.typing = params
+    },
+    setId(params){
+      this.object.name = params
+      this.setTyping(false)
     }
   }
 }

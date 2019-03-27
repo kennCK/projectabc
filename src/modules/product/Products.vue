@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item, index in data" v-if="data !== null" @click="editModal(item)" class="item">
+          <tr v-for="item, index in data" v-if="data !== null" @click="editModal(item, index)" class="item">
             <td>{{item.title}}</td>
             <td>{{item.description}}</td>
             <td></td>
@@ -22,7 +22,7 @@
       </table>
     </div>
     <empty v-if="data === null" :title="'Looks like you have not added a product!'" :action="'Click the New Product Button to get started.'"></empty>
-    <update></update>
+    <update :item="selectedItem"></update>
 	</div>
 </template>
 <style>
@@ -58,7 +58,9 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      data: null
+      data: null,
+      selectedItem: null,
+      selectedIndex: null
     }
   },
   components: {
@@ -84,15 +86,21 @@ export default {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data
+          if(this.selectedItem !== null){
+            this.selectedItem = this.data[this.selectedIndex]
+          }
         }else{
           this.data = null
+          this.selectedIndex = null
+          this.selectedItem = null
         }
       })
     },
-    editModal(item){
+    editModal(item, index){
       for (var i = 0; i < this.$children.length; i++) {
         if(this.$children[i].$el.id === 'updateProducts'){
-          this.$children[i].item = item
+          this.selectedItem = item
+          this.selectedIndex = index
           this.$children[i].modal()
         }
       }

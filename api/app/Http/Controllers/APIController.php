@@ -605,8 +605,8 @@ class APIController extends Controller
       return (sizeof($result) > 0) ? $result[0] : null;
     }
 
-    public function getComments($employeeId){
-      $result = Comment::where('payload', '=', 'employees')->where('payload_value', '=', $employeeId)->get();
+    public function getComments($payload, $payloadValue){
+      $result = Comment::where('payload', '=', $payload)->where('payload_value', '=', $payloadValue)->get();
       return sizeof($result);
     }
 

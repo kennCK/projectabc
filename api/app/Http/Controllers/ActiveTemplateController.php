@@ -45,4 +45,14 @@ class ActiveTemplateController extends APIController
     		return $this->response();
     	}
     }
+
+    public function retrieveByAccountId($accountId){
+    	$result = ActiveTemplate::where('account_id', '=', $accountId)->get();
+    	if(sizeof($result) > 0){
+    		$result[0]['front'] = ($result[0]['front'] != null) ? app('App\Http\Controllers\TemplateController')->retrieveById($result[0]['front'] ) : null;
+
+    		$result[0]['back'] = ($result[0]['back'] != null) ? app('App\Http\Controllers\TemplateController')->retrieveById($result[0]['back'] ) : null;
+    	}
+    	return (sizeof($result) > 0) ? $result[0] : null;
+    }
 }
