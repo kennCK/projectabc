@@ -249,7 +249,7 @@ class CheckoutController extends APIController
         foreach ($result as $key) {
           $payload = $result[$i]['payload'];
           $payloadValue = $result[$i]['payload_value'];
-
+          $result[$i]['active_templates'] = app('App\Http\Controllers\ActiveTemplateController')->retrieveByAccountId($accountId);
           $result[$i]['active'] = false;
           if($payload == 'employee'){
             $result[$i]['employee'] = $this->getEmployeeFromOrders($payloadValue);
@@ -260,6 +260,10 @@ class CheckoutController extends APIController
               'details' => $this->getTemplateDetails($payloadValue),
               'objects' => $this->getObjects($payloadValue)
             );
+          }else if($payload == 'profile'){
+            $result[$i]['profile'] =  app('App\Http\Controllers\ProfileController')->retrieveById($payloadValue);
+            $result[$i]['profile']['price'] = $price;
+            $this->subTotal += $price;
           }
           $i++;
         }
