@@ -2,117 +2,111 @@
 	<div class="guide-holder">
     <ul class="first-ul">
       <li><strong>PRIVACY POLICY</strong></li>
-      <li>
-       We take your privacy very seriously. Any personal information you submit to us when setting up an account shall be subject to our Privacy and Cookie Policies which are incorporated into these Terms. You understand that through your use of the Services, you consent to the collection and use (to the extent stated in the Privacy and Cookie Policies) of this information. You further understand, acknowledge and agree that any personal information you provide on your Profile is in the public domain and is provided at your sole liability. We accept no responsibility whatsoever for the use of any personal information you share on your Profile by you or any other individual.
+      <li>• We take your privacy very seriously. Any personal information you submit to us when setting up an account shall be subject to our Privacy and Cookie Policies which are incorporated into these Terms. You understand that through your use of the Services, you consent to the collection and use (to the extent stated in the Privacy and Cookie Policies) of this information. You further understand, acknowledge and agree that any personal information you provide on your Profile is in the public domain and is provided at your sole liability. We accept no responsibility whatsoever for the use of any personal information you share on your Profile by you or any other individual.
       </li>
-      <li><strong>WHAT INFORMATION DO WE COLLECT ABOUT YOU?</strong></li>
-      <li>
-        The information collected when you interact with our Program falls into two categories: (1) Personal information you voluntarily provide such as your name, address, email address and birthday; and (2) non-personal information collected through technology, which includes tracking information collected by us as well as third parties.
-      </li>
-      <li><strong>Personal Information You Provide Directly To Us:</strong></li>
-      <li>
-        We may ask you to provide your personal information, demographic information or information about your preferences or interests when you:
-        <ul class="second-ul">
-          <li>
-               Register for an account on the Program
+      <ul class="second-ul">
+        <li><strong>Definition</strong></li>
+        <li>1. The terms used in this privacy policy document are defined as:</li>
+        <ul>
+          <li>"Account" an account required to open and/or use certain parts and features of our website;</li>
+          <li>"our website"https://www.idfactory.ph</li>
+          <li>"personal data" means any and all data that relates to an identifiable person who can be directly or indirectly identified from that data. In this case, it means personal data that you give to us via our website. The definition shall, where applicable, incorporate the definitions provided in the Data Privacy Act RA10173;</li>
+        </ul>
+        <li>2.  Information About Us</li>
+        <ul>
+          <li>Our website is owned and operated by Increment Technologies</li>
+        </ul>
+        <li>3.  What Does This Policy Cover?</li>
+        <ul>
+          <li>This Privacy Policy applies only to your use of our website. Our website may contain links to other websites. Please note that We have no control over how your data is collected, stored, or used by other websites and We advise you to check the privacy policies of any such websites before providing any data to them.</li>
+          <li><strong>Important - Please Read</strong>
+          By creating an account with ID Factory, you accept the responsibility as a 'Data Controller' for all personal data you add to the design and creation of your ID cards. The personal data placed into the design of the ID card is there with permission obtained from the Account holder of the individual(s) you are designing the ID card for.
+          We have no Data Controller responsibility over the data that is part of the ID card design.
+          As 'Data Controller' our website allows the Account holder to remove any ID card designs and associated images from their login area.
           </li>
         </ul>
-      </li>
-      <li><strong>Non-Personal Information Collected Using Technology:</strong></li>
-      <li>
-        n addition to any information you provide directly to us, we and our third party service providers may use a variety of technologies that automatically collect certain tracking information when you interact with the Program or emails sent to you. By using our Program, you consent to our use of tracking technologies as described below:
-        <ul class="second-ul">
-          <li><strong>Device Information</strong></li>
-          <li>
-            We may collect certain information about your computer or other device that you use to access the Program, including IP address, type, browser language, and other transactional information.
+        <li>4.  Your Rights</li>
+        <ul>
+          <li>Under the Data Privacy Act 10173 you have the following rights you can implement over your data:
           </li>
-          <li><strong>Usage Information</strong></li>
-          <li>
-            We may log certain information about your use of the Program (e.g., log files, clickstream data, a reading history of the pages you view, your search terms and search results) and additional “traffic data” (e.g., time of access, date of access, software crash reports, session identification number, access times, referring website addresses).
-          </li>
-          <li><strong>Cookies</strong></li>
-          <li>
-            iLinya may place, view, and/or use cookies, web beacons, local storage objects or similar technologies to collect information about your use of the Program and other websites. This information may include information about the web pages you view, the links you click and other actions you take on our Program and in response to our advertising or email newsletters. iLinya uses the information collected for various reasons, including to remember you and your preferences, track your use of our Program, facilitate your payment transactions, manage access to and use of the Program, and provide a personalized experience.
-          </li>
-          <li>
-            A “cookie” is a small text file stored on your computer or other device when you visit certain web pages that record your preferences and actions. Most web browsers automatically accept cookies, but, if you prefer, you can usually modify your browser setting to decline cookies. However, please note that refusing a cookie may limit your access to or use of the Sites.
-          </li>
-      </ul>
-      </li>
-      <li><strong>SHARING YOUR PERSONAL DATA WITH THIRD PARTIES</strong></li>
-      <li>
-        iLinya shares your personal data only when it is necessary to offer the Service, legally required, or permitted by you.
-      </li>
-      <li>
-        We will provide personal data to hosting providers such as Amazon Web Services, and search engine providers such as Google.
-      </li>
-      <li>
-        These data processors help us bring you the Service. For example, we may share your information in order to detect where or how you encountered a bug when using our mobile application. In connection with these operations, our service providers will have access to personal data for a limited time. When we utilize service providers for processing any personal data, we implement contractual protections limiting the use of that personal data to the provision of services to iLinya.
-      </li>
-      <li>
-        We will be required to access and disclose personal data in response to lawful requests, such as subpoenas or court orders, or in compliance with applicable laws. Additionally, we will access and share account or other personal data when we believe it is necessary to comply with law, to protect our interests or property, to prevent fraud or other illegal activity perpetrated through the Service, or to prevent imminent harm. This will include accessing and sharing personal data with other companies, lawyers, agents or government agencies.
-      </li>
-      <li>
-        If the ownership of all or substantially all of the iLinya business, or individual business units or assets owned by iLinya that are related to the Service, were to change, your personal data will be transferred to the new owner. In any such transfer of information, your personal data would remain subject to this section.
-      </li>
-      <li>
-        iLinya will share aggregate or anonymous data collected through the Service, including Activity Data, for purposes such as understanding or improving the service.
           <ul>
-            <li><strong>DATA SUBJECT RIGHTS AND DATA RETENTION</strong></li>
-            <li>
-              You can manage your account settings at by clicking here (insert hyperlink) to update, amend, and correct your information.
-            </li>
-            <li>
-              You also have the following rights in relation to the personal data we hold about you, unless provided otherwise by local law:
-              <ul>
-                <li>
-                  To request access to, or erasure of, the personal data we hold about you.
-                </li>
-                <li>
-                  To request us to restrict the processing of the personal data we hold about you.
-                </li>
-                <li>
-                  To object to us processing personal data relating to you.
-                </li>
-                <li>
-                  Where you have given us consent to process your personal data, you have the right to withdraw that consent at any time.
-                </li>
-                <li>
-                  To export the personal data you have provided to iLinya in a format that can be transferred electronically to a third party.
-                </li>
-                <li>
-                  To delete your account with iLinya by following the instructions available through the Service.
-                </li>
-              </ul>
-            </li>
-            <li>
-            iLinya will retain your data until your account is deleted, after which point we will retain anonymous data collected through the Service, including Activity Data, which may be used by iLinya and shared with third parties in any manner.
-            </li>
-            <li>
-              Please note that some of these rights are not absolute. In some cases, we may refuse a request to exercise particular rights if complying with it meant that we are no longer able to meet our contractual obligation to provide you with particular products and services. We will keep you informed as to the actions that we can take when you make your request.
-            </li>
-            <li><strong>THIRD PARTY WEBSITES AND LINKS</strong></li>
-            <li>
-              Please note that you may have cookies placed on your computer by third party websites that refer you to our Service. Although we do not share your personal data with these third party websites unless it is reasonably necessary to offer the Service, they may be able to link certain non-personally identifiable information we transfer to them with personal data they previously collected from you. Please review the privacy policies of each website you visit to better understand their privacy practices. In addition, iLinya would like to inform you that anytime you click on links (including advertising banners), which take you to third party websites, you will be subject to the third parties’ privacy policies. Any information submitted by you directly to these third parties is subject to that third party’s privacy policy.
-            </li>
-            <li><strong>LINKS</strong></li>
-            <li>
-              The Service may contain links to other websites. We are not responsible for the privacy practices of other websites. We encourage users to be aware when they leave the Service to read the privacy statements of other websites that collect personally identifiable information. This Privacy Policy applies only to information collected by iLinya via the Service.
-            </li>
-            <li><strong>INFORMATION SECURITY</strong></li>
-            <li>
-              iLinya has implemented administrative and technical safeguards it believes are appropriate to protect the confidentiality, integrity and availability of your personal data, User Photo, and access credentials. However, given sufficient resources, a determined attacker could defeat those safeguards and may, as a result, gain access to the data we seek to protect.
-            </li>
-            <li><strong>DO NOT TRACK</strong></li>
-            <li>
-              The Service is not designed to respond to “do not track” signals sent by some browsers.
-            </li>
-            <li><strong>CONTACT US</strong></li>
-            <li>
-              For all data privacy and support inquiries and any questions or concerns you have about this Privacy Policy, please contact iLinya here (support@idfactory.ph)
-            </li>
+            <li>The right to be informed about Our collection and use of personal data;</li>
+            <li>The right of access to the personal data We hold about you;</li>
+            <li>The right to modifying any personal data We hold about you is not true or incomplete;</li>
+            <li>The right to be forgotten - i.e. the right to ask Us to delete any personal data We hold about you;</li>
+            <li>The right to prevent the processing of your personal data;</li>
+            <li>1.  The right to getting a copy of your personal data for you to re-use it with another service;</li>
+            <li>The right to object to us using your personal data for particular purposes; </li>
           </ul>
-      </li>
+        </ul>
+        <li>What Data Do We Collect?</li>
+        <ul>
+          <li>While using our website, registering an Account or purchasing a Product from our website we may collect some or all of the following personal and non-personal data.</li>
+          <ul>
+            <li>Username and password</li>
+            <li>Your name, company name, email and telephone number</li>
+            <li>Billing and delivery addresses</li>
+            <li>Communication between you and ID Factory (IDF)</li>
+            <li>Your images</li>
+            <li>Your preferences for receiving communication from IDF</li>
+            <li>Information about your use of ID Factory, and your browsing and online purchase activities</li>
+            <li>IP address; Web browser type and version;</li>
+          </ul>
+        </ul>
+        <li>How Do We Use Your Data?</li>
+          <ul>
+            <li>All personal data is processed and stored securely, for no longer than is necessary, only for the reason(s) for which it was first collected. We will comply with our obligations and safeguard your rights under the Data Privacy Act 2012 RA 10173 at all times.</li>
+            <li>Our use of your personal data will always have a lawful basis, either because it is necessary for Our performance of a contract with you, because you have consented to Our use of your personal data (e.g. by creating an Account), or because it is in Our legitimate interests. Specifically, We may use your data for the following purposes:</li>
+            <ul>
+              <li>Personalising and tailoring your experience on Our website;</li>
+              <li>Supplying Our products and/or services to you please note that We require your personal data in order to enter into a contract with you;</li>
+              <li>Personalising and tailoring Our products and/or services for you;</li>
+              <li>Replying to emails from you;</li>
+              <li>Supplying you with emails that you have opted into;</li>
+              <li>Analysing your use of Our website and gathering feedback to enable Us to continually improve Our website and your user experience;</li>
+            </ul>
+            <li>With your permission and/or where permitted by law, We may also use your data for marketing purposes which may include contacting you by email and/or telephone and/or post with information, news and offers on Our products and services. We will not, however, send you any unsolicited marketing or spam and will take all reasonable steps to ensure that We fully protect your rights and comply with our obligations.</li>
+            <li>You have the right to remove your consent to us using your personal data at any time, and to request that we erase it.</li>
+            <li>If there is no communication for 60 months, your information will be considered inactive and will be deleted. We retain other small data for tax, and other purposes in accordance with our company obligations.</li>
+          </ul>
+          <li><strong>How and Where Do We Store Your Data?</strong></li>
+          <ul>
+            <li>We only keep your personal data for as long as We need to in order to use it, and/or for as long as We have your permission to keep it.</li>
+            <li>Your data will only be stored in Asia servers.</li>
+            <li>All information transmitted between your web-browser and the website is encrypted.</li>
+          </ul>
+          <li>Do We Share Your Data?</li>
+          <ul>
+            <li>We will not share any of your data with any third party for any purposes.</li>
+            <li>In certain circumstances, We may be legally required to share certain data held by Us, which may include your personal data, for example, where We are involved in legal proceedings, where We are complying with legal obligations, a court order, or a governmental authority.</li>
+            <li>We may compile statistics about the use of Our website including data on traffic, usage patterns, user numbers, sales, and other information. All such data will be anonymised and will not include any personally identifying data, or any anonymised data that can be combined with other data and used to identify you. We may from time to time share such data with third parties such as prospective investors, affiliates, partners, and advertisers. Data will only be shared and used within the bounds of the law.</li>
+          </ul>
+          <li>Transfer of Business Ownership</li>
+          <ul>
+            <li>We may, from time to time, expand or reduce Our business and this may involve the sale and/or the transfer of control of all or part of Our business. Any personal data that you have provided will, where it is relevant to any part of Our business that is being transferred, be transferred along with that part and the new owner or newly controlling party will, under the terms of this Privacy Policy, be permitted to use that data only for the same purposes for which it was originally collected by Us.</li>
+            <li>In the event that any of your data is to be transferred in such a manner, you will be contacted in advance and informed of the changes.</li>
+          </ul>
+          <li>Managing your Data</li>
+          <ul>
+            <li>When you submit personal data through our website, you may be given options to restrict Our use of your data. In particular, We aim to give you strong controls on Our use of your data for direct marketing purposes including the ability to opt-out of receiving emails from Us which you may do by unsubscribing using the links provided in Our emails and at the point of providing your details.</li>
+          </ul>
+          <li><strong>Your Right to Withhold Information</strong></li>
+          <ul>
+            <li>You may use our website without giving any data at all. However, you may be required to submit or allow for the collection of some data. This lets you use all features available on our website.</li>
+          </ul>
+          <li>How Can You Access Your Data?</li>
+          <ul>
+            <li>You have the right to ask for a copy of any of your personal data held by us.</li>
+          </ul>
+          <li>How to Contact Us</li>
+          <ul>
+            <li>If you have any questions about Our website or this Privacy Policy, please contact support@idfactory.ph. Please make sure that you have a clear inquiry, if the request for information, in particular, is about the data We have about you</li>
+          </ul>
+          <li>Privacy Policy Updates</li>
+          <ul>
+            <li>This privacy notice was last updated on March 25, 2019. Please do visit this article regularly so you may be informed of changes to this policy.</li>
+          </ul>
+      </ul>
     </ul>
   </div>
 </template>
