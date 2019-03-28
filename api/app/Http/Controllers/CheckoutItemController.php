@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\CheckoutItem;
 use App\Checkout;
+use App\CheckoutTemplate;
 use App\Account;
+use Carbon\Carbon;
 class CheckoutItemController extends APIController
 {
     function __construct(){
@@ -41,6 +43,16 @@ class CheckoutItemController extends APIController
         $checkout->printing_status = 'added';
     		$checkout->save();
     		if($checkout->id){
+          if($data['payload'] == 'profile'){
+            // save checkout template for profiles checkout
+            $checkoutTemplate = new CheckoutTemplate();
+            $checkoutTemplate->checkout_id = $checkout->id;
+            $checkoutTemplate->front = $data['front'];
+            $checkoutTemplate->back = $data['back'];
+            $checkoutTemplate->created_at = Carbon::now();
+            $checkoutTemplate->save();
+          }
+          
     			$insertData['checkout_id'] = $checkout->id;
 	    		$this->model = new CheckoutItem();
 	    		$this->insertDB($insertData);

@@ -249,7 +249,7 @@ class CheckoutController extends APIController
         foreach ($result as $key) {
           $payload = $result[$i]['payload'];
           $payloadValue = $result[$i]['payload_value'];
-          $result[$i]['active_templates'] = app('App\Http\Controllers\ActiveTemplateController')->retrieveByAccountId($accountId);
+          $result[$i]['templates'] = app('App\Http\Controllers\CheckoutTemplateController')->retrieveById('checkout_id', $checkoutId);
           $result[$i]['active'] = false;
           if($payload == 'employee'){
             $result[$i]['employee'] = $this->getEmployeeFromOrders($payloadValue);

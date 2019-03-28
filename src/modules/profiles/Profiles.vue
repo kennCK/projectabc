@@ -393,7 +393,9 @@ export default {
         payload_value: id,
         price: 0,
         qty: 1,
-        type: 'cards'
+        type: 'cards',
+        front: this.templates.front.id,
+        back: this.templates.back.id
       }
       this.APIRequest('checkout_items/create', parameter).then(response => {
         if(response.data > 0){

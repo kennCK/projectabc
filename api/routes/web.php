@@ -233,6 +233,13 @@ Route::post('/checkout_items/update', "CheckoutItemController@update");
 Route::post('/checkout_items/delete', "CheckoutItemController@delete");
 Route::get('/checkout_items/test', 'CheckoutItemController@test');
 
+//Checkout Templates
+Route::post('/checkout_templates/create', "CheckoutTemplateController@create");
+Route::post('/checkout_templates/retrieve', "CheckoutTemplateController@retrieve");
+Route::post('/checkout_templates/update', "CheckoutTemplateController@update");
+Route::post('/checkout_templates/delete', "CheckoutTemplateController@delete");
+Route::get('/checkout_templates/test', 'CheckoutTemplateController@test');
+
 //Ratings
 Route::post('/ratings/create', "RatingController@create");
 Route::post('/ratings/retrieve', "RatingController@retrieve");
