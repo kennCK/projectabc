@@ -3,6 +3,7 @@
     <ul class="first-ul">
       <li><strong>Terms and Conditions</strong></li>
       <li>
+        Use of and access to this website is subject to the following terms and conditions. If you do not agree to follow these terms and conditions you must stop and leave this website immediately.
        We take your privacy very seriously. Any personal information you submit to us when setting up an account shall be subject to our Privacy and Cookie Policies which are incorporated into these Terms. You understand that through your use of the Services, you consent to the collection and use (to the extent stated in the Privacy and Cookie Policies) of this information. You further understand, acknowledge and agree that any personal information you provide on your Profile is in the public domain and is provided at your sole liability. We accept no responsibility whatsoever for the use of any personal information you share on your Profile by you or any other individual.
       </li>
       <li><strong>WHAT INFORMATION DO WE COLLECT ABOUT YOU?</strong></li>
