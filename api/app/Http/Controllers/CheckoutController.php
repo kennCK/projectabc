@@ -252,18 +252,20 @@ class CheckoutController extends APIController
           $result[$i]['templates'] = app('App\Http\Controllers\CheckoutTemplateController')->retrieveById('checkout_id', $checkoutId);
           $result[$i]['active'] = false;
           if($payload == 'employee'){
+            $result[$i]['profile'] = null;
             $result[$i]['employee'] = $this->getEmployeeFromOrders($payloadValue);
             $result[$i]['template'] = null;
           }else if($payload == 'template'){
             $result[$i]['employee'] = null;
+            $result[$i]['profile'] = null;
             $result[$i]['template'] = array(
               'details' => $this->getTemplateDetails($payloadValue),
               'objects' => $this->getObjects($payloadValue)
             );
           }else if($payload == 'profile'){
+            $result[$i]['employee'] = null;
+            $result[$i]['template'] = null;
             $result[$i]['profile'] =  app('App\Http\Controllers\ProfileController')->retrieveById($payloadValue);
-            $result[$i]['profile']['price'] = $price;
-            $this->subTotal += $price;
           }
           $i++;
         }

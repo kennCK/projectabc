@@ -80,8 +80,8 @@
                   </div>
                 </div>
               </li>
-              <li @click="print(item.profile)">
-                <i v-bind:class="{'gray': item.profile.status !== 'printed', 'green': item.profile.status === 'printed'}" class="fas fa-print"></i>
+              <li @click="printBadge(item)">
+                <i v-bind:class="{'gray': item.status !== 'printed', 'green': item.status === 'printed'}" class="fas fa-print"></i>
               </li>
               <li style="border-right: 0px;">
                 <div class="dropdown">
@@ -98,30 +98,31 @@
             </ul>
           </span>
 
-          <span v-bind:style="{height: (parseInt(item.profile.front.height)) + 'px', width: (parseInt(item.profile.front.width) * 2)  + 'px'}" class="items" v-if="parseInt(item.profile.front.width) === config.LANDSCAPE">
-            <badge-profile :objects="item.profile.front" :key="item.id" v-if="item.profile.front !== null" :heightTemplate="parseInt(item.profile.front.height)" :widthTemplate="parseInt(item.profile.front.width)" :profile="item.profile">
+          <span v-bind:style="{height: (parseInt(item.templates.front.height)) + 'px', width: (parseInt(item.templates.front.width) * 2)  + 'px'}" class="items" v-if="parseInt(item.templates.front.width) === config.LANDSCAPE">
+            <badge-profile :objects="item.templates.front.objects" :key="item.id" v-if="item.templates.front !== null" :heightTemplate="parseInt(item.templates.front.height)" :widthTemplate="parseInt(item.templates.front.width)" :profile="item.profile">
             </badge-profile>
 
-            <badge-profile :objects="item.profile.back" :key="item.id" v-if="item.profile.back !== null" :heightTemplate="parseInt(item.profile.front.height)" :widthTemplate="parseInt(item.profile.front.width)" :profile="item.profile">
+            <badge-profile :objects="item.templates.back.objects" :key="item.id + 'b'" v-if="item.templates.back !== null" :heightTemplate="parseInt(item.templates.front.height)" :widthTemplate="parseInt(item.templates.front.width)" :profile="item.profile">
             </badge-profile>
           </span>
 
-          <span v-bind:style="{height: (parseInt(item.profile.front.height) * 2) + 'px', width: (parseInt(item.profile.front.width))  + 'px'}" class="items" v-if="parseInt(item.profile.front.width) === config.PORTRAIT">
-            <badge-profile :objects="item.profile.front" :key="item.id" v-if="item.profile.front !== null" :heightTemplate="parseInt(item.profile.front.height)" :widthTemplate="parseInt(item.profile.front.width)" :profile="item.profile">
+          <span v-bind:style="{height: (parseInt(item.templates.front.height) * 2) + 'px', width: (parseInt(item.templates.front.width))  + 'px'}" class="items" v-if="parseInt(item.templates.front.width) === config.PORTRAIT">
+            <badge-profile :objects="item.templates.front.objects" :key="item.id" v-if="item.templates.front !== null" :heightTemplate="parseInt(item.templates.front.height)" :widthTemplate="parseInt(item.templates.front.width)" :profile="item.profile">
             </badge-profile>
 
-            <badge-profile :objects="item.profile.back" :key="item.id + 'b'" v-if="item.profile.back !== null" :heightTemplate="parseInt(item.profile.front.height)" :widthTemplate="parseInt(item.profile.front.width)" :profile="item.profile">
+            <badge-profile :objects="item.templates.back.objects" :key="item.id + 'b'" v-if="item.templates.back !== null" :heightTemplate="parseInt(item.templates.front.height)" :widthTemplate="parseInt(item.templates.front.width)" :profile="item.profile">
             </badge-profile>
           </span>
         </span>
 
       </div>
     </div>
-    <empty v-if="data === null" :title="'Looks like you have not added an employee to your template!'" :action="'Click the  New Employee Button to get started.'"></empty>
+    <empty v-if="data === null" :title="'Looks like you do not have an order yet!'" :action="'Be back again soon.'"></empty>
     <update></update>
     <editor></editor>
     <edit></edit>
     <print></print>
+    <print-badge></print-badge>
   </div>
 </template>
 <style scoped>
@@ -284,12 +285,13 @@ export default {
   },
   components: {
     'objects': require('modules/object/Objects.vue'),
-    'bacge-profile': require('modules/object/BadgeProfile.vue'),
+    'badge-profile': require('modules/object/BadgeProfile.vue'),
     'update': require('modules/editor/Update.vue'),
     'editor': require('modules/editor/Editor.vue'),
     'comments': require('modules/comment/Comments.vue'),
     'edit': require('modules/entry/Edit.vue'),
     'print': require('modules/print/Print.vue'),
+    'print-badge': require('modules/print/PrintBadge.vue'),
     'empty': require('modules/empty/Empty.vue')
   },
   methods: {
@@ -344,7 +346,14 @@ export default {
     print(item){
       for (var i = 0; i < this.$children.length; i++) {
         if(this.$children[i].$el.id === 'printer'){
-          console.log('Hi')
+          this.$children[i].item = item
+          this.$children[i].modal()
+        }
+      }
+    },
+    printBadge(item){
+      for (var i = 0; i < this.$children.length; i++) {
+        if(this.$children[i].$el.id === 'printBadge'){
           this.$children[i].item = item
           this.$children[i].modal()
         }
