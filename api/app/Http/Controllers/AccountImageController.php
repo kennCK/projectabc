@@ -31,7 +31,7 @@ class AccountImageController extends APIController
     public function upload(Request $request){
 
       $data = $request->all();
-      
+
       $url = null;
       if(isset($data['file_url'])){
         $date = Carbon::now()->toDateString();
@@ -49,7 +49,7 @@ class AccountImageController extends APIController
           'payload_value'=>$data['payload_value'],
           'status'=>$data['status']
           );
-          $this->insertDB($insertData);  
+          $this->insertDB($insertData);
           return $this->response();
         }
         $exist = $this->checkIfExist('product', $data['payload_value'], 'featured');
@@ -72,7 +72,6 @@ class AccountImageController extends APIController
           );
           $this->updateDB($uploadData);
         }
-        
         return $this->response();
       }else{
         $url = null;

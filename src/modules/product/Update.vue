@@ -30,14 +30,13 @@
               <div class="product-images">
                 <div class="new-image text-primary">
                   <button class="btn btn-primary pull-right" @click="addImage('featured')"><i class="fa fa-plus"></i> Upload
-                    <input type="file" @change="setUpFileUpload($event)" id="Image">
+                    <input type="file" @change="setUpFileUpload($event)" id="featured">
                   </button>
                 </div>
-                <div class="image-preview" v-if="item.featured !== null">
-                  <!-- <span class="image" v-if="item !== null">
-                    
-                  </span> -->
-                  <img :src="config.BACKEND_URL + item.featured[0].url" >
+                <div class="image-preview">
+                  <span class="image" v-if="item.featured !== null">
+                    <img :src="config.BACKEND_URL + item.featured[0].url" >
+                  </span>
                 </div>
               </div>
             </div>
@@ -47,12 +46,12 @@
               <div class="product-images">
                 <div class="new-image text-primary">
                   <button class="btn btn-primary pull-right" @click="addImage('images')"><i class="fa fa-plus"></i> Upload
-                    <input type="file" @change="setUpFileUpload($event)" id="Image">
+                    <input type="file" @change="setUpFileUpload($event)" id="images">
                   </button>
                 </div>
                 <div class="image-preview">
-                  <span class="image">
-                    <!-- <img :src="config.BACKEND_URL + item.images.url" height="auto" width="100%" > -->
+                  <span class="image" v-if="item.images !== null">
+                    <img :src="config.BACKEND_URL + item.images[0].url" >
                   </span>
                 </div>
               </div>
@@ -238,19 +237,6 @@ export default {
         }
       })
     },
-    // upload(){
-    //   let formData = new FormData()
-    //   formData.append('file', this.file)
-    //   formData.append('url', this.file.name)
-    //   formData.append('account_id', this.user.userID)
-    //   $('#loading').css({display: 'block'})
-    //   axios.post(this.config.BACKEND_URL + '/account_images/create', formData).then(response => {
-    //     if(response.data.data > 0){
-    //       AUTH.checkAuthentication(null)
-    //       $('#loading').css({display: 'none'})
-    //     }
-    //   })
-    // },
     update(){
       if(this.validate()){
         this.APIRequest('products/update', this.item).then(response => {
@@ -260,13 +246,6 @@ export default {
           }
         })
       }
-    },
-    validate(){
-      let i = this.item
-      if(i.minimum !== null || i.minimum !== '' || i.maximum !== null || i.maximum !== '' || i.price !== null || i.price !== ''){
-        return true
-      }
-      return false
     },
     close(){
       this.item = null
