@@ -7,8 +7,8 @@
       <label class="text-primary">/ {{orderNumber}}</label>
     </div>
     <div class="employee-list" v-if="data !==null">
-      <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data.items" v-if="item.employee !== null">
-        <span v-bind:style="{height: (parseInt(item.employee.front_template_details.height) === config.LANDSCAPE) ? ((parseInt(item.employee.front_template_details.height) * 2) + 50) + 'px' : (parseInt(item.employee.front_template_details.height) + 50) + 'px', width: (parseInt(item.employee.front_template_details.height) === config.LANDSCAPE) ? (parseInt(item.employee.front_template_details.width) + 2)  + 'px' : ((parseInt(item.employee.front_template_details.width) * 2) + 2)  + 'px'}" class="holder">
+      <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data.items">
+        <span v-bind:style="{height: (parseInt(item.employee.front_template_details.height) === config.LANDSCAPE) ? ((parseInt(item.employee.front_template_details.height) * 2) + 50) + 'px' : (parseInt(item.employee.front_template_details.height) + 50) + 'px', width: (parseInt(item.employee.front_template_details.height) === config.LANDSCAPE) ? (parseInt(item.employee.front_template_details.width) + 2)  + 'px' : ((parseInt(item.employee.front_template_details.width) * 2) + 2)  + 'px'}" class="holder" v-if="item.employee !== null">
           <span class="header">
             <ul class="menu">
               <li style="width: 50%;">
@@ -60,6 +60,61 @@
             </objects>
           </span>
         </span>
+
+
+        <span v-bind:style="{height: (parseInt(item.templates.front.height) === config.LANDSCAPE) ? ((parseInt(item.templates.front.height) * 2) + 50) + 'px' : (parseInt(item.templates.front.height) + 50) + 'px', width: (parseInt(item.templates.front.height) === config.LANDSCAPE) ? (parseInt(item.templates.front.width) + 2)  + 'px' : ((parseInt(item.templates.front.width) * 2) + 2)  + 'px'}" class="holder" v-if="item.profile !== null">
+          <span class="header">
+            <ul class="menu">
+              <li style="width: 50%;">
+                <label @click="showComments(item.profile.id)" class="option">
+                  Comments
+                  <span class="badge badge-danger" v-if="parseInt(item.profile.total_comments) > 0">{{item.profile.total_comments}}</span>
+                </label>
+                <div class="overlay first-overlay" v-bind:id="'overlay-' + item.profile.id">
+                  <div class="header">
+                    Comments
+                    <i class="pull-right fa fa-close" @click="hideComments(item.profile.id)"></i>
+                  </div>
+                  <div class="contents">
+                    <comments :payloadValue="item.profile.id" :payload="'profiles'"></comments>
+                  </div>
+                </div>
+              </li>
+              <li @click="print(item.profile)">
+                <i v-bind:class="{'gray': item.profile.status !== 'printed', 'green': item.profile.status === 'printed'}" class="fas fa-print"></i>
+              </li>
+              <li style="border-right: 0px;">
+                <div class="dropdown">
+                  <label id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-cog"></i>
+                  </label>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <span class="dropdown-item disabled">Settings</span>
+                      <span class="dropdown-item" v-if="item.status !== 'printing'" @click="updateStatus('printing', item.id)">Printing</span>
+                      <span class="dropdown-item" v-if="item.status !== 'printed'" @click="updateStatus('printed', item.id)">Printed</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </span>
+
+          <span v-bind:style="{height: (parseInt(item.profile.front.height)) + 'px', width: (parseInt(item.profile.front.width) * 2)  + 'px'}" class="items" v-if="parseInt(item.profile.front.width) === config.LANDSCAPE">
+            <badge-profile :objects="item.profile.front" :key="item.id" v-if="item.profile.front !== null" :heightTemplate="parseInt(item.profile.front.height)" :widthTemplate="parseInt(item.profile.front.width)" :profile="item.profile">
+            </badge-profile>
+
+            <badge-profile :objects="item.profile.back" :key="item.id" v-if="item.profile.back !== null" :heightTemplate="parseInt(item.profile.front.height)" :widthTemplate="parseInt(item.profile.front.width)" :profile="item.profile">
+            </badge-profile>
+          </span>
+
+          <span v-bind:style="{height: (parseInt(item.profile.front.height) * 2) + 'px', width: (parseInt(item.profile.front.width))  + 'px'}" class="items" v-if="parseInt(item.profile.front.width) === config.PORTRAIT">
+            <badge-profile :objects="item.profile.front" :key="item.id" v-if="item.profile.front !== null" :heightTemplate="parseInt(item.profile.front.height)" :widthTemplate="parseInt(item.profile.front.width)" :profile="item.profile">
+            </badge-profile>
+
+            <badge-profile :objects="item.profile.back" :key="item.id + 'b'" v-if="item.profile.back !== null" :heightTemplate="parseInt(item.profile.front.height)" :widthTemplate="parseInt(item.profile.front.width)" :profile="item.profile">
+            </badge-profile>
+          </span>
+        </span>
+
       </div>
     </div>
     <empty v-if="data === null" :title="'Looks like you have not added an employee to your template!'" :action="'Click the  New Employee Button to get started.'"></empty>
@@ -229,6 +284,7 @@ export default {
   },
   components: {
     'objects': require('modules/object/Objects.vue'),
+    'bacge-profile': require('modules/object/BadgeProfile.vue'),
     'update': require('modules/editor/Update.vue'),
     'editor': require('modules/editor/Editor.vue'),
     'comments': require('modules/comment/Comments.vue'),

@@ -78,6 +78,8 @@ class ProfileController extends APIController
             $result[0][$item['payload']] = $item['payload_value'];
           }
         }
+        
+        $result[0]['total_comments'] = $this->getComments('profiles', $id);
         return $result[0];
       }else{
         return null;
