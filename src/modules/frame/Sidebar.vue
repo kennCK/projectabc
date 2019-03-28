@@ -410,7 +410,7 @@ export default {
       menu: [
       // {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
         {users: 'ALL', description: 'Templates', icon: 'fas fa-file', path: 'templates', flag: true, subMenu: null},
-        {users: 'ALL', description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries', flag: false, subMenu: null},
+        // {users: 'ALL', description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries', flag: false, subMenu: null},
         {users: 'ALL', description: 'Profiles', icon: 'fas fa-users', path: 'profiles', flag: false, subMenu: null},
         {users: 'ALL', description: 'Images', icon: 'fas fa-image', path: 'images', flag: false, subMenu: null},
         {users: 'USER', description: 'Find Printing', icon: 'fas fa-print', path: 'printings', flag: false, subMenu: null},
@@ -420,7 +420,7 @@ export default {
       menuOff: [
       // {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
         {users: 'ALL', description: 'Templates', icon: 'fas fa-file', path: 'templates', flag: false, subMenu: null},
-        {users: 'ALL', description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries', flag: false, subMenu: null},
+        // {users: 'ALL', description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries', flag: false, subMenu: null},
         {users: 'ALL', description: 'Profiles', icon: 'fas fa-users', path: 'profiles', flag: false, subMenu: null},
         {users: 'ALL', description: 'Images', icon: 'fas fa-image', path: 'images', flag: false, subMenu: null},
         {users: 'USER', description: 'Find Printing', icon: 'fas fa-print', path: 'printings', flag: false, subMenu: null},
