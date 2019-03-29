@@ -179,6 +179,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         LaravelQRCode\Providers\QRCodeServiceProvider::class,
         Increment\Comment\CommentServiceProvider::class,
+        Increment\Marketplace\MarketplaceServiceProvider::class,
     ],
 
     /*
