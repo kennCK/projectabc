@@ -13,13 +13,13 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Increment\\Commment\\": "src/"
+            "Increment\\Comment\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Increment\\Commment\\CommentServiceProvider"
+                "Increment\\Comment\\CommentServiceProvider"
             ]
         }
     }
