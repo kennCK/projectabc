@@ -1,8 +1,8 @@
 <?php
-$apps = '/increment/v1';
-$controller = 'Increment\Common\Rating\Http';
-Route::post($apps.'/ratings/create', $controller."\RatingController@create");
-Route::post($apps.'/ratings/retrieve', $controller."\RatingController@retrieve");
-Route::post($apps.'/ratings/update', $controller."\RatingController@update");
-Route::post($apps.'/ratings/delete', $controller."\RatingController@delete");
-Route::get($apps.'/ratings/test', $controller."\RatingController@test");
+$route = env('PACKAGE_ROUTE', '').'/ratings/';
+$controller = 'Increment\Common\Rating\Http\RatingController@';
+Route::post($route.'create', $controller."create");
+Route::post($route.'retrieve', $controller."retrieve");
+Route::post($route.'update', $controller."update");
+Route::post($route.'delete', $controller."delete");
+Route::get($route.'test', $controller."test");

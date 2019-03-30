@@ -180,6 +180,7 @@ return [
         LaravelQRCode\Providers\QRCodeServiceProvider::class,
         Increment\Common\Comment\CommentServiceProvider::class,
         Increment\Common\Rating\RatingServiceProvider::class,
+        Increment\Common\Image\ImageServiceProvider::class,
         Increment\Marketplace\MarketplaceServiceProvider::class,
     ],
 

@@ -40,6 +40,7 @@
             "Tests\\": "tests/",
             "Increment\\Common\\Comment\\": "packages/increment/common/comment/src/",
             "Increment\\Common\\Rating\\": "packages/increment/common/rating/src/",
+            "Increment\\Common\\Image\\": "packages/increment/common/image/src/",
             "Increment\\Marketplace\\": "packages/increment/marketplace/src/"
         }
     },

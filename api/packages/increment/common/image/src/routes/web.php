@@ -1,6 +1,6 @@
 <?php
-$route = env('PACKAGE_ROUTE', '').'/marketplaces/';
-$controller = 'Increment\Marketplace\Http\MarketplaceController@';
+$route = env('PACKAGE_ROUTE', '').'/images/';
+$controller = 'Increment\Marketplace\Http\ImageController@';
 Route::post($route.'create', $controller."create");
 Route::post($route.'retrieve', $controller."retrieve");
 Route::post($route.'update', $controller."update");

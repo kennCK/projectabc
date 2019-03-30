@@ -1,16 +1,18 @@
 <?php
-$apps = '/increment/v1';
-$controller = 'Increment\Common\Comment\Http';
+$route = env('PACKAGE_ROUTE', '').'/images/comments/';
+$controller = 'Increment\Common\Comment\Http\CommentController@';
 //Comments
-Route::post($apps.'/comments/create', $controller."\CommentController@create");
-Route::post($apps.'/comments/retrieve', $controller."\CommentController@retrieve");
-Route::post($apps.'/comments/update', $controller."\CommentController@update");
-Route::post($apps.'/comments/delete', $controller."\CommentController@delete");
-Route::get($apps.'/comments/test', $controller."\CommentController@test");
+Route::post($route.'create', $controller."create");
+Route::post($route.'retrieve', $controller."retrieve");
+Route::post($route.'update', $controller."update");
+Route::post($route.'delete', $controller."delete");
+Route::get($route.'test', $controller."test");
 
+$route = env('PACKAGE_ROUTE', '').'/images/comment_replies/';
+$controller = 'Increment\Common\Comment\Http\CommentReplyController@';
 //Comment Replies
-Route::post($apps.'/comment_replies/create',  $controller."\CommentReplyController@create");
-Route::post($apps.'/comment_replies/retrieve',  $controller."\CommentReplyController@retrieve");
-Route::post($apps.'/comment_replies/update',  $controller."\CommentReplyController@update");
-Route::post($apps.'/comment_replies/delete',  $controller."\CommentReplyController@delete");
-Route::get($apps.'/comment_replies/test',  $controller.'\CommentReplyController@test');
+Route::post($route.'create',  $controller."create");
+Route::post($route.'retrieve',  $controller."retrieve");
+Route::post($route.'update',  $controller."update");
+Route::post($route.'delete',  $controller."delete");
+Route::get($route.'test',  $controller.'test');
