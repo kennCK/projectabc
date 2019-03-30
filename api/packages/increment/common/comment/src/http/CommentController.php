@@ -1,10 +1,10 @@
 <?php
 
-namespace Increment\Comment\Http;
+namespace Increment\Common\Comment\Http;
 
 use Illuminate\Http\Request;
-use Increment\Comment\Models\Comment;
-use Increment\Comment\Models\CommentReply;
+use Increment\Common\Comment\Models\Comment;
+use Increment\Common\Comment\Models\CommentReply;
 use App\Http\Controllers\APIController;
 class CommentController extends APIController
 {

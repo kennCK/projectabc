@@ -1,10 +1,10 @@
 <?php
 
-namespace Increment\Comment;
+namespace Increment\Common\Rating;
 
 use Illuminate\Support\ServiceProvider;
 
-class CommentServiceProvider extends ServiceProvider{
+class RatingServiceProvider extends ServiceProvider{
 
   public function boot(){
     // $this->loadMigrationsFrom(__DIR__.'/migrations');

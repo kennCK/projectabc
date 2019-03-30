@@ -38,7 +38,8 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-            "Increment\\Comment\\": "packages/increment/comment/src/",
+            "Increment\\Common\\Comment\\": "packages/increment/common/comment/src/",
+            "Increment\\Common\\Rating\\": "packages/increment/common/rating/src/",
             "Increment\\Marketplace\\": "packages/increment/marketplace/src/"
         }
     },

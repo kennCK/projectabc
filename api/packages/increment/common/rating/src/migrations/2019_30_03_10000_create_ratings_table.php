@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIncrementCommentRepliesTable extends Migration
+class CreateRatingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateIncrementCommentRepliesTable extends Migration
      */
     public function up()
     {
-        Schema::create('inc_comment_replies', function (Blueprint $table) {
+        Schema::create('ratings', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('account_id');
-            $table->bigInteger('inc_comment_id');
-            $table->longText('text');
+            $table->string('payload');
+            $table->bigInteger('payload_value');
+            $table->unsignedInteger('value');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +31,6 @@ class CreateIncrementCommentRepliesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inc_comment_replies');
+        Schema::dropIfExists('ratings');
     }
 }
