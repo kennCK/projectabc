@@ -182,6 +182,7 @@ return [
         Increment\Common\Rating\RatingServiceProvider::class,
         Increment\Common\Image\ImageServiceProvider::class,
         Increment\Marketplace\MarketplaceServiceProvider::class,
+        Increment\Messenger\MessengerServiceProvider::class,
     ],
 
     /*
