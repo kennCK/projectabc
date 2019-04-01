@@ -4,7 +4,7 @@
       <span class="header">
         Saved Images
         <i class="fa fa-close pull-right" @click="close()" v-if="view === 'editor'"></i>
-        <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view === 'table-view'"></i>
+        <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view !== 'editor'"></i>
       </span>
       <span class="search">
         <input type="text" class="form-control form-control-custom" v-model="searchValue" placeholder="Search something..." @keyup.enter="search()">
@@ -20,7 +20,9 @@
       </span>
       <span class="bottom-action" v-if="prevIndex !== null && data !== null">
         <button class="btn btn-danger" @click="cancel()">Cancel</button>
-        <button class="btn btn-primary" @click="apply()">Apply</button>
+        <button class="btn btn-primary" @click="apply()" v-if="view === 'editor' && view === 'table-view'">Apply</button>
+        <button class="btn btn-primary" @click="applyProfile('profile')" v-if="view === 'profile-view'">Apply</button>
+        <button class="btn btn-primary" @click="applySignature('signature')" v-if="view === 'signature-view'">Apply</button>
       </span>
     </div>
   </div>
@@ -189,6 +191,10 @@ export default {
         this.$parent.updateText(this.object, this.index)
       }
     },
+    applyProfile(params){
+      this.object[params] = this.data[this.prevIndex].url
+      this.$parent.selectedBrowseImage = null
+    }
     cancel(){
       this.object.content = this.default
     },
