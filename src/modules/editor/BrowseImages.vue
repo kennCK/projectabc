@@ -219,8 +219,8 @@ export default {
       this.$parent.selectedBrowseImage = null
     },
     closeProfileView(){
-      this.$parent.browseImageProfileFlag = false
-      this.$parent.browseImageSignatureFlag = false
+      this.$parent.browseImagesProfileFlag = false
+      this.$parent.browseImagesSignatureFlag = false
     },
     closeProductView(){
       this.$parent.broserImageProductFlag = false
