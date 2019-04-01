@@ -24,7 +24,8 @@
         <label class="error">Loading...</label>
       </span>
       <span class="bottom-action" v-if="prevIndex !== null && data !== null">
-        <button class="btn btn-danger" @click="cancel()">Cancel</button>
+        <button class="btn btn-danger" @click="cancel()" v-if="view === 'editor' && view === 'table-view'">Cancel</button>
+        <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'profile-view' || this.view === 'signature-view'">Cancel</button>
         <button class="btn btn-primary" @click="apply()" v-if="view === 'editor' && view === 'table-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('profile')" v-if="view === 'profile-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('signature')" v-if="view === 'signature-view'">Apply</button>
