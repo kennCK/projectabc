@@ -86,9 +86,13 @@
                 <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
               </button>
 
-              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="addImage()">Select
-                <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
+              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="browseImagesProfileFlag = true">Select
               </button>
+              <div class="browse-images-holder">
+                <div class="browse-images" v-if="browseImagesProfileFlag">
+                  <browse-images :object="this.data" :index="0" :view="'profile-view'" ></browse-images>
+                </div>
+              </div>
 
               <span class="sidebar-header" style="margin-top: 25px;">Signature</span>
               <span class="image" v-if="data.signature !== null">
@@ -101,9 +105,14 @@
                 <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
               </button>
 
-              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="addImage()">Select
-                <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
+              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="browseImagesSignatureFlag = true">Select
               </button>
+              <div class="browse-images-holder">
+                <div class="browse-images" v-if="browseImagesSignatureFlag">
+                  <browse-images :object="this.data" :index="0" :view="'signature-view'"></browse-images>
+                </div>
+              </div>
+              
             </span>
           </div>
           <div class="modal-footer">
@@ -163,6 +172,18 @@
 .custom-block input{
   display: none;
 }
+.browse-images-holder {
+  float:left;
+}
+.browse-images{
+  width: 200px;
+  height: 300px;
+  position: absolute;
+  border: solid 1px #ddd;
+  background: #fff;
+  margin-left: -250px;
+  margin-top: -300px;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -193,11 +214,14 @@ export default {
         emergency_contact_number: null,
         signature: null
       },
-      file: null
+      file: null,
+      browseImagesProfileFlag: false,
+      browseImagesSignatureFlag: false
     }
   },
   components: {
-    'google-auth': require('modules/profiles/GoogleAuth.vue')
+    'google-auth': require('modules/profiles/GoogleAuth.vue'),
+    'browse-images': require('modules/editor/BrowseImages.vue')
   },
   methods: {
     redirect(parameter){
