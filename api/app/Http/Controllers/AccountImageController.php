@@ -40,7 +40,7 @@ class AccountImageController extends APIController
         $filename = $data['account_id'].'_'.$date.'_'.$time.'.'.$ext;
         $result = $request->file('file')->storeAs('images', $filename);
         $url = '/storage/image/'.$filename;
-        if($data['status'] == 'images'){
+        if($data['status'] == 'others'){
           $this->model = new AccountImage();
           $insertData = array(
           'account_id'=>$data['account_id'],

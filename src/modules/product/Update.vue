@@ -30,7 +30,7 @@
               <div class="product-images">
                 <div class="new-image text-primary">
                   <button class="btn btn-primary pull-right" @click="addImage('featured')"><i class="fa fa-plus"></i> Upload
-                    <input type="file" @change="setUpFileUpload($event)" id="featured">
+                    <input type="file" @change="setUpFileUpload($event)" id="Image">
                   </button>
                 </div>
                 <div class="image-preview">
@@ -45,13 +45,13 @@
               <label for="exampleInputEmail1">Other Images</label>
               <div class="product-images">
                 <div class="new-image text-primary">
-                  <button class="btn btn-primary pull-right" @click="addImage('images')"><i class="fa fa-plus"></i> Upload
-                    <input type="file" @change="setUpFileUpload($event)" id="images">
+                  <button class="btn btn-primary pull-right" @click="addImage('others')"><i class="fa fa-plus"></i> Upload
+                    <input type="file" @change="setUpFileUpload($event)" id="Image">
                   </button>
                 </div>
-                <div class="image-preview">
+                <div class="image-preview" v-for="(image,index) in item.images">
                   <span class="image" v-if="item.images !== null">
-                    <img :src="config.BACKEND_URL + item.images[0].url" >
+                    <img :src="config.BACKEND_URL + item.images[index].url" >
                   </span>
                 </div>
               </div>
@@ -105,6 +105,7 @@
   margin-right: auto;
   float: left;
 }
+
 .image-preview img{
   height: 100%; 
   width: 100%;
