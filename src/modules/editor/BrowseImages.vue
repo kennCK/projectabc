@@ -15,8 +15,11 @@
           <img :src="config.BACKEND_URL + item.url">
         </span>
       </span>
-      <span class="settings text-danger" v-if="data === null">
+      <span class="settings text-danger" v-if="data === null && loadingFlag === false">
         <label class="error">No results!</label>
+      </span>
+      <span class="settings text-primary" v-if="loadingFlag === true">
+        <label class="error">Loading...</label>
       </span>
       <span class="bottom-action" v-if="prevIndex !== null && data !== null">
         <button class="btn btn-danger" @click="cancel()">Cancel</button>
@@ -133,7 +136,8 @@ export default {
       searchValue: null,
       data: null,
       prevIndex: null,
-      default: this.object.content
+      default: this.object.content,
+      loadingFlag: false
     }
   },
   props: ['object', 'view', 'index'],
@@ -164,7 +168,9 @@ export default {
           }]
         }
       }
+      this.loadingFlag = true
       this.APIRequest('account_images/retrieve', parameter).done(response => {
+        this.loadingFlag = false
         if(response.data.length > 0){
           this.data = response.data
         }else{
