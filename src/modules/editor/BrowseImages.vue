@@ -194,7 +194,7 @@ export default {
     applyProfile(params){
       this.object[params] = this.data[this.prevIndex].url
       this.$parent.selectedBrowseImage = null
-    }
+    },
     cancel(){
       this.object.content = this.default
     },
