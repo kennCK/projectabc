@@ -30,7 +30,8 @@
         <button class="btn btn-primary" @click="apply()" v-if="view === 'editor' && view === 'table-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('profile')" v-if="view === 'profile-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('signature')" v-if="view === 'signature-view'">Apply</button>
-        <button class="btn btn-primary" @click="applyProduct()" v-if="view === 'featured-view' || view === 'others-view'">Apply</button>
+        <button class="btn btn-primary" @click="applyProduct('featured')" v-if="view === 'featured-view'">Apply</button>
+        <button class="btn btn-primary" @click="applyProduct('others')" v-if="view === 'others-view'">Apply</button>
       </span>
     </div>
   </div>
@@ -205,8 +206,9 @@ export default {
       this.object[params] = this.data[this.prevIndex].url
       this.$parent.selectedBrowseImage = null
     },
-    applyProduct(){
+    applyProduct(status){
       this.object.url = this.data[this.prevIndex].url
+      this.$parent.updateImage(status)
     },
     cancel(){
       this.object.content = this.default
