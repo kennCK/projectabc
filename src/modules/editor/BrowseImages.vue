@@ -5,7 +5,7 @@
         Saved Images
         <i class="fa fa-close pull-right" @click="close()" v-if="view === 'editor'"></i>
         <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view === 'table-view'"></i>
-        <i class="fa fa-close pull-right" @click="closeProfileView()" v-if="view === 'profile-view' || this.view === 'signature-view'"></i>
+        <i class="fa fa-close pull-right" @click="closeProfileView()" v-if="view === 'profile-view' || view === 'signature-view'"></i>
         <i class="fa fa-close pull-right" @click="closeProductView()" v-if="view === 'product-view'"></i>
       </span>
       <span class="search">
@@ -25,7 +25,7 @@
       </span>
       <span class="bottom-action" v-if="prevIndex !== null && data !== null">
         <button class="btn btn-danger" @click="cancel()" v-if="view === 'editor' && view === 'table-view'">Cancel</button>
-        <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'profile-view' || this.view === 'signature-view'">Cancel</button>
+        <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'profile-view' || view === 'signature-view'">Cancel</button>
         <button class="btn btn-primary" @click="apply()" v-if="view === 'editor' && view === 'table-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('profile')" v-if="view === 'profile-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('signature')" v-if="view === 'signature-view'">Apply</button>
