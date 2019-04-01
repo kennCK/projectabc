@@ -5,7 +5,7 @@
         Saved Images
         <i class="fa fa-close pull-right" @click="close()" v-if="view === 'editor'"></i>
         <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view === 'table-view'"></i>
-        <i class="fa fa-close pull-right" @click="closeProfileView()" v-if="view === 'profile-view' && this.view === 'signature-view'"></i>
+        <i class="fa fa-close pull-right" @click="closeProfileView()" v-if="view === 'profile-view' || this.view === 'signature-view'"></i>
         <i class="fa fa-close pull-right" @click="closeProductView()" v-if="view === 'product-view'"></i>
       </span>
       <span class="search">
