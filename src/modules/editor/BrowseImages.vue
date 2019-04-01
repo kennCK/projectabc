@@ -6,7 +6,7 @@
         <i class="fa fa-close pull-right" @click="close()" v-if="view === 'editor'"></i>
         <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view === 'table-view'"></i>
         <i class="fa fa-close pull-right" @click="closeProfileView()" v-if="view === 'profile-view' || view === 'signature-view'"></i>
-        <i class="fa fa-close pull-right" @click="closeProductView()" v-if="view === 'product-view'"></i>
+        <i class="fa fa-close pull-right" @click="closeProductView()" v-if="view === 'featured-view' || view === 'others-view'"></i>
       </span>
       <span class="search">
         <input type="text" class="form-control form-control-custom" v-model="searchValue" placeholder="Search something..." @keyup.enter="search()">
@@ -26,10 +26,11 @@
       <span class="bottom-action" v-if="prevIndex !== null && data !== null">
         <button class="btn btn-danger" @click="cancel()" v-if="view === 'editor' && view === 'table-view'">Cancel</button>
         <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'profile-view' || view === 'signature-view'">Cancel</button>
+        <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'featured-view' || view === 'others-view'">Cancel</button>
         <button class="btn btn-primary" @click="apply()" v-if="view === 'editor' && view === 'table-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('profile')" v-if="view === 'profile-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('signature')" v-if="view === 'signature-view'">Apply</button>
-        <button class="btn btn-primary" @click="applyProduct()" v-if="view === 'product-view'">Apply</button>
+        <button class="btn btn-primary" @click="applyProduct()" v-if="view === 'featured-view' || view === 'others-view'">Apply</button>
       </span>
     </div>
   </div>
@@ -223,7 +224,8 @@ export default {
       this.$parent.browseImagesSignatureFlag = false
     },
     closeProductView(){
-      this.$parent.broserImageProductFlag = false
+      this.$parent.broserImagesFeaturedFlag = false
+      this.$parent.broserImagesOthersFlag = false
     }
   }
 }
