@@ -5,7 +5,8 @@
         Saved Images
         <i class="fa fa-close pull-right" @click="close()" v-if="view === 'editor'"></i>
         <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view === 'table-view'"></i>
-        <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view === 'profile-view' && this.view === 'signature-view'"></i>
+        <i class="fa fa-close pull-right" @click="closeProfileView()" v-if="view === 'profile-view' && this.view === 'signature-view'"></i>
+        <i class="fa fa-close pull-right" @click="closeProductView()" v-if="view === 'product-view'"></i>
       </span>
       <span class="search">
         <input type="text" class="form-control form-control-custom" v-model="searchValue" placeholder="Search something..." @keyup.enter="search()">
@@ -26,7 +27,8 @@
         <button class="btn btn-danger" @click="cancel()">Cancel</button>
         <button class="btn btn-primary" @click="apply()" v-if="view === 'editor' && view === 'table-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('profile')" v-if="view === 'profile-view'">Apply</button>
-        <button class="btn btn-primary" @click="applySignature('signature')" v-if="view === 'signature-view'">Apply</button>
+        <button class="btn btn-primary" @click="applyProfile('signature')" v-if="view === 'signature-view'">Apply</button>
+        <button class="btn btn-primary" @click="applyProduct()" v-if="view === 'product-view'">Apply</button>
       </span>
     </div>
   </div>
@@ -88,7 +90,6 @@
   max-height: 79px;
   max-width: 100%;
   float: left;
-  border-radius: 50%;
 }
 
 .bottom-action{
@@ -202,6 +203,9 @@ export default {
       this.object[params] = this.data[this.prevIndex].url
       this.$parent.selectedBrowseImage = null
     },
+    applyProduct(){
+      this.object.url = this.data[this.prevIndex].url
+    },
     cancel(){
       this.object.content = this.default
     },
@@ -216,6 +220,9 @@ export default {
     closeProfileView(){
       this.$parent.browseImageProfileFlag = false
       this.$parent.browseImageSignatureFlag = false
+    },
+    closeProductView(){
+      this.$parent.broserImageProductFlag = false
     }
   }
 }
