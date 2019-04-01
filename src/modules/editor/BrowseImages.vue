@@ -208,7 +208,8 @@ export default {
     },
     applyProduct(status){
       this.object.url = this.data[this.prevIndex].url
-      this.$parent.updateImage(status)
+      this.object.status = status
+      this.$parent.updateImage(this.object)
     },
     cancel(){
       this.object.content = this.default
