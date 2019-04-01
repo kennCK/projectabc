@@ -4,7 +4,8 @@
       <span class="header">
         Saved Images
         <i class="fa fa-close pull-right" @click="close()" v-if="view === 'editor'"></i>
-        <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view !== 'editor'"></i>
+        <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view === 'table-view'"></i>
+        <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view === 'profile-view' && this.view === 'signature-view'"></i>
       </span>
       <span class="search">
         <input type="text" class="form-control form-control-custom" v-model="searchValue" placeholder="Search something..." @keyup.enter="search()">
@@ -211,6 +212,10 @@ export default {
     closeTableView(){
       this.prevIndex = null
       this.$parent.selectedBrowseImage = null
+    },
+    closeProfileView(){
+      this.$parent.browseImageProfileFlag = false
+      this.$parent.browseImageSignatureFlag = false
     }
   }
 }
