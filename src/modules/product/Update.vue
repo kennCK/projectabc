@@ -1,87 +1,82 @@
 <template>
   <div id="updateProducts">
-    <div class="modal fade" id="updateProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="item !== null">
+    <div class="modal fade" id="updateProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
             <h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
-            <button type="button" class="close" @click="close()" aria-label="Close">
+            <button type="button" class="close" @click="hideModal()" aria-label="Close">
               <span aria-hidden="true" class="text-white">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" v-if="item !== null">
             <span v-if="errorMessage !== null" class="text-danger text-center">
                 <label><b>Opps! </b>{{errorMessage}}</label>
             </span>
-            <br v-if="errorMessage !== null">
-            
-            <div class="form-group">
-              <label for="exampleInputEmail1">Title</label>
-              <input type="text" class="form-control" placeholder="Type title here..." v-model="item.title" v-bind:disabled="item.title === 'id_printing'">
-            </div>
+            <br v-if="errorMessage !== null">       
+            <span class="inputs" >
 
-            <div class="form-group">
-              <label for="exampleInputEmail1">Description</label>
-              <textarea class="form-control" v-model="item.description" rows="5" ></textarea>
-            </div>
-
-            <div class="form-group">
-              <label for="exampleInputEmail1">Featured Image</label>
-              <div class="product-images">
-                <div class="new-image text-primary">
-                  <button class="btn btn-primary pull-right" @click="addImage('featured')"><i class="fa fa-plus"></i> Upload
-                    <input type="file" @change="setUpFileUpload($event)" id="Image">
-                  </button>
-                </div>
-                <div class="image-preview">
-                  <span class="image" v-if="item.featured !== null">
-                    <img :src="config.BACKEND_URL + item.featured[0].url" >
-                  </span>
-                </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Title</label>
+                <input type="text" class="form-control" placeholder="Type title here..." v-model="item.title" v-bind:disabled="item.title === 'id_printing'">
               </div>
-            </div>
 
-            <div class="form-group">
-              <label for="exampleInputEmail1">Other Images</label>
-              <div class="product-images">
-                <div class="new-image text-primary">
-                  <button class="btn btn-primary pull-right" @click="addImage('others')"><i class="fa fa-plus"></i> Upload
-                    <input type="file" @change="setUpFileUpload($event)" id="Image">
-                  </button>
-                </div>
-                <div class="image-preview" v-for="(image,index) in item.images">
-                  <span class="image" v-if="item.images !== null">
-                    <img :src="config.BACKEND_URL + item.images[index].url" >
-                  </span>
-                </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Description</label>
+                <textarea class="form-control" v-model="item.description" rows="5" ></textarea>
               </div>
-            </div>
 
-            <prices :item="item"></prices>
+              <prices :item="item"></prices>
 
-            <div class="form-group">
-              <label for="exampleInputEmail1">Attributes</label>
-              <div>
-                <select class="form-control" style="width: 40%; float: left;">
-                  <option value="color">Color</option>
-                  <option value="size">Size</option>
+              <attributes :item="item"></attributes>
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">Status</label>
+                <select class="form-control" v-model="item.status">
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
                 </select>
-                <button class="btn btn-primary" style="margin-left: 10px;"><i class="fa fa-plus"></i></button>
               </div>
-            </div>
-            
 
-            <div class="form-group">
-              <label for="exampleInputEmail1">Status</label>
-              <select class="form-control" v-model="item.status">
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-              </select>
-            </div>
+            </span>
+            <span class="sidebar">
+              <span class="sidebar-header" >Featured Image</span>
+              <span class="image" v-if="item.featured !== null">
+                <img :src="config.BACKEND_URL + item.featured[0].url" height="150px" width="150px" >
+              </span>
+              <span class="image" v-else>
+                <i class="fa fa fa-plus" ></i>
+              </span>
+              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-right: 1%;" @click="addImage('featured')">Upload
+                <input type="file" id="Image" accept="image/*" @change="setUpFileUpload($event)">
+              </button>
+
+              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="addImage('featured')">Select
+                <input type="file" id="Image" accept="image/*" @change="setUpFileUpload($event)">
+              </button>
+
+              <span class="sidebar-header" >Other Images</span>
+              <div class="other-holder">
+                <div class="image-holder" v-for="(image,index) in item.images" v-if="item.images !== null">
+                  <span class="image" >
+                    <img :src="config.BACKEND_URL + image.url" height="75px" width="100%">
+                  </span>
+                </div>
+              </div>
+              
+
+              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-right: 1%;" @click="addImage('others')">Upload
+                <input type="file" id="Image" accept="image/*" @change="setUpFileUpload($event)">
+              </button>
+
+              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="addImage('others')">Select
+                <input type="file" id="Image" accept="image/*" @change="setUpFileUpload($event)">
+              </button>
+            </span>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-danger pull-left" @click="close()">Close</button>
-              <button type="button" class="btn btn-primary" @click="update()">Update</button>
+              <button type="button" class="btn btn-danger" @click="close()">Close</button>
+              <button type="button" class="btn btn-primary" @click="update()">Submit</button>
           </div>
         </div>
       </div>
@@ -89,95 +84,58 @@
   </div>
 </template>
 <style scoped>
-/*.featured-image{
-  width: 100%;
+.inputs{
+  width: 55%;
   float: left;
-  height: 200px;
-  margin-bottom: 10px;
-}*/
-.image-preview{
-  position: relative;
-  width: 110px;
-  height: 110px;
-  left: 10px;
-  border: solid 1px #ddd;
-  margin-left: auto;
-  margin-right: auto;
-  float: left;
-}
-
-.image-preview img{
-  height: 100%; 
-  width: 100%;
-  padding: 1px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  vertical-align: middle;
-}
-.featured-image .options{
-  width: 100%;
-  float: left;
-  text-align: center;
-  height: 200px;
-  border: solid 1px #ddd;
+  margin-right: 5%;
+  min-height: 50px;
   overflow-y: hidden;
 }
-.options input{
-  display: none;
+.form-group{
+  margin-bottom: 0px !important;
 }
-.options:hover{
-  cursor: pointer;
+.form-group label{
+  margin-bottom: 0px !important;
 }
-.options i{
-  font-size: 40px;
-  width: 100%;
+.sidebar{
+  width: 40%;
   float: left;
-  margin-top: 75px;
-}
-
-.options label{
-  width: 100%;
-  float: left;
-}
-.options img{
-  width: 100%;
-  float: left;
-  height: auto;
-}
-.product-images{
-  width: 100%;
-  float: left;
-  min-height: 10px;
+  min-height: 50px;
   overflow-y: hidden;
 }
-/*.new-image{
-  height: 80px;
-  width: 80px;
-  border-radius: 5px;
-  border: solid 1px #ddd;
+.sidebar-header{
+  height: 40px;
+  line-height: 40px;
+  width: 100%;
   float: left;
+}
+.sidebar .image{
+  width: 100%;
+  float: left;
+  overflow-y: hidden;
   text-align: center;
-}*/
-.new-image input[type='file']{
+}
+.image-holder{
+  overflow-y: hidden;
+  display: inline-flex;
+  width: 24%;
+  text-align: center;
+  padding: 2px;
+}
+.image i{
+  font-size: 150px;
+  line-height: 200px;
+}
+.image img{
+  border-radius: 5px;
+}
+.custom-block{
+  width: 49%;
+  float: left;
+}
+.custom-block input{
   display: none;
-  text-align: center;
-  float: left;
-}
-.new-image button{
-  width: 22%;
-  height: 50%;
-  border-radius: 5px;
-  border: solid 1px #ddd;
-  float: left;
-  text-align: center;
-}
-/*.new-image i{
-  line-height: 80px;
-  font-size: 24px;
-}*/
-.new-image:hover{
-  cursor: pointer;
+
 }
 </style>
 <script>
@@ -197,10 +155,11 @@ export default {
       status: null
     }
   },
-  props: ['item'],
   components: {
-    'prices': require('modules/product/Prices.vue')
+    'prices': require('modules/product/Prices.vue'),
+    'attributes': require('modules/product/Attributes.vue')
   },
+  props: ['item'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
@@ -239,14 +198,12 @@ export default {
       })
     },
     update(){
-      if(this.validate()){
-        this.APIRequest('products/update', this.item).then(response => {
-          if(response.data > 0){
-            $('#updateProductModal').modal('hide')
-            this.$parent.retrieve()
-          }
-        })
-      }
+      this.APIRequest('products/update', this.item).then(response => {
+        if(response.data > 0){
+          $('#updateProductModal').modal('hide')
+          this.$parent.retrieve()
+        }
+      })
     },
     close(){
       this.item = null

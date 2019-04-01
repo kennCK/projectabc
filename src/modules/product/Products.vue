@@ -22,7 +22,7 @@
       </table>
     </div>
     <empty v-if="data === null" :title="'Looks like you have not added a product!'" :action="'Click the New Product Button to get started.'"></empty>
-    <update :item="selectedItem"></update>
+    <update :item = "selectedItem"></update>
 	</div>
 </template>
 <style>
