@@ -50,7 +50,7 @@ class ProfileController extends APIController
           $this->response['data'][$i]['checkout'] = $this->getCheckout('profile', $id, $accountId);
           $this->response['data'][$i]['counter'] = $counter;
           $result = app('App\Http\Controllers\GovernmentController')->retrieveByColumn('profile_id', $id);
-
+          $this->response['data'][$i]['variables'] = $result;
           if($result != null){
             foreach ($result as $key => $item) {
               $this->response['data'][$i][$item['payload']] = $item['payload_value'];
