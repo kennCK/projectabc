@@ -30,10 +30,7 @@ class ImageController extends APIController
     }
 
     public function upload(Request $request){
-
       $data = $request->all();
-
-      $url = null;
       if(isset($data['file_url'])){
         $date = Carbon::now()->toDateString();
         $time = str_replace(':', '_',Carbon::now()->toTimeString());
@@ -41,43 +38,17 @@ class ImageController extends APIController
         $filename = $data['account_id'].'_'.$date.'_'.$time.'.'.$ext;
         $result = $request->file('file')->storeAs('images', $filename);
         $url = '/storage/image/'.$filename;
-        if($data['status'] == 'images'){
-          $this->model = new Image();
-          $insertData = array(
-          'account_id'=>$data['account_id'],
-          'url'=>$url,
-          'payload'=>'product',
-          'payload_value'=>$data['payload_value'],
-          'status'=>$data['status']
-          );
-          $this->insertDB($insertData);
-          return $this->response();
-        }
-        $exist = $this->checkIfExist('product', $data['payload_value'], 'featured');
-        
-        if($exist == null){
-          $this->model = new Image();
-          $insertData = array(
-          'account_id'=>$data['account_id'],
-          'url'=>$url,
-          'payload'=>'product',
-          'payload_value'=>$data['payload_value'],
-          'status'=>$data['status']
-          );
-          $this->insertDB($insertData);
-        }else{
-          $this->model = new Image();
-          $uploadData = array(
-            'id' => $exist['id'],
-            'url' => $url
-          );
-          $this->updateDB($uploadData);
-        }
+        $this->model = new Image();
+        $insertData = array(
+          'account_id'    => $data['account_id'],
+          'url'           => $url,
+          'payload'       => $data['payload'],
+          'payload_value' => $data['payload_value'],
+          'status'        => $data['status']
+        );
+        $this->insertDB($insertData);
         return $this->response();
-      }else{
-        $url = null;
       }
-
       return response()->json(array(
         'data'  => null,
         'error' => null,
@@ -89,6 +60,5 @@ class ImageController extends APIController
       $result = Image::where('payload','=', $payload)->where('payload_value','=', $payloadValue)->where('status','=',$status)->get();
       return (sizeof($result) > 0) ? $result[0] : null;
     }
-
 
 }

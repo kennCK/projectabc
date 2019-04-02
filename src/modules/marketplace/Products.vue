@@ -1,10 +1,10 @@
 <template>
   <div v-if="data !== null">
-    <div class="product-holder" v-for="item, index in data">
+    <div class="product-holder" v-for="item, index in data" @click="redirect('marketplace/product/' + item.code)">
       <div class="product-image">
         <img :src="config.BACKEND_URL + item.featured.url" v-if="item.featured !== null">
         <i class="fa fa-image" v-else></i>
-        <div class="product-wishlist bg-primary" v-if="item.wishlist_flag === false && item.checkout_flag === false">
+<!--         <div class="product-wishlist bg-primary" v-if="item.wishlist_flag === false && item.checkout_flag === false">
           <label>
             <i class="fa fa-heart"  @click="addToWishlist(item.id)" v-if="item.wishlist_flag === false && item.checkout_flag === false"></i>  
           </label>
@@ -12,7 +12,7 @@
         </div>
         <div class="product-wishlist bg-primary" v-else>
           <label @click="redirect('marketplace/product/' + item.code)" style="width: 100%;">View</label>
-        </div>
+        </div> -->
       </div>
       <div class="product-details">
         <div class="product-title">
@@ -41,6 +41,7 @@
     margin-top: 25px;
   }
   .product-holder:hover{
+    cursor: pointer;
     border: solid 1px #ffaa81;
     background: #ffaa81;
     color: #fff;
