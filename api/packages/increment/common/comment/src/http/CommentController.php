@@ -19,7 +19,6 @@ class CommentController extends APIController
       $result = $this->response['data'];
       if(sizeof($result) > 0){
         $i = 0;
-
         foreach ($result as $key) {
           $this->response['data'][$i]['account'] = $this->retrieveAccountDetails($result[$i]['account_id']);
           $this->response['data'][$i]['comment_replies'] = $this->getReplies($result[$i]['id']);
