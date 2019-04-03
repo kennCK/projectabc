@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProfileVariable extends APIModel
 {
-    protected $table = 'governments';
+    protected $table = 'profile_variables';
     protected $fillable = ['profile_id', 'payload', 'payload_value'];
 }
