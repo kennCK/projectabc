@@ -416,11 +416,11 @@ Route::post('/profiles/delete', "ProfileController@delete");
 Route::get('/profiles/test', 'ProfileController@test');
 
 //Government Controller
-Route::post('/profile_variables/create', "VariableController@create");
-Route::post('/profile_variables/retrieve', "VariableController@retrieve");
-Route::post('/profile_variables/update', "VariableController@update");
-Route::post('/profile_variables/delete', "VariableController@delete");
-Route::get('/profile_variables/test', 'VariableController@test');
+Route::post('/profile_variables/create', "ProfileVariableController@create");
+Route::post('/profile_variables/retrieve', "ProfileVariableController@retrieve");
+Route::post('/profile_variables/update', "ProfileVariableController@update");
+Route::post('/profile_variables/delete', "ProfileVariableController@delete");
+Route::get('/profile_variables/test', 'ProfileVariableController@test');
 
 // Google Spreadsheets
 Route::get('/gsheets/create', 'GoogleSheetController@generate');
