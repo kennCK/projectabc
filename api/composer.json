@@ -32,7 +32,12 @@
             "database/factories"
         ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Increment\\Common\\Comment\\": "packages/increment/common/comment/src/",
+            "Increment\\Common\\Rating\\": "packages/increment/common/rating/src/",
+            "Increment\\Common\\Image\\": "packages/increment/common/image/src/",
+            "Increment\\Marketplace\\": "packages/increment/marketplace/src/",
+            "Increment\\Messenger\\": "packages/increment/messenger/src/"
         }
     },
     "autoload-dev": {

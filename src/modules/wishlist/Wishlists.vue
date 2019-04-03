@@ -7,7 +7,7 @@
         </span>
         <span class="item" v-for="item, index in data" >
           <span class="objects-holder-full" v-if="item.payload === 'product' && item.product !== null">
-            <product :data="item" :route="'checkout_items'"></product>
+            <product :data="item" :route="'wishlists'"></product>
           </span>
         </span>
       </span>

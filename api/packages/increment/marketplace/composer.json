@@ -1,6 +1,6 @@
 {
-    "name": "increment/comment",
-    "description": "Dynamic comment backend module or Discussion module",
+    "name": "increment/marketplace",
+    "description": "Increment Core Marketplace Backend",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -13,13 +13,13 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Increment\\Commment\\": "src/"
+            "Increment\\Marketplace\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Increment\\Commment\\CommentServiceProvider"
+                "Increment\\Marketplace\\MarketplaceServiceProvider"
             ]
         }
     }

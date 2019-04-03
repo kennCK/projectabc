@@ -5,6 +5,8 @@
         Saved Images
         <i class="fa fa-close pull-right" @click="close()" v-if="view === 'editor'"></i>
         <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view === 'table-view'"></i>
+        <i class="fa fa-close pull-right" @click="closeProfileView()" v-if="view === 'profile-view' || view === 'signature-view'"></i>
+        <i class="fa fa-close pull-right" @click="closeProductView()" v-if="view === 'featured-view' || view === 'others-view'"></i>
       </span>
       <span class="search">
         <input type="text" class="form-control form-control-custom" v-model="searchValue" placeholder="Search something..." @keyup.enter="search()">
@@ -15,12 +17,21 @@
           <img :src="config.BACKEND_URL + item.url">
         </span>
       </span>
-      <span class="settings text-danger" v-if="data === null">
+      <span class="settings text-danger" v-if="data === null && loadingFlag === false">
         <label class="error">No results!</label>
       </span>
+      <span class="settings text-primary" v-if="loadingFlag === true">
+        <label class="error">Loading...</label>
+      </span>
       <span class="bottom-action" v-if="prevIndex !== null && data !== null">
-        <button class="btn btn-danger" @click="cancel()">Cancel</button>
-        <button class="btn btn-primary" @click="apply()">Apply</button>
+        <button class="btn btn-danger" @click="cancel()" v-if="view === 'editor' && view === 'table-view'">Cancel</button>
+        <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'profile-view' || view === 'signature-view'">Cancel</button>
+        <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'featured-view' || view === 'others-view'">Cancel</button>
+        <button class="btn btn-primary" @click="apply()" v-if="view === 'editor' && view === 'table-view'">Apply</button>
+        <button class="btn btn-primary" @click="applyProfile('profile')" v-if="view === 'profile-view'">Apply</button>
+        <button class="btn btn-primary" @click="applyProfile('signature')" v-if="view === 'signature-view'">Apply</button>
+        <button class="btn btn-primary" @click="applyProduct('featured')" v-if="view === 'featured-view'">Apply</button>
+        <button class="btn btn-primary" @click="applyProduct('others')" v-if="view === 'others-view'">Apply</button>
       </span>
     </div>
   </div>
@@ -82,7 +93,6 @@
   max-height: 79px;
   max-width: 100%;
   float: left;
-  border-radius: 50%;
 }
 
 .bottom-action{
@@ -131,7 +141,8 @@ export default {
       searchValue: null,
       data: null,
       prevIndex: null,
-      default: this.object.content
+      default: this.object.content,
+      loadingFlag: false
     }
   },
   props: ['object', 'view', 'index'],
@@ -162,7 +173,9 @@ export default {
           }]
         }
       }
+      this.loadingFlag = true
       this.APIRequest('account_images/retrieve', parameter).done(response => {
+        this.loadingFlag = false
         if(response.data.length > 0){
           this.data = response.data
         }else{
@@ -189,6 +202,15 @@ export default {
         this.$parent.updateText(this.object, this.index)
       }
     },
+    applyProfile(params){
+      this.object[params] = this.data[this.prevIndex].url
+      this.$parent.selectedBrowseImage = null
+    },
+    applyProduct(status){
+      this.object.url = this.data[this.prevIndex].url
+      this.object.status = status
+      this.$parent.updateImage(this.object)
+    },
     cancel(){
       this.object.content = this.default
     },
@@ -199,6 +221,14 @@ export default {
     closeTableView(){
       this.prevIndex = null
       this.$parent.selectedBrowseImage = null
+    },
+    closeProfileView(){
+      this.$parent.browseImagesProfileFlag = false
+      this.$parent.browseImagesSignatureFlag = false
+    },
+    closeProductView(){
+      this.$parent.broserImagesFeaturedFlag = false
+      this.$parent.broserImagesOthersFlag = false
     }
   }
 }
