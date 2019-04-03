@@ -1,6 +1,6 @@
 {
-    "name": "increment/plan",
-    "description": "Plan Backend",
+    "name": "increment/payment",
+    "description": "Payment Handler",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -13,14 +13,13 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Increment\\Plan\\": "src/"
+            "Increment\\Payment\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Increment\\Plan\\PlanServiceProvider",
-                "Increment\\Plan\\InvitationServiceProvider",
+                "Increment\\Payment\\PaymentServiceProvider",
             ]
         }
     }

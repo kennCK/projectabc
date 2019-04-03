@@ -183,6 +183,9 @@ return [
         Increment\Common\Image\ImageServiceProvider::class,
         Increment\Marketplace\MarketplaceServiceProvider::class,
         Increment\Messenger\MessengerServiceProvider::class,
+        Increment\Plan\PlanServiceProvider::class,
+        Increment\Plan\InvitationServiceProvider::class,
+        Increment\Payment\PaymentServiceProvider::class,
     ],
 
     /*

@@ -37,7 +37,9 @@
             "Increment\\Common\\Rating\\": "packages/increment/common/rating/src/",
             "Increment\\Common\\Image\\": "packages/increment/common/image/src/",
             "Increment\\Marketplace\\": "packages/increment/marketplace/src/",
-            "Increment\\Messenger\\": "packages/increment/messenger/src/"
+            "Increment\\Messenger\\": "packages/increment/messenger/src/",
+            "Increment\\Plan\\": "packages/increment/plan/src/",
+            "Increment\\Payment\\": "packages/increment/payment/src/"
         }
     },
     "autoload-dev": {
