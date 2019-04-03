@@ -49,7 +49,7 @@ class ProfileController extends APIController
           $this->response['data'][$i]['active'] = false;
           $this->response['data'][$i]['checkout'] = $this->getCheckout('profile', $id, $accountId);
           $this->response['data'][$i]['counter'] = $counter;
-          $result = app('App\Http\Controllers\GovernmentController')->retrieveByColumn('profile_id', $id);
+          $result = app('App\Http\Controllers\ProfileVariableController')->retrieveByColumn('profile_id', $id);
           $this->response['data'][$i]['variables'] = $result;
           if($result != null){
             foreach ($result as $key => $item) {
@@ -71,7 +71,7 @@ class ProfileController extends APIController
     public function retrieveById($id){
       $result = Profile::where('id', '=', $id)->get();
       if(sizeof($result) > 0){
-        $variables = app('App\Http\Controllers\GovernmentController')->retrieveByColumn('profile_id', $id);
+        $variables = app('App\Http\Controllers\ProfileVariableController')->retrieveByColumn('profile_id', $id);
 
         if(sizeof($variables) > 0){
           foreach ($variables as $key => $item) {
