@@ -55,4 +55,24 @@ class RatingController extends APIController
       ->get();
       return (sizeof($result) > 0) ? true : false;
     }
+
+    public function getRatingByPayload($payload, $payloadValue){
+      $rating = Rating::where('payload', '=', $payload)->where('payload_value', '=', $payloadValue)->get();
+      $avg = 0;
+      $totalRating = 0;
+      $size = sizeof($rating);
+      if(sizeof($rating) > 0){
+        $i = 0;
+        foreach ($rating as $key) {
+          $totalRating += intval($rating[$i]['value']);
+          $i++;
+        }
+      }
+      $avg = ($size > 0) ? floatval($totalRating / $size) : $totalRating;
+      return array(
+        'total' => $totalRating,
+        'size'  => $size,
+        'avg'   => $avg
+      );
+    }
 }

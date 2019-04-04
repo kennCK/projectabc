@@ -5,9 +5,9 @@ namespace Increment\Plan\Http;
 use Illuminate\Http\Request;
 use App\Http\Controllers\APIController;
 use Increment\Plan\Models\Plan;
-use App\PaypalTransaction;
-use App\StripeWebhook;
-use App\Invitation;
+use Increment\Plan\Models\Invitation;
+use Increment\Payment\Models\PaypalTransaction;
+use Increment\Payment\Models\StripeWebhook;
 use Carbon\Carbon;
 class PlanController extends APIController
 {
@@ -278,5 +278,36 @@ class PlanController extends APIController
         ));
       }
       return $this->response();
+    }
+
+    public function getCurrentPlan($accountId, $createdAt){
+      $current = Carbon::now();
+      $dayInMonth = Carbon::parse($createdAt)->daysInMonth;
+      $accountDate = Carbon::createFromFormat('Y-m-d H:i:s', $createdAt);
+      $diff = $accountDate->diffInDays($current, false);
+      if($diff >= $dayInMonth){
+        $result = Plan::where('account_id', '=', $accountId)->whereDate('end', '>=', Carbon::now())->where('status', '=', 'completed')->orderBy('created_at', 'asc')->first();
+        if($result){
+          return array(
+            'title' => $result->title,
+            'end_human' => Carbon::createFromFormat('Y-m-d H:i:s', $result->end)->copy()->tz('Asia/Manila')->format('F j, Y')
+          );
+        }else{
+          return array(
+            'title' => 'Expired',
+            'end_human' => null
+          );
+        }
+      }else{
+        return array(
+          'title' => 'Trial',
+          'end_human' => Carbon::createFromFormat('Y-m-d H:i:s', $createdAt)->addMonth()->copy()->tz('Asia/Manila')->format('F j, Y')
+        );
+      }
+    }
+
+    public function checkPlan($accountId){
+      $result = Plan::where('account_id', '=', $accountId)->whereDate('end', '>=', Carbon::now())->get();
+      return (sizeof($result) > 0) ? true : false;
     }
 }

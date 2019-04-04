@@ -1,8 +1,8 @@
 <?php
 
-// Messenger Groups
+// Payment Methods
 $route = env('PACKAGE_ROUTE', '').'/payment_methods/';
-$controller = 'Increment\Messenger\Http\PaymentMethodController@';
+$controller = 'Increment\Payment\Http\PaymentMethodController@';
 Route::post($route.'create', $controller."create");
 Route::post($route.'retrieve', $controller."retrieve");
 Route::post($route.'update', $controller."update");
@@ -10,9 +10,9 @@ Route::post($route.'delete', $controller."delete");
 Route::get($route.'test', $controller."test");
 
 
-// Messenger Groups
+// Stripe Cards
 $route = env('PACKAGE_ROUTE', '').'/stripe_cards/';
-$controller = 'Increment\Messenger\Http\StripeCardController@';
+$controller = 'Increment\Payment\Http\StripeCardController@';
 Route::post($route.'create', $controller."create");
 Route::post($route.'retrieve', $controller."retrieve");
 Route::post($route.'update', $controller."update");
@@ -20,9 +20,9 @@ Route::post($route.'delete', $controller."delete");
 Route::get($route.'test', $controller."test");
 
 
-// Messenger Groups
+// Paypal Transaction
 $route = env('PACKAGE_ROUTE', '').'/paypal_transactions/';
-$controller = 'Increment\Messenger\Http\PaypalTransactionController@';
+$controller = 'Increment\Payment\Http\PaypalTransactionController@';
 Route::post($route.'create', $controller."create");
 Route::post($route.'retrieve', $controller."retrieve");
 Route::post($route.'update', $controller."update");
