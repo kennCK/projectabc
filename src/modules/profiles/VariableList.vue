@@ -13,7 +13,7 @@
     </div>
     <div class="govList-wrapper" v-if="data !== null">
       <div class="container">
-        <div class="row govList-item" v-for="(item, index) in data.variables" :key="index" v-if="data.variables !== null">
+        <div class="row govList-item" v-for="(item, index) in data.variables" :key="index" >
           <div class="col">
             {{item.payload}}
           </div>
@@ -21,7 +21,7 @@
             {{item.payload_value}}
           </div>
           <div class="col-auto">
-            <button @click="deleteEntry(index)" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+            <button @click="deleteEntry(item.id)" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
           </div>
         </div>
       </div>
@@ -44,6 +44,9 @@
 
 <script>
 export default {
+  mounted(){
+    this.initPayloadArray()
+  },
   name: 'GovList',
   props: ['data'],
   data(){
@@ -55,25 +58,39 @@ export default {
     }
   },
   methods: {
+    initPayloadArray(){
+      this.payloadArray = []
+      if(this.data !== null && this.data.variables !== null){
+        for(let i = 0; i < this.data.variables.length; i++){
+          this.payloadArray.push(this.data.variables[i].payload)
+        }
+      }
+    },
     addGovernmentVariables(){
       if(this.validate()){
         this.errorMessage = null
         let temp = {
+          profile_id: this.data.id,
           payload: this.payload,
           payload_value: this.payloadValue
         }
+        this.APIRequest('profile_variables/create', temp).then(res => {
+          this.retrieve()
+        })
         this.data.variables.push(temp)
         this.payloadArray.push(this.payload)
         this.payload = null
         this.payloadValue = null
       }
     },
-    deleteEntry(index){
-      if(this.data.variables.length > 0){
-        this.data.variables.splice(index, 1)
-        this.payloadArray.splice(index, 1)
-        console.log(this.data.variables)
+    deleteEntry(id){
+      let parameter = {
+        id: id
       }
+      this.APIRequest('profile_variables/delete', parameter).then(res => {
+        this.retrieve()
+        this.initPayloadArray()
+      })
     },
     validate(){
       if((this.payload === null || this.payload === '') || (this.payloadValue === null || this.payloadValue === '')){
@@ -90,6 +107,24 @@ export default {
         return false
       }
       return true
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.data.id,
+          column: 'profile_id',
+          clause: '='
+        }]
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('profile_variables/retrieve', parameter).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data.length > 0){
+          this.data.variables = response.data
+        }else{
+          this.data.variables = null
+        }
+      })
     }
   }
 }
