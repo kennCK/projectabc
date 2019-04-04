@@ -61,4 +61,14 @@ class ImageController extends APIController
       return (sizeof($result) > 0) ? $result[0] : null;
     }
 
+    public function getImageByPayload($accountId, $payload, $payloadValue, $status, $orderColumn, $order){
+      $result = null;
+      if($order != null){
+        $result = Image::where('account_id', '=', $accountId)->where('payload', '=', $payload)->where('payload_value', '=', $payloadValue)->where('status', '=', $status)->orderBy($orderColumn, $order)->get();
+      }else{
+        $result = Image::where('account_id', '=', $accountId)->where('payload', '=', $payload)->where('payload_value', '=', $payloadValue)->where('status', '=', $status)->get(); 
+      }
+      return (sizeof($result) > 0) ? $result : null;
+    }
+
 }
