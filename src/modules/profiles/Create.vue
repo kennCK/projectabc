@@ -41,6 +41,11 @@
                 <input type="text" class="form-control" placeholder="Last Name" v-model="data.last_name">
               </div>
 
+              <div class="form-group margin-top-25">
+                <label for="address">Id Number</label>
+                <input type="text" class="form-control" placeholder="Optional" v-model="data.employment_code">
+              </div>
+
               <div class="form-group">
                 <label for="address">Gender</label>
                 <select class="form-control" v-model="data.sex">
