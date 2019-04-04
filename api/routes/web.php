@@ -106,7 +106,7 @@ Route::post('/accounts/verify', 'AccountController@verify');
 Route::post('/accounts/request_reset', 'AccountController@requestReset');
 
 //Partners Controller
-Route::post('/partners/retrieve', "AccountController@retrievePartners");
+Route::post('/partners/retrieve', "PartnerController@retrieve");
 
 //Account Informations
 Route::post('/account_informations/create', "AccountInformationController@create");
