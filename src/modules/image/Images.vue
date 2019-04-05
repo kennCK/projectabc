@@ -169,7 +169,7 @@ export default {
         }]
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('account_images/retrieve', parameter).then(response => {
+      this.APIRequest('images/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data
@@ -200,7 +200,7 @@ export default {
       let parameter = {
         id: id
       }
-      this.APIRequest('account_images/delete', parameter).then(response => {
+      this.APIRequest('images/delete', parameter).then(response => {
         this.retrieve()
       })
     },
@@ -210,7 +210,7 @@ export default {
         let parameter = {
           id: id
         }
-        this.APIRequest('account_images/delete', parameter).then(response => {
+        this.APIRequest('images/delete', parameter).then(response => {
           this.retrieve()
         })
       }else{

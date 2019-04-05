@@ -441,16 +441,16 @@ class APIController extends Controller
     }
   }
 
-  public function retrieveDetailsOnLogin($account){
-    $accountId = $result[$i]['id'];
-    $result[$i]['account_information_flag'] = false;
-    $result[$i]['account_profile_flag'] = false;
-    $result[$i]['account_information'] = app('Increment\Account\Http\AccountInformationController')->getAccountInformation($accountId);
-    $result[$i]['account_profile'] = null;
-    $result[$i]['checkout'] = app('Increment\Plan\Http\CheckoutController')->getCheckoutItemByAccountId($accountId);
-    $result[$i]['plan'] = app('Increment\Plan\Http\PlanController')->getCurrentPlan($accountId, $result[$i]['created_at']);
-    $result[$i]['notification_settings'] = app('App\Http\Controllers\NotificationSettingController')->getNotificationSettings($accountId);
-
+  public function retrieveDetailsOnLogin($result){
+    $accountId = $result['id'];
+    $result['account_information_flag'] = false;
+    $result['account_profile_flag'] = false;
+    $result['account_information'] = app('Increment\Account\Http\AccountInformationController')->getAccountInformation($accountId);
+    $result['account_profile'] = null;
+    $result['checkout'] = app('Increment\Marketplace\Http\CheckoutController')->getCheckoutItemByAccountId($accountId);
+    $result['plan'] = app('Increment\Plan\Http\PlanController')->getCurrentPlan($accountId, $result['created_at']);
+    $result['notification_settings'] = app('App\Http\Controllers\NotificationSettingController')->getNotificationSettings($accountId);
+    return $result;
   }
 
 }
