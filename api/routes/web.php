@@ -94,17 +94,6 @@ Route::post('authenticate/user', 'AuthenticateController@getAuthenticatedUser');
 Route::post('authenticate/refresh', 'AuthenticateController@refreshToken');
 Route::post('authenticate/invalidate', 'AuthenticateController@deauthenticate');
 
-//Accounts
-Route::post('/accounts/create', "AccountController@create");
-Route::post('/accounts/retrieve', "AccountController@retrieve");
-Route::post('/accounts/update', "AccountController@update");
-Route::post('/accounts/update_verification', "AccountController@updateByVerification");
-Route::post('/accounts/delete', "AccountController@delete");
-Route::get('/accounts/test', 'AccountController@test');
-Route::post('/accounts/mail', 'AccountController@testMail');
-Route::post('/accounts/verify', 'AccountController@verify');
-Route::post('/accounts/request_reset', 'AccountController@requestReset');
-
 //Partners Controller
 Route::post('/partners/retrieve', "PartnerController@retrieve");
 

@@ -31,7 +31,7 @@ class MarketplaceController extends APIController
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
-          $result[$i]['objects'] = $this->getObjects($result[$i]['id']);
+          $result[$i]['objects'] = app('App\Http\Controllers\ObjectController')->getObjects($result[$i]['id']);
           $result[$i]['active'] = true;
          $i++; 
         }

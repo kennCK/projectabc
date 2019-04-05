@@ -178,6 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         LaravelQRCode\Providers\QRCodeServiceProvider::class,
+        Increment\Account\AccountServiceProvider::class,
         Increment\Common\Comment\CommentServiceProvider::class,
         Increment\Common\Rating\RatingServiceProvider::class,
         Increment\Common\Image\ImageServiceProvider::class,
