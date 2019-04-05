@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\MessengerGroup;
-use App\MessengerMember;
-use App\MessengerMessage;
+use Increment\Messenger\Models\MessengerGroup;
+use Increment\Messenger\Models\MessengerMember;
+use Increment\Messenger\Models\MessengerMessage;
 use Carbon\Carbon;
 use App\Account;
 use Illuminate\Support\Facades\DB;

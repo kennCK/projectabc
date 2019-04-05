@@ -108,37 +108,6 @@ Route::post('/accounts/request_reset', 'AccountController@requestReset');
 //Partners Controller
 Route::post('/partners/retrieve', "PartnerController@retrieve");
 
-//Account Informations
-Route::post('/account_informations/create', "AccountInformationController@create");
-Route::post('/account_informations/retrieve', "AccountInformationController@retrieve");
-Route::post('/account_informations/update', "AccountInformationController@update");
-Route::post('/account_informations/delete', "AccountInformationController@delete");
-Route::get('/account_informations/test', 'AccountInformationController@test');
-
-
-//Account Profiles
-Route::post('/account_profiles/create', "AccountProfileController@create");
-Route::post('/account_profiles/retrieve', "AccountProfileController@retrieve");
-Route::post('/account_profiles/update', "AccountProfileController@update");
-Route::post('/account_profiles/delete', "AccountProfileController@delete");
-Route::get('/account_profiles/test', 'AccountProfileController@test');
-
-//Account Profiles
-Route::post('/account_images/create', "AccountImageController@create");
-Route::post('/account_images/upload', "AccountImageController@upload");
-Route::post('/account_images/retrieve', "AccountImageController@retrieve");
-Route::post('/account_images/update', "AccountImageController@update");
-Route::post('/account_images/delete', "AccountImageController@delete");
-Route::get('/account_images/test', 'AccountImageController@test');
-
-//Billing Informations
-Route::get('/billing_informations/test', 'BillingInformationController@test');
-Route::post('/billing_informations/create', 'BillingInformationController@create');
-Route::post('/billing_informations/retrieve', 'BillingInformationController@retrieve');
-Route::post('/billing_informations/update', 'BillingInformationController@update');
-Route::post('/billing_informations/delete', 'BillingInformationController@delete');
-
-
 //Templates
 Route::post('/templates/create', "TemplateController@create");
 Route::post('/templates/retrieve', "TemplateController@retrieve");
@@ -190,22 +159,6 @@ Route::post('/employee_columns/update', "EmployeeColumnController@update");
 Route::post('/employee_columns/delete', "EmployeeColumnController@delete");
 Route::get('/employee_columns/test', 'EmployeeColumnController@test');
 
-
-//Comments
-Route::post('/comments/create', "CommentController@create");
-Route::post('/comments/retrieve', "CommentController@retrieve");
-Route::post('/comments/update', "CommentController@update");
-Route::post('/comments/delete', "CommentController@delete");
-Route::get('/comments/test', 'CommentController@test');
-
-//Comment Replies
-Route::post('/comment_replies/create', "CommentReplyController@create");
-Route::post('/comment_replies/retrieve', "CommentReplyController@retrieve");
-Route::post('/comment_replies/update', "CommentReplyController@update");
-Route::post('/comment_replies/delete', "CommentReplyController@delete");
-Route::get('/comment_replies/test', 'CommentReplyController@test');
-
-
 //Marketplace
 Route::post('/marketplace/create', "MarketplaceController@create");
 Route::post('/marketplace/retrieve', "MarketplaceController@retrieve");
@@ -227,12 +180,6 @@ Route::get('/checkouts/test', 'CheckoutController@test');
 Route::post('/orders/retrieve_orders', "CheckoutController@retrieveOrders");
 Route::post('/orders/retrieve_order_items', "CheckoutController@retrieveOrderItems");
 
-//Checkout Items
-Route::post('/checkout_items/create', "CheckoutItemController@create");
-Route::post('/checkout_items/retrieve', "CheckoutItemController@retrieve");
-Route::post('/checkout_items/update', "CheckoutItemController@update");
-Route::post('/checkout_items/delete', "CheckoutItemController@delete");
-Route::get('/checkout_items/test', 'CheckoutItemController@test');
 
 //Checkout Templates
 Route::post('/checkout_templates/create', "CheckoutTemplateController@create");
@@ -241,121 +188,12 @@ Route::post('/checkout_templates/update', "CheckoutTemplateController@update");
 Route::post('/checkout_templates/delete', "CheckoutTemplateController@delete");
 Route::get('/checkout_templates/test', 'CheckoutTemplateController@test');
 
-//Ratings
-Route::post('/ratings/create', "RatingController@create");
-Route::post('/ratings/retrieve', "RatingController@retrieve");
-Route::post('/ratings/update', "RatingController@update");
-Route::post('/ratings/delete', "RatingController@delete");
-Route::get('/ratings/test', 'RatingController@test');
-
-//Stripes
-Route::post('/stripes/create', "StripeController@create");
-Route::post('/stripes/retrieve', "StripeController@retrieve");
-Route::post('/stripes/update', "StripeController@update");
-Route::post('/stripes/delete', "StripeController@delete");
-Route::get('/stripes/test', 'StripeController@test');
-
-
-//Stripe Card
-Route::post('/stripe_cards/create', "StripeCardController@create");
-Route::post('/stripe_cards/create_charge', "StripeCardController@createCharge");
-Route::post('/stripe_cards/retrieve', "StripeCardController@retrieve");
-Route::post('/stripe_cards/update', "StripeCardController@update");
-Route::post('/stripe_cards/delete', "StripeCardController@delete");
-Route::get('/stripe_cards/test', 'StripeCardController@test');
-
-
-//Payment Methods
-Route::post('/payment_methods/create', "PaymentMethodController@create");
-Route::post('/payment_methods/retrieve', "PaymentMethodController@retrieve");
-Route::post('/payment_methods/update', "PaymentMethodController@update");
-Route::post('/payment_methods/delete', "PaymentMethodController@delete");
-Route::get('/payment_methods/test', 'PaymentMethodController@test');
-
-//Products
-Route::post('/products/create', "ProductController@create");
-Route::post('/products/retrieve', "ProductController@retrieve");
-Route::post('/products/update', "ProductController@update");
-Route::post('/products/delete', "ProductController@delete");
-Route::get('/products/test', 'ProductController@test');
-
-
-//Product Attributes
-Route::post('/product_attributes/create', "ProductAttributeController@create");
-Route::post('/product_attributes/retrieve', "ProductAttributeController@retrieve");
-Route::post('/product_attributes/update', "ProductAttributeController@update");
-Route::post('/product_attributes/delete', "ProductAttributeController@delete");
-Route::get('/product_attributes/test', 'ProductAttributeController@test');
-
-
-//Pricing
-Route::post('/pricings/create', "PricingController@create");
-Route::post('/pricings/retrieve', "PricingController@retrieve");
-Route::post('/pricings/update', "PricingController@update");
-Route::post('/pricings/delete', "PricingController@delete");
-Route::get('/pricings/test', 'PricingController@test');
-
 //Clients
 Route::post('/clients/create', "ClientController@create");
 Route::post('/clients/retrieve', "ClientController@retrieve");
 Route::post('/clients/update', "ClientController@update");
 Route::post('/clients/delete', "ClientController@delete");
 Route::get('/clients/test', 'ClientController@test');
-
-//Paypal Transactions
-Route::post('/paypal_transactions/create', "PaypalTransactionController@create");
-Route::post('/paypal_transactions/retrieve', "PaypalTransactionController@retrieve");
-Route::post('/paypal_transactions/update', "PaypalTransactionController@update");
-Route::post('/paypal_transactions/delete', "PaypalTransactionController@delete");
-Route::get('/paypal_transactions/test', 'PaypalTransactionController@test');
-
-//Messenger Controller
-Route::post('/messenger_groups/create', "MessengerGroupController@create");
-Route::post('/messenger_groups/create_new_issue', "MessengerGroupController@createNewIssue");
-Route::post('/messenger_groups/retrieve', "MessengerGroupController@retrieve");
-Route::post('/messenger_groups/retrieve_summary', "MessengerGroupController@retrieveSummary");
-Route::post('/messenger_groups/retrieve_my_issue', "MessengerGroupController@retrieveMyIssue");
-Route::post('/messenger_groups/update', "MessengerGroupController@update");
-Route::post('/messenger_groups/delete', "MessengerGroupController@delete");
-Route::get('/messenger_groups/test', 'MessengerGroupController@test');
-
-//Messenger Controller
-Route::post('/messenger_messages/create', "MessengerMessageController@create");
-Route::post('/messenger_messages/retrieve', "MessengerMessageController@retrieve");
-Route::post('/messenger_messages/update', "MessengerMessageController@update");
-Route::post('/messenger_messages/delete', "MessengerMessageController@delete");
-Route::get('/messenger_messages/test', 'MessengerMessageController@test');
-
-//Messenger Member Controller
-Route::post('/messenger_members/create', "MessengerMemberController@create");
-Route::post('/messenger_members/retrieve', "MessengerMemberController@retrieve");
-Route::post('/messenger_members/update', "MessengerMemberController@update");
-Route::post('/messenger_members/delete', "MessengerMemberController@delete");
-Route::get('/messenger_members/test', 'MessengerMemberController@test');
-
-//Messenger Message Controller
-Route::post('/messenger_message_files/create', "MessengerMessageFileController@create");
-Route::post('/messenger_message_files/retrieve', "MessengerMessageFileController@retrieve");
-Route::post('/messenger_message_files/update', "MessengerMessageFileController@update");
-Route::post('/messenger_message_files/delete', "MessengerMessageFileController@delete");
-Route::get('/messenger_message_files/test', 'MessengerMessageFileController@test');
-
-
-//Plans Controller
-Route::post('/plans/create', "PlanController@create");
-Route::post('/plans/retrieve', "PlanController@retrieve");
-Route::post('/plans/retrieve_summary', "PlanController@retrieveSummary");
-Route::post('/plans/update', "PlanController@update");
-Route::post('/plans/apply_rewards', "PlanController@applyRewards");
-Route::post('/plans/delete', "PlanController@delete");
-Route::get('/plans/test', 'PlanController@test');
-
-//Coupons Controller
-Route::post('/coupons/create', "CouponController@create");
-Route::post('/coupons/retrieve', "CouponController@retrieve");
-Route::post('/coupons/update', "CouponController@update");
-Route::post('/coupons/delete', "CouponController@delete");
-Route::get('/coupons/test', 'CouponController@test');
 
 //Guides Controller
 Route::post('/guides/create', "GuideController@create");
@@ -374,30 +212,6 @@ Route::post('/emails/verification', 'EmailController@verification');
 Route::post('/emails/changed_password', 'EmailController@changedPassword');
 Route::post('/emails/referral', 'EmailController@referral');
 Route::post('/emails/trial', 'EmailController@trial');
-
-//Wishlists Controller
-Route::post('/wishlists/create', "WishlistController@create");
-Route::post('/wishlists/retrieve', "WishlistController@retrieve");
-Route::post('/wishlists/update', "WishlistController@update");
-Route::post('/wishlists/delete', "WishlistController@delete");
-Route::get('/wishlists/test', 'WishlistController@test');
-
-
-//Wishlists Controller
-Route::post('/shipping_addresses/create', "ShippingAddressController@create");
-Route::post('/shipping_addresses/retrieve', "ShippingAddressController@retrieve");
-Route::post('/shipping_addresses/update', "ShippingAddressController@update");
-Route::post('/shipping_addresses/delete', "ShippingAddressController@delete");
-Route::get('/shipping_addresses/test', 'ShippingAddressController@test');
-
-//Wishlists Controller
-Route::post('/invitations/create', "InvitationController@create");
-Route::post('/invitations/retrieve', "InvitationController@retrieve");
-Route::post('/invitations/update', "InvitationController@update");
-Route::post('/invitations/apply', "InvitationController@apply");
-Route::post('/invitations/delete', "InvitationController@delete");
-Route::get('/invitations/test', 'InvitationController@test');
-
 
 //Notification Settings Controller
 Route::post('/notification_settings/create', "NotificationSettingController@create");
