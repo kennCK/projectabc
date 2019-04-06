@@ -47,7 +47,7 @@
       <span class="sidebar">
         <span class="sidebar-header" style="margin-top: 25px;">Profile Picture</span>
         <span class="image" v-if="user.profile !== null">
-          <img :src="config.BACKEND_URL + user.profile.profile_url" height="auto" width="100%" >
+          <img :src="config.BACKEND_URL + user.profile.url" height="auto" width="100%" >
         </span>
         <span class="image" v-else>
           <i class="fa fa-user-circle-o" ></i>
@@ -171,10 +171,12 @@ export default {
     upload(){
       let formData = new FormData()
       formData.append('file', this.file)
-      formData.append('profile_url', this.file.name)
+      formData.append('file_url', this.file.name)
       formData.append('account_id', this.user.userID)
+      formData.append('payload', 'profile')
+      formData.append('status', null)
       $('#loading').css({display: 'block'})
-      axios.post(this.config.BACKEND_URL + '/account_profiles/create', formData).then(response => {
+      axios.post(this.config.BACKEND_URL + '/images/upload', formData).then(response => {
         if(response.data.data > 0){
           AUTH.checkAuthentication(null)
           $('#loading').css({display: 'none'})

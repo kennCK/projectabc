@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Checkout;
-use App\CheckoutItem;
+use Increment\Marketplace\Models\Checkout;
+use Increment\Marketplace\Models\CheckoutItem;
 use App\Template;
 use App\CustomObject;
 use App\Attribute;

@@ -432,7 +432,7 @@ class APIController extends Controller
   public function retrieveAccountDetails($accountId){
     $result = app('Increment\Account\Http\AccountController')->retrieveById($accountId);
     if(sizeof($result) > 0){
-      $result[0]['profile'] = null;
+      $result[0]['profile'] =  app('Increment\Account\Http\AccountProfileController')->getAccountProfile($accountId);
       $result[0]['information'] = app('Increment\Account\Http\AccountInformationController')->getAccountInformation($accountId);
       $result[0]['billing'] = app('Increment\Account\Http\BillingInformationController')->getBillingInformation($accountId);
       return $result[0];
@@ -446,7 +446,7 @@ class APIController extends Controller
     $result['account_information_flag'] = false;
     $result['account_profile_flag'] = false;
     $result['account_information'] = app('Increment\Account\Http\AccountInformationController')->getAccountInformation($accountId);
-    $result['account_profile'] = null;
+    $result['account_profile'] = app('Increment\Account\Http\AccountProfileController')->getAccountProfile($accountId);
     $result['checkout'] = app('Increment\Marketplace\Http\CheckoutController')->getCheckoutItemByAccountId($accountId);
     $result['plan'] = app('Increment\Plan\Http\PlanController')->getCurrentPlan($accountId, $result['created_at']);
     $result['notification_settings'] = app('App\Http\Controllers\NotificationSettingController')->getNotificationSettings($accountId);
