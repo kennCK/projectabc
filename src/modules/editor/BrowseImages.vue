@@ -24,10 +24,10 @@
         <label class="error">Loading...</label>
       </span>
       <span class="bottom-action" v-if="prevIndex !== null && data !== null">
-        <button class="btn btn-danger" @click="cancel()" v-if="view === 'editor' && view === 'table-view'">Cancel</button>
+        <button class="btn btn-danger" @click="cancel()" v-if="view === 'editor' || view === 'table-view'">Cancel</button>
         <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'profile-view' || view === 'signature-view'">Cancel</button>
         <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'featured-view' || view === 'others-view'">Cancel</button>
-        <button class="btn btn-primary" @click="apply()" v-if="view === 'editor' && view === 'table-view'">Apply</button>
+        <button class="btn btn-primary" @click="apply()" v-if="view === 'editor' || view === 'table-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('profile')" v-if="view === 'profile-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('signature')" v-if="view === 'signature-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProduct('featured')" v-if="view === 'featured-view'">Apply</button>
@@ -174,7 +174,7 @@ export default {
         }
       }
       this.loadingFlag = true
-      this.APIRequest('account_images/retrieve', parameter).done(response => {
+      this.APIRequest('images/retrieve', parameter).done(response => {
         this.loadingFlag = false
         if(response.data.length > 0){
           this.data = response.data

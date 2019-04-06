@@ -52,11 +52,15 @@
         <span class="image" v-else>
           <i class="fa fa-user-circle-o" ></i>
         </span>
-        <button class="btn btn-primary custom-block" style="margin-top: 5px;" @click="addImage()">Upload New Profile
+        <button class="btn btn-primary custom-block" style="margin-top: 5px;" @click="addImage()">Upload new profile
           <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
+        </button>
+        <button class="btn btn-warning custom-block" style="margin-top: 5px;" @click="showImages()">Select from images
         </button>
       </span>
     </span>
+    <browse-images-modal :object="user.profile" v-if="user.profile !== null"></browse-images-modal>
+    <browse-images-modal :object="newProfile" v-if="user.profile === null"></browse-images-modal>
   </div>
 </template>
 <style scoped>
@@ -147,8 +151,15 @@ export default {
       tokenData: AUTH.tokenData,
       config: CONFIG,
       file: null,
-      data: null
+      data: null,
+      newProfile: {
+        account_id: AUTH.user.userID,
+        url: null
+      }
     }
+  },
+  components: {
+    'browse-images-modal': require('modules/image/BrowseModal.vue')
   },
   methods: {
     addImage(){
@@ -208,12 +219,34 @@ export default {
         })
       }
     },
+    updatePhoto(object){
+      this.APIRequest('account_profiles/update', object).then(response => {
+        if(response.data === true){
+          this.hideImages()
+          this.retrieve()
+        }
+      })
+    },
+    createPhoto(object){
+      this.APIRequest('account_profiles/create', object).then(response => {
+        if(response.data > 0){
+          this.hideImages()
+          AUTH.checkAuthentication()
+        }
+      })
+    },
     validate(){
       let i = this.data
       if(i.first_name !== null && i.last_name !== null && i.sex !== null){
         return true
       }
       return false
+    },
+    showImages(){
+      $('#browseImagesModal').modal('show')
+    },
+    hideImages(){
+      $('#browseImagesModal').modal('hide')
     }
   }
 }

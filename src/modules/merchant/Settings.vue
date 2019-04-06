@@ -10,15 +10,36 @@
       </span>
       <span class="inputs">
         <div class="form-group" style="margin-top: 25px;">
-          <label for="address">Order Number Prefix</label>
-          <input type="text" class="form-control" placeholder="Optional" v-model="data.order_suffix">
+          <label for="address">Business Name <label class="text-danger">*</label></label>
+          <input type="text" class="form-control" placeholder="Business Name" v-model="data.name">
+        </div>
+        <div class="form-group" style="margin-top: 25px;">
+          <label for="address">Business Address <label class="text-danger">*</label></label>
+          <input type="text" class="form-control" placeholder="Business Address" v-model="data.address">
+        </div>
+        <div class="form-group" style="margin-top: 25px;">
+          <label for="address">Prefix <label class="text-danger">*</label></label>
+          <input type="text" class="form-control" placeholder="Invoice Prefix eq. IDF" v-model="data.prefix">
         </div>
         
         <button class="btn btn-primary" style="margin-bottom: 25px;" @click="update()">Update</button>
       </span>
       <span class="sidebar">
+        <span class="sidebar-header" style="margin-top: 25px;">Business Logo</span>
+        <span class="image" v-if="data.logo !== null">
+          <img :src="config.BACKEND_URL + data.logo" height="auto" width="100%" >
+        </span>
+        <span class="image" v-else>
+          <i class="fa fa-image" ></i>
+        </span>
+        <button class="btn btn-primary custom-block" style="margin-top: 5px;" @click="addImage()">Upload new logo
+          <input type="file" id="merchantLogo" accept="image/*" @change="setupFile($event)">
+        </button>
+        <button class="btn btn-warning custom-block" style="margin-top: 5px;" @click="showImages()">Select from images
+        </button>
       </span>
     </span>
+    <browse-images-modal :object="photoObject"></browse-images-modal>
   </div>
 </template>
 <style scoped>
@@ -26,6 +47,7 @@
   width: 95%;
   float: left;
   margin-left: 5%;
+  margin-bottom: 200px;
 }
 .header{
   width: 100%;
@@ -128,11 +150,61 @@ export default {
       tokenData: AUTH.tokenData,
       config: CONFIG,
       data: null,
+      file: null,
       errorMessage: null,
-      successMessage: null
+      successMessage: null,
+      newData: {
+        account_id: AUTH.user.userID,
+        prefix: null,
+        logo: null,
+        address: null,
+        name: null
+      },
+      createFlag: false,
+      photoObject: {
+        url: null
+      }
     }
   },
+  components: {
+    'browse-images-modal': require('modules/image/BrowseModal.vue')
+  },
   methods: {
+    addImage(){
+      $('#merchantLogo')[0].click()
+    },
+    setupFile(event){
+      let files = event.target.files || event.dataTransfer.files
+      if(!files.length){
+        return false
+      }else{
+        this.file = files[0]
+        this.createFile(files[0])
+      }
+    },
+    createFile(file){
+      let fileReader = new FileReader()
+      fileReader.readAsDataURL(event.target.files[0])
+      this.upload()
+    },
+    upload(){
+      let formData = new FormData()
+      formData.append('file', this.file)
+      formData.append('file_url', this.file.name)
+      formData.append('account_id', this.user.userID)
+      formData.append('payload', 'merchant')
+      formData.append('name', this.data.name)
+      formData.append('address', this.data.address)
+      formData.append('prefix', this.data.prefix)
+      formData.append('status', null)
+      $('#loading').css({display: 'block'})
+      axios.post(this.config.BACKEND_URL + '/images/upload', formData).then(response => {
+        if(response.data.data > 0){
+          this.updatePhoto(response.data)
+          $('#loading').css({display: 'none'})
+        }
+      })
+    },
     retrieve(){
       let parameter = {
         condition: [{
@@ -141,19 +213,19 @@ export default {
           clause: '='
         }]
       }
-      this.APIRequest('accounts/retrieve', parameter).then(response => {
+      this.APIRequest('merchants/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data[0]
+          this.createFlag = false
+        }else{
+          this.createFlag = true
+          this.data = this.newData
         }
       })
     },
     update(){
-      if(this.validate()){
-        let parameter = {
-          id: this.data.id,
-          order_suffix: this.data.order_suffix
-        }
-        this.APIRequest('accounts/update_verification', parameter).then(response => {
+      if(this.createFlag === false){
+        this.APIRequest('merchants/update', this.data).then(response => {
           if(response.data === true){
             this.retrieve()
             this.successMessage = 'Successfully Updated!'
@@ -163,16 +235,37 @@ export default {
             this.errorMessage = 'Unable to Update! Please contact the administrator.'
           }
         })
+      }else{
+        this.create()
       }
     },
-    validate(){
-      let temp = this.data
-      if(temp.order_suffix !== null && temp.order_suffix !== ''){
-        return true
-      }else{
-        this.errorMessage = 'Please fill up all required fields.'
-        return false
-      }
+    create(){
+      this.APIRequest('merchants/create', this.data).then(response => {
+        if(response.data > 1){
+          this.retrieve()
+          this.successMessage = 'Successfully Updated!'
+          this.errorMessage = null
+        }else{
+          this.successMessage = null
+          this.errorMessage = 'Unable to Update! Please contact the administrator.'
+        }
+      })
+    },
+    updatePhoto(object){
+      this.data.logo = object.url
+      this.update()
+      this.hideImages()
+    },
+    createPhoto(object){
+      this.data.logo = object.url
+      this.update()
+      this.hideImages()
+    },
+    showImages(){
+      $('#browseImagesModal').modal('show')
+    },
+    hideImages(){
+      $('#browseImagesModal').modal('hide')
     }
   }
 }
