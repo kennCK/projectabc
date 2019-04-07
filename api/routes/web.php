@@ -147,10 +147,6 @@ Route::post('/checkouts/update_status', "CheckoutController@updateStatus");
 Route::post('/checkouts/delete', "CheckoutController@delete");
 Route::get('/checkouts/test', 'CheckoutController@test');
 
-//Orders
-Route::post('/orders/retrieve_orders', "CheckoutController@retrieveOrders");
-Route::post('/orders/retrieve_order_items', "CheckoutController@retrieveOrderItems");
-
 
 //Checkout Templates
 Route::post('/checkout_templates/create', "CheckoutTemplateController@create");
