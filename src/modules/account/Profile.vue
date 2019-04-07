@@ -188,7 +188,17 @@ export default {
       formData.append('status', null)
       $('#loading').css({display: 'block'})
       axios.post(this.config.BACKEND_URL + '/images/upload', formData).then(response => {
-        if(response.data.data > 0){
+        if(response.data.data !== null){
+          if(this.user.profile !== null){
+            this.user.profile.url = response.data.data
+            this.updatePhoto(this.user.profile)
+          }else{
+            let parameter = {
+              account_id: this.user.userID,
+              url: response.data.data
+            }
+            this.createPhoto(parameter)
+          }
           AUTH.checkAuthentication(null)
           $('#loading').css({display: 'none'})
         }
