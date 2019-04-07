@@ -323,7 +323,7 @@ export default {
         sub_total: parseInt(price) * parseInt(multiplier),
         tax: 0,
         discount: 0,
-        total_amount: parseInt(price) * parseInt(multiplier),
+        total: parseInt(price) * parseInt(multiplier),
         status: 'added'
       }
       this.APIRequest('plans/create', parameter).done(response => {
