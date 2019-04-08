@@ -243,3 +243,9 @@ Route::post($route.'/retrieve', "ActiveTemplateController@retrieve");
 Route::post($route.'/update', "ActiveTemplateController@update");
 Route::post($route.'/delete', "ActiveTemplateController@delete");
 Route::get($route.'/test', 'ActiveTemplateController@test');
+
+// Messenger Groups Custom
+$route = env('PACKAGE_ROUTE', '').'/custom_messenger_groups/';
+$controller = 'MessengerGroupController@';
+Route::post($route.'create', $controller."create");
+Route::post($route.'retrieve', $controller."retrieve");
