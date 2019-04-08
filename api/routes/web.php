@@ -10,14 +10,14 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+$route = env('PACKAGE_ROUTE', '');
 Route::get('/', function () {
     return "heel";//view('welcome');
 });
 /*
   Accessing uploaded files
 */
-Route::get('storage/profiles/{filename}', function ($filename)
+Route::get($route.'/storage/profiles/{filename}', function ($filename)
 {
     $path = storage_path('/app/profiles/' . $filename);
 
@@ -33,7 +33,7 @@ Route::get('storage/profiles/{filename}', function ($filename)
 
     return $response;
 });
-Route::get('storage/logo/{filename}', function ($filename)
+Route::get($route.'/storage/logo/{filename}', function ($filename)
 {
     $path = storage_path('/app/logos/' . $filename);
 
@@ -70,155 +70,176 @@ Route::get('/migrate', function () {
 });
 
 /* Authentication Router */
-Route::resource('authenticate', 'AuthenticateController', ['only' => ['index']]);
-Route::post('authenticate', 'AuthenticateController@authenticate');
-Route::post('authenticate/user', 'AuthenticateController@getAuthenticatedUser');
-Route::post('authenticate/refresh', 'AuthenticateController@refreshToken');
-Route::post('authenticate/invalidate', 'AuthenticateController@deauthenticate');
+$route = env('PACKAGE_ROUTE', '').'/authenticate';
+Route::resource($route, 'AuthenticateController', ['only' => ['index']]);
+Route::post($route, 'AuthenticateController@authenticate');
+Route::post($route.'/user', 'AuthenticateController@getAuthenticatedUser');
+Route::post($route.'/refresh', 'AuthenticateController@refreshToken');
+Route::post($route.'/invalidate', 'AuthenticateController@deauthenticate');
+
 
 //Partners Controller
-Route::post('/partners/retrieve', "PartnerController@retrieve");
+$route = env('PACKAGE_ROUTE', '').'/partners';
+Route::post($route.'/retrieve', "PartnerController@retrieve");
 
 //Templates
-Route::post('/templates/create', "TemplateController@create");
-Route::post('/templates/retrieve', "TemplateController@retrieve");
-Route::post('/templates/update', "TemplateController@update");
-Route::post('/templates/delete', "TemplateController@delete");
-Route::get('/templates/test', 'TemplateController@test');
-Route::post('/templates/retrieve_templates_only', 'TemplateController@retriveTemplateOnly');
+$route = env('PACKAGE_ROUTE', '').'/templates';
+Route::post($route.'/create', "TemplateController@create");
+Route::post($route.'/retrieve', "TemplateController@retrieve");
+Route::post($route.'/update', "TemplateController@update");
+Route::post($route.'/delete', "TemplateController@delete");
+Route::get($route.'/test', 'TemplateController@test');
+Route::post($route.'/retrieve_templates_only', 'TemplateController@retriveTemplateOnly');
 
 
 //Objects
-Route::post('/objects/create', "ObjectController@create");
-Route::post('/objects/retrieve', "ObjectController@retrieve");
-Route::post('/objects/update', "ObjectController@update");
-Route::post('/objects/delete', "ObjectController@delete");
-Route::get('/objects/test', 'ObjectController@test');
-Route::post('/objects/upload', 'ObjectController@upload');
-Route::post('/objects/retrieve_dynamic_without_attributes', 'ObjectController@retrieveDynamicWithoutAttributes');
+$route = env('PACKAGE_ROUTE', '').'/objects';
+Route::post($route.'/create', "ObjectController@create");
+Route::post($route.'/retrieve', "ObjectController@retrieve");
+Route::post($route.'/update', "ObjectController@update");
+Route::post($route.'/delete', "ObjectController@delete");
+Route::get($route.'/test', 'ObjectController@test');
+Route::post($route.'/upload', 'ObjectController@upload');
+Route::post($route.'/retrieve_dynamic_without_attributes', 'ObjectController@retrieveDynamicWithoutAttributes');
 
 //Attributes
-Route::post('/attributes/create', "AttributeController@create");
-Route::post('/attributes/retrieve', "AttributeController@retrieve");
-Route::post('/attributes/update', "AttributeController@update");
-Route::post('/attributes/update_on_table_view', "AttributeController@updateTableView");
-Route::post('/attributes/delete', "AttributeController@delete");
-Route::get('/attributes/test', 'AttributeController@test');
+$route = env('PACKAGE_ROUTE', '').'/attributes';
+Route::post($route.'/create', "AttributeController@create");
+Route::post($route.'/retrieve', "AttributeController@retrieve");
+Route::post($route.'/update', "AttributeController@update");
+Route::post($route.'/update_on_table_view', "AttributeController@updateTableView");
+Route::post($route.'/delete', "AttributeController@delete");
+Route::get($route.'/test', 'AttributeController@test');
 
 //Contents
-Route::post('/contents/create', "ContentController@create");
-Route::post('/contents/retrieve', "ContentController@retrieve");
-Route::post('/contents/update', "ContentController@update");
-Route::post('/contents/delete', "ContentController@delete");
-Route::get('/contents/test', 'ContentController@test');
+$route = env('PACKAGE_ROUTE', '').'/contents';
+Route::post($route.'/create', "ContentController@create");
+Route::post($route.'/retrieve', "ContentController@retrieve");
+Route::post($route.'/update', "ContentController@update");
+Route::post($route.'/delete', "ContentController@delete");
+Route::get($route.'/test', 'ContentController@test');
 
 //Employees
-Route::post('/employees/create', "EmployeeController@create");
-Route::post('/employees/retrieve', "EmployeeController@retrieve");
-Route::post('/employees/update', "EmployeeController@update");
-Route::post('/employees/update_by_profile', "EmployeeController@updateByProfile");
-Route::post('/employees/delete', "EmployeeController@delete");
-Route::get('/employees/test', 'EmployeeController@test');
-Route::post('/employees/upload', "EmployeeController@upload");
-Route::post('/employees/retrieve_on_update', "EmployeeController@retrieveOnUpdate");
-Route::post('/employees/retreve_table', "EmployeeController@getEmployeesForTable");
+$route = env('PACKAGE_ROUTE', '').'/employees';
+Route::post($route.'/create', "EmployeeController@create");
+Route::post($route.'/retrieve', "EmployeeController@retrieve");
+Route::post($route.'/update', "EmployeeController@update");
+Route::post($route.'/update_by_profile', "EmployeeController@updateByProfile");
+Route::post($route.'/delete', "EmployeeController@delete");
+Route::get($route.'/test', 'EmployeeController@test');
+Route::post($route.'/upload', "EmployeeController@upload");
+Route::post($route.'/retrieve_on_update', "EmployeeController@retrieveOnUpdate");
+Route::post($route.'/retreve_table', "EmployeeController@getEmployeesForTable");
 
 //Employee Columns
-Route::post('/employee_columns/create', "EmployeeColumnController@create");
-Route::post('/employee_columns/retrieve', "EmployeeColumnController@retrieve");
-Route::post('/employee_columns/update', "EmployeeColumnController@update");
-Route::post('/employee_columns/delete', "EmployeeColumnController@delete");
-Route::get('/employee_columns/test', 'EmployeeColumnController@test');
+$route = env('PACKAGE_ROUTE', '').'/employee_columns';
+Route::post($route.'/create', "EmployeeColumnController@create");
+Route::post($route.'/retrieve', "EmployeeColumnController@retrieve");
+Route::post($route.'/update', "EmployeeColumnController@update");
+Route::post($route.'/delete', "EmployeeColumnController@delete");
+Route::get($route.'/test', 'EmployeeColumnController@test');
 
 //Marketplace
-Route::post('/marketplace/create', "MarketplaceController@create");
-Route::post('/marketplace/retrieve', "MarketplaceController@retrieve");
-Route::post('/marketplace/update', "MarketplaceController@update");
-Route::post('/marketplace/delete', "MarketplaceController@delete");
-Route::get('/marketplace/test', 'MarketplaceController@test');
+$route = env('PACKAGE_ROUTE', '').'/marketplace';
+Route::post($route.'/create', "MarketplaceController@create");
+Route::post($route.'/retrieve', "MarketplaceController@retrieve");
+Route::post($route.'/update', "MarketplaceController@update");
+Route::post($route.'/delete', "MarketplaceController@delete");
+Route::get($route.'/test', 'MarketplaceController@test');
 
 //Checkouts
-Route::post('/checkouts/create', "CheckoutController@create");
-Route::post('/checkouts/retrieve', "CheckoutController@retrieve");
-Route::post('/checkouts/retrieve_summary', "CheckoutController@retrieveSummary");
-Route::post('/checkouts/update', "CheckoutController@update");
-Route::post('/checkouts/update_remove_partner', "CheckoutController@updateRemovePartner");
-Route::post('/checkouts/update_status', "CheckoutController@updateStatus");
-Route::post('/checkouts/delete', "CheckoutController@delete");
-Route::get('/checkouts/test', 'CheckoutController@test');
+$route = env('PACKAGE_ROUTE', '').'/checkouts';
+Route::post($route.'/create', "CheckoutController@create");
+Route::post($route.'/retrieve', "CheckoutController@retrieve");
+Route::post($route.'/retrieve_summary', "CheckoutController@retrieveSummary");
+Route::post($route.'/update', "CheckoutController@update");
+Route::post($route.'/update_remove_partner', "CheckoutController@updateRemovePartner");
+Route::post($route.'/update_status', "CheckoutController@updateStatus");
+Route::post($route.'/delete', "CheckoutController@delete");
+Route::get($route.'/test', 'CheckoutController@test');
 
 
 //Checkout Templates
-Route::post('/checkout_templates/create', "CheckoutTemplateController@create");
-Route::post('/checkout_templates/retrieve', "CheckoutTemplateController@retrieve");
-Route::post('/checkout_templates/update', "CheckoutTemplateController@update");
-Route::post('/checkout_templates/delete', "CheckoutTemplateController@delete");
-Route::get('/checkout_templates/test', 'CheckoutTemplateController@test');
+$route = env('PACKAGE_ROUTE', '').'/checkout_templates';
+Route::post($route.'/create', "CheckoutTemplateController@create");
+Route::post($route.'/retrieve', "CheckoutTemplateController@retrieve");
+Route::post($route.'/update', "CheckoutTemplateController@update");
+Route::post($route.'/delete', "CheckoutTemplateController@delete");
+Route::get($route.'/test', 'CheckoutTemplateController@test');
 
 //Clients
-Route::post('/clients/create', "ClientController@create");
-Route::post('/clients/retrieve', "ClientController@retrieve");
-Route::post('/clients/update', "ClientController@update");
-Route::post('/clients/delete', "ClientController@delete");
-Route::get('/clients/test', 'ClientController@test');
+$route = env('PACKAGE_ROUTE', '').'/clients';
+Route::post($route.'/create', "ClientController@create");
+Route::post($route.'/retrieve', "ClientController@retrieve");
+Route::post($route.'/update', "ClientController@update");
+Route::post($route.'/delete', "ClientController@delete");
+Route::get($route.'/test', 'ClientController@test');
 
 //Guides Controller
-Route::post('/guides/create', "GuideController@create");
-Route::post('/guides/retrieve', "GuideController@retrieve");
-Route::post('/guides/update', "GuideController@update");
-Route::post('/guides/delete', "GuideController@delete");
-Route::get('/guides/test', 'GuideController@test');
+$route = env('PACKAGE_ROUTE', '').'/guides';
+Route::post($route.'/create', "GuideController@create");
+Route::post($route.'/retrieve', "GuideController@retrieve");
+Route::post($route.'/update', "GuideController@update");
+Route::post($route.'/delete', "GuideController@delete");
+Route::get($route.'/test', 'GuideController@test');
 
 //Emails Controller
-Route::post('/emails/create', "EmailController@create");
-Route::post('/emails/retrieve', "EmailController@retrieve");
-Route::post('/emails/update', "EmailController@update");
-Route::post('/emails/delete', "EmailController@delete");
-Route::post('/emails/reset_password', 'EmailController@resetPassword');
-Route::post('/emails/verification', 'EmailController@verification');
-Route::post('/emails/changed_password', 'EmailController@changedPassword');
-Route::post('/emails/referral', 'EmailController@referral');
-Route::post('/emails/trial', 'EmailController@trial');
+$route = env('PACKAGE_ROUTE', '').'/emails';
+Route::post($route.'/create', "EmailController@create");
+Route::post($route.'/retrieve', "EmailController@retrieve");
+Route::post($route.'/update', "EmailController@update");
+Route::post($route.'/delete', "EmailController@delete");
+Route::post($route.'/reset_password', 'EmailController@resetPassword');
+Route::post($route.'/verification', 'EmailController@verification');
+Route::post($route.'/changed_password', 'EmailController@changedPassword');
+Route::post($route.'/referral', 'EmailController@referral');
+Route::post($route.'/trial', 'EmailController@trial');
 
 //Notification Settings Controller
-Route::post('/notification_settings/create', "NotificationSettingController@create");
-Route::post('/notification_settings/retrieve', "NotificationSettingController@retrieve");
-Route::post('/notification_settings/update', "NotificationSettingController@update");
-Route::post('/notification_settings/delete', "NotificationSettingController@delete");
-Route::get('/notification_settings/test', 'NotificationSettingController@test');
+$route = env('PACKAGE_ROUTE', '').'/notification_settings';
+Route::post($route.'/create', "NotificationSettingController@create");
+Route::post($route.'/retrieve', "NotificationSettingController@retrieve");
+Route::post($route.'/update', "NotificationSettingController@update");
+Route::post($route.'/delete', "NotificationSettingController@delete");
+Route::get($route.'/test', 'NotificationSettingController@test');
 
 //Profile Controller
-Route::post('/profiles/create', "ProfileController@create");
-Route::post('/profiles/retrieve', "ProfileController@retrieve");
-Route::post('/profiles/update', "ProfileController@update");
-Route::post('/profiles/delete', "ProfileController@delete");
-Route::get('/profiles/test', 'ProfileController@test');
+$route = env('PACKAGE_ROUTE', '').'/profiles';
+Route::post($route.'/create', "ProfileController@create");
+Route::post($route.'/retrieve', "ProfileController@retrieve");
+Route::post($route.'/update', "ProfileController@update");
+Route::post($route.'/delete', "ProfileController@delete");
+Route::get($route.'/test', 'ProfileController@test');
 
 //Government Controller
-Route::post('/profile_variables/create', "ProfileVariableController@create");
-Route::post('/profile_variables/retrieve', "ProfileVariableController@retrieve");
-Route::post('/profile_variables/update', "ProfileVariableController@update");
-Route::post('/profile_variables/delete', "ProfileVariableController@delete");
-Route::get('/profile_variables/test', 'ProfileVariableController@test');
+$route = env('PACKAGE_ROUTE', '').'/profile_variables';
+Route::post($route.'/create', "ProfileVariableController@create");
+Route::post($route.'/retrieve', "ProfileVariableController@retrieve");
+Route::post($route.'/update', "ProfileVariableController@update");
+Route::post($route.'/delete', "ProfileVariableController@delete");
+Route::get($route.'/test', 'ProfileVariableController@test');
 
 // Google Spreadsheets
-Route::get('/gsheets/create', 'GoogleSheetController@generate');
-Route::post('/gsheets/auth', 'GoogleSheetController@getAuthUrl');
-Route::post('/gsheets/create_file', 'GoogleSheetController@createNewGoogleSheet');
-Route::post('/gsheets/read_file', 'GoogleSheetController@readGoogleSheet');
-Route::post('/gsheets/save_token', 'GoogleSheetController@setAccessToken');
-Route::get('/gsheets/sample', 'GoogleSheetController@sample');
+$route = env('PACKAGE_ROUTE', '').'/gsheets';
+Route::get($route.'/create', 'GoogleSheetController@generate');
+Route::post($route.'/auth', 'GoogleSheetController@getAuthUrl');
+Route::post($route.'/create_file', 'GoogleSheetController@createNewGoogleSheet');
+Route::post($route.'/read_file', 'GoogleSheetController@readGoogleSheet');
+Route::post($route.'/save_token', 'GoogleSheetController@setAccessToken');
+Route::get($route.'/sample', 'GoogleSheetController@sample');
 
 //Account Google Sheet Controller
-Route::post('/account_gsheets/create', "AccountGoogleSheetController@create");
-Route::post('/account_gsheets/retrieve', "AccountGoogleSheetController@retrieve");
-Route::post('/account_gsheets/update', "AccountGoogleSheetController@update");
-Route::post('/account_gsheets/delete', "AccountGoogleSheetController@delete");
-Route::get('/account_gsheets/test', 'AccountGoogleSheetController@test');
+$route = env('PACKAGE_ROUTE', '').'/account_gsheets';
+Route::post($route.'/create', "AccountGoogleSheetController@create");
+Route::post($route.'/retrieve', "AccountGoogleSheetController@retrieve");
+Route::post($route.'/update', "AccountGoogleSheetController@update");
+Route::post($route.'/delete', "AccountGoogleSheetController@delete");
+Route::get($route.'/test', 'AccountGoogleSheetController@test');
 
 //Active Template Controller
-Route::post('/active_templates/create', "ActiveTemplateController@create");
-Route::post('/active_templates/retrieve', "ActiveTemplateController@retrieve");
-Route::post('/active_templates/update', "ActiveTemplateController@update");
-Route::post('/active_templates/delete', "ActiveTemplateController@delete");
-Route::get('/active_templates/test', 'ActiveTemplateController@test');
+$route = env('PACKAGE_ROUTE', '').'/active_templates';  
+Route::post($route.'/create', "ActiveTemplateController@create");
+Route::post($route.'/retrieve', "ActiveTemplateController@retrieve");
+Route::post($route.'/update', "ActiveTemplateController@update");
+Route::post($route.'/delete', "ActiveTemplateController@delete");
+Route::get($route.'/test', 'ActiveTemplateController@test');

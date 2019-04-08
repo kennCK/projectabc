@@ -1,6 +1,6 @@
 <template>
   <div class="holder" v-if="group !== null">
-    <img :src="config.BACKEND_URL + group.title.profile.profile_url" class="profile" v-if="group.title.profile !== null">
+    <img :src="config.BACKEND_URL + group.title.profile.url" class="profile" v-if="group.title.profile !== null">
     <i class="fa fa-user-circle-o" v-else></i>
     <label>{{group.title.username}}
       <!-- <span class="badge badge-primary">{{group.total_members}}</span> -->

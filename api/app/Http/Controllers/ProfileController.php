@@ -45,7 +45,7 @@ class ProfileController extends APIController
         $counter = 0;
         foreach ($this->response['data'] as $key) {
           $id = $this->response['data'][$i]['id'];
-          $this->response['data'][$i]['total_comments'] = $this->getComments('profiles', $id);
+          $this->response['data'][$i]['total_comments'] = app('Increment\Common\Comment\Http\CommentController')->getComments('profiles', $id);
           $this->response['data'][$i]['active'] = false;
           $this->response['data'][$i]['checkout'] = app('Increment\Marketplace\Http\CheckoutController')->getCheckout('profile', $id, $accountId);
           $this->response['data'][$i]['counter'] = $counter;

@@ -2,7 +2,7 @@
   <div class="partner" v-if="item !== null && item.account !== null">
     <div class="partner-container">
       <div class="partner-profile">
-        <img :src="config.BACKEND_URL + item.account.profile.profile_url" v-if="item.account.profile !== null">
+        <img :src="config.BACKEND_URL + item.account.profile.url" v-if="item.account.profile !== null">
         <i class="fa fa-user-circle-o" v-else></i>
       </div>
       <div class="partner-info">
