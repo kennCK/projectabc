@@ -148,7 +148,7 @@ Route::post($route.'/delete', "MarketplaceController@delete");
 Route::get($route.'/test', 'MarketplaceController@test');
 
 //Checkouts
-$route = env('PACKAGE_ROUTE', '').'/checkouts';
+$route = env('PACKAGE_ROUTE', '').'/custom_checkouts';
 Route::post($route.'/create', "CheckoutController@create");
 Route::post($route.'/retrieve', "CheckoutController@retrieve");
 Route::post($route.'/retrieve_summary', "CheckoutController@retrieveSummary");
