@@ -32,6 +32,10 @@
         <span class="image" v-else>
           <i class="fa fa-image" ></i>
         </span>
+        <span style="width: 100%; float: left; text-align: center;">
+          <label v-if="data.status === 'not_verified'" class="text-grey"><i>Not verified</i></label>
+          <label v-else class="text-primary"><i>Verified</i></label>
+        </span>
         <button class="btn btn-primary custom-block" style="margin-top: 5px;" @click="addImage()">Upload new logo
           <input type="file" id="merchantLogo" accept="image/*" @change="setupFile($event)">
         </button>
@@ -199,8 +203,11 @@ export default {
       formData.append('status', null)
       $('#loading').css({display: 'block'})
       axios.post(this.config.BACKEND_URL + '/images/upload', formData).then(response => {
-        if(response.data.data > 0){
-          this.updatePhoto(response.data)
+        if(response.data.data !== null){
+          let parameter = {
+            url: response.data.data
+          }
+          this.updatePhoto(parameter)
           $('#loading').css({display: 'none'})
         }
       })
@@ -209,7 +216,7 @@ export default {
       let parameter = {
         condition: [{
           value: this.user.userID,
-          column: 'id',
+          column: 'account_id',
           clause: '='
         }]
       }

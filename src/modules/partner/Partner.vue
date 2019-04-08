@@ -2,19 +2,19 @@
   <div class="partner" v-if="item !== null && item.account !== null">
     <div class="partner-container">
       <div class="partner-profile">
-        <img :src="config.BACKEND_URL + item.account.profile.url" v-if="item.account.profile !== null">
+        <img :src="config.BACKEND_URL + item.logo" v-if="item.logo !== null">
         <i class="fa fa-user-circle-o" v-else></i>
       </div>
       <div class="partner-info">
-        <label><h5>{{item.account.billing.company}}</h5></label>
-        <label><i class="fas fa-map-marker-alt"></i>{{item.account.billing.address}}</label>
+        <label><h5>{{item.name}}</h5></label>
+        <label><i class="fas fa-map-marker-alt"></i>{{item.address}}</label>
         <label class="text-warning action-link" v-on:click="redirect('/messenger/' + item.account.username)"><i class="fas fa-envelope"></i>Send Message</label>
         <label class="text-danger action-link"><i class="fas fa-store"></i>View Store</label>
       </div>
       <div class="partner-reviews">
         <label class="input-group">
-          <input type="text" style="border-top-right-radius: 0px;border-bottom-right-radius: 0px;" v-bind:id="'code' + item.account.id" class="form-control" v-model="item.account.code">
-          <button class="btn btn-primary" @click="copy('code' + item.account.id)" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;"><i class="fa fa-copy"></i></button>
+          <input type="text" style="border-top-right-radius: 0px;border-bottom-right-radius: 0px;" v-bind:id="'code' + item.id" class="form-control" v-model="item.code">
+          <button class="btn btn-primary" @click="copy('code' + item.id)" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;"><i class="fa fa-copy"></i></button>
         </label>
         <label class="reviews">
           <span class="badge badge-warning">{{Math.floor(item.rating.avg)}}</span>
