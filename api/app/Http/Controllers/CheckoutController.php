@@ -24,6 +24,7 @@ class CheckoutController extends APIController
     public $paymentMethodClass = 'Increment\Payment\Http\PaymentMethodController';
     public $paypalTransactionClass = 'Increment\Payment\Http\PaypalTransactionController';
     public $shippingAddressClass = 'Increment\Marketplace\Http\ShippingAddressController';
+    public $merchantClass = 'Increment\Marketplace\Http\MerchantController';
 
     function __construct(){
     	$this->model = new Checkout();
@@ -46,7 +47,7 @@ class CheckoutController extends APIController
         $i = 0;
         foreach ($result as $key) {
           $price = $this->getPrice($result[$i], $data['account_id']);
-          $this->response['data'][$i]['partner_details'] = ($result[$i]['partner'] != null && $result[$i]['partner'] != '' && $result[$i]['partner'] > 0) ? $this->retrieveAccountDetails($result[$i]['partner']) : null;
+          $this->response['data'][$i]['merchant'] = ($result[$i]['merchant_id'] != null && $result[$i]['merchant_id'] != '' && $result[$i]['merchant_id'] > 0) ? app($this->merchantClass)->getMerchant($result[$i]['merchant_id']) : null;
           $this->response['data'][$i]['account_details'] = $this->retrieveAccountDetails($data['account_id']); 
           $this->response['data'][$i]['items'] = $this->getItems($result[$i]['id'], $price, $data['account_id']);
           $this->response['data'][$i]['sub_total'] = $this->subTotal;
@@ -140,7 +141,7 @@ class CheckoutController extends APIController
       $price = 0;
       if(sizeof($checkout) > 0){
         $result = null;
-        if($checkout['partner'] != null && $checkout['partner'] != '' && $checkout['partner'] > 0){
+        if($checkout['merchant_id'] != null && $checkout['merchant_id'] != '' && $checkout['merchant_id'] > 0){
           $product = Product::where('title', '=', 'id_printing')->orderBy('created_at', 'asc')->first();
           if($product){
             $productId = $product->id;

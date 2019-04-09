@@ -34,7 +34,7 @@
         </span>
         <span style="width: 100%; float: left; text-align: center;">
           <label v-if="data.status === 'not_verified'" class="text-grey"><i>Not verified</i></label>
-          <label v-else class="text-primary"><i>Verified</i></label>
+          <label v-if="data.status === 'verified'" class="text-primary"><i>Verified</i></label>
         </span>
         <button class="btn btn-primary custom-block" style="margin-top: 5px;" @click="addImage()">Upload new logo
           <input type="file" id="merchantLogo" accept="image/*" @change="setupFile($event)">
@@ -248,7 +248,7 @@ export default {
     },
     create(){
       this.APIRequest('merchants/create', this.data).then(response => {
-        if(response.data > 1){
+        if(response.data > 0){
           this.retrieve()
           this.successMessage = 'Successfully Updated!'
           this.errorMessage = null
