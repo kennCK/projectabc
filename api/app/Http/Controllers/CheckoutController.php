@@ -92,7 +92,7 @@ class CheckoutController extends APIController
         foreach ($result as $key) {
           $this->response['data'][$i]['order_date'] = Carbon::createFromFormat('Y-m-d H:i:s', $result[$i]['created_at'])->copy()->tz('Asia/Manila')->format('F j, Y');
           $this->response['data'][$i]['account'] = $this->retrieveAccountDetails($result[$i]['account_id']);
-          $this->response['data'][$i]['partner_details'] = ($result[$i]['partner'] != null && $result[$i]['partner'] != '' && $result[$i]['partner'] > 0) ? $this->retrieveAccountDetails($result[$i]['partner']) : null;
+          $this->response['data'][$i]['merchant'] = ($result[$i]['merchant_id'] != null && $result[$i]['merchant_id'] != '' && $result[$i]['merchant_id'] > 0) ? $this->retrieveAccountDetails($result[$i]['merchant_id']) : null;
           $i++;
         }
       }
@@ -279,11 +279,11 @@ class CheckoutController extends APIController
     }
 
 
-    public function updateRemovePartner(Request $request){
+    public function updateRemoveMerchant(Request $request){
       $data = $request->all();
       $checkoutId = $data['id'];
       $result = Checkout::where('id', '=', $checkoutId)->update(array(
-        'partner' => null,
+        'merchant_id' => null,
         'updated_at' => Carbon::now()
       ));
 

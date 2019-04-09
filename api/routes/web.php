@@ -153,7 +153,7 @@ Route::post($route.'/create', "CheckoutController@create");
 Route::post($route.'/retrieve', "CheckoutController@retrieve");
 Route::post($route.'/retrieve_summary', "CheckoutController@retrieveSummary");
 Route::post($route.'/update', "CheckoutController@update");
-Route::post($route.'/update_remove_partner', "CheckoutController@updateRemovePartner");
+Route::post($route.'/update_remove_merchant', "CheckoutController@updateRemoveMerchant");
 Route::post($route.'/update_status', "CheckoutController@updateStatus");
 Route::post($route.'/delete', "CheckoutController@delete");
 Route::get($route.'/test', 'CheckoutController@test');

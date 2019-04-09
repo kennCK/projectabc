@@ -203,7 +203,6 @@ export default {
         if(response.data.length > 0){
           this.data = response.data
           this.method = response.method
-          this.initPaypal()
         }else{
           this.data = null
         }

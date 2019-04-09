@@ -18,8 +18,8 @@
         <label v-if="item.merchant !== null"><b>Assigned</b></label>
         <b>Printing</b> <b v-if="item.merchant !== null">{{' to ' + item.merchant.account.username}}</b>
       </label>
-      <i @click="clearPartner()" class="fa fa-trash text-danger pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-if="item.merchant !== null"></i>
-      <i @click="applyPartner()" class="fa fa-plus text-primary pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-else></i>
+      <i @click="clearMerchant()" class="fa fa-trash text-danger pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-if="item.merchant !== null"></i>
+      <i @click="applyMerchant()" class="fa fa-plus text-primary pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-else></i>
     </span>
     <span class="item" style="border-bottom: 0px;" v-if="item.merchant !== null">
       <label class="text-primary">
@@ -247,8 +247,6 @@ export default {
         this.updateRequest(parameter)
       }
     },
-    initPaypal(){
-    },
     paypalCompleted(data){
       if(data.state === 'approved'){
         let parameter = {
@@ -274,7 +272,7 @@ export default {
     paypalAuthorized(data){
     },
     updateRequest(parameter){
-      this.APIRequest('checkouts/update', parameter).then(response => {
+      this.APIRequest('custom_checkouts/update', parameter).then(response => {
         if(response.data === true){
           AUTH.checkAuthentication(null)
           ROUTER.push('/thankyou/' + this.item.order_number)
@@ -291,14 +289,14 @@ export default {
       this.coupon = null
       this.$parent.retrieve()
     },
-    applyPartner(){
+    applyMerchant(){
       $('#applyPartnerModal').modal('show')
     },
-    clearPartner(){
+    clearMerchant(){
       let parameter = {
         id: this.item.id
       }
-      this.APIRequest('checkouts/update_remove_partner', parameter).then(response => {
+      this.APIRequest('custom_checkouts/update_remove_merchant', parameter).then(response => {
         if(response.data === true){
           this.$parent.retrieve()
         }
@@ -307,9 +305,9 @@ export default {
     managePartner(){
       let parameter = {
         id: this.item.id,
-        partner: this.partner.id
+        merchant_id: this.partner.id
       }
-      this.APIRequest('checkouts/update_status', parameter).then(response => {
+      this.APIRequest('custom_checkouts/update_status', parameter).then(response => {
         if(response.data === true){
           $('#applyPartnerModal').modal('hide')
           this.$parent.retrieve()

@@ -5,7 +5,7 @@
         <div class="modal-content">
           <div class="modal-header bg-primary">
             <h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
-            <button type="button" class="close" @click="hideModal()" aria-label="Close">
+            <button type="button" class="close" @click="close()" aria-label="Close">
               <span aria-hidden="true" class="text-white">&times;</span>
             </button>
           </div>
@@ -45,15 +45,20 @@
                 <img :src="config.BACKEND_URL + item.featured[0].url" height="150px" width="150px" >
               </span>
               <span class="image" v-else>
-                <i class="fa fa fa-plus" ></i>
+                <i class="fa fa fa-image" ></i>
               </span>
               <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-right: 1%;" @click="addImage('featured')">Upload
                 <input type="file" id="Image" accept="image/*" @change="setUpFileUpload($event)">
               </button>
 
-              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="addImage('featured')">Select
-                <input type="file" id="Image" accept="image/*" @change="setUpFileUpload($event)">
+              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="browseFeaturedFlag = true">Select
               </button>
+              <div class="browse-images-holder">
+                <div class="browse-images" v-if="browseFeaturedFlag === true">
+                  <browse-images :object="item.featured" :index="0" :view="'featured-view'" v-if="item.featured !== null"></browse-images>
+                  <browse-images :object="item.newImage" :index="0" :view="'featured-view'" v-if="item.featured === null"></browse-images>
+                </div>
+              </div>
 
               <span class="sidebar-header" >Other Images</span>
               <div class="other-holder">
@@ -137,6 +142,18 @@
   display: none;
 
 }
+.browse-images-holder {
+  float:left;
+}
+.browse-images{
+  width: 200px;
+  height: 300px;
+  position: absolute;
+  border: solid 1px #ddd;
+  background: #fff;
+  margin-left: -250px;
+  margin-top: -300px;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -152,12 +169,20 @@ export default {
       config: CONFIG,
       errorMessage: null,
       file: null,
-      status: null
+      status: null,
+      browseFeaturedFlag: false,
+      browseOthersFlag: false,
+      newImage: {
+        product_id: null,
+        url: null,
+        status: null
+      }
     }
   },
   components: {
     'prices': require('modules/product/Prices.vue'),
-    'attributes': require('modules/product/Attributes.vue')
+    'attributes': require('modules/product/Attributes.vue'),
+    'browse-images': require('modules/image/BrowseImages.vue')
   },
   props: ['item'],
   methods: {
@@ -204,6 +229,24 @@ export default {
           this.$parent.retrieve()
         }
       })
+    },
+    updateImage(object){
+      if(object.product_id === null){
+        object.product_id = this.item.id
+        this.APIRequest('product_images/create', object).then(response => {
+          if(response.data > 0){
+            $('#updateProductModal').modal('hide')
+            this.$parent.retrieve()
+          }
+        })
+      }else{
+        this.APIRequest('product_images/update', object).then(response => {
+          if(response.data === true){
+            $('#updateProductModal').modal('hide')
+            this.$parent.retrieve()
+          }
+        })
+      }
     },
     close(){
       this.item = null
