@@ -129,6 +129,7 @@ import axios from 'axios'
 export default {
   mounted(){
     this.search()
+    this.default = this.object.url
   },
   data(){
     return {
@@ -137,11 +138,11 @@ export default {
       searchValue: null,
       data: null,
       prevIndex: null,
-      default: this.object.url,
+      default: null,
       loadingFlag: false
     }
   },
-  props: ['object', 'view', 'index'],
+  props: ['object', 'view'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)

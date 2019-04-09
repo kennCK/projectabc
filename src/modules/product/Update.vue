@@ -55,8 +55,8 @@
               </button>
               <div class="browse-images-holder">
                 <div class="browse-images" v-if="browseFeaturedFlag === true">
-                  <browse-images :object="item.featured" :index="0" :view="'featured-view'" v-if="item.featured !== null"></browse-images>
-                  <browse-images :object="item.newImage" :index="0" :view="'featured-view'" v-if="item.featured === null"></browse-images>
+                  <browse-images :object="item.featured" :view="'featured-view'" v-if="item.featured !== null"></browse-images>
+                  <browse-images :object="newImage" :view="'featured-view'" v-if="item.featured === null"></browse-images>
                 </div>
               </div>
 
