@@ -15,6 +15,10 @@
               <!-- <i class="fa fa-search" @click="search()"></i> -->
             </span>
             <span class="settings" v-if="data !== null">
+              <span class="image-holder" style="text-align: center;" @click="addImage()">
+                <i class="fa fa-plus" style="font-size: 60px; line-height: 200px;"></i>
+                <input type="file" id="Image" accept="image/*" @change="setUpFileUpload($event)">
+              </span>
               <span v-bind:class="{'active-image': item.active === true}" class="image-holder" v-for="item, index in data" @click="select(index)">
                 <img :src="config.BACKEND_URL + item.url">
               </span>
@@ -87,6 +91,11 @@
   float: left;
 }
 
+.image-holder input{
+  display: none;
+  height: 200px;
+  width: 200px;
+}
 .bottom-action{
   width: 100%;
   float: left;
@@ -135,13 +144,47 @@ export default {
       data: null,
       prevIndex: null,
       default: this.object.url,
-      loadingFlag: false
+      loadingFlag: false,
+      file: null
     }
   },
   props: ['object'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    addImage(){
+      $('#Image')[0].click()
+    },
+    setUpFileUpload(event){
+      let files = event.target.files || event.dataTransfer.files
+      if(!files.length){
+        return false
+      }else{
+        this.file = files[0]
+        this.createFile(files[0])
+      }
+    },
+    createFile(file){
+      let fileReader = new FileReader()
+      fileReader.readAsDataURL(event.target.files[0])
+      this.upload()
+    },
+    upload(){
+      let formData = new FormData()
+      formData.append('file', this.file)
+      formData.append('file_url', this.file.name)
+      formData.append('account_id', this.user.userID)
+      formData.append('payload', null)
+      formData.append('payload_value', null)
+      formData.append('status', null)
+      $('#loading').css({'display': 'block'})
+      axios.post(this.config.BACKEND_URL + '/account_images/upload', formData).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data !== null){
+          this.$parent.retrieve()
+        }
+      })
     },
     search(){
       let parameter = null
