@@ -5,7 +5,7 @@
         <div class="template" v-if="parseInt(item.account_id) !== user.userID">
           <div class="header">
             <div class="profile">
-              <img :src="config.BACKEND_URL + item.account.profile.profile_url" v-if="item.account.profile !== null">
+              <img :src="config.BACKEND_URL + item.account.profile.url" v-if="item.account.profile !== null">
               <i class="fa fa-user-circle-o text-green" v-else></i>
             </div>
             <span class="details" v-if="item.account !== null">
@@ -22,7 +22,7 @@
       <div class="template" v-else>
         <div class="header-right">
           <div class="profile">
-            <img :src="config.BACKEND_URL + item.account.profile.profile_url" v-if="item.account.profile !== null">
+            <img :src="config.BACKEND_URL + item.account.profile.url" v-if="item.account.profile !== null">
             <i class="fa fa-user-circle-o text-green" v-else></i>
           </div>
           <span class="details" v-if="item.account !== null">

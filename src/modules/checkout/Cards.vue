@@ -1,27 +1,27 @@
 <template>
   <div class="sidebar">
     <span class="title">Order Summary</span>
-    <span class="bg-danger printing-hint" v-if="item.partner_details === null">
+    <span class="bg-danger printing-hint" v-if="item.merchant === null">
       Kindly assign your checkout to our printing partner by clicking the + icon below using the company code.  
     </span>
-    <span class="item" v-if="item.partner_details !== null">
+    <span class="item" v-if="item.merchant !== null">
       <label>Subtotal</label>
       <label class="pull-right" style="padding-right: 10px;">PHP {{item.sub_total}}</label>
     </span>
-    <span class="item" v-if="item.partner_details !== null">
+    <span class="item" v-if="item.merchant !== null">
       <label>Tax</label>
       <label class="pull-right" style="padding-right: 10px;">PHP {{item.tax}}</label>
     </span>
     <span class="item" style="border-bottom: 0px;" v-if="item.payload !== 'direct'">
       <label class="text-primary">
-        <label v-if="item.partner_details === null"><b>Assign</b></label>
-        <label v-if="item.partner_details !== null"><b>Assigned</b></label>
-        <b>Printing</b> <b v-if="item.partner_details !== null">{{' to ' + item.partner_details.username}}</b>
+        <label v-if="item.merchant === null"><b>Assign</b></label>
+        <label v-if="item.merchant !== null"><b>Assigned</b></label>
+        <b>Printing</b> <b v-if="item.merchant !== null">{{' to ' + item.merchant.account.username}}</b>
       </label>
-      <i @click="clearPartner()" class="fa fa-trash text-danger pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-if="item.partner_details !== null"></i>
-      <i @click="applyPartner()" class="fa fa-plus text-primary pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-else></i>
+      <i @click="clearMerchant()" class="fa fa-trash text-danger pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-if="item.merchant !== null"></i>
+      <i @click="applyMerchant()" class="fa fa-plus text-primary pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-else></i>
     </span>
-    <span class="item" style="border-bottom: 0px;" v-if="item.partner_details !== null">
+    <span class="item" style="border-bottom: 0px;" v-if="item.merchant !== null">
       <label class="text-primary">
         <b>Promo Code</b>: <b v-if="coupon !== null">{{coupon.code.toUpperCase()}}</b>
         <b v-if="coupon !== null && coupon.type === 'percentage'"> (-{{coupon.value}}%)</b>
@@ -30,7 +30,7 @@
       <i @click="clearCoupon()" class="fa fa-trash text-danger pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-if="coupon !== null"></i>
       <i @click="applyCoupon()" class="fa fa-plus text-primary pull-right" style="line-height: 50px; font-size: 20px;padding-right: 10px;" v-else></i>
     </span>
-    <span class="item" style="border-bottom: 0px;" v-if="item.partner_details !== null">
+    <span class="item" style="border-bottom: 0px;" v-if="item.merchant !== null">
       <label><b>Total</b></label>
       <label class="pull-right" style="padding-right: 10px;"><b>PHP {{item.total}}</b></label>
     </span>
@@ -38,7 +38,7 @@
       <label><b>Ship to</b></label>
       <label class="pull-right"><i class="fa fa-edit text-danger" @click="shippingAddress()"></i></label>
     </span>
-    <span class="item2 alert alert-success">
+    <span class="item2 alert alert-success" v-if="item.shipping_address !== null">
       <label v-if="item.shipping_address === null && item.account_details.billing !== null && item.account_details.billing.company !== null">
         {{item.account_details.billing.company}}, {{item.account_details.billing.address + ',' + item.account_details.billing.city + ' ' + item.account_details.billing.postal_code}}
         <br />
@@ -59,12 +59,12 @@
     <span class="item2  alert alert-danger" style="border-bottom: 0px;" v-if="item.shipping_address !== null && item.shipping_address.notes !== null">
       <label>{{item.shipping_address.notes}}</label>
     </span>
-    <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null && item.partner_details !== null">
+    <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.stripe !== null && item.merchant !== null">
       <label>Active Payment Method</label>
       
       <label class="pull-right" style="padding-right: 10px;">******** {{method.stripe.last4}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
     </span>
-    <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.paypal !== null && item.partner_details !== null">
+    <span class="item" style="border-bottom: 0px;" v-if="method !== null && method.paypal !== null && item.merchant !== null">
       <label>Active Payment Method</label>
       
       <label class="pull-right" style="padding-right: 10px;"> {{method.paypal.nickname}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
@@ -75,7 +75,7 @@
       
       <label class="pull-right" style="padding-right: 10px;"> {{method.payload_value}} <i class="fa fa-edit text-danger" @click="redirect('/profile/payment_method')"></i></label>
     </span>
-    <span class="custom-btn" style="border-bottom: 0px;" v-if="item.partner_details !== null">
+    <span class="custom-btn" style="border-bottom: 0px;" v-if="item.merchant !== null">
         <PayPal
           v-bind:amount="'' + item.total"
           currency="PHP"
@@ -87,8 +87,8 @@
           @payment-authorized="paypalAuthorized($event)">
         </PayPal>
     </span>
-    <button class="btn btn-primary custom-btn" @click="creditCard()" v-if="item.partner_details !== null"><i class="fa fa-credit-card"></i> Credit Card</button>
-    <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')" v-if="method === null && item.partner_details !== null">Authorized Payment using Credit Card</button>
+    <button class="btn btn-primary custom-btn" @click="creditCard()" v-if="item.merchant !== null"><i class="fa fa-credit-card"></i> Credit Card</button>
+    <button class="btn btn-primary custom-btn" @click="redirect('/profile/payment_method')" v-if="method === null && item.merchant !== null">Authorized Payment using Credit Card</button>
     <!-- <button class="btn btn-warning custom-btn" @click="updateStripeAuthorized()"> Complete Purchase</button> -->
     
     <cancelled-paypal></cancelled-paypal>
@@ -247,8 +247,6 @@ export default {
         this.updateRequest(parameter)
       }
     },
-    initPaypal(){
-    },
     paypalCompleted(data){
       if(data.state === 'approved'){
         let parameter = {
@@ -274,7 +272,7 @@ export default {
     paypalAuthorized(data){
     },
     updateRequest(parameter){
-      this.APIRequest('checkouts/update', parameter).then(response => {
+      this.APIRequest('custom_checkouts/update', parameter).then(response => {
         if(response.data === true){
           AUTH.checkAuthentication(null)
           ROUTER.push('/thankyou/' + this.item.order_number)
@@ -291,14 +289,14 @@ export default {
       this.coupon = null
       this.$parent.retrieve()
     },
-    applyPartner(){
+    applyMerchant(){
       $('#applyPartnerModal').modal('show')
     },
-    clearPartner(){
+    clearMerchant(){
       let parameter = {
         id: this.item.id
       }
-      this.APIRequest('checkouts/update_remove_partner', parameter).then(response => {
+      this.APIRequest('custom_checkouts/update_remove_merchant', parameter).then(response => {
         if(response.data === true){
           this.$parent.retrieve()
         }
@@ -307,9 +305,9 @@ export default {
     managePartner(){
       let parameter = {
         id: this.item.id,
-        partner: this.partner.id
+        merchant_id: this.partner.id
       }
-      this.APIRequest('checkouts/update_status', parameter).then(response => {
+      this.APIRequest('custom_checkouts/update_status', parameter).then(response => {
         if(response.data === true){
           $('#applyPartnerModal').modal('hide')
           this.$parent.retrieve()

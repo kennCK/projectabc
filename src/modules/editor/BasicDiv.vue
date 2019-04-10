@@ -150,7 +150,7 @@
   height: 30px;
   line-height: 30px;
   border-bottom: solid 1px #ddd;
-  font-size: 10px;
+  font-size: 10px !important;
 }
 .item-setting .title{
   float: left;
@@ -160,6 +160,7 @@
   padding-right: 10px;
   text-transform: uppercase;
   font-weight: 600;
+  font-size: 10px !important;
   color: #22b173;
 }
 .item-setting .input{

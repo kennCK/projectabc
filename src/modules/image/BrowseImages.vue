@@ -3,8 +3,6 @@
     <div class="item">
       <span class="header">
         Saved Images
-        <i class="fa fa-close pull-right" @click="close()" v-if="view === 'editor'"></i>
-        <i class="fa fa-close pull-right" @click="closeTableView()" v-if="view === 'table-view'"></i>
         <i class="fa fa-close pull-right" @click="closeProfileView()" v-if="view === 'profile-view' || view === 'signature-view'"></i>
         <i class="fa fa-close pull-right" @click="closeProductView()" v-if="view === 'featured-view' || view === 'others-view'"></i>
       </span>
@@ -24,10 +22,8 @@
         <label class="error">Loading...</label>
       </span>
       <span class="bottom-action" v-if="prevIndex !== null && data !== null">
-        <button class="btn btn-danger" @click="cancel()" v-if="view === 'editor' || view === 'table-view'">Cancel</button>
         <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'profile-view' || view === 'signature-view'">Cancel</button>
         <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'featured-view' || view === 'others-view'">Cancel</button>
-        <button class="btn btn-primary" @click="apply()" v-if="view === 'editor' || view === 'table-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('profile')" v-if="view === 'profile-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProfile('signature')" v-if="view === 'signature-view'">Apply</button>
         <button class="btn btn-primary" @click="applyProduct('featured')" v-if="view === 'featured-view'">Apply</button>
@@ -133,6 +129,7 @@ import axios from 'axios'
 export default {
   mounted(){
     this.search()
+    this.default = this.object.url
   },
   data(){
     return {
@@ -141,11 +138,11 @@ export default {
       searchValue: null,
       data: null,
       prevIndex: null,
-      default: this.object.content,
+      default: null,
       loadingFlag: false
     }
   },
-  props: ['object', 'view', 'index'],
+  props: ['object', 'view'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
@@ -195,13 +192,6 @@ export default {
         }
       }
     },
-    apply(){
-      this.object.content = this.data[this.prevIndex].url
-      if(this.view === 'table-view'){
-        this.$parent.selectedBrowseImage = null
-        this.$parent.updateText(this.object, this.index)
-      }
-    },
     applyProfile(params){
       this.object[params] = this.data[this.prevIndex].url
       this.$parent.selectedBrowseImage = null
@@ -210,9 +200,6 @@ export default {
       this.object.url = this.data[this.prevIndex].url
       this.object.status = status
       this.$parent.updateImage(this.object)
-    },
-    cancel(){
-      this.object.content = this.default
     },
     close(){
       this.prevIndex = null
@@ -227,8 +214,8 @@ export default {
       this.$parent.browseImagesSignatureFlag = false
     },
     closeProductView(){
-      this.$parent.broserImagesFeaturedFlag = false
-      this.$parent.broserImagesOthersFlag = false
+      this.$parent.browseFeaturedFlag = false
+      this.$parent.browseOthersFlag = false
     }
   }
 }

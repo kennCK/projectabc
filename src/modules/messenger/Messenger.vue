@@ -84,7 +84,7 @@ export default {
           'account_id': this.user.userID,
           'title': this.newTitle
         }
-        this.APIRequest('messenger_groups/create', parameter).then(response => {
+        this.APIRequest('custom_messenger_groups/create', parameter).then(response => {
           console.log(response)
         })
       }
@@ -95,7 +95,7 @@ export default {
         account_type: this.user.type,
         username: (this.username) ? this.username : ''
       }
-      this.APIRequest('messenger_groups/retrieve', parameter).done(response => {
+      this.APIRequest('custom_messenger_groups/retrieve', parameter).done(response => {
         this.groups = response.data
         this.partners = response.accounts
         if(this.partners !== null){

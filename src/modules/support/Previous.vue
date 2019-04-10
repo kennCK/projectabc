@@ -7,7 +7,7 @@
     <div class="conversation-content" v-if="data !== null">
       <div class="item-row" v-for="item, index  in data" @click="changeConversationStatus('conversation', item)">
         <div class="profile" v-if="item.last_message.account !== null">
-          <img :src="config.BACKEND_URL + item.last_message.account.profile.profile_url" v-if="item.last_message.account.profile !== null">
+          <img :src="config.BACKEND_URL + item.last_message.account.profile.url" v-if="item.last_message.account.profile !== null">
           <i class="fa fa-user-circle-o text-green" v-else></i>
         </div>
         <div class="details" v-if="item.last_message !== null">

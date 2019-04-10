@@ -1,8 +1,8 @@
 <template>
-  <div class="template-holder">
+  <div class="template-holder" v-if="data !== null">
     <h5>Plan History</h5>
     <br>
-    <table class="table table-bordered table-responsive" v-if="data !== null">
+    <table class="table table-bordered table-responsive">
       <thead>
         <tr>
           <td><b>Plan</b></td>
@@ -22,7 +22,7 @@
           <td>{{item.end_human}}</td>
           <td>{{item.price}} x {{parseInt(item.sub_total) / parseInt(item.price)}}</td>
           <td>{{item.discount}}</td>
-          <td>{{item.total_amount}}</td>
+          <td>{{item.total}}</td>
         </tr>
       </tbody>
     </table>

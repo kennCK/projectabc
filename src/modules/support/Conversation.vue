@@ -3,7 +3,7 @@
     <div class="messenger-header">
       <label class="back-icon" @click="changeConversationStatus('previous')"><i class="fa fa-chevron-left"></i></label>
       <div class="profile" v-if="item.last_message.account !== null">
-        <img :src="config.BACKEND_URL + item.last_message.account.profile.profile_url" v-if="item.last_message.account.profile !== null">
+        <img :src="config.BACKEND_URL + item.last_message.account.profile.url" v-if="item.last_message.account.profile !== null">
         <i class="fa fa-user-circle-o text-green" v-else></i>
       </div>
       <span class="details">

@@ -97,7 +97,7 @@ export default {
         }]
       }
       $('#loading').css({display: 'block'})
-      this.APIRequest('orders/retrieve_orders', parameter).then(response => {
+      this.APIRequest('orders/retrieve', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data

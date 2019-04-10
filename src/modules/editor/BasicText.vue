@@ -218,7 +218,7 @@
   height: 30px;
   line-height: 30px;
   border-bottom: solid 1px #ddd;
-  font-size: 10px;
+  font-size: 10px !important;
 }
 .item-setting .title{
   float: left;
@@ -229,6 +229,7 @@
   text-transform: uppercase;
   font-weight: 600;
   color: #22b173;
+  font-size: 10px !important;
 }
 .item-setting .input{
   width: 60%;

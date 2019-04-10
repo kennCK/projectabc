@@ -13,24 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuthExceptions\JWTException;
 use Carbon\Carbon;
-
-
-use App\Account;
-use App\AccountInformation;
-use App\AccountProfile;
-use App\CustomObject;
-use App\Attribute;
-use App\Template;
-use App\Checkout;
-use App\CheckoutItem;
-use App\Employee;
-use App\EmployeeColumn;
-use App\PaymentMethod;
-use App\StripeCard;
-use App\PaypalTransaction;
-use App\BillingInformation;
-use App\Coupon;
-use App\Comment;
 class APIController extends Controller
 {
   /*
@@ -448,167 +430,27 @@ class APIController extends Controller
   }
 
   public function retrieveAccountDetails($accountId){
-    $result = Account::where('id', '=', $accountId)->get();
+    $result = app('Increment\Account\Http\AccountController')->retrieveById($accountId);
     if(sizeof($result) > 0){
-      $profile = AccountProfile::where('account_id', '=', $accountId)->orderBy('created_at', 'DESC')->get();
-      $information = AccountInformation::where('account_id', '=', $accountId)->get();
-      $billing = BillingInformation::where('account_id', '=', $accountId)->get();
-      $result[0]['profile'] = (sizeof($profile) > 0) ? $profile[0] : null;
-      $result[0]['information'] = (sizeof($information) > 0) ? $information[0] : null;
-      $result[0]['billing'] = (sizeof($billing) > 0) ? $billing[0] : null;
+      $result[0]['profile'] =  app('Increment\Account\Http\AccountProfileController')->getAccountProfile($accountId);
+      $result[0]['information'] = app('Increment\Account\Http\AccountInformationController')->getAccountInformation($accountId);
+      $result[0]['billing'] = app('Increment\Account\Http\BillingInformationController')->getBillingInformation($accountId);
       return $result[0];
     }else{
       return null;
     }
   }
 
-  public function getTemplateDetails($templateId){
-    $result = Template::where('id', '=', $templateId)->get();
-    return (sizeof($result) > 0) ? $result[0] : null;     
+  public function retrieveDetailsOnLogin($result){
+    $accountId = $result['id'];
+    $result['account_information_flag'] = false;
+    $result['account_profile_flag'] = false;
+    $result['account_information'] = app('Increment\Account\Http\AccountInformationController')->getAccountInformation($accountId);
+    $result['account_profile'] = app('Increment\Account\Http\AccountProfileController')->getAccountProfile($accountId);
+    $result['checkout'] = app('Increment\Marketplace\Http\CheckoutController')->getCheckoutItemByAccountId($accountId);
+    $result['plan'] = app('Increment\Plan\Http\PlanController')->getCurrentPlan($accountId, $result['created_at']);
+    $result['notification_settings'] = app('App\Http\Controllers\NotificationSettingController')->getNotificationSettings($accountId);
+    return $result;
   }
-
-  public function getPruchasedObjects($id){
-    $result = CustomObject::where('template_id', '=', $id)->get();
-    if(sizeof($result) > 0){
-      $i = 0;
-      foreach ($result as $key) {
-        $result[$i]['attributes'] = $this->getPurchasedAttributes($result[$i]['id']);
-       $i++; 
-      }
-    }
-    return (sizeof($result) > 0) ? $result : null;
-  }
-
-  public function getPurchasedAttributes($id){
-    $result = Attribute::where('payload', '=', 'object')->where('payload_value', '=', $id)->get();
-    if(sizeof($result) > 0){
-      return $result;
-    }
-    return null;
-  }
-
-
-  public function getObjects($id){
-    $result = CustomObject::where('template_id', '=', $id)->get();
-    if(sizeof($result) > 0){
-      $i = 0;
-      foreach ($result as $key) {
-        $result[$i]['attributes'] = $this->getAttributes($result[$i]['id']);
-        $result[$i]['new'] = false;
-       $i++; 
-      }
-    }
-    return (sizeof($result) > 0) ? $result : null;
-  }
-
-  public function getAttributes($id){
-    $result = Attribute::where('payload', '=', 'object')->where('payload_value', '=', $id)->get();
-    $response = array();
-    if(sizeof($result) > 0){
-      $i = 0;
-      foreach ($result as $key) {
-        $response[$result[$i]['attribute']] = $result[$i]['value'];
-        $i++;
-      }
-      return $response;
-    }
-    return null;
-  }
-
-  public function getCheckout($payload, $payloadValue, $accountId){
-    $checkout = Checkout::where('account_id', '=', $accountId)->where('status', '=', 'added')->first();
-    if($checkout){
-      $item = CheckoutItem::where('payload', '=', $payload)->where('payload_value', '=', $payloadValue)->where('checkout_id', '=', $checkout->id)->first();
-      return ($item) ? $item : null;
-    }else{
-      return null;
-    }
-    return (sizeof($result) > 0) ? $result[0] : null;
-  }
-
-  public function getEmployee($id){
-    $result = Employee::where('id', '=', $id)->get();
-    if(sizeof($result) > 0){
-      $result[0]['front_objects'] = $this->getObjectsCustom($result[0]['front_template'], $id);
-      $result[0]['back_objects'] = $this->getObjectsCustom($result[0]['back_template'], $id);
-      $result[0]['front_template_details'] = $this->getTemplateDetails($result[0]['front_template']);
-      $result[0]['back_template_details'] = $this->getTemplateDetails($result[0]['back_template']);
-      return $result[0];
-    }
-    return null;
-  }
-
-  public function getObjectsCustom($templateId, $employeeId){
-      $result = CustomObject::where('template_id', '=', $templateId)->get();
-      if(sizeof($result) > 0){
-        $i = 0;
-        foreach ($result as $key) {
-          $result[$i]['attributes'] = $this->getAttributes($result[$i]['id']);
-          if($result[$i]['settings'] == 'dynamic'){
-            $result[$i]['content'] = $this->getNameDecoder($result[$i]['name'], $employeeId);
-          }else{
-            //
-          }
-          $result[$i]['new'] = false;
-          $i++; 
-        }
-      }
-      return (sizeof($result) > 0) ? $result : null;
-    }
-
-    public function getNameDecoder($name, $employeeId){
-      $response = null;
-      $cName = array('c_name', 'complete_name');
-      if(in_array($name, $cName)){
-        $response = $this->getEmployeeColumn('first_name', $employeeId).' '.$this->getEmployeeColumn('last_name', $employeeId);
-      }else{
-        $response = $this->getEmployeeColumn($name, $employeeId);
-      }
-      return $response;
-    }
-
-    public function getEmployeeColumn($column, $employeeId){
-      $result = EmployeeColumn::where('employee_id', '=', $employeeId)->where('column', '=', $column)->get();
-      return (sizeof($result) > 0) ? $result[0]['value'] : null;
-    }
-
-    public function getPaypalTransaction($id){
-      $response = array();
-      $result = PaypalTransaction::where('id', '=', $id)->get();
-      $response['stripe'] = null;
-      $response['paypal'] =  (sizeof($result) > 0) ? $result[0] : null;
-      return $response;
-    }
-
-    public function getPaymentMethod($column, $value){
-      $result = PaymentMethod::where($column, '=', $value)->where('status', '=', 'active')->get();
-      if(sizeof($result) > 0){
-        $payload = $result[0]['payload'];
-        $payloadValue = $result[0]['payload_value'];
-        $result[0]['stripe'] = null;
-        $result[0]['paypal'] = null;
-        if($payload == 'credit_card'){
-          // stripe
-          $cards = StripeCard::where('id', '=', $payloadValue)->first();
-          $result[0]['stripe'] = ($cards) ? $cards : null;
-        }else if($payload == 'paypal'){
-          // paypal
-        }else if($payload == 'cod'){
-          // cod
-        }
-      }
-      return (sizeof($result) > 0) ? $result[0] : null;
-    }
-
-    public function getCoupon($id){
-      $result = Coupon::where('id', '=', $id)->get();
-      return (sizeof($result) > 0) ? $result[0] : null;
-    }
-
-    public function getComments($payload, $payloadValue){
-      $result = Comment::where('payload', '=', $payload)->where('payload_value', '=', $payloadValue)->get();
-      return sizeof($result);
-    }
-
 
 }
