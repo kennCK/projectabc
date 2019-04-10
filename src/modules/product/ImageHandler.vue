@@ -1,34 +1,12 @@
 <template>
-  <div>
-    <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-right: 1%;" @click="addImage(status)">Upload
-      <input type="file" id="Image" accept="image/*" @change="setUpFileUpload($event)">
+  <label class="pull-right">
+    <button class="btn btn-primary pull-right" @click="showImages()">
+      Select
     </button>
-
-    <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="showImages()">Select
-    </button>
-    <browse-images-modal :object="newImage"></browse-images-modal>
-  </div>
+    <browse-images-modal></browse-images-modal>
+  </label>
 </template>
 <style scoped>
-.custom-block{
-  width: 49%;
-  float: left;
-}
-.custom-block input{
-  display: none;
-}
-.browse-images-holder {
-  float:left;
-}
-.browse-images{
-  width: 200px;
-  height: 300px;
-  position: absolute;
-  border: solid 1px #ddd;
-  background: #fff;
-  margin-left: -250px;
-  margin-top: -300px;
-}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -45,9 +23,6 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      file: null,
-      browseFeaturedFlag: false,
-      browseOthersFlag: false,
       newImage: {
         product_id: null,
         url: null,
@@ -63,53 +38,20 @@ export default {
     redirect(parameter){
       ROUTER.push(parameter)
     },
-    addImage(status){
-      $('#Image')[0].click()
-      this.status = status
-    },
-    setUpFileUpload(event){
-      let files = event.target.files || event.dataTransfer.files
-      if(!files.length){
-        return false
-      }else{
-        this.file = files[0]
-        this.createFile(files[0])
-      }
-    },
-    createFile(file){
-      let fileReader = new FileReader()
-      fileReader.readAsDataURL(event.target.files[0])
-      this.upload()
-    },
-    upload(){
-      let formData = new FormData()
-      formData.append('file', this.file)
-      formData.append('file_url', this.file.name)
-      formData.append('account_id', this.user.userID)
-      formData.append('payload_value', this.item.id)
-      formData.append('status', this.status)
-      $('#loading').css({'display': 'block'})
-      axios.post(this.config.BACKEND_URL + '/account_images/upload', formData).then(response => {
-        $('#loading').css({'display': 'none'})
-        if(response.data !== null){
-          this.$parent.retrieve()
-        }
-      })
-    },
-    createPhoto(object){
+    createPhoto(url){
       if(this.status === 'featured'){
-        object.status = 'featured'
+        this.newImage.status = 'featured'
         if(this.item.featured === null){
-          object.product_id = this.item.id
-          this.createRequest(object)
+          this.newImage.product_id = this.item.id
+          this.createRequest(this.newImage)
         }else{
-          this.item.featured[0].url = object.url
+          this.item.featured[0].url = url
           this.updateRequest(this.item.featured[0])
         }
       }else if(this.status === 'images'){
-        object.status = 'others'
-        object.product_id = this.item.id
-        this.createRequest(object)
+        this.newImage.status = 'others'
+        this.newImage.product_id = this.item.id
+        this.createRequest(this.newImage)
       }
     },
     createRequest(parameter){
@@ -123,6 +65,10 @@ export default {
         this.$parent.retrieve()
         this.reset()
       })
+    },
+    manageImageUrl(url){
+      this.createPhoto(url)
+      this.hideImages()
     },
     reset(){
       this.newImage = {

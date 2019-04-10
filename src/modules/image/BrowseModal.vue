@@ -29,8 +29,7 @@
           </div>
           <div class="modal-footer">
             <button class="btn btn-danger" @click="cancel()">Cancel</button>
-            <button class="btn btn-primary" @click="apply()" v-if="object.url !== null">Apply</button>
-            <button class="btn btn-primary" @click="applyCreate()" v-if="object.url === null">Apply</button>
+            <button class="btn btn-primary" @click="apply()">Apply</button>
           </div>
         </div>
       </div>
@@ -143,12 +142,10 @@ export default {
       searchValue: null,
       data: null,
       prevIndex: null,
-      default: this.object.url,
       loadingFlag: false,
       file: null
     }
   },
-  props: ['object'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
@@ -175,14 +172,11 @@ export default {
       formData.append('file', this.file)
       formData.append('file_url', this.file.name)
       formData.append('account_id', this.user.userID)
-      formData.append('payload', null)
-      formData.append('payload_value', null)
-      formData.append('status', null)
       $('#loading').css({'display': 'block'})
-      axios.post(this.config.BACKEND_URL + '/account_images/upload', formData).then(response => {
+      axios.post(this.config.BACKEND_URL + '/images/upload', formData).then(response => {
         $('#loading').css({'display': 'none'})
-        if(response.data !== null){
-          this.$parent.retrieve()
+        if(response.data.data !== null){
+          this.search()
         }
       })
     },
@@ -232,16 +226,10 @@ export default {
       }
     },
     apply(){
-      this.object.url = this.data[this.prevIndex].url
-      this.$parent.updatePhoto(this.object)
-    },
-    applyCreate(){
-      this.object.url = this.data[this.prevIndex].url
-      this.$parent.createPhoto(this.object)
-    },
-    cancel(){
-      this.object.url = this.default
-      this.close()
+      if(this.prevIndex !== null){
+        this.$parent.manageImageUrl(this.data[this.prevIndex].url)
+        this.close()
+      }
     },
     close(){
       this.prevIndex = null

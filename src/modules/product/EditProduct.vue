@@ -9,17 +9,21 @@
     <div class="product-item-holder">
       <div class="product-image">
         <div class="product-row" style="text-align: left !important;">
-          <label style="width: 100%">Featured Image</label>
+          <label style="width: 100%">
+            <label style="width: 70%">Featured Image</label>
+            <button class="btn btn-primary pull-right" @click="showImages('featured')">Select</button>
+          </label>
         </div>
         <img :src="config.BACKEND_URL + selectedImage" class="main-image" v-if="selectedImage !== null">
         <img :src="config.BACKEND_URL + data.featured[0].url" class="main-image" v-if="selectedImage === null && data.featured !== null">
         <i class="fa fa-image" v-if="selectedImage === null && data.featured === null"></i>
-        <image-handler :item="data" :status="'featured'" :key="'featured'"></image-handler>
        <div class="images-holder">
         <div class="product-row" style="text-align: left !important;">
-          <label style="width: 100%">Other Images</label>
+          <label style="width: 100%">
+            <label style="width: 70%">Other Images</label>
+            <button class="btn btn-primary pull-right" @click="showImages('images')">Select</button>
+          </label>
         </div>
-        <image-handler :item="data" :status="'images'" :key="'images'"></image-handler>
         <div v-for="item, index in data.images" class="image-item" @click="selectImage(item.url)">
           <img :src="config.BACKEND_URL + item.url" class="other-image">
           <div class="overlay"></div>
@@ -105,6 +109,7 @@
         <product-comments :payloadValue="data.id" :payload="'product'"></product-comments>
       </div>
     </div>
+    <browse-images-modal></browse-images-modal>
   </div>
 </template>
 <style scoped>
@@ -313,13 +318,19 @@ export default {
       prevMenuIndex: 0,
       selectedImage: null,
       qty: 1,
-      priceFlag: false
+      priceFlag: false,
+      newImage: {
+        product_id: null,
+        url: null,
+        status: null
+      },
+      imageStatus: null
     }
   },
   components: {
     'ratings': require('modules/rating/Ratings.vue'),
     'product-comments': require('modules/comment/Comments.vue'),
-    'image-handler': require('modules/product/ImageHandler.vue')
+    'browse-images-modal': require('modules/image/BrowseModal.vue')
   },
   methods: {
     redirect(parameter){
@@ -401,6 +412,41 @@ export default {
         }
       }
       return 0
+    },
+    showImages(status){
+      this.imageStatus = status
+      $('#browseImagesModal').modal('show')
+    },
+    createPhoto(url){
+      if(this.imageStatus === 'featured'){
+        this.newImage.status = 'featured'
+        if(this.data.featured === null){
+          this.newImage.product_id = this.data.id
+          this.newImage.url = url
+          this.createRequest(this.newImage)
+        }else{
+          this.data.featured[0].url = url
+          this.updateRequest(this.data.featured[0])
+        }
+      }else if(this.imageStatus === 'images'){
+        this.newImage.status = 'others'
+        this.newImage.product_id = this.data.id
+        this.newImage.url = url
+        this.createRequest(this.newImage)
+      }
+    },
+    createRequest(parameter){
+      this.APIRequest('product_images/create', parameter).then(response => {
+        this.retrieve()
+      })
+    },
+    updateRequest(parameter){
+      this.APIRequest('product_images/update', parameter).then(response => {
+        this.retrieve()
+      })
+    },
+    manageImageUrl(url){
+      this.createPhoto(url)
     }
   }
 }
