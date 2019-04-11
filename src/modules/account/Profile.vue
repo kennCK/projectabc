@@ -52,10 +52,7 @@
         <span class="image" v-else>
           <i class="fa fa-user-circle-o" ></i>
         </span>
-        <button class="btn btn-primary custom-block" style="margin-top: 5px;" @click="addImage()">Upload new profile
-          <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
-        </button>
-        <button class="btn btn-warning custom-block" style="margin-top: 5px;" @click="showImages()">Select from images
+        <button class="btn btn-primary custom-block" style="margin-top: 5px;" @click="showImages()">Select from images
         </button>
       </span>
     </span>
@@ -150,10 +147,9 @@ export default {
       user: AUTH.user,
       tokenData: AUTH.tokenData,
       config: CONFIG,
-      file: null,
       data: null,
       newProfile: {
-        account_id: AUTH.user.userID,
+        account_id: null,
         url: null
       }
     }
@@ -162,48 +158,6 @@ export default {
     'browse-images-modal': require('modules/image/BrowseModal.vue')
   },
   methods: {
-    addImage(){
-      $('#profilePicture')[0].click()
-    },
-    setupFile(event){
-      let files = event.target.files || event.dataTransfer.files
-      if(!files.length){
-        return false
-      }else{
-        this.file = files[0]
-        this.createFile(files[0])
-      }
-    },
-    createFile(file){
-      let fileReader = new FileReader()
-      fileReader.readAsDataURL(event.target.files[0])
-      this.upload()
-    },
-    upload(){
-      let formData = new FormData()
-      formData.append('file', this.file)
-      formData.append('file_url', this.file.name)
-      formData.append('account_id', this.user.userID)
-      formData.append('payload', 'profile')
-      formData.append('status', null)
-      $('#loading').css({display: 'block'})
-      axios.post(this.config.BACKEND_URL + '/images/upload', formData).then(response => {
-        if(response.data.data !== null){
-          if(this.user.profile !== null){
-            this.user.profile.url = response.data.data
-            this.updatePhoto(this.user.profile)
-          }else{
-            let parameter = {
-              account_id: this.user.userID,
-              url: response.data.data
-            }
-            this.createPhoto(parameter)
-          }
-          AUTH.checkAuthentication(null)
-          $('#loading').css({display: 'none'})
-        }
-      })
-    },
     retrieve(){
       let parameter = {
         condition: [{
@@ -234,6 +188,7 @@ export default {
         if(response.data === true){
           this.hideImages()
           this.retrieve()
+          AUTH.checkAuthentication()
         }
       })
     },
@@ -255,8 +210,15 @@ export default {
     showImages(){
       $('#browseImagesModal').modal('show')
     },
-    hideImages(){
-      $('#browseImagesModal').modal('hide')
+    manageImageUrl(url){
+      if(this.user.profile !== null){
+        this.user.profile.url = url
+        this.updatePhoto(this.user.profile)
+      }else{
+        this.newProfile.account_id = this.user.userID
+        this.newProfile.url = url
+        this.createPhoto(this.newProfile)
+      }
     }
   }
 }

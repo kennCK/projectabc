@@ -113,7 +113,7 @@ export default {
     'account': require('modules/account/Account.vue'),
     'payment': require('modules/payment/Create.vue'),
     'billing-information': require('modules/billing/Information.vue'),
-    'merchant': require('modules/merchant/Settings.vue'),
+    'merchant': require('modules/account/Merchant.vue'),
     'notification': require('modules/account/Notification.vue')
   },
   methods: {

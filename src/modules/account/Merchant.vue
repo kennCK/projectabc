@@ -24,7 +24,7 @@
         
         <button class="btn btn-primary" style="margin-bottom: 25px;" @click="update()">Update</button>
       </span>
-      <span class="sidebar">
+      <span class="sidebar" v-if="createFlag === false">
         <span class="sidebar-header" style="margin-top: 25px;">Business Logo</span>
         <span class="image" v-if="data.logo !== null">
           <img :src="config.BACKEND_URL + data.logo" height="auto" width="100%" >
@@ -36,7 +36,7 @@
           <label v-if="data.status === 'not_verified'" class="text-grey"><i>Not verified</i></label>
           <label v-if="data.status === 'verified'" class="text-primary"><i>Verified</i></label>
         </span>
-        <button class="btn btn-warning custom-block" style="margin-top: 5px;" @click="showImages()">Select from images
+        <button class="btn btn-primary custom-block" style="margin-top: 5px;" @click="showImages()">Select from images
         </button>
       </span>
     </span>
@@ -188,8 +188,9 @@ export default {
         }
       })
     },
-    update(){
+    update(url){
       if(this.createFlag === false){
+        this.data.logo = url
         this.APIRequest('merchants/update', this.data).then(response => {
           if(response.data === true){
             this.retrieve()
@@ -201,10 +202,11 @@ export default {
           }
         })
       }else{
-        this.create()
+        this.create(url)
       }
     },
-    create(){
+    create(url){
+      this.data.logo = url
       this.APIRequest('merchants/create', this.data).then(response => {
         if(response.data > 0){
           this.retrieve()
@@ -230,7 +232,7 @@ export default {
       $('#browseImagesModal').modal('show')
     },
     manageImageUrl(url){
-      //
+      this.update(url)
     }
   }
 }
