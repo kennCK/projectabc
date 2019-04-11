@@ -7,6 +7,26 @@
       <label class="text-primary">/ {{data.title}}</label>
     </div>
     <div class="product-item-holder">
+      <div class="product-item-details">
+        <div class="product-item-title">
+          <label>Title <label class="text-danger">*</label></label>
+          <br>
+          <input type="text" class="form-control form-control-custom" v-model="data.title" placeholder="Type product title here...">
+        </div>
+        <div class="product-item-title">
+          <label>Description <label class="text-danger">*</label></label>
+          <br>
+          <textarea class="form-control" rows="20" v-model="data.description" placeholder="Type product description here..."></textarea>
+        </div>
+        <div class="product-item-title">
+          <label>Tags</label>
+          <br>
+          <input type="text" class="form-control form-control-custom" v-model="data.tags" placeholder="#like#this">
+        </div>
+        <div class="product-item-title">
+          <button class="btn btn-primary pull-right">Update</button>
+        </div>
+      </div>
       <div class="product-image">
         <div class="product-row" style="text-align: left !important;">
           <label style="width: 100%">
@@ -30,66 +50,6 @@
         </div>
        </div>
       </div>
-      <div class="product-item-details">
-        <div class="product-item-title">
-          <input type="text" class="form-control" v-model="data.title">
-        </div>
-        <div class="product-row text-primary" v-if="data.price !== null">
-          <label v-if="data.price.length === 1">PHP {{data.price[0].price}}</label>
-          <label v-if="data.price.length > 1">PHP {{data.price[data.price.length - 1].price + ' - ' + data.price[0].price}}</label>
-          <i class="fa fa-chevron-down show-prices" style="padding-left: 20px;" @click="showPrice(true)" v-if="data.price.length > 1 && priceFlag === false"></i>
-          <i class="fa fa-chevron-up show-prices" style="padding-left: 20px;" @click="showPrice(false)" v-if="data.price.length > 1 && priceFlag === true"></i>
-        </div>
-        <div class="product-row" v-if="data.price !== null && data.price.length > 1 && priceFlag === true">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <td>Minimum</td>
-                <td>Maximum</td>
-                <td>Price</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item, index in data.price">
-                <td>{{item.minimum}}</td>
-                <td>{{item.maximum}}</td>
-                <td>PHP {{item.price}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="product-row" v-if="data.color !== null">
-          <label>COLOR</label>
-          <span v-for="item, index in data.color" v-bind:style="{background: item.payload_value}" class="attribute"></span>
-        </div>
-        <div class="product-row" v-if="data.size !== null">
-          <label>SIZE</label>
-          <span class="attribute" v-for="item, index in data.size">{{item.payload_value}}</span>
-        </div>
-        <div class="product-row">
-          <label>Quantity</label>
-          <select class="qty-input" v-model="qty">
-            <option v-for="i in 20">{{i}}</option>
-          </select>
-        </div>
-        <div class="product-row" v-if="data.checkout_flag === true">
-          <span class="alert bg-primary">
-            This product was added to your cart. Proceed to checkout now!
-          </span>
-        </div>
-        <div class="product-row">
-          <button class="btn btn-primary" @click="addToCart(data.id)" v-if="data.checkout_flag === false"><i class="fa fa-shopping-cart" style="padding-right: 10px;"></i>ADD TO CART</button>
-          <button class="btn btn-danger" @click="addToWishlist(data.id)" v-if="data.wishlist_flag === false && data.checkout_flag === false"><i class="far fa-heart" style="padding-right: 10px;"></i>ADD TO WISHLIST</button>
-          <button class="btn btn-warning" @click="redirect('/checkout')" v-if="data.checkout_flag === true">PROCEED TO CHECKOUT</button>
-        </div>
-        <div class="product-row-rating" style="margin-top: 5px;">
-          <ratings :payload="'product'" :payloadValue="data.id"></ratings>
-        </div>
-        <div class="product-row-tags" v-if="data.tags !== null && data.tag_array !== null">
-          <label style="width: 15%;">Tags</label>
-          <label class="tag-label" v-for="item, index in data.tag_array">{{item.title}}</label>
-        </div>
-      </div>
     </div>
     <div class="product-more-details">
       <div class="pagination-holder">
@@ -98,14 +58,14 @@
         </ul>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 0">
-        <label>
-          <label v-html="data.description"></label>
-        </label>
+        <attributes :item="data"></attributes>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 1">
-        <label>Shippings</label>
+        
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 2">
+      </div>
+      <div class="details-holder" v-if="prevMenuIndex === 3">
         <product-comments :payloadValue="data.id" :payload="'product'"></product-comments>
       </div>
     </div>
@@ -114,19 +74,23 @@
 </template>
 <style scoped>
   .title{
-    width: 100%;
+    width: 95%;
     float: left;
+    margin-left: 2%;
     font-size: 16px;
   }
   .product-item-holder{
-    width: 100%;
+    width: 98%;
     float: left;
+    margin-left: 2%;
     min-height: 10px;
     overflow-y: hidden;
   }
   .product-image{
-    width: 40%;
+    width: 36%;
     float: left;
+    margin-left: 2%;
+    margin-right: 2%;
     min-height: 410px;
     overflow-y: hidden;
   }
@@ -169,8 +133,7 @@
   }
   .product-item-details{
     min-height: 50px;
-    width: 58%;
-    margin-left: 2%;
+    width: 60%;
     float: left;
     overflow-y: hidden;
     border: 0px;
@@ -180,7 +143,10 @@
     float: left;
     min-height: 50px;
     overflow-y: hidden;
-    margin-top: 25px;
+    margin-top: 15px;
+  }
+  .product-item-title label{
+    font-weight: 600;
   }
   .product-row{
     width: 100%;
@@ -245,12 +211,15 @@
     cursor: pointer;
   }
   .product-more-details{
-    width: 100%;
+    width: 96%;
     float: left;
     margin-bottom: 100px;
     min-height: 50px;
     overflow-y: hidden;
+    margin-left: 2%;
+    margin-right: 2%;
     border-top: solid 1px #ffaa81;
+    margin-top: 25px;
   }
   .product-more-details .details-holder{
     width: 60%;
@@ -289,7 +258,7 @@
     cursor: pointer;
     color: #ffaa81;
   }
-  .form-control{
+  .form-control-custom{
     height: 50px !important;
   }
 </style>
@@ -310,10 +279,10 @@ export default {
       data: null,
       code: this.$route.params.code,
       productMenu: [
-        {title: 'Product Details', flag: true},
-        // {title: 'Supplier', flag: false},
-        {title: 'Shippings', flag: false},
-        {title: 'Reviews', flag: false}
+        {title: 'Attributes', flag: true},
+        {title: 'Price', flag: false},
+        {title: 'Inventory', flag: false},
+        {title: 'Comments', flag: false}
       ],
       prevMenuIndex: 0,
       selectedImage: null,
@@ -330,7 +299,8 @@ export default {
   components: {
     'ratings': require('modules/rating/Ratings.vue'),
     'product-comments': require('modules/comment/Comments.vue'),
-    'browse-images-modal': require('modules/image/BrowseModal.vue')
+    'browse-images-modal': require('modules/image/BrowseModal.vue'),
+    'attributes': require('modules/product/Attributes.vue')
   },
   methods: {
     redirect(parameter){
@@ -355,7 +325,9 @@ export default {
         }],
         account_id: this.user.userID
       }
+      $('#loading').css({display: 'block'})
       this.APIRequest('products/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data[0]
         }
