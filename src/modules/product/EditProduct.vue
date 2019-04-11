@@ -93,11 +93,12 @@
     margin-right: 2%;
     min-height: 410px;
     overflow-y: hidden;
+    text-align: center;
   }
   .product-image .main-image{
     height: 350px;
     float: left;
-    width: 100%;
+    max-width: 100%;
   }
   .product-image .fa-image{
     font-size: 250px;
@@ -107,11 +108,11 @@
     height: 60px;
     float: left;
     width: 80px;
+    text-align: center;
   }
   .product-image .other-image{
     height: 60px;
-    float: left;
-    width: 80px;
+    max-width: 100%;
   }
   .product-image .image-item:hover{
     cursor: pointer;
@@ -123,7 +124,7 @@
     width: 80px;
     margin-top: -60px;
     float: left;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0);
   }
   .images-holder{
     width: 100%;
