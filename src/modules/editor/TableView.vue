@@ -47,13 +47,7 @@
               </span>
             </span>
             <span class="object-action">
-              <button class="btn btn-primary"@click="addImage('image' + indexO, indexO, itemO, index)">Upload new photo
-                <input type="file" class="form-control" v-bind:id="'image' + indexO" @change="setUpFileUpload($event)" accept="image/*" >
-              </button>
-              <button class="btn btn-warning pull-right" style="margin-right: 5px;" @click="selectedBrowseImage = indexO">Select from images</button>
-            </span>
-            <span class="object-browse-images" v-if="selectedBrowseImage === indexO">
-              <browse-images :object="itemO" :view="'table-view'" :index="index"></browse-images>
+              <button class="btn btn-primary" @click="showImageModal(itemO, index)">Select from images</button>
             </span>
           </div>
 <!-- 					<div class="input-group" v-if="itemO.type === 'text'">
@@ -86,6 +80,7 @@
 				</span>
 			</div>
 		</div>
+    <browse-image-modal></browse-image-modal>
 	</div>
 </template>
 <style scoped>
@@ -291,17 +286,15 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      file: null,
       fileIndex: null,
-      selectedItem: null,
-      selectedIndex: null,
       inArrayColor: ['#f', '#ff', '#fff', '#ffff', '#fffff', '#ffffff', 'white'],
-      selectedBrowseImage: null
+      selectedObject: null,
+      selectedIndex: null
     }
   },
   props: ['data'],
   components: {
-    'browse-images': require('modules/editor/BrowseImages.vue')
+    'browse-image-modal': require('modules/image/BrowseModal.vue')
   },
   methods: {
     redirect(parameter){
@@ -311,51 +304,16 @@ export default {
       this.$parent.makeActive(index)
       this.selectedBrowseImage = null
     },
-    addImage(id, index, item, indexInner){
-      $('#' + id)[0].click()
-      this.fileIndex = index
-      this.selectedItem = item
-      this.selectedIndex = indexInner
-    },
-    createFile(file){
-      let fileReader = new FileReader()
-      fileReader.readAsDataURL(event.target.files[0])
-      this.upload()
-    },
-    setUpFileUpload(event){
-      let files = event.target.files || event.dataTransfer.files
-      if(!files.length){
-        return false
-      }else{
-        this.file = files[0]
-        this.createFile(files[0])
-      }
-    },
-    upload(){
-      if(this.selectedItem !== null){
-        let formData = new FormData()
-        formData.append('file', this.file)
-        formData.append('file_url', this.file.name)
-        formData.append('account_id', this.user.userID)
-        formData.append('template_id', this.selectedItem.template_id)
-        $('#loading').css({'display': 'block'})
-        axios.post(this.config.BACKEND_URL + '/objects/upload', formData).then(response => {
-          if(response.data.data !== null){
-            this.updateUrl(response.data.data)
-          }
-        })
-      }
-    },
     updateUrl(url){
       let parameter = {
-        id: this.selectedItem.id,
+        id: this.selectedObject.id,
         content: url
       }
       this.APIRequest('objects/update', parameter).done(response => {
         $('#loading').css({'display': 'none'})
         if(response.data === true){
           this.$parent.retrieve(this.selectedIndex)
-          this.selectedItem = null
+          this.selectedObject = null
           this.selectedIndex = null
         }
       })
@@ -386,6 +344,14 @@ export default {
           this.$parent.retrieve(index)
         }
       })
+    },
+    showImageModal(item, index){
+      this.selectedObject = item
+      this.selectedIndex = index
+      $('#browseImagesModal').modal('show')
+    },
+    manageImageUrl(url){
+      this.updateUrl(url)
     }
   }
 }

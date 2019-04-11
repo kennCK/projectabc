@@ -13,15 +13,15 @@
     </div>
     <div class="govList-wrapper" v-if="data !== null">
       <div class="container">
-        <div class="row govList-item" v-for="(item, index) in data.variables" :key="index" v-if="data.variables !== null">
-          <div class="col">
+        <div class="row govList-item" v-for="(item, index) in data.variables" :key="index" >
+          <div class="col center-text">
             {{item.payload}}
           </div>
-          <div class="col">
+          <div class="col center-text">
             {{item.payload_value}}
           </div>
           <div class="col-auto">
-            <button @click="deleteEntry(index)" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+            <button @click="deleteEntry(item.id)" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
           </div>
         </div>
       </div>
@@ -31,19 +31,28 @@
 <style scoped>
   .govList-wrapper {
     background: #f4f4f4;
-    border-bottom: 1px #ccc solid;
+    border-bottom: 1px #f2f2f2 solid;
     border-left: 1px #ccc solid;
     border-right: 1px #ccc solid;
     border-top: 1px #ccc solid;
-    border-radius: 0.25em
+    border-radius: 0.25em;
   }
   .govList-item {
-    border-bottom: 1px #ccc solid
+    border-bottom: 1px #ccc solid;
+    padding-top: 2%;
+    padding-bottom: 2%;
+  }
+  .center-text {
+    text-align: center;
+    padding-top: 1%;
   }
 </style>
 
 <script>
 export default {
+  mounted(){
+    this.initPayloadArray()
+  },
   name: 'GovList',
   props: ['data'],
   data(){
@@ -55,25 +64,39 @@ export default {
     }
   },
   methods: {
+    initPayloadArray(){
+      this.payloadArray = []
+      if(this.data !== null && this.data.variables !== null){
+        for(let i = 0; i < this.data.variables.length; i++){
+          this.payloadArray.push(this.data.variables[i].payload)
+        }
+      }
+    },
     addGovernmentVariables(){
       if(this.validate()){
         this.errorMessage = null
         let temp = {
+          profile_id: this.data.id,
           payload: this.payload,
           payload_value: this.payloadValue
         }
+        this.APIRequest('profile_variables/create', temp).then(res => {
+          this.retrieve()
+        })
         this.data.variables.push(temp)
         this.payloadArray.push(this.payload)
         this.payload = null
         this.payloadValue = null
       }
     },
-    deleteEntry(index){
-      if(this.data.variables.length > 0){
-        this.data.variables.splice(index, 1)
-        this.payloadArray.splice(index, 1)
-        console.log(this.data.variables)
+    deleteEntry(id){
+      let parameter = {
+        id: id
       }
+      this.APIRequest('profile_variables/delete', parameter).then(res => {
+        this.retrieve()
+        this.initPayloadArray()
+      })
     },
     validate(){
       if((this.payload === null || this.payload === '') || (this.payloadValue === null || this.payloadValue === '')){
@@ -90,6 +113,24 @@ export default {
         return false
       }
       return true
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.data.id,
+          column: 'profile_id',
+          clause: '='
+        }]
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('profile_variables/retrieve', parameter).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data.length > 0){
+          this.data.variables = response.data
+        }else{
+          this.data.variables = null
+        }
+      })
     }
   }
 }

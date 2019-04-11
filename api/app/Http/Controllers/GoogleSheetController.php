@@ -301,13 +301,13 @@ class GoogleSheetController extends APIController
     public function otherColumnsManager($profileId, $data){
     	if(sizeof($data) > 0){
     		for ($i=0; $i < sizeof($data); $i++) { 
-    			$result = app('App\Http\Controllers\GovernmentController')->checkIfExist($profileId, $data[$i]['payload']);
+    			$result = app('App\Http\Controllers\ProfileVariableController')->checkIfExist($profileId, $data[$i]['payload']);
 					if($result !== null){
 						$data[$i]['id'] = $result['id'];
-						app('App\Http\Controllers\GovernmentController')->updateFromController($data[$i]);
+						app('App\Http\Controllers\ProfileVariableController')->updateFromController($data[$i]);
 					}else{
 						$data[$i]['profile_id'] = $profileId;
-						$id = app('App\Http\Controllers\GovernmentController')->createFromController($data[$i]);
+						$id = app('App\Http\Controllers\ProfileVariableController')->createFromController($data[$i]);
 					}
     		}
     	}

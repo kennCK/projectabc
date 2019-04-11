@@ -25,7 +25,7 @@
                 <span class="account-picture text-center">
                   <span class="profile-photo-header">
                     <span class="profile-image-holder-header"  v-if="user.profile !== null">
-                      <img v-bind:src="config.BACKEND_URL + user.profile.profile_url">
+                      <img v-bind:src="config.BACKEND_URL + user.profile.url">
                     </span>
                     <i class="fa fa-user-circle-o" v-else></i>
                   </span>

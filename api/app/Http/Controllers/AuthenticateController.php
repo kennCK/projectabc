@@ -9,7 +9,7 @@ use Tymon\JWTAuthExceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 
 use App\UserAuth;
-use App\Account;
+use Increment\Account\Models\Account;
 use App\LoginLogger;
 use App\Jobs\Email;
 

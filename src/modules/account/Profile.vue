@@ -47,16 +47,17 @@
       <span class="sidebar">
         <span class="sidebar-header" style="margin-top: 25px;">Profile Picture</span>
         <span class="image" v-if="user.profile !== null">
-          <img :src="config.BACKEND_URL + user.profile.profile_url" height="auto" width="100%" >
+          <img :src="config.BACKEND_URL + user.profile.url" height="auto" width="100%" >
         </span>
         <span class="image" v-else>
           <i class="fa fa-user-circle-o" ></i>
         </span>
-        <button class="btn btn-primary custom-block" style="margin-top: 5px;" @click="addImage()">Upload New Profile
-          <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
+        <button class="btn btn-primary custom-block" style="margin-top: 5px;" @click="showImages()">Select from images
         </button>
       </span>
     </span>
+    <browse-images-modal :object="user.profile" v-if="user.profile !== null"></browse-images-modal>
+    <browse-images-modal :object="newProfile" v-if="user.profile === null"></browse-images-modal>
   </div>
 </template>
 <style scoped>
@@ -146,41 +147,17 @@ export default {
       user: AUTH.user,
       tokenData: AUTH.tokenData,
       config: CONFIG,
-      file: null,
-      data: null
+      data: null,
+      newProfile: {
+        account_id: null,
+        url: null
+      }
     }
   },
+  components: {
+    'browse-images-modal': require('modules/image/BrowseModal.vue')
+  },
   methods: {
-    addImage(){
-      $('#profilePicture')[0].click()
-    },
-    setupFile(event){
-      let files = event.target.files || event.dataTransfer.files
-      if(!files.length){
-        return false
-      }else{
-        this.file = files[0]
-        this.createFile(files[0])
-      }
-    },
-    createFile(file){
-      let fileReader = new FileReader()
-      fileReader.readAsDataURL(event.target.files[0])
-      this.upload()
-    },
-    upload(){
-      let formData = new FormData()
-      formData.append('file', this.file)
-      formData.append('profile_url', this.file.name)
-      formData.append('account_id', this.user.userID)
-      $('#loading').css({display: 'block'})
-      axios.post(this.config.BACKEND_URL + '/account_profiles/create', formData).then(response => {
-        if(response.data.data > 0){
-          AUTH.checkAuthentication(null)
-          $('#loading').css({display: 'none'})
-        }
-      })
-    },
     retrieve(){
       let parameter = {
         condition: [{
@@ -206,12 +183,42 @@ export default {
         })
       }
     },
+    updatePhoto(object){
+      this.APIRequest('account_profiles/update', object).then(response => {
+        if(response.data === true){
+          this.hideImages()
+          this.retrieve()
+          AUTH.checkAuthentication()
+        }
+      })
+    },
+    createPhoto(object){
+      this.APIRequest('account_profiles/create', object).then(response => {
+        if(response.data > 0){
+          this.hideImages()
+          AUTH.checkAuthentication()
+        }
+      })
+    },
     validate(){
       let i = this.data
       if(i.first_name !== null && i.last_name !== null && i.sex !== null){
         return true
       }
       return false
+    },
+    showImages(){
+      $('#browseImagesModal').modal('show')
+    },
+    manageImageUrl(url){
+      if(this.user.profile !== null){
+        this.user.profile.url = url
+        this.updatePhoto(this.user.profile)
+      }else{
+        this.newProfile.account_id = this.user.userID
+        this.newProfile.url = url
+        this.createPhoto(this.newProfile)
+      }
     }
   }
 }

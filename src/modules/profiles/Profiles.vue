@@ -79,17 +79,19 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item, index in data" @click="editProfile(item)">
+          <tr v-for="item in data" @click="editProfile(item)">
             <td>
-              <img :src="config.BACKEND_URL + item.profile" height="40px" width="40px" style="margin-right: 10px;border-radius: 50%; margin-top: 5px; margin-bottom: 5px;">{{item.email}}</td>
+              <img :src="config.BACKEND_URL + item.profile" v-if="item.profile !== null" height="40px" width="40px" style="margin-right: 10px;border-radius: 50%; margin-top: 5px; margin-bottom: 5px;">
+              <i class="fa fa-user-circle-o" style="font-size: 40px !important; line-height: 40px !important; vertical-align: middle" v-if="item.profile === null"></i>
+              {{item.email}}</td>
             <td>{{item.first_name}}</td>
             <td>{{item.last_name}}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <print></print>
     <edit-profile></edit-profile>
+    <print></print>
     <empty v-if="data === null" :title="'Looks like you have not added an profiles to your template!'" :action="'Click the  New or Import Button to get started.'"></empty>
   </div>
 </template>
@@ -370,7 +372,7 @@ export default {
     editProfile(item){
       for (var i = 0; i < this.$children.length; i++) {
         if(this.$children[i].$el.id === 'editProfileModule'){
-          this.$children[i].data = item
+          this.$children[i].item = item
           this.$children[i].modal()
         }
       }

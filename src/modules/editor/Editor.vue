@@ -50,7 +50,7 @@
                   </span>
                 </span>
                 <span class="browse-images-holder" v-if="selected !== null && browseImagesFlag === true">
-                  <browse-images :object="selected" :view="'editor'" :index="selectedIndex"></browse-images>
+                  <browse-images></browse-images>
                 </span>
                 <span class="object-contents" v-if="selected !== null">
                   <basic-text v-if="selected !== null && selected.type === 'text'" :object="selected" :index="selectedIndex"></basic-text>
@@ -244,7 +244,7 @@ export default {
     'basic-text': require('modules/editor/BasicText.vue'),
     'basic-photo': require('modules/editor/BasicPhoto.vue'),
     'basic-div': require('modules/editor/BasicDiv.vue'),
-    'browse-images': require('modules/editor/BrowseImages.vue')
+    'browse-images': require('modules/image/BrowseImages.vue')
   },
   methods: {
     redirect(parameter){
@@ -425,6 +425,9 @@ export default {
     },
     dragEnd(event){
       console.log(event)
+    },
+    manageImageUrl(url){
+      this.selected.content = url
     }
   }
 }

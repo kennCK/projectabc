@@ -96,7 +96,7 @@ export default {
           message: this.newMessageInput,
           member: this.group.id
         }
-        this.APIRequest('messenger_groups/create', parameter).then(response => {
+        this.APIRequest('custom_messenger_groups/create', parameter).then(response => {
           if(response.data !== null){
             this.newMessageInput = null
             this.$parent.group = response.data

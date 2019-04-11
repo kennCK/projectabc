@@ -45,11 +45,11 @@ class ProfileController extends APIController
         $counter = 0;
         foreach ($this->response['data'] as $key) {
           $id = $this->response['data'][$i]['id'];
-          $this->response['data'][$i]['total_comments'] = $this->getComments('profiles', $id);
+          $this->response['data'][$i]['total_comments'] = app('Increment\Common\Comment\Http\CommentController')->getComments('profiles', $id);
           $this->response['data'][$i]['active'] = false;
-          $this->response['data'][$i]['checkout'] = $this->getCheckout('profile', $id, $accountId);
+          $this->response['data'][$i]['checkout'] = app('Increment\Marketplace\Http\CheckoutController')->getCheckout('profile', $id, $accountId);
           $this->response['data'][$i]['counter'] = $counter;
-          $result = app('App\Http\Controllers\GovernmentController')->retrieveByColumn('profile_id', $id);
+          $result = app('App\Http\Controllers\ProfileVariableController')->retrieveByColumn('profile_id', $id);
           $this->response['data'][$i]['variables'] = $result;
           if($result != null){
             foreach ($result as $key => $item) {
@@ -71,7 +71,7 @@ class ProfileController extends APIController
     public function retrieveById($id){
       $result = Profile::where('id', '=', $id)->get();
       if(sizeof($result) > 0){
-        $variables = app('App\Http\Controllers\GovernmentController')->retrieveByColumn('profile_id', $id);
+        $variables = app('App\Http\Controllers\ProfileVariableController')->retrieveByColumn('profile_id', $id);
 
         if(sizeof($variables) > 0){
           foreach ($variables as $key => $item) {
@@ -79,7 +79,7 @@ class ProfileController extends APIController
           }
         }
         
-        $result[0]['total_comments'] = $this->getComments('profiles', $id);
+        $result[0]['total_comments'] = app('Increment\Common\Comment\Http\CommentController')->getComments('profiles', $id);
         return $result[0];
       }else{
         return null;

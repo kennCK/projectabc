@@ -5,7 +5,7 @@
         <span class="date">
           {{conversation.created_at_human}}
         </span>
-        <img :src="config.BACKEND_URL + conversation.account.profile.profile_url" class="profile pull-left" v-if="conversation.account.profile !== null && conversation.account !== null">
+        <img :src="config.BACKEND_URL + conversation.account.profile.url" class="profile pull-left" v-if="conversation.account.profile !== null && conversation.account !== null">
         <i class="fa fa-user-circle-o pull-left" v-else></i>
         <label class="content" >
           {{conversation.message}}
@@ -18,7 +18,7 @@
          <label class="content">
           <bdi>{{conversation.message}}</bdi>
          </label>
-         <img :src="config.BACKEND_URL + conversation.account.profile.profile_url" class="profile pull-right" v-if="conversation.account.profile !== null && conversation.account !== null">
+         <img :src="config.BACKEND_URL + conversation.account.profile.url" class="profile pull-right" v-if="conversation.account.profile !== null && conversation.account !== null">
          <i class="fa fa-user-circle-o pull-right" v-else></i>
       </div>
       </div>
