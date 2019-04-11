@@ -14,17 +14,14 @@
               <input type="text" class="form-control form-control-custom" v-model="searchValue" placeholder="Search something..." @keyup.enter="search()">
               <!-- <i class="fa fa-search" @click="search()"></i> -->
             </span>
-            <span class="settings" v-if="data !== null">
+            <span class="settings">
               <span class="image-holder" style="text-align: center;" @click="addImage()">
                 <i class="fa fa-plus" style="font-size: 60px; line-height: 200px;"></i>
                 <input type="file" id="Image" accept="image/*" @change="setUpFileUpload($event)">
               </span>
-              <span v-bind:class="{'active-image': item.active === true}" class="image-holder" v-for="item, index in data" @click="select(index)">
+              <span v-bind:class="{'active-image': item.active === true}" class="image-holder" v-for="item, index in data" @click="select(index)" v-if="data !== null">
                 <img :src="config.BACKEND_URL + item.url">
               </span>
-            </span>
-            <span class="settings text-danger" v-if="data === null && loadingFlag === false">
-              <label class="error">No results!</label>
             </span>
           </div>
           <div class="modal-footer">
