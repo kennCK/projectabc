@@ -233,6 +233,14 @@ export default{
     }
   },
   {
+    path: '/product/edit/:code',
+    name: 'product',
+    component: resolve => require(['modules/product/EditProduct.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
     path: '/marketplace',
     name: 'marketplace',
     component: resolve => require(['modules/marketplace/Marketplace.vue'], resolve),

@@ -3,15 +3,18 @@
     <div class="item">
       <span class="header">
         Saved Images
-        <i class="fa fa-close pull-right" @click="closeProfileView()" v-if="view === 'profile-view' || view === 'signature-view'"></i>
-        <i class="fa fa-close pull-right" @click="closeProductView()" v-if="view === 'featured-view' || view === 'others-view'"></i>
+        <i class="fa fa-close pull-right" @click="close()"></i>
       </span>
       <span class="search">
         <input type="text" class="form-control form-control-custom" v-model="searchValue" placeholder="Search something..." @keyup.enter="search()">
         <i class="fa fa-search" @click="search()"></i>
       </span>
-      <span class="settings" v-if="data !== null">
-        <span v-bind:class="{'active-image': item.active === true}" class="image-holder" v-for="item, index in data" @click="select(index)">
+      <span class="settings">
+        <span class="image-holder" style="text-align: center;" @click="addImage()">
+          <i class="fa fa-plus" style="font-size: 60px; line-height: 200px;"></i>
+          <input type="file" id="Image" accept="image/*" @change="setUpFileUpload($event)">
+        </span>
+        <span v-bind:class="{'active-image': item.active === true}" class="image-holder" v-for="item, index in data" @click="select(index)" v-if="data !== null">
           <img :src="config.BACKEND_URL + item.url">
         </span>
       </span>
@@ -22,12 +25,8 @@
         <label class="error">Loading...</label>
       </span>
       <span class="bottom-action" v-if="prevIndex !== null && data !== null">
-        <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'profile-view' || view === 'signature-view'">Cancel</button>
-        <button class="btn btn-danger" @click="closeProfileView()" v-if="view === 'featured-view' || view === 'others-view'">Cancel</button>
-        <button class="btn btn-primary" @click="applyProfile('profile')" v-if="view === 'profile-view'">Apply</button>
-        <button class="btn btn-primary" @click="applyProfile('signature')" v-if="view === 'signature-view'">Apply</button>
-        <button class="btn btn-primary" @click="applyProduct('featured')" v-if="view === 'featured-view'">Apply</button>
-        <button class="btn btn-primary" @click="applyProduct('others')" v-if="view === 'others-view'">Apply</button>
+        <button class="btn btn-danger" @click="close()">Cancel</button>
+        <button class="btn btn-primary" @click="apply()">Apply</button>
       </span>
     </div>
   </div>
@@ -85,10 +84,17 @@
   border: solid 1px #ddd;
   border-radius: 2px;
 }
+
 .image-holder img{
   max-height: 79px;
   max-width: 100%;
   float: left;
+}
+
+.image-holder input{
+  display: none;
+  height: 79px;
+  width: 80px;
 }
 
 .bottom-action{
@@ -129,7 +135,6 @@ import axios from 'axios'
 export default {
   mounted(){
     this.search()
-    this.default = this.object.url
   },
   data(){
     return {
@@ -138,14 +143,44 @@ export default {
       searchValue: null,
       data: null,
       prevIndex: null,
-      default: null,
-      loadingFlag: false
+      loadingFlag: false,
+      file: null
     }
   },
   props: ['object', 'view'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    addImage(){
+      $('#Image')[0].click()
+    },
+    setUpFileUpload(event){
+      let files = event.target.files || event.dataTransfer.files
+      if(!files.length){
+        return false
+      }else{
+        this.file = files[0]
+        this.createFile(files[0])
+      }
+    },
+    createFile(file){
+      let fileReader = new FileReader()
+      fileReader.readAsDataURL(event.target.files[0])
+      this.upload()
+    },
+    upload(){
+      let formData = new FormData()
+      formData.append('file', this.file)
+      formData.append('file_url', this.file.name)
+      formData.append('account_id', this.user.userID)
+      $('#loading').css({'display': 'block'})
+      axios.post(this.config.BACKEND_URL + '/images/upload', formData).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data.data !== null){
+          this.search()
+        }
+      })
     },
     search(){
       let parameter = null
@@ -192,30 +227,13 @@ export default {
         }
       }
     },
-    applyProfile(params){
-      this.object[params] = this.data[this.prevIndex].url
-      this.$parent.selectedBrowseImage = null
-    },
-    applyProduct(status){
-      this.object.url = this.data[this.prevIndex].url
-      this.object.status = status
-      this.$parent.updateImage(this.object)
+    apply(){
+      this.$parent.manageUrl(this.data[this.prevIndex].url)
+      this.close()
     },
     close(){
       this.prevIndex = null
       this.$parent.browseImagesFlag = false
-    },
-    closeTableView(){
-      this.prevIndex = null
-      this.$parent.selectedBrowseImage = null
-    },
-    closeProfileView(){
-      this.$parent.browseImagesProfileFlag = false
-      this.$parent.browseImagesSignatureFlag = false
-    },
-    closeProductView(){
-      this.$parent.browseFeaturedFlag = false
-      this.$parent.browseOthersFlag = false
     }
   }
 }

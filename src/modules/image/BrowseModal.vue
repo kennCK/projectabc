@@ -14,19 +14,19 @@
               <input type="text" class="form-control form-control-custom" v-model="searchValue" placeholder="Search something..." @keyup.enter="search()">
               <!-- <i class="fa fa-search" @click="search()"></i> -->
             </span>
-            <span class="settings" v-if="data !== null">
-              <span v-bind:class="{'active-image': item.active === true}" class="image-holder" v-for="item, index in data" @click="select(index)">
+            <span class="settings">
+              <span class="image-holder" style="text-align: center;" @click="addImage()">
+                <i class="fa fa-plus" style="font-size: 60px; line-height: 200px;"></i>
+                <input type="file" id="Image" accept="image/*" @change="setUpFileUpload($event)">
+              </span>
+              <span v-bind:class="{'active-image': item.active === true}" class="image-holder" v-for="item, index in data" @click="select(index)" v-if="data !== null">
                 <img :src="config.BACKEND_URL + item.url">
               </span>
-            </span>
-            <span class="settings text-danger" v-if="data === null && loadingFlag === false">
-              <label class="error">No results!</label>
             </span>
           </div>
           <div class="modal-footer">
             <button class="btn btn-danger" @click="cancel()">Cancel</button>
-            <button class="btn btn-primary" @click="apply()" v-if="object.url !== null">Apply</button>
-            <button class="btn btn-primary" @click="applyCreate()" v-if="object.url === null">Apply</button>
+            <button class="btn btn-primary" @click="apply()">Apply</button>
           </div>
         </div>
       </div>
@@ -87,6 +87,11 @@
   float: left;
 }
 
+.image-holder input{
+  display: none;
+  height: 200px;
+  width: 200px;
+}
 .bottom-action{
   width: 100%;
   float: left;
@@ -134,14 +139,43 @@ export default {
       searchValue: null,
       data: null,
       prevIndex: null,
-      default: this.object.url,
-      loadingFlag: false
+      loadingFlag: false,
+      file: null
     }
   },
-  props: ['object'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    addImage(){
+      $('#Image')[0].click()
+    },
+    setUpFileUpload(event){
+      let files = event.target.files || event.dataTransfer.files
+      if(!files.length){
+        return false
+      }else{
+        this.file = files[0]
+        this.createFile(files[0])
+      }
+    },
+    createFile(file){
+      let fileReader = new FileReader()
+      fileReader.readAsDataURL(event.target.files[0])
+      this.upload()
+    },
+    upload(){
+      let formData = new FormData()
+      formData.append('file', this.file)
+      formData.append('file_url', this.file.name)
+      formData.append('account_id', this.user.userID)
+      $('#loading').css({'display': 'block'})
+      axios.post(this.config.BACKEND_URL + '/images/upload', formData).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data.data !== null){
+          this.search()
+        }
+      })
     },
     search(){
       let parameter = null
@@ -189,16 +223,10 @@ export default {
       }
     },
     apply(){
-      this.object.url = this.data[this.prevIndex].url
-      this.$parent.updatePhoto(this.object)
-    },
-    applyCreate(){
-      this.object.url = this.data[this.prevIndex].url
-      this.$parent.createPhoto(this.object)
-    },
-    cancel(){
-      this.object.url = this.default
-      this.close()
+      if(this.prevIndex !== null){
+        this.$parent.manageImageUrl(this.data[this.prevIndex].url)
+        this.close()
+      }
     },
     close(){
       this.prevIndex = null
