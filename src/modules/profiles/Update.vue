@@ -112,7 +112,7 @@
 
               <div class="browse-images-holder">
                 <div class="browse-images" v-if="browseImagesSignatureFlag">
-                  <browse-images :object="this.item" :index="0" :view="'profile-view'" ></browse-images>
+                  <browse-images></browse-images>
                 </div>
               </div>
 
@@ -120,7 +120,7 @@
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" @click="hideModal()">Close</button>
-              <button type="button" class="btn btn-primary" @click="submit()">Update</button>
+              <button type="button" class="btn btn-primary" @click="submit()">Submit</button>
           </div>
         </div>
       </div>
@@ -210,7 +210,7 @@ export default {
   },
   components: {
     'government-list': require('modules/profiles/VariableList.vue'),
-    'browse-images': require('modules/editor/BrowseImages.vue')
+    'browse-images': require('modules/image/BrowseImages.vue')
   },
   methods: {
     redirect(parameter){
@@ -270,6 +270,22 @@ export default {
         }
       })
     },
+    update(){
+      if(this.validate()){
+        this.APIRequest('account_informations/update', this.item).then(response => {
+          if(response.data === true){
+            this.retrieve()
+          }
+        })
+      }
+    },
+    validate(){
+      let i = this.item
+      if(i.first_name !== null && i.last_name !== null && i.sex !== null){
+        return true
+      }
+      return false
+    },
     validateRequiredFields(){
       let customerData = this.item
       let conditionFirstName = (customerData.first_name === null || customerData.first_name === '')
@@ -297,6 +313,15 @@ export default {
         this.item.account_id = this.user.userID
         this.APIRequest('profiles/update', this.item).then(res => {
           this.retrieve()
+          if(res.data === true){
+            this.hideModal()
+          }
+          let message = res.error.message
+          if(typeof message.username !== undefined && typeof message.username !== 'undefined'){
+            this.errorMessage = message.username[0]
+          }else if(typeof message.email !== undefined && typeof message.email !== 'undefined'){
+            this.errorMessage = message.email[0]
+          }
         })
       }
     }

@@ -81,7 +81,9 @@
         <tbody>
           <tr v-for="item in data" @click="editProfile(item)">
             <td>
-              <img :src="config.BACKEND_URL + item.profile" height="40px" width="40px" style="margin-right: 10px;border-radius: 50%; margin-top: 5px; margin-bottom: 5px;">{{item.email}}</td>
+              <img :src="config.BACKEND_URL + item.profile" v-if="item.profile !== null" height="40px" width="40px" style="margin-right: 10px;border-radius: 50%; margin-top: 5px; margin-bottom: 5px;">
+              <i class="fa fa-user-circle-o" style="font-size: 40px !important; line-height: 40px !important; vertical-align: middle" v-if="item.profile === null"></i>
+              {{item.email}}</td>
             <td>{{item.first_name}}</td>
             <td>{{item.last_name}}</td>
           </tr>

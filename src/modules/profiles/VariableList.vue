@@ -14,10 +14,10 @@
     <div class="govList-wrapper" v-if="data !== null">
       <div class="container">
         <div class="row govList-item" v-for="(item, index) in data.variables" :key="index" >
-          <div class="col">
+          <div class="col center-text">
             {{item.payload}}
           </div>
-          <div class="col">
+          <div class="col center-text">
             {{item.payload_value}}
           </div>
           <div class="col-auto">
@@ -31,14 +31,20 @@
 <style scoped>
   .govList-wrapper {
     background: #f4f4f4;
-    border-bottom: 1px #ccc solid;
+    border-bottom: 1px #f2f2f2 solid;
     border-left: 1px #ccc solid;
     border-right: 1px #ccc solid;
     border-top: 1px #ccc solid;
-    border-radius: 0.25em
+    border-radius: 0.25em;
   }
   .govList-item {
-    border-bottom: 1px #ccc solid
+    border-bottom: 1px #ccc solid;
+    padding-top: 2%;
+    padding-bottom: 2%;
+  }
+  .center-text {
+    text-align: center;
+    padding-top: 1%;
   }
 </style>
 
