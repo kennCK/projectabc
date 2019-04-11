@@ -11,7 +11,7 @@
       </span>
       <span class="settings">
         <span class="image-holder" style="text-align: center;" @click="addImage()">
-          <i class="fa fa-plus" style="font-size: 60px; line-height: 200px;"></i>
+          <i class="fa fa-plus" style="font-size: 40px; line-height: 80px;"></i>
           <input type="file" id="Image" accept="image/*" @change="setUpFileUpload($event)">
         </span>
         <span v-bind:class="{'active-image': item.active === true}" class="image-holder" v-for="item, index in data" @click="select(index)" v-if="data !== null">
@@ -228,7 +228,7 @@ export default {
       }
     },
     apply(){
-      this.$parent.manageUrl(this.data[this.prevIndex].url)
+      this.$parent.manageImageUrl(this.data[this.prevIndex].url)
       this.close()
     },
     close(){
