@@ -9,7 +9,7 @@
     <div class="product-item-holder">
       <div class="product-image">
         <img :src="config.BACKEND_URL + selectedImage" class="main-image" v-if="selectedImage !== null">
-        <img :src="config.BACKEND_URL + data.featured.url" class="main-image" v-if="selectedImage === null && data.featured !== null">
+        <img :src="config.BACKEND_URL + data.featured[0].url" class="main-image" v-if="selectedImage === null && data.featured !== null">
         <i class="fa fa-image" v-if="selectedImage === null && data.featured === null"></i>
        <div class="images-holder" v-if="data.images !== null">
         <div v-for="item, index in data.images" class="image-item" @click="selectImage(item.url)">
@@ -94,7 +94,7 @@
         <label>Shippings</label>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 2">
-        <product-comments :payloadValue="data.id" :payload="'product'"></product-comments>
+        <product-comments :payloadValue="data.id" :payload="'product'" :load="true"></product-comments>
       </div>
     </div>
   </div>
@@ -121,7 +121,7 @@
   .product-image .main-image{
     height: 350px;
     float: left;
-    width: 100%;
+    max-width: 100%;
   }
   .product-image .fa-image{
     font-size: 250px;
@@ -131,11 +131,11 @@
     height: 60px;
     float: left;
     width: 80px;
+    text-align: center;
   }
   .product-image .other-image{
     height: 60px;
-    float: left;
-    width: 80px;
+    max-width: 80px;
   }
   .product-image .image-item:hover{
     cursor: pointer;
@@ -147,7 +147,7 @@
     width: 80px;
     margin-top: -60px;
     float: left;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0);
   }
   .images-holder{
     width: 100%;
