@@ -36,9 +36,6 @@
           <label v-if="data.status === 'not_verified'" class="text-grey"><i>Not verified</i></label>
           <label v-if="data.status === 'verified'" class="text-primary"><i>Verified</i></label>
         </span>
-        <button class="btn btn-primary custom-block" style="margin-top: 5px;" @click="addImage()">Upload new logo
-          <input type="file" id="merchantLogo" accept="image/*" @change="setupFile($event)">
-        </button>
         <button class="btn btn-warning custom-block" style="margin-top: 5px;" @click="showImages()">Select from images
         </button>
       </span>
@@ -154,7 +151,6 @@ export default {
       tokenData: AUTH.tokenData,
       config: CONFIG,
       data: null,
-      file: null,
       errorMessage: null,
       successMessage: null,
       newData: {
@@ -174,44 +170,6 @@ export default {
     'browse-images-modal': require('modules/image/BrowseModal.vue')
   },
   methods: {
-    addImage(){
-      $('#merchantLogo')[0].click()
-    },
-    setupFile(event){
-      let files = event.target.files || event.dataTransfer.files
-      if(!files.length){
-        return false
-      }else{
-        this.file = files[0]
-        this.createFile(files[0])
-      }
-    },
-    createFile(file){
-      let fileReader = new FileReader()
-      fileReader.readAsDataURL(event.target.files[0])
-      this.upload()
-    },
-    upload(){
-      let formData = new FormData()
-      formData.append('file', this.file)
-      formData.append('file_url', this.file.name)
-      formData.append('account_id', this.user.userID)
-      formData.append('payload', 'merchant')
-      formData.append('name', this.data.name)
-      formData.append('address', this.data.address)
-      formData.append('prefix', this.data.prefix)
-      formData.append('status', null)
-      $('#loading').css({display: 'block'})
-      axios.post(this.config.BACKEND_URL + '/images/upload', formData).then(response => {
-        if(response.data.data !== null){
-          let parameter = {
-            url: response.data.data
-          }
-          this.updatePhoto(parameter)
-          $('#loading').css({display: 'none'})
-        }
-      })
-    },
     retrieve(){
       let parameter = {
         condition: [{
@@ -271,8 +229,8 @@ export default {
     showImages(){
       $('#browseImagesModal').modal('show')
     },
-    hideImages(){
-      $('#browseImagesModal').modal('hide')
+    manageImageUrl(url){
+      //
     }
   }
 }
