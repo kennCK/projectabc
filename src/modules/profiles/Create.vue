@@ -226,7 +226,7 @@ export default {
   },
   components: {
     'google-auth': require('modules/profiles/GoogleAuth.vue'),
-    'browse-images': require('modules/editor/BrowseImages.vue')
+    'browse-images': require('modules/image/BrowseImages.vue')
   },
   methods: {
     redirect(parameter){
@@ -334,7 +334,6 @@ export default {
             this.errorMessage = message.email[0]
           }
           if(res.data > 0){
-            this.hideModal()
             this.errorMessage = null
             this.data = {
               account_id: null,
@@ -354,6 +353,7 @@ export default {
               emergency_contact_number: null,
               signature: null
             }
+            this.hideModal()
           }
         })
       }
