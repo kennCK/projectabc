@@ -111,8 +111,8 @@ export default {
   components: {
     'profile': require('modules/account/Profile.vue'),
     'account': require('modules/account/Account.vue'),
-    'payment': require('modules/payment/Create.vue'),
-    'billing-information': require('modules/billing/Information.vue'),
+    'payment': require('modules/account/Payment.vue'),
+    'billing-information': require('modules/account/BillingInformation.vue'),
     'merchant': require('modules/account/Merchant.vue'),
     'notification': require('modules/account/Notification.vue')
   },
