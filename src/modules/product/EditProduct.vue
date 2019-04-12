@@ -76,7 +76,7 @@
         <attributes :item="data"></attributes>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 1">
-        
+        <prices :item="data"></prices>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 2">
         <inventories :item="data"></inventories>
@@ -318,7 +318,8 @@ export default {
     'product-comments': require('modules/comment/Comments.vue'),
     'browse-images-modal': require('modules/image/BrowseModal.vue'),
     'attributes': require('modules/product/Attributes.vue'),
-    'inventories': require('modules/product/Inventories.vue')
+    'inventories': require('modules/product/Inventories.vue'),
+    'prices': require('modules/product/Prices.vue')
   },
   methods: {
     redirect(parameter){
