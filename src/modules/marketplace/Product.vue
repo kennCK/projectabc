@@ -1,6 +1,11 @@
 <template>
   <div v-if="data !== null">
-    <div class="title">
+    <div class="title" v-if="status === 'preview'">
+      <b @click="redirect('/product/edit/' + data.code)">
+        <label class="text-primary action-link">Back</label>
+      </b>
+    </div>
+    <div class="title" v-if="status !== 'preview'">
       <b @click="redirect('/marketplace')">
         <label class="text-primary action-link">Marketplace</label>
       </b>
@@ -9,7 +14,7 @@
     <div class="product-item-holder">
       <div class="product-image">
         <img :src="config.BACKEND_URL + selectedImage" class="main-image" v-if="selectedImage !== null">
-        <img :src="config.BACKEND_URL + data.featured.url" class="main-image" v-if="selectedImage === null && data.featured !== null">
+        <img :src="config.BACKEND_URL + data.featured[0].url" class="main-image" v-if="selectedImage === null && data.featured !== null">
         <i class="fa fa-image" v-if="selectedImage === null && data.featured === null"></i>
        <div class="images-holder" v-if="data.images !== null">
         <div v-for="item, index in data.images" class="image-item" @click="selectImage(item.url)">
@@ -52,7 +57,7 @@
         </div>
         <div class="product-row" v-if="data.size !== null">
           <label>SIZE</label>
-          <span class="attribute" v-for="item, index in data.size">{{item.payload_value}}</span>
+          <span class="attribute attribute-flexible" v-for="item, index in data.size">{{item.payload_value}}</span>
         </div>
         <div class="product-row">
           <label>Quantity</label>
@@ -94,7 +99,7 @@
         <label>Shippings</label>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 2">
-        <product-comments :payloadValue="data.id" :payload="'product'"></product-comments>
+        <product-comments :payloadValue="data.id" :payload="'product'" :load="true"></product-comments>
       </div>
     </div>
   </div>
@@ -121,7 +126,7 @@
   .product-image .main-image{
     height: 350px;
     float: left;
-    width: 100%;
+    max-width: 100%;
   }
   .product-image .fa-image{
     font-size: 250px;
@@ -131,11 +136,11 @@
     height: 60px;
     float: left;
     width: 80px;
+    text-align: center;
   }
   .product-image .other-image{
     height: 60px;
-    float: left;
-    width: 80px;
+    max-width: 80px;
   }
   .product-image .image-item:hover{
     cursor: pointer;
@@ -147,7 +152,7 @@
     width: 80px;
     margin-top: -60px;
     float: left;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0);
   }
   .images-holder{
     width: 100%;
@@ -228,6 +233,12 @@
     border: solid 1px #ffaa81;
     margin-right: 5px;
   }
+
+  .attribute-flexible{
+    width: auto;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
   .attribute:hover{
     cursor: pointer;
   }
@@ -293,6 +304,7 @@ export default {
       errorMessage: null,
       data: null,
       code: this.$route.params.code,
+      status: this.$route.params.status,
       productMenu: [
         {title: 'Product Details', flag: true},
         // {title: 'Supplier', flag: false},

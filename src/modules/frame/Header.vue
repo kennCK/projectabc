@@ -47,6 +47,10 @@
                 <i class="fa fa-tag"></i>
                 <label>My Plan</label>
               </span>
+              <span class="dropdown-item" v-on:click="redirect('/wishlists')">
+                <i class="fa fa-heart"></i>
+                <label>My Wishlists</label>
+              </span>
               <span class="dropdown-item" v-on:click="redirect('/referrals')">
                 <i class="fa fa-users"></i>
                 <label>Invite Friends</label>

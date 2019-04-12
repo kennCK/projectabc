@@ -157,7 +157,6 @@ export default {
   },
   components: {
     'create': require('modules/product/Create.vue'),
-    'update': require('modules/product/Update.vue'),
     'empty': require('modules/empty/Empty.vue')
   },
   methods: {

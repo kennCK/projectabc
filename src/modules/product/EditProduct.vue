@@ -24,7 +24,22 @@
           <input type="text" class="form-control form-control-custom" v-model="data.tags" placeholder="#like#this">
         </div>
         <div class="product-item-title">
-          <button class="btn btn-primary pull-right">Update</button>
+          <label>SKU</label>
+          <br>
+          <input type="text" class="form-control form-control-custom" v-model="data.sku" placeholder="Type product sku here...">
+        </div>
+        <div class="product-item-title">
+          <label>Status</label>
+          <br>
+          <select class="form-control form-control-custom" v-model="data.status">
+            <option value="pending">Pending</option>
+            <option value="published">Published</option>
+          </select>
+        </div>
+        <div class="product-item-title">
+          <button class="btn btn-danger" @click="deleteProduct(data.id)">Delete</button>
+          <button class="btn btn-primary pull-right" @click="updateProduct()">Update</button>
+          <button class="btn btn-warning pull-right" @click="redirect('/marketplace/product/' + data.code + '/' + 'preview')" style="margin-right: 10px;">Preview</button>
         </div>
       </div>
       <div class="product-image">
@@ -64,9 +79,10 @@
         
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 2">
+        <inventories :item="data"></inventories>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 3">
-        <product-comments :payloadValue="data.id" :payload="'product'"></product-comments>
+        <product-comments :payloadValue="data.id" :payload="'product'" :load="true"></product-comments>
       </div>
     </div>
     <browse-images-modal></browse-images-modal>
@@ -93,11 +109,12 @@
     margin-right: 2%;
     min-height: 410px;
     overflow-y: hidden;
+    text-align: center;
   }
   .product-image .main-image{
     height: 350px;
     float: left;
-    width: 100%;
+    max-width: 100%;
   }
   .product-image .fa-image{
     font-size: 250px;
@@ -107,11 +124,11 @@
     height: 60px;
     float: left;
     width: 80px;
+    text-align: center;
   }
   .product-image .other-image{
     height: 60px;
-    float: left;
-    width: 80px;
+    max-width: 100%;
   }
   .product-image .image-item:hover{
     cursor: pointer;
@@ -123,7 +140,7 @@
     width: 80px;
     margin-top: -60px;
     float: left;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0);
   }
   .images-holder{
     width: 100%;
@@ -300,7 +317,8 @@ export default {
     'ratings': require('modules/rating/Ratings.vue'),
     'product-comments': require('modules/comment/Comments.vue'),
     'browse-images-modal': require('modules/image/BrowseModal.vue'),
-    'attributes': require('modules/product/Attributes.vue')
+    'attributes': require('modules/product/Attributes.vue'),
+    'inventories': require('modules/product/Inventories.vue')
   },
   methods: {
     redirect(parameter){
@@ -331,6 +349,21 @@ export default {
         if(response.data.length > 0){
           this.data = response.data[0]
         }
+      })
+    },
+    deleteProduct(id){
+      let parameter = {
+        id: id
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('products/delete', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        ROUTER.push('/products')
+      })
+    },
+    updateProduct(){
+      this.APIRequest('products/update', this.data).then(response => {
+        this.retrieve()
       })
     },
     addToWishlist(id){

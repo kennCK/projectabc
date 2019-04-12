@@ -2,7 +2,7 @@
   <div v-if="data !== null">
     <div class="product-holder" v-for="item, index in data" @click="redirect('marketplace/product/' + item.code)">
       <div class="product-image">
-        <img :src="config.BACKEND_URL + item.featured.url" v-if="item.featured !== null">
+        <img :src="config.BACKEND_URL + item.featured[0].url" v-if="item.featured !== null">
         <i class="fa fa-image" v-else></i>
 <!--         <div class="product-wishlist bg-primary" v-if="item.wishlist_flag === false && item.checkout_flag === false">
           <label>

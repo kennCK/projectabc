@@ -5,7 +5,7 @@
           <img v-bind:src="config.BACKEND_URL + commentItem.account.profile.url" v-if="commentItem.account.profile !== null">
           <i class="fa fa-user-circle" v-else></i>
           <label class="username">{{commentItem.account.username}}</label>
-          <label class="comment-date pull-right"> {{commentItem.created_at}}</label>
+          <label class="comment-date pull-right"> {{commentItem.created_at_human}}</label>
         </span>
         <span class="comment-content">
           <label>
@@ -23,7 +23,7 @@
               <img v-bind:src="config.BACKEND_URL + replyItem.account.profile.url" v-if="replyItem.account.profile !== null">
               <i class="fa fa-user-circle" v-else></i>
               <label class="username">{{replyItem.account.username}}</label>
-              <label class="reply-date pull-right"> {{replyItem.created_at}}</label>
+              <label class="reply-date pull-right"> {{replyItem.created_at_human}}</label>
             </span>
             <span class="reply-content">
               <label>{{replyItem.text}}</label>
@@ -222,6 +222,9 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    if(this.load === true){
+      this.retrieve()
+    }
   },
   data(){
     return {
@@ -234,7 +237,7 @@ export default {
       prevNewCommentIndex: null
     }
   },
-  props: ['payloadValue', 'payload'],
+  props: ['payloadValue', 'payload', 'load'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
