@@ -137,14 +137,6 @@ export default{
     }
   },
   {
-    path: '/pricings',
-    name: 'pricings',
-    component: resolve => require(['modules/pricing/Pricings.vue'], resolve),
-    meta: {
-      tokenRequired: true
-    }
-  },
-  {
     path: '/messenger/:username?',
     name: 'messenger',
     component: resolve => require(['modules/messenger/Messenger.vue'], resolve),
