@@ -24,6 +24,11 @@
        </div>
       </div>
       <div class="product-details">
+        <div class="product-row" v-if="data.checkout_flag === true">
+          <span class="alert bg-primary">
+            This product was added to your cart. Proceed to checkout now!
+          </span>
+        </div>
         <div class="product-title">
           <h3>{{data.title}}</h3>
         </div>
@@ -52,11 +57,11 @@
           </table>
         </div>
         <div class="product-row" v-if="data.color !== null">
-          <label>COLOR</label>
+          <label>Color</label>
           <span v-for="item, index in data.color" v-bind:style="{background: item.payload_value}" class="attribute" v-bind:class="{'active-color': activeColor === item.payload_value}" @click="activeColor = item.payload_value"></span>
         </div>
         <div class="product-row" v-if="data.size !== null">
-          <label>SIZE</label>
+          <label>Size</label>
           <span class="attribute attribute-flexible" v-for="item, index in data.size" v-bind:class="{'bg-primary': activeSize === item.payload_value}" @click="activeSize = item.payload_value">{{item.payload_value}}</span>
         </div>
         <div class="product-row">
@@ -65,22 +70,21 @@
             <option v-for="i in 20">{{i}}</option>
           </select>
         </div>
-        <div class="product-row" v-if="data.checkout_flag === true">
-          <span class="alert bg-primary">
-            This product was added to your cart. Proceed to checkout now!
-          </span>
-        </div>
         <div class="product-row">
-          <button class="btn btn-primary" @click="addToCart(data.id)" v-if="data.checkout_flag === false"><i class="fa fa-shopping-cart" style="padding-right: 10px;"></i>ADD TO CART</button>
+          <button class="btn btn-primary" @click="addToCart(data.id)"><i class="fa fa-shopping-cart" style="padding-right: 10px;"></i>ADD TO CART</button>
           <button class="btn btn-danger" @click="addToWishlist(data.id)" v-if="data.wishlist_flag === false && data.checkout_flag === false"><i class="far fa-heart" style="padding-right: 10px;"></i>ADD TO WISHLIST</button>
           <button class="btn btn-warning" @click="redirect('/checkout')" v-if="data.checkout_flag === true">PROCEED TO CHECKOUT</button>
         </div>
-        <div class="product-row-rating" style="margin-top: 5px;">
-          <ratings :payload="'product'" :payloadValue="data.id"></ratings>
+        <div class="product-row" v-if="data.sku !== null && data.sku !== ''">
+          <label style="width: 15%;">Sku</label>
+          <label class="text-danger"><i>{{data.sku}}</i></label>
         </div>
         <div class="product-row-tags" v-if="data.tags !== null && data.tag_array !== null">
           <label style="width: 15%;">Tags</label>
           <label class="tag-label" v-for="item, index in data.tag_array">{{item.title}}</label>
+        </div>
+        <div class="product-row-rating">
+          <ratings :payload="'product'" :payloadValue="data.id"></ratings>
         </div>
       </div>
     </div>
@@ -125,7 +129,6 @@
   }
   .product-image .main-image{
     height: 350px;
-    float: left;
     max-width: 100%;
   }
   .product-image .fa-image{
@@ -172,7 +175,6 @@
     float: left;
     min-height: 50px;
     overflow-y: hidden;
-    margin-top: 25px;
   }
   .product-row{
     width: 100%;
@@ -202,6 +204,8 @@
   .product-row label{
     float: left;
     width: 15%;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
   .qty-input{
     width: 50px;
@@ -213,6 +217,8 @@
   }
   .product-row-tags label{
     float: left;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
   .tag-label{
     height: 35px;
@@ -227,10 +233,13 @@
   }
   .attribute{
     width: 50px;
-    height: 40px;
+    height: 36px;
     float: left;
+    margin-top: 2px;
+    margin-bottom: 2px;
     border-radius: 5px;
     margin-right: 5px;
+    line-height: 36px;
   }
 
   .active-color{
@@ -378,6 +387,8 @@ export default {
         payload: 'product',
         payload_value: id,
         price: this.getPrice(),
+        size: this.activeSize,
+        color: this.activeColor,
         qty: this.qty,
         type: 'marketplace'
       }
@@ -395,7 +406,10 @@ export default {
     },
     getPrice(){
       let price = this.data.price
-      if(price.length > 0){
+      if(price === null){
+        return 0
+      }
+      if(price.length > 1){
         // variable
         for (var i = 0; i < price.length; i++) {
           if(this.qty >= price[i].minimum && this.qty <= price[i].maximum){

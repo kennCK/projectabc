@@ -21,7 +21,7 @@
         <div class="product-item-title">
           <label>Tags</label>
           <br>
-          <input type="text" class="form-control form-control-custom" v-model="data.tags" placeholder="#like#this">
+          <input type="text" class="form-control form-control-custom" v-model="data.tags" placeholder="Separate tags with ,">
         </div>
         <div class="product-item-title">
           <label>SKU</label>
@@ -366,58 +366,6 @@ export default {
       this.APIRequest('products/update', this.data).then(response => {
         this.retrieve()
       })
-    },
-    addToWishlist(id){
-      let parameter = {
-        payload: 'product',
-        payload_value: id,
-        account_id: this.user.userID
-      }
-      $('#loading').css({display: 'block'})
-      this.APIRequest('wishlists/create', parameter).then(response => {
-        $('#loading').css({display: 'none'})
-        this.retrieve()
-      })
-    },
-    addToCart(id){
-      let parameter = {
-        account_id: this.user.userID,
-        payload: 'product',
-        payload_value: id,
-        price: this.getPrice(),
-        qty: this.qty,
-        type: 'marketplace'
-      }
-      $('#loading').css({display: 'block'})
-      this.APIRequest('checkout_items/create', parameter).then(response => {
-        $('#loading').css({display: 'none'})
-        if(response.data > 0){
-          AUTH.checkAuthentication(null)
-          this.retrieve()
-        }
-      })
-    },
-    showPrice(flag){
-      this.priceFlag = flag
-    },
-    getPrice(){
-      let price = this.data.price
-      if(price.length > 0){
-        // variable
-        for (var i = 0; i < price.length; i++) {
-          if(this.qty >= price[i].minimum && this.qty <= price[i].maximum){
-            return price[i].price
-          }
-        }
-        if(this.qty > price[price.length - 1].maximum){
-          return price[price.length - 1].maximum
-        }
-      }else if(price.length === 1){
-        if(price[0].type === 'fixed'){
-          return price[0].price
-        }
-      }
-      return 0
     },
     showImages(status){
       this.imageStatus = status
