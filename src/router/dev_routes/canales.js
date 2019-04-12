@@ -303,6 +303,14 @@ export default{
     meta: {
       tokenRequired: false
     }
+  },
+  {
+    path: '/return_policy',
+    name: 'returnPolicy',
+    component: resolve => require(['modules/docs/ReturnPolicyContent.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
   }
   ]
 }
