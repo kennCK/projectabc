@@ -53,11 +53,11 @@
         </div>
         <div class="product-row" v-if="data.color !== null">
           <label>COLOR</label>
-          <span v-for="item, index in data.color" v-bind:style="{background: item.payload_value}" class="attribute"></span>
+          <span v-for="item, index in data.color" v-bind:style="{background: item.payload_value}" class="attribute" v-bind:class="{'active-color': activeColor === item.payload_value}" @click="activeColor = item.payload_value"></span>
         </div>
         <div class="product-row" v-if="data.size !== null">
           <label>SIZE</label>
-          <span class="attribute attribute-flexible" v-for="item, index in data.size">{{item.payload_value}}</span>
+          <span class="attribute attribute-flexible" v-for="item, index in data.size" v-bind:class="{'bg-primary': activeSize === item.payload_value}" @click="activeSize = item.payload_value">{{item.payload_value}}</span>
         </div>
         <div class="product-row">
           <label>Quantity</label>
@@ -230,14 +230,18 @@
     height: 40px;
     float: left;
     border-radius: 5px;
-    border: solid 1px #ffaa81;
     margin-right: 5px;
+  }
+
+  .active-color{
+    border: solid 2px #ffaa81;
   }
 
   .attribute-flexible{
     width: auto;
     padding-right: 10px;
     padding-left: 10px;
+    border: solid 1px #ffaa81;
   }
   .attribute:hover{
     cursor: pointer;
@@ -314,7 +318,9 @@ export default {
       prevMenuIndex: 0,
       selectedImage: null,
       qty: 1,
-      priceFlag: false
+      priceFlag: false,
+      activeSize: null,
+      activeColor: null
     }
   },
   components: {

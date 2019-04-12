@@ -296,7 +296,7 @@ export default {
       data: null,
       code: this.$route.params.code,
       productMenu: [
-        {title: 'Attributes', flag: true},
+        {title: 'Variations', flag: true},
         {title: 'Price', flag: false},
         {title: 'Inventory', flag: false},
         {title: 'Comments', flag: false}
