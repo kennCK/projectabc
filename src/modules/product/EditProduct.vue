@@ -1,87 +1,69 @@
 <template>
   <div v-if="data !== null">
-    <div class="title" v-if="status === 'preview'">
-      <b @click="redirect('/product/edit/' + data.code)">
-        <label class="text-primary action-link">Back</label>
-      </b>
-    </div>
-    <div class="title" v-if="status !== 'preview'">
-      <b @click="redirect('/marketplace')">
-        <label class="text-primary action-link">Marketplace</label>
+    <div class="title">
+      <b @click="redirect('/products')">
+        <label class="text-primary action-link">Products</label>
       </b>
       <label class="text-primary">/ {{data.title}}</label>
     </div>
     <div class="product-item-holder">
+      <div class="product-item-details">
+        <div class="product-item-title">
+          <label>Title <label class="text-danger">*</label></label>
+          <br>
+          <input type="text" class="form-control form-control-custom" v-model="data.title" placeholder="Type product title here...">
+        </div>
+        <div class="product-item-title">
+          <label>Description <label class="text-danger">*</label></label>
+          <br>
+          <textarea class="form-control" rows="20" v-model="data.description" placeholder="Type product description here..."></textarea>
+        </div>
+        <div class="product-item-title">
+          <label>Tags</label>
+          <br>
+          <input type="text" class="form-control form-control-custom" v-model="data.tags" placeholder="#like#this">
+        </div>
+        <div class="product-item-title">
+          <label>SKU</label>
+          <br>
+          <input type="text" class="form-control form-control-custom" v-model="data.sku" placeholder="Type product sku here...">
+        </div>
+        <div class="product-item-title">
+          <label>Status</label>
+          <br>
+          <select class="form-control form-control-custom" v-model="data.status">
+            <option value="pending">Pending</option>
+            <option value="published">Published</option>
+          </select>
+        </div>
+        <div class="product-item-title">
+          <button class="btn btn-danger" @click="deleteProduct(data.id)">Delete</button>
+          <button class="btn btn-primary pull-right" @click="updateProduct()">Update</button>
+          <button class="btn btn-warning pull-right" @click="redirect('/marketplace/product/' + data.code + '/' + 'preview')" style="margin-right: 10px;">Preview</button>
+        </div>
+      </div>
       <div class="product-image">
+        <div class="product-row" style="text-align: left !important;">
+          <label style="width: 100%">
+            <label style="width: 70%">Featured Image</label>
+            <button class="btn btn-primary pull-right" @click="showImages('featured')">Select</button>
+          </label>
+        </div>
         <img :src="config.BACKEND_URL + selectedImage" class="main-image" v-if="selectedImage !== null">
         <img :src="config.BACKEND_URL + data.featured[0].url" class="main-image" v-if="selectedImage === null && data.featured !== null">
         <i class="fa fa-image" v-if="selectedImage === null && data.featured === null"></i>
-       <div class="images-holder" v-if="data.images !== null">
+       <div class="images-holder">
+        <div class="product-row" style="text-align: left !important;">
+          <label style="width: 100%">
+            <label style="width: 70%">Other Images</label>
+            <button class="btn btn-primary pull-right" @click="showImages('images')">Select</button>
+          </label>
+        </div>
         <div v-for="item, index in data.images" class="image-item" @click="selectImage(item.url)">
           <img :src="config.BACKEND_URL + item.url" class="other-image">
           <div class="overlay"></div>
         </div>
        </div>
-      </div>
-      <div class="product-details">
-        <div class="product-title">
-          <h3>{{data.title}}</h3>
-        </div>
-        <div class="product-row text-primary" v-if="data.price !== null">
-          <label v-if="data.price.length === 1">PHP {{data.price[0].price}}</label>
-          <label v-if="data.price.length > 1">PHP {{data.price[data.price.length - 1].price + ' - ' + data.price[0].price}}</label>
-          <i class="fa fa-chevron-down show-prices" style="padding-left: 20px;" @click="showPrice(true)" v-if="data.price.length > 1 && priceFlag === false"></i>
-          <i class="fa fa-chevron-up show-prices" style="padding-left: 20px;" @click="showPrice(false)" v-if="data.price.length > 1 && priceFlag === true"></i>
-        </div>
-        <div class="product-row" v-if="data.price !== null && data.price.length > 1 && priceFlag === true">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <td>Minimum</td>
-                <td>Maximum</td>
-                <td>Price</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item, index in data.price">
-                <td>{{item.minimum}}</td>
-                <td>{{item.maximum}}</td>
-                <td>PHP {{item.price}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="product-row" v-if="data.color !== null">
-          <label>COLOR</label>
-          <span v-for="item, index in data.color" v-bind:style="{background: item.payload_value}" class="attribute" v-bind:class="{'active-color': activeColor === item.payload_value}" @click="activeColor = item.payload_value"></span>
-        </div>
-        <div class="product-row" v-if="data.size !== null">
-          <label>SIZE</label>
-          <span class="attribute attribute-flexible" v-for="item, index in data.size" v-bind:class="{'bg-primary': activeSize === item.payload_value}" @click="activeSize = item.payload_value">{{item.payload_value}}</span>
-        </div>
-        <div class="product-row">
-          <label>Quantity</label>
-          <select class="qty-input" v-model="qty">
-            <option v-for="i in 20">{{i}}</option>
-          </select>
-        </div>
-        <div class="product-row" v-if="data.checkout_flag === true">
-          <span class="alert bg-primary">
-            This product was added to your cart. Proceed to checkout now!
-          </span>
-        </div>
-        <div class="product-row">
-          <button class="btn btn-primary" @click="addToCart(data.id)" v-if="data.checkout_flag === false"><i class="fa fa-shopping-cart" style="padding-right: 10px;"></i>ADD TO CART</button>
-          <button class="btn btn-danger" @click="addToWishlist(data.id)" v-if="data.wishlist_flag === false && data.checkout_flag === false"><i class="far fa-heart" style="padding-right: 10px;"></i>ADD TO WISHLIST</button>
-          <button class="btn btn-warning" @click="redirect('/checkout')" v-if="data.checkout_flag === true">PROCEED TO CHECKOUT</button>
-        </div>
-        <div class="product-row-rating" style="margin-top: 5px;">
-          <ratings :payload="'product'" :payloadValue="data.id"></ratings>
-        </div>
-        <div class="product-row-tags" v-if="data.tags !== null && data.tag_array !== null">
-          <label style="width: 15%;">Tags</label>
-          <label class="tag-label" v-for="item, index in data.tag_array">{{item.title}}</label>
-        </div>
       </div>
     </div>
     <div class="product-more-details">
@@ -91,34 +73,40 @@
         </ul>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 0">
-        <label>
-          <label v-html="data.description"></label>
-        </label>
+        <attributes :item="data"></attributes>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 1">
-        <label>Shippings</label>
+        <prices :item="data"></prices>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 2">
+        <inventories :item="data"></inventories>
+      </div>
+      <div class="details-holder" v-if="prevMenuIndex === 3">
         <product-comments :payloadValue="data.id" :payload="'product'" :load="true"></product-comments>
       </div>
     </div>
+    <browse-images-modal></browse-images-modal>
   </div>
 </template>
 <style scoped>
   .title{
-    width: 100%;
+    width: 95%;
     float: left;
+    margin-left: 2%;
     font-size: 16px;
   }
   .product-item-holder{
-    width: 100%;
+    width: 98%;
     float: left;
+    margin-left: 2%;
     min-height: 10px;
     overflow-y: hidden;
   }
   .product-image{
-    width: 40%;
+    width: 36%;
     float: left;
+    margin-left: 2%;
+    margin-right: 2%;
     min-height: 410px;
     overflow-y: hidden;
     text-align: center;
@@ -140,7 +128,7 @@
   }
   .product-image .other-image{
     height: 60px;
-    max-width: 80px;
+    max-width: 100%;
   }
   .product-image .image-item:hover{
     cursor: pointer;
@@ -160,19 +148,22 @@
     min-height: 60px;
     overflow-y: hidden;
   }
-  .product-details{
+  .product-item-details{
     min-height: 50px;
-    width: 58%;
-    margin-left: 2%;
+    width: 60%;
     float: left;
     overflow-y: hidden;
+    border: 0px;
   }
-  .product-title{
+  .product-item-title{
     width: 100%;
     float: left;
     min-height: 50px;
     overflow-y: hidden;
-    margin-top: 25px;
+    margin-top: 15px;
+  }
+  .product-item-title label{
+    font-weight: 600;
   }
   .product-row{
     width: 100%;
@@ -230,29 +221,22 @@
     height: 40px;
     float: left;
     border-radius: 5px;
-    margin-right: 5px;
-  }
-
-  .active-color{
-    border: solid 2px #ffaa81;
-  }
-
-  .attribute-flexible{
-    width: auto;
-    padding-right: 10px;
-    padding-left: 10px;
     border: solid 1px #ffaa81;
+    margin-right: 5px;
   }
   .attribute:hover{
     cursor: pointer;
   }
   .product-more-details{
-    width: 100%;
+    width: 96%;
     float: left;
     margin-bottom: 100px;
     min-height: 50px;
     overflow-y: hidden;
+    margin-left: 2%;
+    margin-right: 2%;
     border-top: solid 1px #ffaa81;
+    margin-top: 25px;
   }
   .product-more-details .details-holder{
     width: 60%;
@@ -291,6 +275,9 @@
     cursor: pointer;
     color: #ffaa81;
   }
+  .form-control-custom{
+    height: 50px !important;
+  }
 </style>
 <script>
 import ROUTER from '../../router'
@@ -308,24 +295,31 @@ export default {
       errorMessage: null,
       data: null,
       code: this.$route.params.code,
-      status: this.$route.params.status,
       productMenu: [
-        {title: 'Product Details', flag: true},
-        // {title: 'Supplier', flag: false},
-        {title: 'Shippings', flag: false},
-        {title: 'Reviews', flag: false}
+        {title: 'Variations', flag: true},
+        {title: 'Price', flag: false},
+        {title: 'Inventory', flag: false},
+        {title: 'Comments', flag: false}
       ],
       prevMenuIndex: 0,
       selectedImage: null,
       qty: 1,
       priceFlag: false,
-      activeSize: null,
-      activeColor: null
+      newImage: {
+        product_id: null,
+        url: null,
+        status: null
+      },
+      imageStatus: null
     }
   },
   components: {
     'ratings': require('modules/rating/Ratings.vue'),
-    'product-comments': require('modules/comment/Comments.vue')
+    'product-comments': require('modules/comment/Comments.vue'),
+    'browse-images-modal': require('modules/image/BrowseModal.vue'),
+    'attributes': require('modules/product/Attributes.vue'),
+    'inventories': require('modules/product/Inventories.vue'),
+    'prices': require('modules/product/Prices.vue')
   },
   methods: {
     redirect(parameter){
@@ -344,20 +338,33 @@ export default {
     retrieve(){
       let parameter = {
         condition: [{
-          value: 'published',
-          column: 'status',
-          clause: '='
-        }, {
           value: this.code,
           column: 'code',
           clause: '='
         }],
         account_id: this.user.userID
       }
+      $('#loading').css({display: 'block'})
       this.APIRequest('products/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data[0]
         }
+      })
+    },
+    deleteProduct(id){
+      let parameter = {
+        id: id
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('products/delete', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        ROUTER.push('/products')
+      })
+    },
+    updateProduct(){
+      this.APIRequest('products/update', this.data).then(response => {
+        this.retrieve()
       })
     },
     addToWishlist(id){
@@ -411,6 +418,41 @@ export default {
         }
       }
       return 0
+    },
+    showImages(status){
+      this.imageStatus = status
+      $('#browseImagesModal').modal('show')
+    },
+    createPhoto(url){
+      if(this.imageStatus === 'featured'){
+        this.newImage.status = 'featured'
+        if(this.data.featured === null){
+          this.newImage.product_id = this.data.id
+          this.newImage.url = url
+          this.createRequest(this.newImage)
+        }else{
+          this.data.featured[0].url = url
+          this.updateRequest(this.data.featured[0])
+        }
+      }else if(this.imageStatus === 'images'){
+        this.newImage.status = 'others'
+        this.newImage.product_id = this.data.id
+        this.newImage.url = url
+        this.createRequest(this.newImage)
+      }
+    },
+    createRequest(parameter){
+      this.APIRequest('product_images/create', parameter).then(response => {
+        this.retrieve()
+      })
+    },
+    updateRequest(parameter){
+      this.APIRequest('product_images/update', parameter).then(response => {
+        this.retrieve()
+      })
+    },
+    manageImageUrl(url){
+      this.createPhoto(url)
     }
   }
 }

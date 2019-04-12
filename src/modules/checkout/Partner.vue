@@ -59,7 +59,7 @@ export default {
           clause: '='
         }]
       }
-      this.APIRequest('accounts/retrieve', parameter).then(response => {
+      this.APIRequest('merchants/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data
           this.$parent.partner = response.data[0]

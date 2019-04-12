@@ -14,8 +14,6 @@
             <span v-if="errorMessage !== null" class="text-danger text-center">
                 <label><b>Opps! </b>{{errorMessage}}</label>
             </span>
-            <br v-if="errorMessage !== null">
-            <br>
             <div class="form-group">
               <label for="exampleInputEmail1">Title</label>
               <input type="text" class="form-control" placeholder="Type title here..." v-model="title">

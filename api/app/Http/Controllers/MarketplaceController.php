@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Checkout;
-use App\CheckoutItem;
+use Increment\Marketplace\Models\Checkout;
+use Increment\Marketplace\Models\CheckoutItem;
 use App\Template;
 use App\CustomObject;
 use App\Attribute;
@@ -31,7 +31,7 @@ class MarketplaceController extends APIController
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
-          $result[$i]['objects'] = $this->getObjects($result[$i]['id']);
+          $result[$i]['objects'] = app('App\Http\Controllers\ObjectController')->getObjects($result[$i]['id']);
           $result[$i]['active'] = true;
          $i++; 
         }

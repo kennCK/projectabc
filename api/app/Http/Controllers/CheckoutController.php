@@ -3,28 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Account;
-use App\Checkout;
-use App\CheckoutItem;
-use App\StripeCard;
-use App\PaymentMethod;
-use App\Product;
-use App\Pricing;
+use Increment\Marketplace\Models\Merchant;
+use Increment\Marketplace\Models\Checkout;
+use Increment\Marketplace\Models\CheckoutItem;
+use Increment\Marketplace\Models\Product;
+use Increment\Marketplace\Models\Pricing;
+use Increment\Payment\Models\StripeWebhook;
 use App\Client;
 use App\Template;
 use App\Employee;
 use App\CustomObject;
 use App\Attribute;
-use App\PaypalTransaction;
-use App\StripeWebhook;
-use App\ShippingAddress;
-use App\BillingInformation;
 use Carbon\Carbon;
 class CheckoutController extends APIController
 {
     protected $subTotal = 0;
     protected $total = 0;
     protected $tax = 0;
+
+    public $paymentMethodClass = 'Increment\Payment\Http\PaymentMethodController';
+    public $paypalTransactionClass = 'Increment\Payment\Http\PaypalTransactionController';
+    public $shippingAddressClass = 'Increment\Marketplace\Http\ShippingAddressController';
+    public $merchantClass = 'Increment\Marketplace\Http\MerchantController';
 
     function __construct(){
     	$this->model = new Checkout();
@@ -42,20 +42,20 @@ class CheckoutController extends APIController
       $data = $request->all();
       $this->retrieveDB($data);
       $result = $this->response['data'];
-      $cards = $this->getPaymentMethod('account_id', $data['account_id']);
+      $cards = app($this->paymentMethodClass)->getPaymentMethod('account_id', $data['account_id']);
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
           $price = $this->getPrice($result[$i], $data['account_id']);
-          $this->response['data'][$i]['partner_details'] = ($result[$i]['partner'] != null && $result[$i]['partner'] != '' && $result[$i]['partner'] > 0) ? $this->retrieveAccountDetails($result[$i]['partner']) : null;
+          $this->response['data'][$i]['merchant'] = ($result[$i]['merchant_id'] != null && $result[$i]['merchant_id'] != '' && $result[$i]['merchant_id'] > 0) ? app($this->merchantClass)->getMerchant($result[$i]['merchant_id']) : null;
           $this->response['data'][$i]['account_details'] = $this->retrieveAccountDetails($data['account_id']); 
           $this->response['data'][$i]['items'] = $this->getItems($result[$i]['id'], $price, $data['account_id']);
           $this->response['data'][$i]['sub_total'] = $this->subTotal;
           $this->response['data'][$i]['tax'] = $this->tax;
           $this->response['data'][$i]['total'] = $this->subTotal - $this->tax;
-          $this->response['data'][$i]['shipping_address'] = $this->getShippingAddress($result[$i]['id']);
+          $this->response['data'][$i]['shipping_address'] = app($this->shippingAddressClass)->getShippingAddress($result[$i]['id']);
           if($result[$i]['payment_type'] == 'authorized' && $result[$i]['payment_payload'] == 'credit_card'){
-            $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_payload_value']);
+            $this->response['data'][$i]['method'] = app($this->paymentMethodClass)->getPaymentMethod('id', $result[$i]['payment_payload_value']);
           }else{
             $this->response['data'][$i]['method'] = null;
           }
@@ -65,25 +65,6 @@ class CheckoutController extends APIController
       
       $this->response['method'] = $cards;
       return $this->response();
-    }
-
-    public function getShippingAddress($checkoutId){
-      $result = ShippingAddress::where('checkout_id', '=', $checkoutId)->get();
-      if(sizeof($result) > 0){
-        $i = 0;
-        foreach ($result as $key) {
-          if($result[$i]['payload'] == 'billing'){
-            $result[$i]['payload_details'] = $this->getBillingInformation($result[$i]['payload_value']);
-          }
-          $i++;
-        }
-      }
-      return (sizeof($result) > 0) ? $result[0] : null;
-    }
-
-    public function getBillingInformation($billingId){
-      $billing = BillingInformation::where('id', '=', $billingId)->get();
-      return (sizeof($billing) > 0) ? $billing[0] : null;
     }
 
     public function retrieveOrderItems(Request $request){
@@ -111,7 +92,7 @@ class CheckoutController extends APIController
         foreach ($result as $key) {
           $this->response['data'][$i]['order_date'] = Carbon::createFromFormat('Y-m-d H:i:s', $result[$i]['created_at'])->copy()->tz('Asia/Manila')->format('F j, Y');
           $this->response['data'][$i]['account'] = $this->retrieveAccountDetails($result[$i]['account_id']);
-          $this->response['data'][$i]['partner_details'] = ($result[$i]['partner'] != null && $result[$i]['partner'] != '' && $result[$i]['partner'] > 0) ? $this->retrieveAccountDetails($result[$i]['partner']) : null;
+          $this->response['data'][$i]['merchant'] = ($result[$i]['merchant_id'] != null && $result[$i]['merchant_id'] != '' && $result[$i]['merchant_id'] > 0) ? $this->retrieveAccountDetails($result[$i]['merchant_id']) : null;
           $i++;
         }
       }
@@ -133,7 +114,7 @@ class CheckoutController extends APIController
       $this->model = new Checkout();
       $this->retrieveDB($data);
       $result = $this->response['data'];
-      $cards = $this->getPaymentMethod('account_id', $data['account_id']);
+      $cards = app($this->paymentMethodClass)->getPaymentMethod('account_id', $data['account_id']);
       if(sizeof($result) > 0){
         $i = 0;
         foreach ($result as $key) {
@@ -144,9 +125,9 @@ class CheckoutController extends APIController
           $this->response['data'][$i]['employees'] = $this->getItemBy($result[$i]['id'], 'employee', $price);
           $this->response['data'][$i]['coupon'] = $coupon;
           if(($result[$i]['payment_type'] == 'authorized' || $result[$i]['payment_type'] == 'express') && $result[$i]['payment_payload'] == 'credit_card'){
-            $this->response['data'][$i]['method'] = $this->getPaymentMethod('id', $result[$i]['payment_payload_value']);
+            $this->response['data'][$i]['method'] = app($this->paymentMethodClass)->getPaymentMethod('id', $result[$i]['payment_payload_value']);
           }else if($result[$i]['payment_type'] == 'express' && $result[$i]['payment_payload'] == 'paypal'){
-            $this->response['data'][$i]['method'] = $this->getPaypalTransaction($result[$i]['payment_payload_value']);
+            $this->response['data'][$i]['method'] = app($this->paypalTransactionClass)->getPaypalTransaction($result[$i]['payment_payload_value']);
           }else{
             $this->response['data'][$i]['method'] = null;
           }
@@ -160,7 +141,7 @@ class CheckoutController extends APIController
       $price = 0;
       if(sizeof($checkout) > 0){
         $result = null;
-        if($checkout['partner'] != null && $checkout['partner'] != '' && $checkout['partner'] > 0){
+        if($checkout['merchant_id'] != null && $checkout['merchant_id'] != '' && $checkout['merchant_id'] > 0){
           $product = Product::where('title', '=', 'id_printing')->orderBy('created_at', 'asc')->first();
           if($product){
             $productId = $product->id;
@@ -298,11 +279,11 @@ class CheckoutController extends APIController
     }
 
 
-    public function updateRemovePartner(Request $request){
+    public function updateRemoveMerchant(Request $request){
       $data = $request->all();
       $checkoutId = $data['id'];
       $result = Checkout::where('id', '=', $checkoutId)->update(array(
-        'partner' => null,
+        'merchant_id' => null,
         'updated_at' => Carbon::now()
       ));
 
@@ -436,27 +417,6 @@ class CheckoutController extends APIController
             'timestamps'  => Carbon::now()
           ));
       }
-    }
-
-    public function getOrderNumber($accountId){
-      $account = Account::where('id', '=', $accountId)->first();
-      if($account){
-        $checkouts = Checkout::where('account_id', '=', $accountId)->count();
-        if($checkouts){
-          if($checkouts >= 1000){
-            return $account->order_suffix.$checkouts;
-          }else if($checkouts >= 100){
-            return $account->order_suffix.'0'.$checkouts;
-          }else if($checkouts >= 10){
-            return $account->order_suffix.'00'.$checkouts;
-          }else if($checkouts >= 0){
-            return $account->order_suffix.'000'.$checkouts;
-          }
-        }else{
-          return $account->order_suffix.'0001';
-        }
-      }
-      return null;
     }
 
     public function managePurchasedTemplate($checkoutId){

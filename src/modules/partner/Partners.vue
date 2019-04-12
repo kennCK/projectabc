@@ -5,7 +5,7 @@
         <span class="input-group-addon">Filter By</span>
         <select class="form-control" v-model="filterValue" @change="retrieve()">
           <option value="name">Name</option>
-          <option value="location">Location</option>
+          <option value="address">Location</option>
         </select>
         <span class="input-group-addon">Search</span>
         <input type="text" class="form-control" v-model="searchValue" @keyup.enter="retrieve()" placeholder="Search here...">
@@ -82,12 +82,30 @@ export default {
       ROUTER.push(parameter)
     },
     retrieve(){
-      let parameter = {
-        filter: this.filterValue,
-        search: (this.searchValue !== null || this.searchValue !== '') ? this.searchValue : ''
+      let parameter = null
+      if(this.searchValue !== null){
+        parameter = {
+          condition: [{
+            value: this.searchValue + '%',
+            column: this.filterValue,
+            clause: 'like'
+          }, {
+            value: 'verified',
+            column: 'status',
+            clause: '='
+          }]
+        }
+      }else{
+        parameter = {
+          condition: [{
+            value: 'verified',
+            column: 'status',
+            clause: '='
+          }]
+        }
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('partners/retrieve', parameter).then(response => {
+      this.APIRequest('merchants/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data

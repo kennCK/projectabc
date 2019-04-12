@@ -8,7 +8,7 @@
     <div class="form-group">
       <label for="exampleInputEmail1">Prices</label>
       <div>
-        <select class="form-control" style="width: 40%; float: left;" v-model="flag">
+        <select class="form-control form-control-custom" style="width: 100%; float: left;" v-model="flag">
           <option value="fixed">Fixed</option>
           <option value="variable">Variable</option>
         </select>
@@ -16,25 +16,57 @@
     </div>
     <br>
     <br>
-    <div class="input-group" style="width:49.5%;" v-if="flag === 'fixed'">
+    <div class="input-group" style="width:100%;" v-if="flag === 'fixed'">
       <label class="text-danger" v-if="errorMessage !== null">{{errorMessage}}</label>
       <span class="input-group-addon" id="addon-1">Price</span>
-      <input type="text" class="form-control" placeholder="..." aria-describedby="addon-1" v-model="price">
-      <button class="btn btn-primary" style="margin-left: 5px;" @click="addPrice()">Submit</button>
+      <input type="text" class="form-control form-control-custom" placeholder="..." aria-describedby="addon-1" v-model="price">
+      <button class="btn btn-primary form-control-custom" style="margin-left: 5px;" @click="addPrice()">Submit</button>
     </div>
 
     <div class="input-group" style="width:100%;" v-if="flag === 'variable'">
       <span class="input-group-addon" id="addon-1">Minimum</span>
-      <input type="text" class="form-control" placeholder="..." aria-describedby="addon-1" v-model="payload" >
+      <input type="text" class="form-control form-control-custom" placeholder="..." aria-describedby="addon-1" v-model="minimum" >
       <span class="input-group-addon" id="addon-1">Maximum</span>
-      <input type="text" class="form-control" placeholder="..." aria-describedby="addon-1" v-model="payload" >
+      <input type="text" class="form-control form-control-custom" placeholder="..." aria-describedby="addon-1" v-model="maximum" >
       <span class="input-group-addon" id="addon-1">Price</span>
-      <input type="text" class="form-control" placeholder="..." aria-describedby="addon-1" v-model="payload" >
-      <button class="btn btn-primary" style="margin-left: 5px;" @click="addPrice()">Submit</button>
+      <input type="text" class="form-control form-control-custom" placeholder="..." aria-describedby="addon-1" v-model="price" >
+      <button class="btn btn-primary form-control-custom" style="margin-left: 5px;" @click="addPrice()">Submit</button>
     </div>
+    <br>
+    <div class="priceList-wrapper" v-if="item.price !== null">
+      <div class="container">
+        <div class="row priceList-item" v-for="(item, index) in item.price" :key="index">
+          <div class="col">
+            {{item.flag}}
+          </div>
+          <div class="col">
+            {{item.price}}
+          </div>
+          <div class="col-auto">
+            <button @click="delPrice()" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 <style scoped>
+  .priceList-wrapper {
+    width: 100%;
+    background: #f4f4f4;
+    border-bottom: 1px #ccc solid;
+    border-left: 1px #ccc solid;
+    border-right: 1px #ccc solid;
+    border-top: 1px #ccc solid;
+    border-radius: 0.25em
+  }
+  .priceList-item {
+    border-bottom: 1px #ccc solid
+  }
+  .form-control-custom {
+    height: 50px !important;
+  }
 </style>
 <script>
 import ROUTER from '../../router'
@@ -61,11 +93,17 @@ export default {
       ROUTER.push(parameter)
     },
     validate(){
-      let i = this.item
-      if(i.minimum !== null || i.minimum !== '' || i.maximum !== null || i.maximum !== '' || i.price !== null || i.price !== ''){
-        return false
+      if(this.minimum !== null && this.minimum !== '' && this.maximum !== null && this.maximum !== '' && this.price !== null && this.price !== ''){
+        return true
       }
-      return true
+      return false
+    },
+    delPrice(parameter){
+      this.APIRequest('pricings/delete', parameter).then(response => {
+        if(response.data > 0){
+          this.$parent.retrieve()
+        }
+      })
     },
     addPrice(){
       if(parseFloat(this.price) > 0 && this.flag === 'fixed'){
@@ -76,6 +114,21 @@ export default {
           type: this.flag,
           minimum: null,
           maximum: null,
+          price: this.price
+        }
+        this.APIRequest('pricings/create', parameter).then(response => {
+          if(response.data > 0){
+            this.$parent.retrieve()
+          }
+        })
+      }else if(this.validate() && this.flag === 'variable'){
+        this.errorMessage = null
+        let parameter = {
+          account_id: this.user.userID,
+          product_id: this.item.id,
+          type: this.flag,
+          minimum: this.minimum,
+          maximum: this.maximum,
           price: this.price
         }
         this.APIRequest('pricings/create', parameter).then(response => {

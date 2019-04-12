@@ -31,11 +31,7 @@
           </span>
         </span>  
         <span class="image-holder-action">
-          <button class="btn btn-primary" @click="addImage()">Upload
-            <input type="file" class="form-control" id="photoImage"   @change="setUpFileUpload($event)" accept="image/*">
-          </button>
-          <label>or</label>
-          <button class="btn btn-primary" @click="browseImages()">Select from Images</button>
+          <button class="btn btn-primary" @click="browseImages()">Select</button>
         </span>
         <span v-if="object.content !== null" class="image-holder">
           <img :src="config.BACKEND_URL + object.content">
@@ -163,7 +159,7 @@
   height: 30px;
   line-height: 30px;
   border-bottom: solid 1px #ddd;
-  font-size: 10px;
+  font-size: 10px !important;
 }
 .item-setting .title{
   float: left;
@@ -174,6 +170,7 @@
   text-transform: uppercase;
   font-weight: 600;
   color: #22b173;
+  font-size: 10px !important;
 }
 .item-setting .input{
   width: 60%;
@@ -338,9 +335,6 @@
   background: #22b173;
   color: #fff;
 }
-.image-holder-action input{
-  display: none;
-}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -359,7 +353,6 @@ export default {
       {title: 'Size', flag: false}
       ],
       prevIndex: 0,
-      file: null,
       typing: false,
       suggestion: ['logo', 'profile', 'signature']
     }
@@ -386,37 +379,6 @@ export default {
     },
     changeTextAlign(align){
       this.object.attributes.textAlign = align
-    },
-    addImage(){
-      $('#photoImage')[0].click()
-    },
-    createFile(file){
-      let fileReader = new FileReader()
-      fileReader.readAsDataURL(event.target.files[0])
-      this.upload()
-    },
-    setUpFileUpload(event){
-      let files = event.target.files || event.dataTransfer.files
-      if(!files.length){
-        return false
-      }else{
-        this.file = files[0]
-        this.createFile(files[0])
-      }
-    },
-    upload(){
-      let formData = new FormData()
-      formData.append('file', this.file)
-      formData.append('file_url', this.file.name)
-      formData.append('account_id', this.user.userID)
-      formData.append('template_id', this.object.template_id)
-      $('#loading').css({'display': 'block'})
-      axios.post(this.config.BACKEND_URL + '/objects/upload', formData).then(response => {
-        $('#loading').css({'display': 'none'})
-        if(response.data !== null){
-          this.object.content = response.data.data
-        }
-      })
     },
     browseImages(){
       this.$parent.browseImagesFlag = true

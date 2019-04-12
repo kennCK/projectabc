@@ -6,7 +6,7 @@
             <li class="header">
                 <span v-if="menuFlag === true" class="profile-photo">
                   <span class="profile-image-holder"  v-if="user.profile !== null">
-                    <img v-bind:src="config.BACKEND_URL + user.profile.profile_url">
+                    <img v-bind:src="config.BACKEND_URL + user.profile.url">
                   </span>
                   <i class="fa fa-user-circle-o profile-icon" v-else></i>
                   <i class="fas fa-check text-primary profile-status" v-if="user.status === 'VERIFIED'"></i>
@@ -414,7 +414,8 @@ export default {
         {users: 'ALL', description: 'Profiles', icon: 'fas fa-users', path: 'profiles', flag: false, subMenu: null},
         {users: 'ALL', description: 'Images', icon: 'fas fa-image', path: 'images', flag: false, subMenu: null},
         {users: 'USER', description: 'Find Printing', icon: 'fas fa-print', path: 'printings', flag: false, subMenu: null},
-        {users: 'ALL', description: 'Store', icon: 'fas fa-store', path: 'marketplace', flag: false, subMenu: [{users: 'ALL', description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace', flag: false}, {users: 'PARTNER', description: 'Products', icon: 'fa fa-shopping-cart', path: 'products', flag: false}, {users: 'PARTNER', description: 'Orders', icon: 'fa fa-file', path: 'orders', flag: false}, {users: 'PARTNER', description: 'Coupons', icon: 'fa fa-tags', path: 'coupons', flag: false}, {users: 'ALL', description: 'Wishlists', icon: 'fa fa-heart', path: 'wishlists', flag: false}]
+        {users: 'USER', description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace', flag: false, subMenu: null},
+        {users: 'PARTNER', description: 'My Store', icon: 'fas fa-store', path: 'marketplace', flag: false, subMenu: [{users: 'PARTNER', description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace', flag: false}, {users: 'PARTNER', description: 'Products', icon: 'fa fa-shopping-cart', path: 'products', flag: false}, {users: 'PARTNER', description: 'Orders', icon: 'fa fa-file', path: 'orders', flag: false}, {users: 'PARTNER', description: 'Coupons', icon: 'fa fa-tags', path: 'coupons', flag: false}]
         }
       ],
       menuOff: [
@@ -427,8 +428,7 @@ export default {
         {users: 'ALL', description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace', flag: false, subMenu: null},
         {users: 'PARTNER', description: 'Products', icon: 'fa fa-shopping-cart', path: 'products', flag: false, subMenu: null},
         {users: 'PARTNER', description: 'Orders', icon: 'fa fa-file', path: 'orders', flag: false, subMenu: null},
-        {users: 'PARTNER', description: 'Coupons', icon: 'fa fa-tags', path: 'coupons', flag: false, subMenu: null},
-        {users: 'ALL', description: 'Wishlists', icon: 'fa fa-heart', path: 'wishlists', flag: false, subMenu: null}
+        {users: 'PARTNER', description: 'Coupons', icon: 'fa fa-tags', path: 'coupons', flag: false, subMenu: null}
       ],
       toggleSidebar: 'fa fa-toggle-on',
       hide: '',

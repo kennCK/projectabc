@@ -2,10 +2,10 @@
     <span class="post-item-comment" v-bind:id="'comment' + payloadValue">
       <span class="comment-item" v-for="commentItem, commentIndex in item" v-if="item !== null">
         <span class="comment-header">
-          <img v-bind:src="config.BACKEND_URL + commentItem.account.profile.profile_url" v-if="commentItem.account.profile !== null">
+          <img v-bind:src="config.BACKEND_URL + commentItem.account.profile.url" v-if="commentItem.account.profile !== null">
           <i class="fa fa-user-circle" v-else></i>
           <label class="username">{{commentItem.account.username}}</label>
-          <label class="comment-date pull-right"> {{commentItem.created_at}}</label>
+          <label class="comment-date pull-right"> {{commentItem.created_at_human}}</label>
         </span>
         <span class="comment-content">
           <label>
@@ -20,17 +20,17 @@
         <span class="comment-item-reply">
           <span class="reply-item"  v-for="replyItem, replyIndex in commentItem.comment_replies"v-if="commentItem.comment_replies !== null">
             <span class="reply-header">
-              <img v-bind:src="config.BACKEND_URL + replyItem.account.profile.profile_url" v-if="replyItem.account.profile !== null">
+              <img v-bind:src="config.BACKEND_URL + replyItem.account.profile.url" v-if="replyItem.account.profile !== null">
               <i class="fa fa-user-circle" v-else></i>
               <label class="username">{{replyItem.account.username}}</label>
-              <label class="reply-date pull-right"> {{replyItem.created_at}}</label>
+              <label class="reply-date pull-right"> {{replyItem.created_at_human}}</label>
             </span>
             <span class="reply-content">
               <label>{{replyItem.text}}</label>
             </span>
           </span>
           <span class="new-reply" v-if="commentItem.new_reply_flag === true">
-            <img v-bind:src="config.BACKEND_URL + user.profile.profile_url" v-if="user.profile !== null">
+            <img v-bind:src="config.BACKEND_URL + user.profile.url" v-if="user.profile !== null">
             <label v-else>
               <i class="fa fa-user-circle"></i>
             </label>
@@ -39,7 +39,7 @@
         </span>
       </span>
       <span class="new-comment">
-        <img v-bind:src="config.BACKEND_URL + user.profile.profile_url" v-if="user.profile !== null">
+        <img v-bind:src="config.BACKEND_URL + user.profile.url" v-if="user.profile !== null">
         <label v-else>
           <i class="fa fa-user-circle"></i>
         </label>
@@ -222,6 +222,9 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    if(this.load === true){
+      this.retrieve()
+    }
   },
   data(){
     return {
@@ -234,7 +237,7 @@ export default {
       prevNewCommentIndex: null
     }
   },
-  props: ['payloadValue', 'payload'],
+  props: ['payloadValue', 'payload', 'load'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
