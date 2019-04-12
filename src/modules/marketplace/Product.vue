@@ -1,6 +1,11 @@
 <template>
   <div v-if="data !== null">
-    <div class="title">
+    <div class="title" v-if="status === 'preview'">
+      <b @click="redirect('/product/edit/' + data.code)">
+        <label class="text-primary action-link">Back</label>
+      </b>
+    </div>
+    <div class="title" v-if="status !== 'preview'">
       <b @click="redirect('/marketplace')">
         <label class="text-primary action-link">Marketplace</label>
       </b>
@@ -52,7 +57,7 @@
         </div>
         <div class="product-row" v-if="data.size !== null">
           <label>SIZE</label>
-          <span class="attribute" v-for="item, index in data.size">{{item.payload_value}}</span>
+          <span class="attribute attribute-flexible" v-for="item, index in data.size">{{item.payload_value}}</span>
         </div>
         <div class="product-row">
           <label>Quantity</label>
@@ -228,6 +233,12 @@
     border: solid 1px #ffaa81;
     margin-right: 5px;
   }
+
+  .attribute-flexible{
+    width: auto;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
   .attribute:hover{
     cursor: pointer;
   }
@@ -293,6 +304,7 @@ export default {
       errorMessage: null,
       data: null,
       code: this.$route.params.code,
+      status: this.$route.params.status,
       productMenu: [
         {title: 'Product Details', flag: true},
         // {title: 'Supplier', flag: false},

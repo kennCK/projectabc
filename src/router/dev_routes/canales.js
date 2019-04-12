@@ -249,7 +249,7 @@ export default{
     }
   },
   {
-    path: '/marketplace/product/:code',
+    path: '/marketplace/product/:code/:status?',
     name: 'marketplaceProduct',
     component: resolve => require(['modules/marketplace/Product.vue'], resolve),
     meta: {
@@ -259,7 +259,7 @@ export default{
   {
     path: '/wishlists',
     name: 'wishlists',
-    component: resolve => require(['modules/wishlist/Wishlists.vue'], resolve),
+    component: resolve => require(['modules/product/Wishlists.vue'], resolve),
     meta: {
       tokenRequired: true
     }

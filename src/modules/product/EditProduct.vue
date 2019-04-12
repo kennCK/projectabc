@@ -37,7 +37,9 @@
           </select>
         </div>
         <div class="product-item-title">
+          <button class="btn btn-danger" @click="deleteProduct(data.id)">Delete</button>
           <button class="btn btn-primary pull-right" @click="updateProduct()">Update</button>
+          <button class="btn btn-warning pull-right" @click="redirect('/marketplace/product/' + data.code + '/' + 'preview')" style="margin-right: 10px;">Preview</button>
         </div>
       </div>
       <div class="product-image">
@@ -347,6 +349,16 @@ export default {
         if(response.data.length > 0){
           this.data = response.data[0]
         }
+      })
+    },
+    deleteProduct(id){
+      let parameter = {
+        id: id
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('products/delete', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        ROUTER.push('/products')
       })
     },
     updateProduct(){
