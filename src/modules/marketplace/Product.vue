@@ -24,13 +24,18 @@
        </div>
       </div>
       <div class="product-details">
+        <div class="product-title">
+          <h3>{{data.title}}</h3>
+        </div>
         <div class="product-row" v-if="data.checkout_flag === true">
-          <span class="alert bg-primary">
+          <span class="alert alert-success">
             This product was added to your cart. Proceed to checkout now!
           </span>
         </div>
-        <div class="product-title">
-          <h3>{{data.title}}</h3>
+        <div class="product-row" v-if="errorMessage !== null">
+          <span class="alert alert-danger">
+            {{errorMessage}}
+          </span>
         </div>
         <div class="product-row text-primary" v-if="data.price !== null">
           <label v-if="data.price.length === 1">PHP {{data.price[0].price}}</label>
@@ -64,11 +69,14 @@
           <label>Size</label>
           <span class="attribute attribute-flexible" v-for="item, index in data.size" v-bind:class="{'bg-primary': activeSize === item.payload_value}" @click="activeSize = item.payload_value">{{item.payload_value}}</span>
         </div>
-        <div class="product-row">
+        <div class="product-row" v-if="parseInt(data.qty) > 0">
           <label>Quantity</label>
           <select class="qty-input" v-model="qty">
-            <option v-for="i in 20">{{i}}</option>
+            <option v-for="i in parseInt(data.qty)">{{i}}</option>
           </select>
+        </div>
+        <div class="product-row" v-if="parseInt(data.qty) <= 0">
+          <span style="width: 100%'" class="alert alert-danger">Out of stock.</span>
         </div>
         <div class="product-row">
           <button class="btn btn-primary" @click="addToCart(data.id)"><i class="fa fa-shopping-cart" style="padding-right: 10px;"></i>ADD TO CART</button>
@@ -351,19 +359,33 @@ export default {
       this.selectedImage = url
     },
     retrieve(){
-      let parameter = {
-        condition: [{
-          value: 'published',
-          column: 'status',
-          clause: '='
-        }, {
-          value: this.code,
-          column: 'code',
-          clause: '='
-        }],
-        account_id: this.user.userID
+      let parameter = null
+      if(this.status === 'preview'){
+        parameter = {
+          condition: [{
+            value: this.code,
+            column: 'code',
+            clause: '='
+          }],
+          account_id: this.user.userID
+        }
+      }else{
+        parameter = {
+          condition: [{
+            value: 'published',
+            column: 'status',
+            clause: '='
+          }, {
+            value: this.code,
+            column: 'code',
+            clause: '='
+          }],
+          account_id: this.user.userID
+        }
       }
+      $('#loading').css({display: 'block'})
       this.APIRequest('products/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data[0]
         }
@@ -382,6 +404,13 @@ export default {
       })
     },
     addToCart(id){
+      if(this.validate() === false){
+        return false
+      }
+      if(parseInt(this.data.qty) <= 0){
+        this.errorMessage = 'This is item is out of stock. Please be back soon!'
+        return false
+      }
       let parameter = {
         account_id: this.user.userID,
         payload: 'product',
@@ -400,6 +429,28 @@ export default {
           this.retrieve()
         }
       })
+      this.errorMessage = null
+    },
+    validate(){
+      let color = this.data.color
+      let size = this.data.size
+      if(color !== null){
+        if(color.length > 1 && this.activeColor === null){
+          this.errorMessage = 'Please select on of the color variation.'
+          return false
+        }else if(color.length === 1 && this.activeColor === null){
+          this.activeColor = color[0].payload_value
+        }
+      }
+      if(size !== null){
+        if(size.length > 1 && this.activeSize === null){
+          this.errorMessage = 'Please select on of the size variation.'
+          return false
+        }else if(size.length === 1 && this.activeSize === null){
+          this.activeSize = size[0].payload_value
+        }
+      }
+      this.errorMessage = null
     },
     showPrice(flag){
       this.priceFlag = flag

@@ -8,6 +8,11 @@
         <button class="btn btn-primary form-control-custom" style="margin-left: 10px;" @click="create()"><i class="fa fa-plus"></i></button>
       </div>
     </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1" style="font-weight: 600;">Available:</label>
+      <label v-if="parseInt(item.qty) > 0" class="alert alert-success">{{item.qty}}</label>
+      <label v-if="parseInt(item.qty) <= 0" class="alert alert-warning">Out of Stock</label>
+    </div>
     <div class="inventories-content" v-if="item.inventories !== null">
       <table class="table table-bordered">
         <thead>

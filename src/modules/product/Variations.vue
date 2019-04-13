@@ -1,5 +1,5 @@
 <template>
-  <div class="attributes-holder">
+  <div class="variations-holder">
     <div class="error text-danger" v-if="errorMessage !== null">{{errorMessage}}</div>
     <div class="form-group">
       <label for="exampleInputEmail1" style="font-weight: 600;">Variations</label>
@@ -12,7 +12,7 @@
         <button class="btn btn-primary form-control-custom" style="margin-left: 10px;" @click="create()"><i class="fa fa-plus"></i></button>
       </div>
     </div>
-    <div class="attributes-content" v-if="item.size !== null">
+    <div class="variations-content" v-if="item.size !== null">
       <label class="title">Size</label>
       <div class="attribute-item" v-for="itemSize, indexSize in item.size">
         <input type="text" class="form-control form-control-custom" style="float: left; width: 80%;" placeholder="Type variation value here..." v-model="itemSize.payload_value" @keyup.enter="update(itemSize)">
@@ -24,7 +24,7 @@
         </button>
       </div>
     </div>
-    <div class="attributes-content" v-if="item.color !==  null">
+    <div class="variations-content" v-if="item.color !==  null">
       <label class="title">Color</label>
       <div class="attribute-item" v-for="itemColor, indexColor in item.color">
         <input type="text" class="form-control form-control-custom" style="float: left; width: 80%;" placeholder="Type variation value here..." v-model="itemColor.payload_value" @keyup.enter="update(itemColor)">
@@ -39,7 +39,7 @@
   </div>
 </template>
 <style scoped>
-.attributes-holder{
+.variations-holder{
   width: 100%;
   float: left;
   min-height: 100px;
@@ -50,13 +50,13 @@
   float: left;
   line-height: 50px;
 }
-.attributes-content{
+.variations-content{
   width: 100%;
   float: left;
   min-height: 50px;
   overflow-y: hidden;
 }
-.attributes-content .title{
+.variations-content .title{
   height: 50px;
   width: 100%;
   float: left;
@@ -89,7 +89,7 @@ export default {
       errorMessage: null,
       newAttribute: {
         product_id: this.item.id,
-        payload: null,
+        payload: 'color',
         payload_value: null
       }
     }

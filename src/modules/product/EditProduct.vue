@@ -73,7 +73,7 @@
         </ul>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 0">
-        <attributes :item="data"></attributes>
+        <variations :item="data"></variations>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 1">
         <prices :item="data"></prices>
@@ -113,7 +113,6 @@
   }
   .product-image .main-image{
     height: 350px;
-    float: left;
     max-width: 100%;
   }
   .product-image .fa-image{
@@ -317,7 +316,7 @@ export default {
     'ratings': require('modules/rating/Ratings.vue'),
     'product-comments': require('modules/comment/Comments.vue'),
     'browse-images-modal': require('modules/image/BrowseModal.vue'),
-    'attributes': require('modules/product/Attributes.vue'),
+    'variations': require('modules/product/Variations.vue'),
     'inventories': require('modules/product/Inventories.vue'),
     'prices': require('modules/product/Prices.vue')
   },
