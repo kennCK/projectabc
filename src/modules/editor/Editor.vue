@@ -419,15 +419,40 @@ export default {
       this.setSelectedObject(this.objects[0], 0)
     },
     moveObject(event){
-      this.posX = event.layerX
-      this.posY = event.layerY
-      console.log(event)
+      this.posX = event.x
+      this.posY = event.y
     },
     dragEnd(event){
-      console.log(event)
+      let x = this.posX - event.x
+      let y = this.posY - event.y
+      this.manageAttributes(x * -1, y * -1)
     },
     manageImageUrl(url){
       this.selected.content = url
+    },
+    manageAttributes(x, y){
+      var top = this.selected.attributes.top
+      var left = this.selected.attributes.left
+      let charL = null
+      let charT = null
+      if(String(top).indexOf('%') > -1){
+        top = parseInt(top.substr(0, top.length - 1))
+        charT = '%'
+      }
+      if(String(top).indexOf('p') > -1){
+        top = parseInt(top.substr(0, top.length - 2))
+        charT = 'px'
+      }
+      if(String(left).indexOf('%') > -1){
+        left = parseInt(left.substr(0, left.length - 1))
+        charL = '%'
+      }
+      if(String(left).indexOf('p') > -1){
+        left = parseInt(left.substr(0, left.length - 2))
+        charL = 'px'
+      }
+      this.selected.attributes.top = (top + y) + 'px'
+      this.selected.attributes.left = (left + x) + 'px'
     }
   }
 }
