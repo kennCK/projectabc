@@ -186,8 +186,6 @@ ul li:hover{
   top: 250px;
 }
 
-
-
 .division, .text, .photo{
   position: absolute;
   cursor: move;
