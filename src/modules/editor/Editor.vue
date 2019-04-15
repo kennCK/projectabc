@@ -196,7 +196,7 @@ ul li:hover{
   background: rgba(250, 250, 250, 0) !important;
 }
 .object-selected{
-  border: dashed 1px #22b173;
+  border: dashed 1px #22b173 !important;
 }
 .layer-selected{
   background: #22b173;
@@ -282,9 +282,9 @@ export default {
             textDecoration: 'normal',
             background: '#fff',
             color: '#028170',
-            top: '40%',
+            top: '40px',
             bottom: '0%',
-            left: '0%',
+            left: '0px',
             right: '0%',
             borderRadius: '0%',
             textAlign: 'center',
@@ -316,9 +316,9 @@ export default {
             width: '100%',
             background: '#028170',
             color: '#028170',
-            top: '40%',
+            top: '40px',
             bottom: '0%',
-            left: '0%',
+            left: '0px',
             right: '0%',
             borderRadius: '0%',
             zIndex: 1,
@@ -341,8 +341,8 @@ export default {
             width: '60%',
             background: '#028170',
             color: '#028170',
-            top: '10%',
-            bottom: '0%',
+            top: '10px',
+            bottom: '0px',
             left: '0%',
             right: '0%',
             borderRadius: '0%',
