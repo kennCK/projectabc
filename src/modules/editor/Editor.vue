@@ -194,6 +194,9 @@ ul li:hover{
 .text, .photo{
   background: rgba(250, 250, 250, 0) !important;
 }
+.text{
+  cursor: text !important;
+}
 .object-selected{
   border: dashed 1px #22b173 !important;
 }
