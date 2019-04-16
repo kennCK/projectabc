@@ -87,12 +87,10 @@
               <span class="image" v-else>
                 <i class="fa fa-user-circle-o" ></i>
               </span>
-              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-right: 1%;" @click="addImage()">Upload
-                <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
+
+              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-left: 1%; width: 98%;" @click="browseImagesProfileFlag = true">Select
               </button>
 
-              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="browseImagesProfileFlag = true">Select
-              </button>
               <div class="browse-images-holder">
                 <div class="browse-images" v-if="browseImagesProfileFlag">
                   <browse-images :object="this.data" :index="0" :view="'profile-view'" ></browse-images>
@@ -106,12 +104,10 @@
               <span class="image" v-else>
                 <i class="fas fa-signature"></i>
               </span>
-              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-right: 1%;" @click="addImage()">Upload
-                <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
+
+              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-left: 1%; width: 98%;" @click="browseImagesSignatureFlag = true">Select
               </button>
 
-              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="browseImagesSignatureFlag = true">Select
-              </button>
               <div class="browse-images-holder">
                 <div class="browse-images" v-if="browseImagesSignatureFlag">
                   <browse-images :object="this.data" :index="0" :view="'signature-view'"></browse-images>
