@@ -1,6 +1,11 @@
 <template>
   <div v-if="data !== null">
-    <div class="title">
+    <div class="title" v-if="status === 'preview'">
+      <b @click="redirect('/product/edit/' + data.code)">
+        <label class="text-primary action-link">Back</label>
+      </b>
+    </div>
+    <div class="title" v-if="status !== 'preview'">
       <b @click="redirect('/marketplace')">
         <label class="text-primary action-link">Marketplace</label>
       </b>
@@ -21,6 +26,16 @@
       <div class="product-details">
         <div class="product-title">
           <h3>{{data.title}}</h3>
+        </div>
+        <div class="product-row" v-if="data.checkout_flag === true">
+          <span class="alert alert-success">
+            This product was added to your cart. Proceed to checkout now!
+          </span>
+        </div>
+        <div class="product-row" v-if="errorMessage !== null">
+          <span class="alert alert-danger">
+            {{errorMessage}}
+          </span>
         </div>
         <div class="product-row text-primary" v-if="data.price !== null">
           <label v-if="data.price.length === 1">PHP {{data.price[0].price}}</label>
@@ -47,35 +62,37 @@
           </table>
         </div>
         <div class="product-row" v-if="data.color !== null">
-          <label>COLOR</label>
-          <span v-for="item, index in data.color" v-bind:style="{background: item.payload_value}" class="attribute"></span>
+          <label>Color</label>
+          <span v-for="item, index in data.color" v-bind:style="{background: item.payload_value}" class="attribute" v-bind:class="{'active-color': activeColor === item.payload_value}" @click="activeColor = item.payload_value"></span>
         </div>
         <div class="product-row" v-if="data.size !== null">
-          <label>SIZE</label>
-          <span class="attribute" v-for="item, index in data.size">{{item.payload_value}}</span>
+          <label>Size</label>
+          <span class="attribute attribute-flexible" v-for="item, index in data.size" v-bind:class="{'bg-primary': activeSize === item.payload_value}" @click="activeSize = item.payload_value">{{item.payload_value}}</span>
         </div>
-        <div class="product-row">
+        <div class="product-row" v-if="parseInt(data.qty) > 0">
           <label>Quantity</label>
           <select class="qty-input" v-model="qty">
-            <option v-for="i in 20">{{i}}</option>
+            <option v-for="i in parseInt(data.qty)">{{i}}</option>
           </select>
         </div>
-        <div class="product-row" v-if="data.checkout_flag === true">
-          <span class="alert bg-primary">
-            This product was added to your cart. Proceed to checkout now!
-          </span>
+        <div class="product-row" v-if="parseInt(data.qty) <= 0">
+          <span style="width: 100%'" class="alert alert-danger">Out of stock.</span>
         </div>
         <div class="product-row">
-          <button class="btn btn-primary" @click="addToCart(data.id)" v-if="data.checkout_flag === false"><i class="fa fa-shopping-cart" style="padding-right: 10px;"></i>ADD TO CART</button>
+          <button class="btn btn-primary" @click="addToCart(data.id)"><i class="fa fa-shopping-cart" style="padding-right: 10px;"></i>ADD TO CART</button>
           <button class="btn btn-danger" @click="addToWishlist(data.id)" v-if="data.wishlist_flag === false && data.checkout_flag === false"><i class="far fa-heart" style="padding-right: 10px;"></i>ADD TO WISHLIST</button>
           <button class="btn btn-warning" @click="redirect('/checkout')" v-if="data.checkout_flag === true">PROCEED TO CHECKOUT</button>
         </div>
-        <div class="product-row-rating" style="margin-top: 5px;">
-          <ratings :payload="'product'" :payloadValue="data.id"></ratings>
+        <div class="product-row" v-if="data.sku !== null && data.sku !== ''">
+          <label style="width: 15%;">Sku</label>
+          <label class="text-danger"><i>{{data.sku}}</i></label>
         </div>
         <div class="product-row-tags" v-if="data.tags !== null && data.tag_array !== null">
           <label style="width: 15%;">Tags</label>
           <label class="tag-label" v-for="item, index in data.tag_array">{{item.title}}</label>
+        </div>
+        <div class="product-row-rating">
+          <ratings :payload="'product'" :payloadValue="data.id"></ratings>
         </div>
       </div>
     </div>
@@ -120,7 +137,6 @@
   }
   .product-image .main-image{
     height: 350px;
-    float: left;
     max-width: 100%;
   }
   .product-image .fa-image{
@@ -167,7 +183,6 @@
     float: left;
     min-height: 50px;
     overflow-y: hidden;
-    margin-top: 25px;
   }
   .product-row{
     width: 100%;
@@ -197,6 +212,8 @@
   .product-row label{
     float: left;
     width: 15%;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
   .qty-input{
     width: 50px;
@@ -208,6 +225,8 @@
   }
   .product-row-tags label{
     float: left;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
   .tag-label{
     height: 35px;
@@ -222,11 +241,24 @@
   }
   .attribute{
     width: 50px;
-    height: 40px;
+    height: 36px;
     float: left;
+    margin-top: 2px;
+    margin-bottom: 2px;
     border-radius: 5px;
-    border: solid 1px #ffaa81;
     margin-right: 5px;
+    line-height: 36px;
+  }
+
+  .active-color{
+    border: solid 2px #ffaa81;
+  }
+
+  .attribute-flexible{
+    width: auto;
+    padding-right: 10px;
+    padding-left: 10px;
+    border: solid 1px #ffaa81;
   }
   .attribute:hover{
     cursor: pointer;
@@ -293,6 +325,7 @@ export default {
       errorMessage: null,
       data: null,
       code: this.$route.params.code,
+      status: this.$route.params.status,
       productMenu: [
         {title: 'Product Details', flag: true},
         // {title: 'Supplier', flag: false},
@@ -302,7 +335,9 @@ export default {
       prevMenuIndex: 0,
       selectedImage: null,
       qty: 1,
-      priceFlag: false
+      priceFlag: false,
+      activeSize: null,
+      activeColor: null
     }
   },
   components: {
@@ -324,19 +359,33 @@ export default {
       this.selectedImage = url
     },
     retrieve(){
-      let parameter = {
-        condition: [{
-          value: 'published',
-          column: 'status',
-          clause: '='
-        }, {
-          value: this.code,
-          column: 'code',
-          clause: '='
-        }],
-        account_id: this.user.userID
+      let parameter = null
+      if(this.status === 'preview'){
+        parameter = {
+          condition: [{
+            value: this.code,
+            column: 'code',
+            clause: '='
+          }],
+          account_id: this.user.userID
+        }
+      }else{
+        parameter = {
+          condition: [{
+            value: 'published',
+            column: 'status',
+            clause: '='
+          }, {
+            value: this.code,
+            column: 'code',
+            clause: '='
+          }],
+          account_id: this.user.userID
+        }
       }
+      $('#loading').css({display: 'block'})
       this.APIRequest('products/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data[0]
         }
@@ -355,11 +404,20 @@ export default {
       })
     },
     addToCart(id){
+      if(this.validate() === false){
+        return false
+      }
+      if(parseInt(this.data.qty) <= 0){
+        this.errorMessage = 'This is item is out of stock. Please be back soon!'
+        return false
+      }
       let parameter = {
         account_id: this.user.userID,
         payload: 'product',
         payload_value: id,
         price: this.getPrice(),
+        size: this.activeSize,
+        color: this.activeColor,
         qty: this.qty,
         type: 'marketplace'
       }
@@ -371,13 +429,38 @@ export default {
           this.retrieve()
         }
       })
+      this.errorMessage = null
+    },
+    validate(){
+      let color = this.data.color
+      let size = this.data.size
+      if(color !== null){
+        if(color.length > 1 && this.activeColor === null){
+          this.errorMessage = 'Please select on of the color variation.'
+          return false
+        }else if(color.length === 1 && this.activeColor === null){
+          this.activeColor = color[0].payload_value
+        }
+      }
+      if(size !== null){
+        if(size.length > 1 && this.activeSize === null){
+          this.errorMessage = 'Please select on of the size variation.'
+          return false
+        }else if(size.length === 1 && this.activeSize === null){
+          this.activeSize = size[0].payload_value
+        }
+      }
+      this.errorMessage = null
     },
     showPrice(flag){
       this.priceFlag = flag
     },
     getPrice(){
       let price = this.data.price
-      if(price.length > 0){
+      if(price === null){
+        return 0
+      }
+      if(price.length > 1){
         // variable
         for (var i = 0; i < price.length; i++) {
           if(this.qty >= price[i].minimum && this.qty <= price[i].maximum){

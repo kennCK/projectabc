@@ -137,14 +137,6 @@ export default{
     }
   },
   {
-    path: '/pricings',
-    name: 'pricings',
-    component: resolve => require(['modules/pricing/Pricings.vue'], resolve),
-    meta: {
-      tokenRequired: true
-    }
-  },
-  {
     path: '/messenger/:username?',
     name: 'messenger',
     component: resolve => require(['modules/messenger/Messenger.vue'], resolve),
@@ -249,7 +241,7 @@ export default{
     }
   },
   {
-    path: '/marketplace/product/:code',
+    path: '/marketplace/product/:code/:status?',
     name: 'marketplaceProduct',
     component: resolve => require(['modules/marketplace/Product.vue'], resolve),
     meta: {
@@ -259,7 +251,7 @@ export default{
   {
     path: '/wishlists',
     name: 'wishlists',
-    component: resolve => require(['modules/wishlist/Wishlists.vue'], resolve),
+    component: resolve => require(['modules/product/Wishlists.vue'], resolve),
     meta: {
       tokenRequired: true
     }

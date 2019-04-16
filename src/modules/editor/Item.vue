@@ -72,7 +72,7 @@
   position: absolute;
   top: -3px;
   left: -3px;
-  z-index: 10;
+  z-index: 30;
 }
 
 .ribbon-wrapper .ribbon {
@@ -100,6 +100,8 @@
   height: 50px;
   text-align: center;
   line-height: 50px;
+  position: relative;
+  z-index: 20;
   border-bottom: solid 1px #ddd;
 }
 .make-active-header{
@@ -133,7 +135,8 @@ ul{
   margin: 0px;
   width: 100%;
   float: left;
-  z-index: 30;
+  position: relative;
+  z-index: 1000;
   list-style: none;
   bottom: 0;
   height: 40px;

@@ -141,6 +141,7 @@ class ObjectController extends APIController
       foreach ($result as $key) {
         $this->response['data'][$i]['attributes'] = $this->getAttributes($result[$i]['id']);
         $this->response['data'][$i]['new'] = false;
+        $this->response['data'][$i]['selected'] = false;
        $i++; 
       }
     }

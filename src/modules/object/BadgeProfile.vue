@@ -42,6 +42,7 @@
 }
 .body{
   float: left;
+  overflow: hidden;
   position: relative;
 }
 .preview{

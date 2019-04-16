@@ -21,7 +21,7 @@
         <div class="product-item-title">
           <label>Tags</label>
           <br>
-          <input type="text" class="form-control form-control-custom" v-model="data.tags" placeholder="#like#this">
+          <input type="text" class="form-control form-control-custom" v-model="data.tags" placeholder="Separate tags with ,">
         </div>
         <div class="product-item-title">
           <label>SKU</label>
@@ -37,7 +37,9 @@
           </select>
         </div>
         <div class="product-item-title">
+          <button class="btn btn-danger" @click="deleteProduct(data.id)">Delete</button>
           <button class="btn btn-primary pull-right" @click="updateProduct()">Update</button>
+          <button class="btn btn-warning pull-right" @click="redirect('/marketplace/product/' + data.code + '/' + 'preview')" style="margin-right: 10px;">Preview</button>
         </div>
       </div>
       <div class="product-image">
@@ -71,10 +73,10 @@
         </ul>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 0">
-        <attributes :item="data"></attributes>
+        <variations :item="data"></variations>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 1">
-        
+        <prices :item="data"></prices>
       </div>
       <div class="details-holder" v-if="prevMenuIndex === 2">
         <inventories :item="data"></inventories>
@@ -111,7 +113,6 @@
   }
   .product-image .main-image{
     height: 350px;
-    float: left;
     max-width: 100%;
   }
   .product-image .fa-image{
@@ -294,7 +295,7 @@ export default {
       data: null,
       code: this.$route.params.code,
       productMenu: [
-        {title: 'Attributes', flag: true},
+        {title: 'Variations', flag: true},
         {title: 'Price', flag: false},
         {title: 'Inventory', flag: false},
         {title: 'Comments', flag: false}
@@ -315,8 +316,9 @@ export default {
     'ratings': require('modules/rating/Ratings.vue'),
     'product-comments': require('modules/comment/Comments.vue'),
     'browse-images-modal': require('modules/image/BrowseModal.vue'),
-    'attributes': require('modules/product/Attributes.vue'),
-    'inventories': require('modules/product/Inventories.vue')
+    'variations': require('modules/product/Variations.vue'),
+    'inventories': require('modules/product/Inventories.vue'),
+    'prices': require('modules/product/Prices.vue')
   },
   methods: {
     redirect(parameter){
@@ -349,62 +351,20 @@ export default {
         }
       })
     },
+    deleteProduct(id){
+      let parameter = {
+        id: id
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('products/delete', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        ROUTER.push('/products')
+      })
+    },
     updateProduct(){
       this.APIRequest('products/update', this.data).then(response => {
         this.retrieve()
       })
-    },
-    addToWishlist(id){
-      let parameter = {
-        payload: 'product',
-        payload_value: id,
-        account_id: this.user.userID
-      }
-      $('#loading').css({display: 'block'})
-      this.APIRequest('wishlists/create', parameter).then(response => {
-        $('#loading').css({display: 'none'})
-        this.retrieve()
-      })
-    },
-    addToCart(id){
-      let parameter = {
-        account_id: this.user.userID,
-        payload: 'product',
-        payload_value: id,
-        price: this.getPrice(),
-        qty: this.qty,
-        type: 'marketplace'
-      }
-      $('#loading').css({display: 'block'})
-      this.APIRequest('checkout_items/create', parameter).then(response => {
-        $('#loading').css({display: 'none'})
-        if(response.data > 0){
-          AUTH.checkAuthentication(null)
-          this.retrieve()
-        }
-      })
-    },
-    showPrice(flag){
-      this.priceFlag = flag
-    },
-    getPrice(){
-      let price = this.data.price
-      if(price.length > 0){
-        // variable
-        for (var i = 0; i < price.length; i++) {
-          if(this.qty >= price[i].minimum && this.qty <= price[i].maximum){
-            return price[i].price
-          }
-        }
-        if(this.qty > price[price.length - 1].maximum){
-          return price[price.length - 1].maximum
-        }
-      }else if(price.length === 1){
-        if(price[0].type === 'fixed'){
-          return price[0].price
-        }
-      }
-      return 0
     },
     showImages(status){
       this.imageStatus = status

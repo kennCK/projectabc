@@ -12,7 +12,7 @@
 		
     <div class="employee-list" v-if="data !==null && viewIcon === 'badge' && templates !== null">
       <div v-bind:class="{'make-active': item !== null && item.active === true}" v-for="item, index in data">
-        <span v-bind:style="{height: (parseInt(templates.front.height) === config.LANDSCAPE) ? ((parseInt(templates.front.height) * 2) + 50) + 'px' : (parseInt(templates.front.height) + 50) + 'px', width: (parseInt(templates.front.height) === config.LANDSCAPE) ? (parseInt(templates.front.width) + 2)  + 'px' : ((parseInt(templates.front.width) * 2) + 2)  + 'px'}" class="holder">
+        <span v-bind:style="{height: (parseInt(templates.front.height) === config.LANDSCAPE) ? ((parseInt(templates.front.height) * 2) + 54) + 'px' : (parseInt(templates.front.height) + 54) + 'px', width: (parseInt(templates.front.height) === config.LANDSCAPE) ? (parseInt(templates.front.width) + 4)  + 'px' : ((parseInt(templates.front.width) * 2) + 4)  + 'px'}" class="holder">
           <span class="header">
             <ul class="menu">
               <li style="width: 50%;">

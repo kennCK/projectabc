@@ -104,7 +104,7 @@ export default {
     }
   },
   components: {
-    'product': require('modules/wishlist/Item.vue'),
+    'product': require('modules/product/WishlistItem.vue'),
     'checkout-empty': require('modules/empty/EmptyDynamicIcon.vue')
   },
   methods: {
