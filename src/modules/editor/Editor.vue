@@ -43,11 +43,11 @@
                 </span>
                 <span v-bind:style="{height: parseInt(item.height) + 'px', width: parseInt(item.width)  + 'px', left: (parseInt(item.height) === config.PORTRAIT) ? '35%' : '29%'}" class="card-holder">
                   <span v-for="item, index in objects">
-                    <span class="division" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'division'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">
+                    <span class="division" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'division'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)"  @keyup="handleArrowsInput()">
                     </span>
-                    <label class="text" v-if="item.type === 'text' && item.selected === false" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">{{item.content}}</label>
-                    <input type="text" class="object-selected text" v-if="item.type === 'text' && item.selected === true" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" v-model="item.content" v-bind:style="item.attributes"/>
-                    <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" @keydown="handleArrowsInput($event)">
+                    <label class="text" v-if="item.type === 'text' && item.selected === false" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" @keyup="handleArrowsInput()">{{item.content}}</label>
+                    <input type="text" class="object-selected text" v-if="item.type === 'text' && item.selected === true" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" v-model="item.content" v-bind:style="item.attributes" @keyup="handleArrowsInput()"/>
+                    <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" @keyup="handleArrowsInput()">
                   </span>
                 </span>
                 <span class="browse-images-holder" v-if="selected !== null && browseImagesFlag === true">
@@ -221,6 +221,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    document.addEventListener('keyup', this.handleArrowsInput)
   },
   data(){
     return {
@@ -456,28 +457,25 @@ export default {
       this.selected.attributes.top = (top + y) + 'px'
       this.selected.attributes.left = (left + x) + 'px'
     },
-    handleArrowsInput(e){
-      console.log(e)
+    handleArrowsInput(){
       let x = 0
       let y = 0
-      // if(e.keyCode === 40){
-      //   // down
-      //   y = 1
-      // }else if(e.keyCode === 39){
-      //   // right
-      //   x = 1
-      // }else if(e.keyCode === 38){
-      //   // up
-      //   y = -1
-      // }else if(e.keyCode === 37){
-      //   // left
-      //   x = -1
-      // }else{
-      //   //
-      // }
-      // setTimeout(() => {
-      //   this.manageAttributes(x, y)
-      // }, 100)
+      if(event.keyCode === 40){
+        // down
+        y = 1
+      }else if(event.keyCode === 39){
+        // right
+        x = 1
+      }else if(event.keyCode === 38){
+        // up
+        y = -1
+      }else if(event.keyCode === 37){
+        // left
+        x = -1
+      }else{
+        //
+      }
+      this.manageAttributes(x, y)
     }
   }
 }
