@@ -47,7 +47,7 @@
                     </span>
                     <label class="text" v-if="item.type === 'text' && item.selected === false" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">{{item.content}}</label>
                     <input type="text" class="object-selected text" v-if="item.type === 'text' && item.selected === true" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" v-model="item.content" v-bind:style="item.attributes"/>
-                    <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">
+                    <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" @keydown="handleArrowsInput($event)">
                   </span>
                 </span>
                 <span class="browse-images-holder" v-if="selected !== null && browseImagesFlag === true">
@@ -455,6 +455,29 @@ export default {
       }
       this.selected.attributes.top = (top + y) + 'px'
       this.selected.attributes.left = (left + x) + 'px'
+    },
+    handleArrowsInput(e){
+      console.log(e)
+      let x = 0
+      let y = 0
+      // if(e.keyCode === 40){
+      //   // down
+      //   y = 1
+      // }else if(e.keyCode === 39){
+      //   // right
+      //   x = 1
+      // }else if(e.keyCode === 38){
+      //   // up
+      //   y = -1
+      // }else if(e.keyCode === 37){
+      //   // left
+      //   x = -1
+      // }else{
+      //   //
+      // }
+      // setTimeout(() => {
+      //   this.manageAttributes(x, y)
+      // }, 100)
     }
   }
 }
