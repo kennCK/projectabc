@@ -221,7 +221,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
-    document.addEventListener('keyup', this.handleArrowsInput)
+    window.addEventListener('keyup', this.handleArrowsInput)
   },
   data(){
     return {
@@ -258,6 +258,7 @@ export default {
       this.item = null
       this.$parent.retrieve(true)
       $('#templateEditorModal').modal('hide')
+      window.removeEventListener('keyup', null)
     },
     addObject(type){
       this.saveFlag = 1
@@ -424,10 +425,12 @@ export default {
     moveObject(event){
       this.posX = event.x
       this.posY = event.y
+      console.log(this.posX + '/' + this.posY)
     },
     dragEnd(event){
       let x = this.posX - event.x
       let y = this.posY - event.y
+      console.log(event.x + '/' + event.y)
       this.manageAttributes(x * -1, y * -1)
     },
     manageImageUrl(url){
