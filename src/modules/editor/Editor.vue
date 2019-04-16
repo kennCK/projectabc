@@ -43,11 +43,11 @@
                 </span>
                 <span v-bind:style="{height: parseInt(item.height) + 'px', width: parseInt(item.width)  + 'px', left: (parseInt(item.height) === config.PORTRAIT) ? '35%' : '29%'}" class="card-holder">
                   <span v-for="item, index in objects">
-                    <span class="division" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'division'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)"  @keyup="handleArrowsInput()">
+                    <span class="division" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'division'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">
                     </span>
                     <label class="text" v-if="item.type === 'text' && item.selected === false" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" @keyup="handleArrowsInput()">{{item.content}}</label>
-                    <input type="text" class="object-selected text" v-if="item.type === 'text' && item.selected === true" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" v-model="item.content" v-bind:style="item.attributes" @keyup="handleArrowsInput()"/>
-                    <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" @keyup="handleArrowsInput()">
+                    <input type="text" class="object-selected text" v-if="item.type === 'text' && item.selected === true" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" v-model="item.content" v-bind:style="item.attributes"/>
+                    <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">
                   </span>
                 </span>
                 <span class="browse-images-holder" v-if="selected !== null && browseImagesFlag === true">
