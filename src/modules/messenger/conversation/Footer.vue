@@ -1,7 +1,6 @@
 <template>
   <div class="holder">
-    <textarea type="text" class="form-control" placeholder="Type your message here..." v-model="newMessageInput" @keyup.enter="newmessage()">
-    </textarea>
+    <input type="text" class="form-control" placeholder="Type your message here..." v-model="newMessageInput" @keyup.enter="newmessage()" />
     <span>
       <i class="fas fa-location-arrow" @click="newmessage()"></i>
     </span>
@@ -57,9 +56,9 @@ span i:hover{
 
 </style>
 <script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-import CONFIG from '../../config.js'
+import ROUTER from '../../../router'
+import AUTH from '../../../services/auth'
+import CONFIG from '../../../config.js'
 export default {
   mounted(){
   },
@@ -82,7 +81,9 @@ export default {
         let parameter = {
           messenger_group_id: this.group.id,
           message: this.newMessageInput,
-          account_id: this.user.userID
+          account_id: this.user.userID,
+          status: 'messenger',
+          payload: 'messenger'
         }
         this.APIRequest('messenger_messages/create', parameter).then(response => {
           if(response.data > 0){
@@ -94,7 +95,9 @@ export default {
         let parameter = {
           creator: this.user.userID,
           message: this.newMessageInput,
-          member: this.group.id
+          member: this.group.id,
+          status: 'messenger',
+          payload: 'messenger'
         }
         this.APIRequest('custom_messenger_groups/create', parameter).then(response => {
           if(response.data !== null){

@@ -1,7 +1,7 @@
 <template>
   <div class="holder" id="groupConversation">
     <c-header :group="group" v-if="group !== null"></c-header>
-    <c-body :conversations="conversations" v-if="group !== null"></c-body>
+    <c-body :conversations="auth.messenger.messages" v-if="group !== null"></c-body>
     <c-footer :group="group" v-if="group !== null"></c-footer>
   </div>
 </template>
@@ -12,9 +12,9 @@
 }
 </style>
 <script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-import CONFIG from '../../config.js'
+import ROUTER from '../../../router'
+import AUTH from '../../../services/auth'
+import CONFIG from '../../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
@@ -24,15 +24,15 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      conversations: null,
+      auth: AUTH,
       id: null,
       newFlag: false
     }
   },
   components: {
-    'c-header': require('modules/conversation/Header.vue'),
-    'c-body': require('modules/conversation/Body.vue'),
-    'c-footer': require('modules/conversation/Footer.vue')
+    'c-header': require('modules/messenger/conversation/Header.vue'),
+    'c-body': require('modules/messenger/conversation/Body.vue'),
+    'c-footer': require('modules/messenger/conversation/Footer.vue')
   },
   props: ['groupId', 'group'],
   watch: {
@@ -59,18 +59,13 @@ export default {
         }
         this.APIRequest('messenger_messages/retrieve', parameter).done(response => {
           if(response.data.length > 0){
-            this.conversations = response.data
+            AUTH.messenger.messages = response.data
           }else{
-            this.conversations = null
-          }
-          if(AUTH.messenger.flag === true){
-            setTimeout(() => {
-              this.retrieve()
-            }, 1000)
+            AUTH.messenger.messages = null
           }
         })
       }else{
-        this.conversations = null
+        AUTH.messenger.messages = null
       }
     }
   }

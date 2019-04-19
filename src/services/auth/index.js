@@ -28,10 +28,15 @@ export default {
       prevCurrent: null
     }
   },
-  messengerMessages: null,
+  messenger: {
+    messages: null,
+    badge: 0,
+    messengerGroupId: null
+  },
   support: {
     messages: null,
-    badge: 0
+    badge: 0,
+    messengerGroupId: null
   },
   notifTimer: {
     timer: null,
@@ -309,12 +314,29 @@ export default {
     this.echo.channel('idfactory').listen('Message', (response) => {
       if(parseInt(response.message.account_id) !== this.user.userID && response.message.status === 'support'){
         this.playNotificationSound()
-        this.support.badge++
+        if(this.support.messengerGroupId !== parseInt(response.message.messenger_group_id) && this.support.messengerGroupId !== null){
+          this.support.badge++
+        }
         if(!this.support.messages){
           this.support.messages = []
           this.support.messages.push(response.message)
         }else{
-          this.support.messages.push(response.message)
+          if(this.support.messengerGroupId === parseInt(response.message.messenger_group_id)){
+            this.support.messages.push(response.message)
+          }
+        }
+      }else if(parseInt(response.message.account_id) !== this.user.userID && response.message.status !== 'support'){
+        this.playNotificationSound()
+        if(this.messenger.messengerGroupId !== parseInt(response.message.messenger_group_id) && this.messenger.messengerGroupId !== null){
+          this.messenger.badge++
+        }
+        if(!this.messenger.messages){
+          this.messenger.messages = []
+          this.messenger.messages.push(response.message)
+        }else{
+          if(this.messenger.messengerGroupId === parseInt(response.message.messenger_group_id)){
+            this.messenger.messages.push(response.message)
+          }
         }
       }
     })

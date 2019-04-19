@@ -70,7 +70,7 @@ export default {
   },
   props: ['params'],
   components: {
-    'conversation': require('modules/conversation/Conversation.vue'),
+    'conversation': require('modules/messenger/conversation/Conversation.vue'),
     'groups': require('modules/userlist/Groups.vue'),
     'empty': require('modules/empty/Empty.vue')
   },
@@ -113,6 +113,7 @@ export default {
       if(moduleText === 'groups'){
         this.groupId = this.groups[index].id
         this.selectedGroupData = this.groups[index]
+        AUTH.messenger.messengerGroupId = this.groups[index].id
         for (i = 0; i < this.$children.length; i++) {
           if(this.$children[i].$el.id === 'groupConversation'){
             this.$children[i].newFlag = false
@@ -122,6 +123,7 @@ export default {
       }else if(moduleText === 'partners'){
         this.groupId = null
         this.selectedGroupData = this.partners[index]
+        AUTH.messenger.messengerGroupId = this.partners[index].id
         for (i = 0; i < this.$children.length; i++) {
           if(this.$children[i].$el.id === 'groupConversation'){
             this.$children[i].newFlag = true

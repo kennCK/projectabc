@@ -1,7 +1,10 @@
 <template>
   <div v-if="item !== null">
     <div class="messenger-header">
-      <label class="back-icon" @click="changeConversationStatus('previous')"><i class="fa fa-chevron-left"></i></label>
+      <label class="back-icon" @click="changeConversationStatus('previous')">
+        <i class="fa fa-chevron-left"></i>
+        <label class="badge badge-danger" style="margin-left: -1px;" v-if="auth.support.badge > 0">{{auth.support.badge}}</label>
+      </label>
       <div class="profile" v-if="item.last_message.account !== null">
         <img :src="config.BACKEND_URL + item.last_message.account.profile.url" v-if="item.last_message.account.profile !== null">
         <i class="fa fa-user-circle-o text-green" v-else></i>
@@ -129,6 +132,7 @@ export default {
     },
     changeConversationStatus(status){
       this.$parent.conversationStatus = status
+      AUTH.support.badge = 0
     },
     retrieve(){
       if(this.item !== null){
