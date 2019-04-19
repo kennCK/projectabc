@@ -47,7 +47,8 @@ export default {
         let parameter = {
           messenger_group_id: this.groupId,
           message: this.newMessageInput,
-          account_id: this.user.userID
+          account_id: this.user.userID,
+          status: 'support'
         }
         this.APIRequest('messenger_messages/create', parameter).then(response => {
           if(response.data > 0){

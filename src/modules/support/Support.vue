@@ -15,6 +15,7 @@
     <span class="messenger-icon"  @click="changeFlag()">
       <i class="fas fa-comment" v-if="flag === false"></i>
       <i class="fa fa-close" v-if="flag === true"></i>
+      <label class="badge badge-danger" style="margin-left: -15px;" v-if="flag === false && auth.support.badge > 0">{{auth.support.badge}}</label>
     </span>
   </div>
 </template>
@@ -104,7 +105,8 @@ export default {
       data: null,
       flag: false,
       conversationStatus: 'initial',
-      group: null
+      group: null,
+      auth: AUTH
     }
   },
   components: {
@@ -121,6 +123,9 @@ export default {
       this.flag = !this.flag
       if(this.conversationStatus === 'initial'){
         this.conversationStatus = 'start'
+      }
+      if(this.flag === true){
+        AUTH.support.badge = 0
       }
     }
   }

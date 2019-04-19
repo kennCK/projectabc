@@ -13,7 +13,7 @@
     </div>
     <div class="conversation-content">
         <div class="message-holder">
-          <messages :data="data" v-if="data !== null"></messages>
+          <messages :data="auth.support.messages" v-if="auth.support.messages !== null"></messages>
         </div>
         <div class="input-holder">
           <send :flag="false" :groupId="item.id"></send>
@@ -115,7 +115,7 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      data: null
+      auth: AUTH
     }
   },
   props: ['item'],
@@ -129,7 +129,6 @@ export default {
     },
     changeConversationStatus(status){
       this.$parent.conversationStatus = status
-      AUTH.messengerSupport.flag = null
     },
     retrieve(){
       if(this.item !== null){
@@ -142,14 +141,9 @@ export default {
         }
         this.APIRequest('messenger_messages/retrieve', parameter).done(response => {
           if(response.data.length > 0){
-            this.data = response.data
+            AUTH.support.messages = response.data
           }else{
-            this.data = null
-          }
-          if(AUTH.messengerSupport.flag === true){
-            // setTimeout(() => {
-            //   this.retrieve()
-            // }, 1000)
+            AUTH.support.messages = null
           }
         })
       }

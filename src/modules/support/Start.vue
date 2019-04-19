@@ -133,9 +133,7 @@ export default {
     },
     changeConversationStatus(status){
       if(status === 'new-conversation'){
-        AUTH.messengerSupport.flag = true
-      }else{
-        AUTH.messengerSupport.flag = null
+        AUTH.support.messages = null
       }
       this.$parent.conversationStatus = status
     }

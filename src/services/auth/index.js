@@ -28,11 +28,10 @@ export default {
       prevCurrent: null
     }
   },
-  messenger: {
-    flag: null
-  },
-  messengerSupport: {
-    flag: null
+  messengerMessages: null,
+  support: {
+    messages: null,
+    badge: 0
   },
   notifTimer: {
     timer: null,
@@ -182,7 +181,6 @@ export default {
     this.setUser(null)
     let vue = new Vue()
     vue.APIRequest('authenticate/invalidate')
-    this.clearMessenger()
     this.clearNotifTimer()
     this.tokenData.token = null
     ROUTER.go('/')
@@ -230,16 +228,6 @@ export default {
       this.notifTimer.timer = null
     }
   },
-  clearMessenger(){
-    if(this.messenger.flag !== null){
-      this.messenger.flag = null
-    }
-  },
-  clearMessengerSuuport(){
-    if(this.messengerSupport.flag !== null){
-      this.messengerSupport.flag = null
-    }
-  },
   playNotificationSound(){
     let audio = require('../../assets/audio/notification.mp3')
     let sound = new Howl({
@@ -255,11 +243,6 @@ export default {
     }
   },
   redirect(path){
-    if(path.includes('messenger') === false){
-      this.clearMessenger()
-    }else{
-      this.messenger.flag = true
-    }
     ROUTER.push(path)
   },
   validateEmail(email){
@@ -324,9 +307,15 @@ export default {
       })
     }
     this.echo.channel('idfactory').listen('Message', (response) => {
-      if(parseInt(response.message.account_id) !== this.user.userID){
+      if(parseInt(response.message.account_id) !== this.user.userID && response.message.status === 'support'){
         this.playNotificationSound()
-        console.log(response)
+        this.support.badge++
+        if(!this.support.messages){
+          this.support.messages = []
+          this.support.messages.push(response.message)
+        }else{
+          this.support.messages.push(response.message)
+        }
       }
     })
   }
