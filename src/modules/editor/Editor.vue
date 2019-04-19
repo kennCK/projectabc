@@ -476,7 +476,7 @@ export default {
       }else{
         //
       }
-      this.manageAttributes(x, y)
+      // this.manageAttributes(x, y)
     }
   }
 }

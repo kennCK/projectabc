@@ -3,6 +3,9 @@ import {router} from '../../router/index'
 import ROUTER from '../../router'
 import {Howl} from 'howler'
 import Vue from 'vue'
+import Echo from 'laravel-echo'
+import Pusher from 'pusher-js'
+import Config from '../../config.js'
 export default {
   user: {
     userID: 0,
@@ -48,6 +51,7 @@ export default {
     code: null,
     scope: null
   },
+  echo: null,
   currentPath: false,
   setUser(userID, username, email, type, status, profile, checkout, plan, notifSetting){
     if(userID === null){
@@ -111,6 +115,7 @@ export default {
         })
         // this.retrieveNotifications(userInfo.id)
         this.retrieveMessages(userInfo.id, userInfo.account_type)
+        this.connect()
         if(callback){
           callback(userInfo)
         }
@@ -144,6 +149,7 @@ export default {
         }).done(response => {
           this.tokenData.verifyingToken = false
           let location = window.location.href
+          this.connect()
           if(this.currentPath){
             // ROUTER.push(this.currentPath)
           }else{
@@ -239,13 +245,7 @@ export default {
     let sound = new Howl({
       src: [audio]
     })
-    if(this.user.notifications.prevCurrent === null){
-      sound.play()
-      this.user.notifications.prevCurrent = this.user.notifications.current
-    }else if(this.user.notifications.prevCurrent < this.user.notifications.current){
-      sound.play()
-      this.user.notifications.prevCurrent = this.user.notifications.current
-    }
+    sound.play()
   },
   checkPlan(){
     if(this.user.plan !== null){
@@ -305,5 +305,29 @@ export default {
   getGoogleCode(){
     this.google.code = localStorage.getItem('google_code')
     this.google.scope = localStorage.getItem('google_scope')
+  },
+  connect(){
+    if(!this.echo){
+      this.echo = new Echo({
+        broadcaster: 'pusher',
+        key: '0e902f164497c0a13a68',
+        cluster: 'ap1',
+        encrypted: true,
+        auth: {
+          headers: {
+            Authorization: 'Bearer' + this.tokenData.token
+          }
+        }
+      })
+      $.ajaxSetup({
+        beforeSend: function() {}
+      })
+    }
+    this.echo.channel('idfactory').listen('Message', (response) => {
+      if(parseInt(response.message.account_id) !== this.user.userID){
+        this.playNotificationSound()
+        console.log(response)
+      }
+    })
   }
 }

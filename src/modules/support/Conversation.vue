@@ -147,9 +147,9 @@ export default {
             this.data = null
           }
           if(AUTH.messengerSupport.flag === true){
-            setTimeout(() => {
-              this.retrieve()
-            }, 1000)
+            // setTimeout(() => {
+            //   this.retrieve()
+            // }, 1000)
           }
         })
       }
