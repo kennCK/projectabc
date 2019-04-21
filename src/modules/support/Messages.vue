@@ -1,6 +1,6 @@
 <template>
   <div id="messenger">
-    <div class="holder" v-if="data !== null">
+    <div class="support-messenger-holder" v-if="data !== null">
       <div class="message-row" v-for="item, index in data">
         <div class="template" v-if="parseInt(item.account_id) !== user.userID">
           <div class="header">
@@ -9,7 +9,7 @@
               <i class="fa fa-user-circle-o text-green" v-else></i>
             </div>
             <span class="details" v-if="item.account !== null">
-              <label><b>{{item.account.username}}</b> from ID Factory</label>
+              <label><b>{{item.account.username}}</b></label>
             </span>
           </div>
         <div class="content">
@@ -42,7 +42,7 @@
   </div>
 </template>
 <style scoped>
-.holder{
+.support-messenger-holder{
   width: 90%;
   float: left;
   margin-left: 5%;

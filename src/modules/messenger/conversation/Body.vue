@@ -1,92 +1,149 @@
 <template>
-  <div class="holder">
-    <div class="profile-icon" v-for="conversation, index in conversations" v-if="conversations !== null">
-      <div class="left-template" v-if="user.userID !== parseInt(conversation.account_id)">
-        <span class="date">
-          {{conversation.created_at_human}}
-        </span>
-        <img :src="config.BACKEND_URL + conversation.account.profile.url" class="profile pull-left" v-if="conversation.account.profile !== null && conversation.account !== null">
-        <i class="fa fa-user-circle-o pull-left" v-else></i>
-        <label class="content" >
-          {{conversation.message}}
-        </label>
+  <div id="messenger">
+    <div class="messenger-holder" v-if="conversations !== null">
+      <div class="message-row" v-for="item, index in conversations">
+        <div class="template" v-if="parseInt(item.account_id) !== user.userID">
+          <div class="header">
+            <div class="profile">
+              <img :src="config.BACKEND_URL + item.account.profile.url" v-if="item.account.profile !== null">
+              <i class="fa fa-user-circle-o text-green" v-else></i>
+            </div>
+            <span class="details" v-if="item.account !== null">
+              <label><b>{{item.account.username}}</b></label>
+            </span>
+          </div>
+        <div class="content">
+          <label>
+            <label v-html="item.message"></label>
+          </label>
+        </div>
       </div>
-      <div class="right-template" v-else>
-        <span class="date">
-          {{conversation.created_at_human}}
-        </span>
-         <label class="content">
-          <bdi>{{conversation.message}}</bdi>
-         </label>
-         <img :src="config.BACKEND_URL + conversation.account.profile.url" class="profile pull-right" v-if="conversation.account.profile !== null && conversation.account !== null">
-         <i class="fa fa-user-circle-o pull-right" v-else></i>
+
+      <div class="template" v-else>
+        <div class="header-right">
+          <div class="profile">
+            <img :src="config.BACKEND_URL + item.account.profile.url" v-if="item.account.profile !== null">
+            <i class="fa fa-user-circle-o text-green" v-else></i>
+          </div>
+          <span class="details" v-if="item.account !== null">
+            <label><b>{{item.account.username}}</b></label>
+          </span>
+        </div>
+        <div class="content-right">
+          <label>
+            <bdi>
+              <label v-html="item.message"></label>
+            </bdi>
+          </label>
+        </div>
       </div>
-      </div>
+    </div>
+  </div>
   </div>
 </template>
 <style scoped>
-.holder{
+.messenger-holder{
   width: 100%;
-  float: right;
+  float: left;
   height: 74vh;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
-.profile{
-  width: 25px;
-  height: 25px;
+.message-row, .template{
+  width: 98%;
+  min-height: 10px;
+  overflow-y: hidden;
+  margin-top: 10px;
+  margin-left: 1%;
+  margin-right: 1%;
+}
+.template .header{
+  height: 40px;
+  width: 100%;
+  float: left;
+}
+
+.header .profile{
+  float: left;
+  width: 40px;
+  height: 40px;
+  margin-right: 2%;
+}
+.header .profile img{
+  height: 30px;
+  width: 30px;
+  z-index: 0;
   border-radius: 50%;
 }
-.left-template{
-  width: 60%;
-  float: left;
-  margin-right: 40%;
-  padding: 10px;
-  min-height: 10px;
-  overflow-y: hidden;
-  margin-top: 10px;
-  text-align: justify;
-} 
-.right-template{
-  width: 60%;
-  float: right;
-  min-height: 10px;
-  overflow-y: hidden;
-  margin-top: 10px;
-  margin-left: 40%;
-  text-align: justify;
-  direction: rtl;
-}
 
-.content{
-  float: left;
-  padding-left: 10px;
-  width: 90%;
+.header .profile i{
+  line-height: 30px;
+  font-size: 30px;
 }
-
-.left-template .date, .right-template .date{
+.header .details{
+  float: left;
+  height: 40px;
+}
+.header .details label{
   width: 100%;
-  height: 20px;
-  color: #aaa;
-  font-size: 12px;
   float: left;
-  line-height: 20px;
-}
-.left-template .date{
-  padding-left: 8%;
-}
-.right-template .date{
-  padding-right: 10%;
+  color: #555;
+  line-height: 12px;
+  line-height: 30px;
 }
 
-.left-template i, .right-template i{
-  font-size: 25px;
-  line-height: 25px; 
+
+.header-right .profile{
+  float: right;
+  width: 40px;
+  height: 40px;
+  margin-left: 2%;
+  text-align: right;
 }
-.holder::-webkit-scrollbar { width: 0; }
+.header-right .profile img{
+  height: 30px;
+  width: 30px;
+  z-index: 0;
+  border-radius: 50%;
+}
+
+.header-right .profile i{
+  line-height: 30px;
+  font-size: 30px;
+}
+.header-right .details{
+  float: right;
+  height: 40px;
+}
+.header-right .details label{
+  width: 100%;
+  float: right;
+  color: #555;
+  line-height: 12px;
+  line-height: 30px;
+}
+.template .content{
+  min-height: 10px;
+  float: left;
+  width: 100%;
+  overflow-y: hidden;
+  text-align: justify;
+}
+.template .content-right{
+  min-height: 10px;
+  float: left;
+  width: 100%;
+  overflow-y: hidden;
+  text-align: right;
+}
+.template .content label, .template .content-righ label{
+  line-height: 18px;
+}
+
+
 </style>
 <script>
 import ROUTER from '../../../router'
-import AUTH from '../../../services/auth'
+import AUTH from '..././../services/auth'
 import CONFIG from '../../../config.js'
 export default {
   mounted(){

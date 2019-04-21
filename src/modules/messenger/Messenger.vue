@@ -71,7 +71,7 @@ export default {
   props: ['params'],
   components: {
     'conversation': require('modules/messenger/conversation/Conversation.vue'),
-    'groups': require('modules/userlist/Groups.vue'),
+    'groups': require('modules/messenger/userlist/Groups.vue'),
     'empty': require('modules/empty/Empty.vue')
   },
   methods: {

@@ -36,9 +36,9 @@
 }
 </style>
 <script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-import CONFIG from '../../config.js'
+import ROUTER from '../../../router'
+import AUTH from '../../../services/auth'
+import CONFIG from '../../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
@@ -51,8 +51,8 @@ export default {
   },
   props: ['groups', 'partners'],
   components: {
-    'm-card': require('modules/userlist/Card.vue'),
-    'm-options': require('modules/userlist/OtherOptions.vue')
+    'm-card': require('modules/messenger/userlist/Card.vue'),
+    'm-options': require('modules/messenger/userlist/OtherOptions.vue')
   },
   methods: {
     redirect(parameter){
