@@ -2,7 +2,7 @@
   <div v-if="data !== null">
     <div class="product-item-holder" v-if="data.product !== null">
       <div class="product-image" v-if="data.product.featured !== null">
-        <img :src="config.BACKEND_URL + data.product.featured.url" class="main-image" >
+        <img :src="config.BACKEND_URL + data.product.featured[0].url" class="main-image" >
       </div>
       <div class="product-image" v-if="data.product.featured === null">
         <i class="fa fa-image" v-if="data.product.featured === null"></i>
