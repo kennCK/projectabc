@@ -4,17 +4,17 @@
       <span class="header">
         Personal Settings
       </span>
-      <span class="item" v-bind:class="{'make-active': item.flag === true}" v-for="item, index in menu" v-if="menu !== null" @click="makeActive(index)">
+      <span class="item" v-bind:class="{'make-active': item.type === activeType}" v-for="item, index in menu" v-if="menu !== null" @click="makeActive(item.type)">
         {{item.title}}
       </span>
     </div>
     <div class="content">
-      <profile v-if="menu[0].flag === true"></profile>
-      <account v-if="menu[1].flag === true"></account>
-      <payment v-if="menu[2].flag === true"></payment>
-      <!-- <billing-information v-if="menu[3].flag === true"></billing-information> -->
-      <merchant v-if="menu[3].flag === true"></merchant>
-      <notification v-if="menu[4].flag === true"></notification>
+      <profile v-if="activeType === 'profile'"></profile>
+      <account v-if="activeType === 'account'"></account>
+      <payment v-if="activeType === 'payment_method'"></payment>
+      <billing-information v-if="activeType === 'billing_information'"></billing-information>
+      <merchant v-if="activeType === 'merchant'"></merchant>
+      <notification v-if="activeType === 'notification'"></notification>
     </div>
   </div>
 
@@ -97,14 +97,14 @@ export default {
       tokenData: AUTH.tokenData,
       config: CONFIG,
       menu: [
-        {title: 'Profile', flag: true, type: 'profile'},
-        {title: 'Account', flag: false, type: 'account'},
-        {title: 'Payment Accounts', flag: false, type: 'payment_method'},
-        // {title: 'Billing Information', flag: false, type: 'billing_information'},
-        {title: 'Merchant Setting', flag: false, type: 'merchant'},
-        {title: 'Notifications', flag: false, type: 'notification'}
+        {title: 'Profile', type: 'profile'},
+        {title: 'Account', type: 'account'},
+        {title: 'Payment Accounts', type: 'payment_method'},
+        {title: 'Billing Information', type: 'billing_information'},
+        {title: 'Merchant Setting', type: 'merchant'},
+        {title: 'Notifications', type: 'notification'}
       ],
-      prevIndex: 0,
+      activeType: 'profile',
       parameter: this.$route.params.parameter
     }
   },
@@ -120,18 +120,8 @@ export default {
     redirect(path){
       ROUTER.push(path)
     },
-    makeActive(index){
-      if(this.prevIndex === null){
-        this.prevIndex = index
-        this.menu[0].flag = false
-        this.menu[this.prevIndex].flag = true
-      }else{
-        if(this.prevIndex !== index){
-          this.menu[this.prevIndex].flag = false
-          this.menu[index].flag = true
-          this.prevIndex = index
-        }
-      }
+    makeActive(type){
+      this.activeType = type
     }
   }
 }
