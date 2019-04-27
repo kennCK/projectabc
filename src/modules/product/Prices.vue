@@ -3,49 +3,42 @@
     <span v-if="errorMessage !== null" class="text-danger text-center">
         <label><b>Opps! </b>{{errorMessage}}</label>
     </span>
-    <br v-if="errorMessage !== null">
-    
     <div class="form-group">
       <label for="exampleInputEmail1" style="font-weight: 600;">Price</label>
       <div>
-        <select class="form-control form-control-custom" style="width: 45%; float: left;" v-model="newAttribute.payload">
-          <option value="color">Color</option>
-          <option value="size">Size</option>
+        <select class="form-control form-control-custom" style="width: 20%; float: left;" v-model="flag">
+          <option value="fixed">Fixed</option>
+          <option value="variable">Variable</option>
         </select>
-        <input type="text" class="form-control form-control-custom" style="float: left; width: 40%; margin-left: 10px;" placeholder="Type attribute value here..." v-model="newAttribute.payload_value" @keyup.enter="create()">
-        <button class="btn btn-primary form-control-custom" style="margin-left: 10px;" @click="create()"><i class="fa fa-plus"></i></button>
+        <input type="text" class="form-control form-control-custom" style="float: left; width: 69%; margin-left: 1%;" placeholder="Type price here" v-model="price" @keyup.enter="createRequest()" v-if="flag === 'fixed'">
+        <input type="text" class="form-control form-control-custom" style="float: left; width: 22%; margin-left: 1%;" placeholder="Minimum Qty" v-model="minimum" v-if="flag === 'variable'">
+        <input type="text" class="form-control form-control-custom" style="float: left; width: 22%; margin-left: 1%;" placeholder="Maximum Qty" v-model="maximum" v-if="flag === 'variable'">
+        <input type="text" class="form-control form-control-custom" style="float: left; width: 22%; margin-left: 2%;" placeholder="Type price here" v-model="price" @keyup.enter="createRequest()" v-if="flag === 'variable'">
+        <button class="btn btn-primary form-control-custom" style="margin-left: 10px;" @click="createRequest()"><i class="fa fa-plus"></i></button>
       </div>
     </div>
-    <div class="priceList-wrapper" v-if="item.price !== null">
-      <div class="container">
-        <div class="row priceList-item" v-for="(item, index) in item.price" :key="index">
-          <div class="col">
-            {{item.flag}}
-          </div>
-          <div class="col">
-            {{item.price}}
-          </div>
-          <div class="col-auto">
-            <button @click="delPrice()" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-          </div>
-        </div>
+    <div class="price-wrapper" v-if="item.price !== null">
+      <div class="price-item" v-for="item, index in item.price" :key="index">
+        <select class="form-control form-control-custom" style="width: 20%; float: left;" v-model="item.type">
+          <option value="fixed">Fixed</option>
+          <option value="variable">Variable</option>
+        </select>
+        <input type="text" class="form-control form-control-custom" style="float: left; width: 63%; margin-left: 1%;" placeholder="Type price here" v-model="item.price" @keyup.enter="updateRequest(item)" v-if="item.type === 'fixed'">
+        <input type="text" class="form-control form-control-custom" style="float: left; width: 20%; margin-left: 1%;" placeholder="Minimum Qty" v-model="item.minimum" v-if="item.type === 'variable'">
+        <input type="text" class="form-control form-control-custom" style="float: left; width: 20%; margin-left: 1%;" placeholder="Maximum Qty" v-model="item.maximum" v-if="item.type === 'variable'">
+        <input type="text" class="form-control form-control-custom" style="float: left; width: 20%; margin-left: 2%;" placeholder="Type price here" v-model="item.price" @keyup.enter="updateRequest(item)" v-if="item.type === 'variable'">
+        <button class="btn btn-primary form-control-custom" style="margin-left: 10px;" @click="updateRequest(item)"><i class="fa fa-sync"></i></button>
+        <button class="btn btn-danger form-control-custom" style="margin-left: 10px;" @click="deleteRequest(item.id)"><i class="fa fa-trash"></i></button>
       </div>
     </div>
-
   </div>
 </template>
 <style scoped>
-  .priceList-wrapper {
+  .price-wrapper {
     width: 100%;
-    background: #f4f4f4;
-    border-bottom: 1px #ccc solid;
-    border-left: 1px #ccc solid;
-    border-right: 1px #ccc solid;
-    border-top: 1px #ccc solid;
-    border-radius: 0.25em
-  }
-  .priceList-item {
-    border-bottom: 1px #ccc solid
+    float: left;
+    min-height: 50px;
+    overflow-y: hidden;
   }
   .price-content{
     width: 100%;
@@ -84,7 +77,7 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      flag: null,
+      flag: 'fixed',
       price: null,
       minimum: null,
       maximum: null
@@ -100,14 +93,31 @@ export default {
       }
       return false
     },
-    delPrice(parameter){
+    deleteRequest(id){
+      let parameter = {
+        id: id
+      }
       this.APIRequest('pricings/delete', parameter).then(response => {
         if(response.data > 0){
           this.$parent.retrieve()
         }
       })
     },
-    addPrice(){
+    updateRequest(item){
+      if(item.type === 'fixed' && isNaN(item.price)){
+        this.errorMessage = 'The required field must be a number.'
+        return false
+      }else if(item.type === 'variable' && isNaN(item.price) && parseInt(item.price) <= 0){
+        return false
+      }
+      this.APIRequest('pricings/update', item).then(response => {
+        if(response.data > 0){
+          this.errorMessage = null
+          this.$parent.retrieve()
+        }
+      })
+    },
+    createRequest(){
       if(parseFloat(this.price) > 0 && this.flag === 'fixed'){
         this.errorMessage = null
         let parameter = {
