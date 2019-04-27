@@ -6,33 +6,16 @@
     <br v-if="errorMessage !== null">
     
     <div class="form-group">
-      <label for="exampleInputEmail1">Prices</label>
+      <label for="exampleInputEmail1" style="font-weight: 600;">Price</label>
       <div>
-        <select class="form-control form-control-custom" style="width: 100%; float: left;" v-model="flag">
-          <option value="fixed">Fixed</option>
-          <option value="variable">Variable</option>
+        <select class="form-control form-control-custom" style="width: 45%; float: left;" v-model="newAttribute.payload">
+          <option value="color">Color</option>
+          <option value="size">Size</option>
         </select>
+        <input type="text" class="form-control form-control-custom" style="float: left; width: 40%; margin-left: 10px;" placeholder="Type attribute value here..." v-model="newAttribute.payload_value" @keyup.enter="create()">
+        <button class="btn btn-primary form-control-custom" style="margin-left: 10px;" @click="create()"><i class="fa fa-plus"></i></button>
       </div>
     </div>
-    <br>
-    <br>
-    <div class="input-group" style="width:100%;" v-if="flag === 'fixed'">
-      <label class="text-danger" v-if="errorMessage !== null">{{errorMessage}}</label>
-      <span class="input-group-addon" id="addon-1">Price</span>
-      <input type="text" class="form-control form-control-custom" placeholder="..." aria-describedby="addon-1" v-model="price">
-      <button class="btn btn-primary form-control-custom" style="margin-left: 5px;" @click="addPrice()">Submit</button>
-    </div>
-
-    <div class="input-group" style="width:100%;" v-if="flag === 'variable'">
-      <span class="input-group-addon" id="addon-1">Minimum</span>
-      <input type="text" class="form-control form-control-custom" placeholder="..." aria-describedby="addon-1" v-model="minimum" >
-      <span class="input-group-addon" id="addon-1">Maximum</span>
-      <input type="text" class="form-control form-control-custom" placeholder="..." aria-describedby="addon-1" v-model="maximum" >
-      <span class="input-group-addon" id="addon-1">Price</span>
-      <input type="text" class="form-control form-control-custom" placeholder="..." aria-describedby="addon-1" v-model="price" >
-      <button class="btn btn-primary form-control-custom" style="margin-left: 5px;" @click="addPrice()">Submit</button>
-    </div>
-    <br>
     <div class="priceList-wrapper" v-if="item.price !== null">
       <div class="container">
         <div class="row priceList-item" v-for="(item, index) in item.price" :key="index">
@@ -63,6 +46,25 @@
   }
   .priceList-item {
     border-bottom: 1px #ccc solid
+  }
+  .price-content{
+    width: 100%;
+    float: left;
+    min-height: 50px;
+    overflow-y: hidden;
+  }
+  .price-content .title{
+    height: 50px;
+    width: 100%;
+    float: left;
+    font-weight: 600;
+    line-height: 50px;
+  }
+  .price-item{
+    width: 100%;
+    float: left;
+    height: 50px;
+    margin-bottom: 15px;
   }
   .form-control-custom {
     height: 50px !important;
