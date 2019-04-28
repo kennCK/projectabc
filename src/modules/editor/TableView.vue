@@ -294,7 +294,7 @@ export default {
   },
   props: ['data'],
   components: {
-    'browse-image-modal': require('modules/image/BrowseModal.vue')
+    'browse-image-modal': require('components/increment/generic/image/BrowseModal.vue')
   },
   methods: {
     redirect(parameter){

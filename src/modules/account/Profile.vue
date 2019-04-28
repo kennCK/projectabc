@@ -155,7 +155,7 @@ export default {
     }
   },
   components: {
-    'browse-images-modal': require('modules/image/BrowseModal.vue')
+    'browse-images-modal': require('components/increment/generic/image/BrowseModal.vue')
   },
   methods: {
     retrieve(){

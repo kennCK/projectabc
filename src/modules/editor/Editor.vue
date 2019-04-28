@@ -247,7 +247,7 @@ export default {
     'basic-text': require('modules/editor/BasicText.vue'),
     'basic-photo': require('modules/editor/BasicPhoto.vue'),
     'basic-div': require('modules/editor/BasicDiv.vue'),
-    'browse-images': require('modules/image/BrowseImages.vue')
+    'browse-images': require('components/increment/generic/image/BrowseImages.vue')
   },
   methods: {
     redirect(parameter){

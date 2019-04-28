@@ -99,7 +99,7 @@ export default{
   {
     path: '/images',
     name: 'images',
-    component: resolve => require(['modules/image/Images.vue'], resolve),
+    component: resolve => require(['components/increment/generic/image/Images.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -259,7 +259,7 @@ export default{
   {
     path: '/referrals',
     name: 'referrals',
-    component: resolve => require(['modules/referral/Referrals.vue'], resolve),
+    component: resolve => require(['components/increment/generic/referral/Referrals.vue'], resolve),
     meta: {
       tokenRequired: true
     }

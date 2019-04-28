@@ -93,7 +93,7 @@ export default {
     'item': require('modules/editor/Item.vue'),
     'marketplace': require('modules/editor/Marketplace.vue'),
     'table-view': require('modules/editor/TableView.vue'),
-    'empty': require('modules/empty/Empty.vue')
+    'empty': require('components/increment/generic/empty/Empty.vue')
   },
   methods: {
     redirect(parameter){

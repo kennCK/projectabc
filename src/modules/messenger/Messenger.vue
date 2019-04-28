@@ -72,7 +72,7 @@ export default {
   components: {
     'conversation': require('modules/messenger/conversation/Conversation.vue'),
     'groups': require('modules/messenger/userlist/Groups.vue'),
-    'empty': require('modules/empty/Empty.vue')
+    'empty': require('components/increment/generic/empty/Empty.vue')
   },
   methods: {
     redirect(parameter){
