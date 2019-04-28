@@ -177,7 +177,7 @@ export default {
     'cards': require('modules/checkout/Cards.vue'),
     'direct': require('modules/checkout/Direct.vue'),
     'marketplace-checkout': require('modules/checkout/Marketplace.vue'),
-    'marketplace-product': require('modules/marketplace/CheckoutItem.vue'),
+    'marketplace-product': require('components/increment/ecommerce/marketplace/CheckoutItem.vue'),
     'checkout-empty': require('modules/empty/EmptyDynamicIcon.vue')
   },
   methods: {
