@@ -131,7 +131,7 @@ export default{
   {
     path: '/profile/:parameter?',
     name: 'profile',
-    component: resolve => require(['modules/account/Update.vue'], resolve),
+    component: resolve => require(['components/increment/settings/Update.vue'], resolve),
     meta: {
       tokenRequired: true
     }
