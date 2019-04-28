@@ -11,7 +11,7 @@ export default{
   {
     path: '/signup',
     name: 'signup',
-    component: resolve => require(['modules/home/Signup.vue'], resolve),
+    component: resolve => require(['components/increment/basic/Signup.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -19,7 +19,7 @@ export default{
   {
     path: '/signup_partner',
     name: 'signupPartner',
-    component: resolve => require(['modules/home/SignupPartner.vue'], resolve),
+    component: resolve => require(['components/increment/basic/SignupPartner.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -27,7 +27,7 @@ export default{
   {
     path: '/verification/:email',
     name: 'verification',
-    component: resolve => require(['modules/home/Verification.vue'], resolve),
+    component: resolve => require(['components/increment/basic/Verification.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -35,7 +35,7 @@ export default{
   {
     path: '/login_verification/:username/:code',
     name: 'loginVerification',
-    component: resolve => require(['modules/home/LoginByVerification.vue'], resolve),
+    component: resolve => require(['components/increment/basic/LoginByVerification.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -43,7 +43,7 @@ export default{
   {
     path: '/login',
     name: 'loginAccount',
-    component: resolve => require(['modules/home/LogIn.vue'], resolve),
+    component: resolve => require(['components/increment/basic/LogIn.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -59,7 +59,7 @@ export default{
   {
     path: '/request_reset_password',
     name: 'requestResetPassword',
-    component: resolve => require(['modules/home/RequestResetPassword.vue'], resolve),
+    component: resolve => require(['components/increment/basic/RequestResetPassword.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -67,7 +67,7 @@ export default{
   {
     path: '/reset_password/:username/:code',
     name: 'resetPassword',
-    component: resolve => require(['modules/home/ResetPassword.vue'], resolve),
+    component: resolve => require(['components/increment/basic/ResetPassword.vue'], resolve),
     meta: {
       tokenRequired: false
     }
