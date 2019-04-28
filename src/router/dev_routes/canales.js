@@ -211,7 +211,7 @@ export default{
   {
     path: '/coupons',
     name: 'coupons',
-    component: resolve => require(['modules/coupon/Coupons.vue'], resolve),
+    component: resolve => require(['components/increment/ecommerce/coupon/Coupons.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -219,7 +219,7 @@ export default{
   {
     path: '/products',
     name: 'products',
-    component: resolve => require(['modules/product/Products.vue'], resolve),
+    component: resolve => require(['components/increment/ecommerce/product/Products.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -227,7 +227,7 @@ export default{
   {
     path: '/product/edit/:code',
     name: 'product',
-    component: resolve => require(['modules/product/EditProduct.vue'], resolve),
+    component: resolve => require(['components/increment/ecommerce/product/EditProduct.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -235,7 +235,7 @@ export default{
   {
     path: '/marketplace',
     name: 'marketplace',
-    component: resolve => require(['modules/marketplace/Marketplace.vue'], resolve),
+    component: resolve => require(['components/increment/ecommerce/marketplace/Marketplace.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -243,7 +243,7 @@ export default{
   {
     path: '/marketplace/product/:code/:status?',
     name: 'marketplaceProduct',
-    component: resolve => require(['modules/marketplace/Product.vue'], resolve),
+    component: resolve => require(['components/increment/ecommerce/marketplace/Product.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -251,7 +251,7 @@ export default{
   {
     path: '/wishlists',
     name: 'wishlists',
-    component: resolve => require(['modules/product/Wishlists.vue'], resolve),
+    component: resolve => require(['components/increment/ecommerce/wishlist/Wishlists.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -267,7 +267,7 @@ export default{
   {
     path: '/refer_register/:email/:code',
     name: 'referRegister',
-    component: resolve => require(['modules/home/referral.vue'], resolve),
+    component: resolve => require(['components/increment/basic/referral.vue'], resolve),
     meta: {
       tokenRequired: false
     }

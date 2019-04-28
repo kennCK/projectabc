@@ -177,7 +177,7 @@ export default {
   components: {
     'cancelled-paypal': require('modules/checkout/CancelPaypal.vue'),
     'express-credit-card': require('modules/checkout/CreditCard.vue'),
-    'apply-coupon': require('modules/coupon/Apply.vue'),
+    'apply-coupon': require('components/increment/ecommerce/coupon/Apply.vue'),
     'shipping-address': require('modules/checkout/ShippingAddress.vue'),
     PayPal
   },
