@@ -7,6 +7,7 @@ api/vendor/
 api/composer.lock
 src/modules/test/Casera.vue
 src/modules/test/Plenos.vue
+src/modules/increment
 api/app/Department.php
 node_modules/
 src/config.js
