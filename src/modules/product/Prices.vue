@@ -33,36 +33,52 @@
       <button class="btn btn-primary form-control-custom" style="margin-left: 5px;" @click="addPrice()">Submit</button>
     </div>
     <br>
-    <div class="priceList-wrapper" v-if="item.price !== null">
-      <div class="container">
-        <div class="row priceList-item" v-for="(item, index) in item.price" :key="index">
-          <div class="col">
-            {{item.flag}}
-          </div>
-          <div class="col">
-            {{item.price}}
-          </div>
-          <div class="col-auto">
-            <button @click="delPrice()" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-          </div>
-        </div>
+    <div class="prices-content" v-if="item.type !== null">
+      <label class="title">Fixed</label>
+      <div class="prices-item" v-for="itemType, indexSize in item.type">
+        <input type="text" class="form-control form-control-custom" style="float: left; width: 80%;" placeholder="Type variation value here..." v-model="itemType.payload_value" @keyup.enter="update(itemSize)">
+        <button class="btn btn-primary form-control-custom" style="margin-left: 10px;" @click="update(itemSize)">
+          <i class="fa fa-sync"></i>
+        </button>
+        <button class="btn btn-danger form-control-custom" style="margin-left: 10px;" @click="deleteItem(itemSize)">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+    </div>
+    <div class="prices-content" v-if="item.type !==  null">
+      <label class="title">Variable</label>
+      <div class="prices-item" v-for="itemColor, indexColor in item.color">
+        <input type="text" class="form-control form-control-custom" style="float: left; width: 80%;" placeholder="Type variation value here..." v-model="itemColor.payload_value" @keyup.enter="update(itemColor)">
+        <button class="btn btn-primary form-control-custom" style="margin-left: 10px;" @click="update(itemColor)">
+          <i class="fa fa-sync"></i>
+        </button>
+        <button class="btn btn-danger form-control-custom" style="margin-left: 10px;" @click="deleteItem(itemColor)">
+          <i class="fa fa-trash"></i>
+        </button>
       </div>
     </div>
 
   </div>
 </template>
 <style scoped>
-  .priceList-wrapper {
+  .prices-content{
     width: 100%;
-    background: #f4f4f4;
-    border-bottom: 1px #ccc solid;
-    border-left: 1px #ccc solid;
-    border-right: 1px #ccc solid;
-    border-top: 1px #ccc solid;
-    border-radius: 0.25em
+    float: left;
+    min-height: 50px;
+    overflow-y: hidden;
   }
-  .priceList-item {
-    border-bottom: 1px #ccc solid
+  .prices-content .title{
+    height: 50px;
+    width: 100%;
+    float: left;
+    font-weight: 600;
+    line-height: 50px;
+  }
+  .prices-item{
+    width: 100%;
+    float: left;
+    height: 50px;
+    margin-bottom: 15px;
   }
   .form-control-custom {
     height: 50px !important;
