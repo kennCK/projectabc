@@ -114,6 +114,6 @@
     </head>
     <body>
 			<span class="header">
-			    <img src=http://api.idfactory.ph/api/public/storage/image/logo.png height="60px" width="60px">
+			    <img src=http://api.idfactory.ph/api/public/increment/v1/storage/image/logo.png height="60px" width="60px">
 			    <span><label class="text-secondary">ID FACTORY</label></span>
 			</span>
