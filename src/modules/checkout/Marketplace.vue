@@ -27,7 +27,7 @@
       <label><b>Ship to</b></label>
       <label class="pull-right"><i class="fa fa-edit text-danger" @click="shippingAddress()"></i></label>
     </span>
-    <span class="item2 alert alert-success">
+    <span class="item2 alert alert-success" v-if="item.shipping_address !== null">
       <label v-if="item.shipping_address === null && item.account_details.billing !== null && item.account_details.billing.company !== null">
         {{item.account_details.billing.company}}, {{item.account_details.billing.address + ',' + item.account_details.billing.city + ' ' + item.account_details.billing.postal_code}}
         <br />
@@ -177,7 +177,7 @@ export default {
   components: {
     'cancelled-paypal': require('modules/checkout/CancelPaypal.vue'),
     'express-credit-card': require('modules/checkout/CreditCard.vue'),
-    'apply-coupon': require('modules/coupon/Apply.vue'),
+    'apply-coupon': require('components/increment/ecommerce/coupon/Apply.vue'),
     'shipping-address': require('modules/checkout/ShippingAddress.vue'),
     PayPal
   },

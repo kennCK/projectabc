@@ -306,9 +306,9 @@ export default {
     'create': require('modules/profiles/Create.vue'),
     'edit-profile': require('modules/profiles/Update.vue'),
     'objects': require('modules/object/BadgeProfile.vue'),
-    'comments': require('modules/comment/Comments.vue'),
+    'comments': require('components/increment/generic/comment/Comments.vue'),
     'print': require('modules/print/Print.vue'),
-    'empty': require('modules/empty/Empty.vue')
+    'empty': require('components/increment/generic/empty/Empty.vue')
   },
   methods: {
     redirect(parameter){

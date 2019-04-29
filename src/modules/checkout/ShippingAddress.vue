@@ -13,11 +13,11 @@
             <span v-if="errorMessage !== null" class="text-danger text-center">
                 <label><b>Opps! </b>{{errorMessage}}</label>
             </span>
-            <div class="form-group">
+            <div class="form-group" v-if="item.account_details !== null && item.account_details.billing !== null && item.account_details.billing.address !== null">
               <input type="radio" class="form-check-input" id="exampleCheck1" name="address" value="billing" v-model="address">
               <label class="form-check-label" for="exampleCheck1"><b>Company Address</b></label> <br>
             </div>
-            <div class="form-group alert alert-success" v-if="item.account_details !== null">
+            <div class="form-group alert alert-success" v-if="item.account_details !== null && item.account_details.billing !== null && item.account_details.billing.address !== null">
               <i class="fas fa-map-marker-alt"></i>
               {{item.account_details.billing.company}}, {{item.account_details.billing.address + ',' + item.account_details.billing.city + ' ' + item.account_details.billing.postal_code}}, {{item.account_details.billing.state + ', ' + item.account_details.billing.country}}
             </div>

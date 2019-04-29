@@ -3,6 +3,9 @@ import {router} from '../../router/index'
 import ROUTER from '../../router'
 import {Howl} from 'howler'
 import Vue from 'vue'
+import Echo from 'laravel-echo'
+import Pusher from 'pusher-js'
+import Config from '../../config.js'
 export default {
   user: {
     userID: 0,
@@ -26,10 +29,14 @@ export default {
     }
   },
   messenger: {
-    flag: null
+    messages: null,
+    badge: 0,
+    messengerGroupId: null
   },
-  messengerSupport: {
-    flag: null
+  support: {
+    messages: null,
+    badge: 0,
+    messengerGroupId: null
   },
   notifTimer: {
     timer: null,
@@ -48,6 +55,7 @@ export default {
     code: null,
     scope: null
   },
+  echo: null,
   currentPath: false,
   setUser(userID, username, email, type, status, profile, checkout, plan, notifSetting){
     if(userID === null){
@@ -111,6 +119,7 @@ export default {
         })
         // this.retrieveNotifications(userInfo.id)
         this.retrieveMessages(userInfo.id, userInfo.account_type)
+        this.connect()
         if(callback){
           callback(userInfo)
         }
@@ -144,6 +153,7 @@ export default {
         }).done(response => {
           this.tokenData.verifyingToken = false
           let location = window.location.href
+          this.connect()
           if(this.currentPath){
             // ROUTER.push(this.currentPath)
           }else{
@@ -176,7 +186,6 @@ export default {
     this.setUser(null)
     let vue = new Vue()
     vue.APIRequest('authenticate/invalidate')
-    this.clearMessenger()
     this.clearNotifTimer()
     this.tokenData.token = null
     ROUTER.go('/')
@@ -224,28 +233,12 @@ export default {
       this.notifTimer.timer = null
     }
   },
-  clearMessenger(){
-    if(this.messenger.flag !== null){
-      this.messenger.flag = null
-    }
-  },
-  clearMessengerSuuport(){
-    if(this.messengerSupport.flag !== null){
-      this.messengerSupport.flag = null
-    }
-  },
   playNotificationSound(){
     let audio = require('../../assets/audio/notification.mp3')
     let sound = new Howl({
       src: [audio]
     })
-    if(this.user.notifications.prevCurrent === null){
-      sound.play()
-      this.user.notifications.prevCurrent = this.user.notifications.current
-    }else if(this.user.notifications.prevCurrent < this.user.notifications.current){
-      sound.play()
-      this.user.notifications.prevCurrent = this.user.notifications.current
-    }
+    sound.play()
   },
   checkPlan(){
     if(this.user.plan !== null){
@@ -255,11 +248,6 @@ export default {
     }
   },
   redirect(path){
-    if(path.includes('messenger') === false){
-      this.clearMessenger()
-    }else{
-      this.messenger.flag = true
-    }
     ROUTER.push(path)
   },
   validateEmail(email){
@@ -305,5 +293,52 @@ export default {
   getGoogleCode(){
     this.google.code = localStorage.getItem('google_code')
     this.google.scope = localStorage.getItem('google_scope')
+  },
+  connect(){
+    if(!this.echo){
+      this.echo = new Echo({
+        broadcaster: 'pusher',
+        key: '0e902f164497c0a13a68',
+        cluster: 'ap1',
+        encrypted: true,
+        auth: {
+          headers: {
+            Authorization: 'Bearer' + this.tokenData.token
+          }
+        }
+      })
+      $.ajaxSetup({
+        beforeSend: function() {}
+      })
+    }
+    this.echo.channel('idfactory').listen('Message', (response) => {
+      if(parseInt(response.message.account_id) !== this.user.userID && response.message.status === 'support'){
+        this.playNotificationSound()
+        if(this.support.messengerGroupId !== parseInt(response.message.messenger_group_id) && this.support.messengerGroupId !== null){
+          this.support.badge++
+        }
+        if(!this.support.messages){
+          this.support.messages = []
+          this.support.messages.push(response.message)
+        }else{
+          if(this.support.messengerGroupId === parseInt(response.message.messenger_group_id)){
+            this.support.messages.push(response.message)
+          }
+        }
+      }else if(parseInt(response.message.account_id) !== this.user.userID && response.message.status !== 'support'){
+        this.playNotificationSound()
+        if(this.messenger.messengerGroupId !== parseInt(response.message.messenger_group_id) && this.messenger.messengerGroupId !== null){
+          this.messenger.badge++
+        }
+        if(!this.messenger.messages){
+          this.messenger.messages = []
+          this.messenger.messages.push(response.message)
+        }else{
+          if(this.messenger.messengerGroupId === parseInt(response.message.messenger_group_id)){
+            this.messenger.messages.push(response.message)
+          }
+        }
+      }
+    })
   }
 }

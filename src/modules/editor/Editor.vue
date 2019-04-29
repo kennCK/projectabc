@@ -221,7 +221,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
-    document.addEventListener('keyup', this.handleArrowsInput)
+    window.addEventListener('keyup', this.handleArrowsInput)
   },
   data(){
     return {
@@ -247,7 +247,7 @@ export default {
     'basic-text': require('modules/editor/BasicText.vue'),
     'basic-photo': require('modules/editor/BasicPhoto.vue'),
     'basic-div': require('modules/editor/BasicDiv.vue'),
-    'browse-images': require('modules/image/BrowseImages.vue')
+    'browse-images': require('components/increment/generic/image/BrowseImages.vue')
   },
   methods: {
     redirect(parameter){
@@ -258,6 +258,7 @@ export default {
       this.item = null
       this.$parent.retrieve(true)
       $('#templateEditorModal').modal('hide')
+      window.removeEventListener('keyup', null)
     },
     addObject(type){
       this.saveFlag = 1
@@ -475,7 +476,7 @@ export default {
       }else{
         //
       }
-      this.manageAttributes(x, y)
+      // this.manageAttributes(x, y)
     }
   }
 }
