@@ -210,7 +210,7 @@ export default {
   },
   components: {
     'government-list': require('modules/profiles/VariableList.vue'),
-    'browse-images': require('modules/image/BrowseImages.vue')
+    'browse-images': require('components/increment/generic/image/BrowseImages.vue')
   },
   methods: {
     redirect(parameter){

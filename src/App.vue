@@ -67,7 +67,7 @@ export default {
     'privacy-policy': () => import('modules/docs/PrivacyPolicy.vue'),
     'terms-and-conditions': () => import('modules/docs/TermsAndConditions.vue'),
     'guide': () => import('modules/guide/Guide.vue'),
-    'support-messenger': () => import('modules/support/Support.vue')
+    'support-messenger': () => import('components/increment/support/Support.vue')
   }
 }
 </script>

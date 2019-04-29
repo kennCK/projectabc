@@ -11,7 +11,7 @@ export default{
   {
     path: '/signup',
     name: 'signup',
-    component: resolve => require(['modules/home/Signup.vue'], resolve),
+    component: resolve => require(['components/increment/basic/Signup.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -19,7 +19,7 @@ export default{
   {
     path: '/signup_partner',
     name: 'signupPartner',
-    component: resolve => require(['modules/home/SignupPartner.vue'], resolve),
+    component: resolve => require(['components/increment/basic/SignupPartner.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -27,7 +27,7 @@ export default{
   {
     path: '/verification/:email',
     name: 'verification',
-    component: resolve => require(['modules/home/Verification.vue'], resolve),
+    component: resolve => require(['components/increment/basic/Verification.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -35,7 +35,7 @@ export default{
   {
     path: '/login_verification/:username/:code',
     name: 'loginVerification',
-    component: resolve => require(['modules/home/LoginByVerification.vue'], resolve),
+    component: resolve => require(['components/increment/basic/LoginByVerification.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -43,7 +43,7 @@ export default{
   {
     path: '/login',
     name: 'loginAccount',
-    component: resolve => require(['modules/home/LogIn.vue'], resolve),
+    component: resolve => require(['components/increment/basic/LogIn.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -59,7 +59,7 @@ export default{
   {
     path: '/request_reset_password',
     name: 'requestResetPassword',
-    component: resolve => require(['modules/home/RequestResetPassword.vue'], resolve),
+    component: resolve => require(['components/increment/basic/RequestResetPassword.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -67,7 +67,7 @@ export default{
   {
     path: '/reset_password/:username/:code',
     name: 'resetPassword',
-    component: resolve => require(['modules/home/ResetPassword.vue'], resolve),
+    component: resolve => require(['components/increment/basic/ResetPassword.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -99,7 +99,7 @@ export default{
   {
     path: '/images',
     name: 'images',
-    component: resolve => require(['modules/image/Images.vue'], resolve),
+    component: resolve => require(['components/increment/generic/image/Images.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -131,7 +131,7 @@ export default{
   {
     path: '/profile/:parameter?',
     name: 'profile',
-    component: resolve => require(['modules/account/Update.vue'], resolve),
+    component: resolve => require(['components/increment/settings/Update.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -139,7 +139,7 @@ export default{
   {
     path: '/messenger/:username?',
     name: 'messenger',
-    component: resolve => require(['modules/messenger/Messenger.vue'], resolve),
+    component: resolve => require(['components/increment/messengervue/Messenger.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -211,7 +211,7 @@ export default{
   {
     path: '/coupons',
     name: 'coupons',
-    component: resolve => require(['modules/coupon/Coupons.vue'], resolve),
+    component: resolve => require(['components/increment/ecommerce/coupon/Coupons.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -219,7 +219,7 @@ export default{
   {
     path: '/products',
     name: 'products',
-    component: resolve => require(['modules/product/Products.vue'], resolve),
+    component: resolve => require(['components/increment/ecommerce/product/Products.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -227,7 +227,7 @@ export default{
   {
     path: '/product/edit/:code',
     name: 'product',
-    component: resolve => require(['modules/product/EditProduct.vue'], resolve),
+    component: resolve => require(['components/increment/ecommerce/product/EditProduct.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -235,7 +235,7 @@ export default{
   {
     path: '/marketplace',
     name: 'marketplace',
-    component: resolve => require(['modules/marketplace/Marketplace.vue'], resolve),
+    component: resolve => require(['components/increment/ecommerce/marketplace/Marketplace.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -243,7 +243,7 @@ export default{
   {
     path: '/marketplace/product/:code/:status?',
     name: 'marketplaceProduct',
-    component: resolve => require(['modules/marketplace/Product.vue'], resolve),
+    component: resolve => require(['components/increment/ecommerce/marketplace/Product.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -251,7 +251,7 @@ export default{
   {
     path: '/wishlists',
     name: 'wishlists',
-    component: resolve => require(['modules/product/Wishlists.vue'], resolve),
+    component: resolve => require(['components/increment/ecommerce/wishlist/Wishlists.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -259,7 +259,7 @@ export default{
   {
     path: '/referrals',
     name: 'referrals',
-    component: resolve => require(['modules/referral/Referrals.vue'], resolve),
+    component: resolve => require(['components/increment/generic/referral/Referrals.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -267,7 +267,7 @@ export default{
   {
     path: '/refer_register/:email/:code',
     name: 'referRegister',
-    component: resolve => require(['modules/home/referral.vue'], resolve),
+    component: resolve => require(['components/increment/basic/referral.vue'], resolve),
     meta: {
       tokenRequired: false
     }

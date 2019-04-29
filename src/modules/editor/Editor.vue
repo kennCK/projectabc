@@ -45,7 +45,8 @@
                   <span v-for="item, index in objects">
                     <span class="division" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'division'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">
                     </span>
-                    <label class="text" v-bind:class="{'object-selected': item.selected === true}" v-if="item.type === 'text'" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">{{item.content}}</label>
+                    <label class="text" v-if="item.type === 'text' && item.selected === false" v-bind:style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" @keyup="handleArrowsInput()">{{item.content}}</label>
+                    <input type="text" class="object-selected text" v-if="item.type === 'text' && item.selected === true" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" v-model="item.content" v-bind:style="item.attributes"/>
                     <img class="photo" v-bind:class="{'object-selected': item.selected === true}" :src="config.BACKEND_URL + item.content" v-if="item.type === 'photo'" :style="item.attributes" @click="setSelectedObject(item, index)" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)">
                   </span>
                 </span>
@@ -186,8 +187,6 @@ ul li:hover{
   top: 250px;
 }
 
-
-
 .division, .text, .photo{
   position: absolute;
   cursor: move;
@@ -195,8 +194,11 @@ ul li:hover{
 .text, .photo{
   background: rgba(250, 250, 250, 0) !important;
 }
+.text{
+  cursor: text !important;
+}
 .object-selected{
-  border: dashed 1px #22b173;
+  border: dashed 1px #22b173 !important;
 }
 .layer-selected{
   background: #22b173;
@@ -219,6 +221,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    window.addEventListener('keyup', this.handleArrowsInput)
   },
   data(){
     return {
@@ -244,7 +247,7 @@ export default {
     'basic-text': require('modules/editor/BasicText.vue'),
     'basic-photo': require('modules/editor/BasicPhoto.vue'),
     'basic-div': require('modules/editor/BasicDiv.vue'),
-    'browse-images': require('modules/image/BrowseImages.vue')
+    'browse-images': require('components/increment/generic/image/BrowseImages.vue')
   },
   methods: {
     redirect(parameter){
@@ -255,6 +258,7 @@ export default {
       this.item = null
       this.$parent.retrieve(true)
       $('#templateEditorModal').modal('hide')
+      window.removeEventListener('keyup', null)
     },
     addObject(type){
       this.saveFlag = 1
@@ -282,9 +286,9 @@ export default {
             textDecoration: 'normal',
             background: '#fff',
             color: '#028170',
-            top: '40%',
+            top: '40px',
             bottom: '0%',
-            left: '0%',
+            left: '0px',
             right: '0%',
             borderRadius: '0%',
             textAlign: 'center',
@@ -316,9 +320,9 @@ export default {
             width: '100%',
             background: '#028170',
             color: '#028170',
-            top: '40%',
+            top: '40px',
             bottom: '0%',
-            left: '0%',
+            left: '0px',
             right: '0%',
             borderRadius: '0%',
             zIndex: 1,
@@ -341,8 +345,8 @@ export default {
             width: '60%',
             background: '#028170',
             color: '#028170',
-            top: '10%',
-            bottom: '0%',
+            top: '10px',
+            bottom: '0px',
             left: '0%',
             right: '0%',
             borderRadius: '0%',
@@ -419,15 +423,60 @@ export default {
       this.setSelectedObject(this.objects[0], 0)
     },
     moveObject(event){
-      this.posX = event.layerX
-      this.posY = event.layerY
-      console.log(event)
+      this.posX = event.x
+      this.posY = event.y
     },
     dragEnd(event){
-      console.log(event)
+      let x = this.posX - event.x
+      let y = this.posY - event.y
+      this.manageAttributes(x * -1, y * -1)
     },
     manageImageUrl(url){
       this.selected.content = url
+    },
+    manageAttributes(x, y){
+      var top = this.selected.attributes.top
+      var left = this.selected.attributes.left
+      let charL = null
+      let charT = null
+      if(String(top).indexOf('%') > -1){
+        top = parseInt(top.substr(0, top.length - 1))
+        charT = '%'
+      }
+      if(String(top).indexOf('p') > -1){
+        top = parseInt(top.substr(0, top.length - 2))
+        charT = 'px'
+      }
+      if(String(left).indexOf('%') > -1){
+        left = parseInt(left.substr(0, left.length - 1))
+        charL = '%'
+      }
+      if(String(left).indexOf('p') > -1){
+        left = parseInt(left.substr(0, left.length - 2))
+        charL = 'px'
+      }
+      this.selected.attributes.top = (top + y) + 'px'
+      this.selected.attributes.left = (left + x) + 'px'
+    },
+    handleArrowsInput(){
+      let x = 0
+      let y = 0
+      if(event.keyCode === 40){
+        // down
+        y = 1
+      }else if(event.keyCode === 39){
+        // right
+        x = 1
+      }else if(event.keyCode === 38){
+        // up
+        y = -1
+      }else if(event.keyCode === 37){
+        // left
+        x = -1
+      }else{
+        //
+      }
+      // this.manageAttributes(x, y)
     }
   }
 }

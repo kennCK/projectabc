@@ -226,7 +226,7 @@ export default {
   },
   components: {
     'google-auth': require('modules/profiles/GoogleAuth.vue'),
-    'browse-images': require('modules/image/BrowseImages.vue')
+    'browse-images': require('components/increment/generic/image/BrowseImages.vue')
   },
   methods: {
     redirect(parameter){
