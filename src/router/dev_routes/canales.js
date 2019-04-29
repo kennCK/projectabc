@@ -139,7 +139,7 @@ export default{
   {
     path: '/messenger/:username?',
     name: 'messenger',
-    component: resolve => require(['modules/messenger/Messenger.vue'], resolve),
+    component: resolve => require(['components/increment/messengervue/Messenger.vue'], resolve),
     meta: {
       tokenRequired: true
     }
