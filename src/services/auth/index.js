@@ -29,10 +29,14 @@ export default {
     }
   },
   messenger: {
-    flag: null
+    messages: null,
+    badge: 0,
+    messengerGroupId: null
   },
-  messengerSupport: {
-    flag: null
+  support: {
+    messages: null,
+    badge: 0,
+    messengerGroupId: null
   },
   notifTimer: {
     timer: null,
@@ -182,7 +186,6 @@ export default {
     this.setUser(null)
     let vue = new Vue()
     vue.APIRequest('authenticate/invalidate')
-    this.clearMessenger()
     this.clearNotifTimer()
     this.tokenData.token = null
     ROUTER.go('/')
@@ -230,16 +233,6 @@ export default {
       this.notifTimer.timer = null
     }
   },
-  clearMessenger(){
-    if(this.messenger.flag !== null){
-      this.messenger.flag = null
-    }
-  },
-  clearMessengerSuuport(){
-    if(this.messengerSupport.flag !== null){
-      this.messengerSupport.flag = null
-    }
-  },
   playNotificationSound(){
     let audio = require('../../assets/audio/notification.mp3')
     let sound = new Howl({
@@ -255,11 +248,6 @@ export default {
     }
   },
   redirect(path){
-    if(path.includes('messenger') === false){
-      this.clearMessenger()
-    }else{
-      this.messenger.flag = true
-    }
     ROUTER.push(path)
   },
   validateEmail(email){
@@ -324,9 +312,32 @@ export default {
       })
     }
     this.echo.channel('idfactory').listen('Message', (response) => {
-      if(parseInt(response.message.account_id) !== this.user.userID){
+      if(parseInt(response.message.account_id) !== this.user.userID && response.message.status === 'support'){
         this.playNotificationSound()
-        console.log(response)
+        if(this.support.messengerGroupId !== parseInt(response.message.messenger_group_id) && this.support.messengerGroupId !== null){
+          this.support.badge++
+        }
+        if(!this.support.messages){
+          this.support.messages = []
+          this.support.messages.push(response.message)
+        }else{
+          if(this.support.messengerGroupId === parseInt(response.message.messenger_group_id)){
+            this.support.messages.push(response.message)
+          }
+        }
+      }else if(parseInt(response.message.account_id) !== this.user.userID && response.message.status !== 'support'){
+        this.playNotificationSound()
+        if(this.messenger.messengerGroupId !== parseInt(response.message.messenger_group_id) && this.messenger.messengerGroupId !== null){
+          this.messenger.badge++
+        }
+        if(!this.messenger.messages){
+          this.messenger.messages = []
+          this.messenger.messages.push(response.message)
+        }else{
+          if(this.messenger.messengerGroupId === parseInt(response.message.messenger_group_id)){
+            this.messenger.messages.push(response.message)
+          }
+        }
       }
     })
   }

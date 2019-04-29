@@ -259,10 +259,10 @@ export default {
     'objects': require('modules/object/Objects.vue'),
     'update': require('modules/editor/Update.vue'),
     'editor': require('modules/editor/Editor.vue'),
-    'comments': require('modules/comment/Comments.vue'),
+    'comments': require('components/increment/generic/comment/Comments.vue'),
     'edit': require('modules/entry/Edit.vue'),
     'print': require('modules/print/Print.vue'),
-    'empty': require('modules/empty/Empty.vue')
+    'empty': require('components/increment/generic/empty/Empty.vue')
   },
   methods: {
     redirect(parameter){

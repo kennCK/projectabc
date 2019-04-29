@@ -9,6 +9,7 @@ use Increment\Messenger\Models\MessengerMessage;
 use Carbon\Carbon;
 use Increment\Account\Models\Account;
 use Illuminate\Support\Facades\DB;
+use App\Events\Message;
 class MessengerGroupController extends APIController
 {
     function __construct(){
@@ -24,7 +25,8 @@ class MessengerGroupController extends APIController
       $this->model = new MessengerGroup();
       $insertData = array(
         'account_id'  => $creator,
-        'title' => 'NONE'
+        'title'       => 'NONE',
+        'payload'     => $data['payload'] 
       );
       $this->insertDB($insertData);
       $id = intval($this->response['data']);
@@ -49,6 +51,17 @@ class MessengerGroupController extends APIController
         $member->status = 'member';
         $member->created_at = Carbon::now();
         $member->save();
+
+        $messageArray = array(
+          'messenger_group_id'  => $id,
+          'account_id'          => $creator,
+          'message'             => $message,
+          'status'              => 'messenger',
+          'account'             => $this->retrieveAccountDetails($creator),
+          'created_at_human'    =>  Carbon::now()->copy()->tz('Asia/Manila')->format('F j, Y')
+        );
+
+        broadcast(new Message($messageArray))->toOthers();
 
         $responseData = array(
           'id'  => $id,
@@ -85,7 +98,7 @@ class MessengerGroupController extends APIController
         $result = DB::table('messenger_members as T1')
           ->join('messenger_groups as T2', 'T2.id', '=', 'T1.messenger_group_id')
           ->where('T1.account_id', '=', $accountId)
-          ->where('T1.payload', '!=', 'support')
+          ->where('T2.payload', '!=', 'support')
           ->select('T2.*')
           ->get();
         $result = json_decode($result, true);

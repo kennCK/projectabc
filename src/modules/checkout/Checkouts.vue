@@ -173,12 +173,12 @@ export default {
   components: {
     'objects': require('modules/object/Objects.vue'),
     'badge-profile': require('modules/object/BadgeProfile.vue'),
-    'rating': require('modules/rating/Ratings.vue'),
+    'rating': require('components/increment/generic/rating/Ratings.vue'),
     'cards': require('modules/checkout/Cards.vue'),
     'direct': require('modules/checkout/Direct.vue'),
     'marketplace-checkout': require('modules/checkout/Marketplace.vue'),
-    'marketplace-product': require('modules/marketplace/CheckoutItem.vue'),
-    'checkout-empty': require('modules/empty/EmptyDynamicIcon.vue')
+    'marketplace-product': require('components/increment/ecommerce/marketplace/CheckoutItem.vue'),
+    'checkout-empty': require('components/increment/generic/empty/EmptyDynamicIcon.vue')
   },
   methods: {
     redirect(parameter){
