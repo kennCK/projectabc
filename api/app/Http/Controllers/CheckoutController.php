@@ -9,6 +9,7 @@ use Increment\Marketplace\Models\CheckoutItem;
 use Increment\Marketplace\Models\Product;
 use Increment\Marketplace\Models\Pricing;
 use Increment\Payment\Models\StripeWebhook;
+use Increment\Payment\Models\PaypalTransaction;
 use App\Client;
 use App\Template;
 use App\Employee;
