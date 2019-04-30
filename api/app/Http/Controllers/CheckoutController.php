@@ -26,6 +26,7 @@ class CheckoutController extends APIController
     public $shippingAddressClass = 'Increment\Marketplace\Http\ShippingAddressController';
     public $merchantClass = 'Increment\Marketplace\Http\MerchantController';
     public $templateClass = 'App\Http\Controllers\TemplateController';
+    public $objectClass = 'App\Http\Controllers\ObjectController';
 
     function __construct(){
     	$this->model = new Checkout();
@@ -169,7 +170,7 @@ class CheckoutController extends APIController
           $payloadValue = $result[$i]['payload_value'];
           if($payload == 'template'){
             $result[$i]['template'] = app($this->templateClass)->getTemplateDetails($payloadValue);
-            $result[$i]['objects'] = $this->getObjects($payloadValue);
+            $result[$i]['objects'] = app($this->objectClass)->getObjects($payloadValue);
             $this->subTotal += $result[$i]['price'];
           }else if($payload == 'employee'){
             $result[$i]['employee'] = $this->getEmployee($payloadValue);
@@ -199,7 +200,7 @@ class CheckoutController extends APIController
           $result[$i]['active_templates'] = app('App\Http\Controllers\ActiveTemplateController')->retrieveByAccountId($accountId);
           if($payload == 'template'){
             $result[$i]['template'] = app($this->templateClass)->getTemplateDetails($payloadValue);
-            $result[$i]['objects'] = $this->getObjects($payloadValue);
+            $result[$i]['objects'] = app($this->objectClass)->getObjects($payloadValue);
             $this->subTotal += $result[$i]['price'];
           }else if($payload == 'employee'){
             $result[$i]['employee'] = $this->getEmployee($payloadValue);
@@ -242,7 +243,7 @@ class CheckoutController extends APIController
             $result[$i]['profile'] = null;
             $result[$i]['template'] = array(
               'details' => app($this->templateClass)->getTemplateDetails($payloadValue),
-              'objects' => $this->getObjects($payloadValue)
+              'objects' => app($this->objectClass)->getObjects($payloadValue)
             );
           }else if($payload == 'profile'){
             $result[$i]['employee'] = null;
@@ -261,11 +262,11 @@ class CheckoutController extends APIController
       $result = Employee::where('id', '=', $payloadValue)->get();
       if(sizeof($result) > 0){
         $id = $result[0]['id'];
-        $result[0]['front_objects'] = $this->getObjectsCustom($result[0]['front_template'], $id);
-        $result[0]['back_objects'] = $this->getObjectsCustom($result[0]['back_template'], $id);
-        $result[0]['front_template_details'] = app($this->templateClass)->getTemplateDetails($result[0]['front_template']);
-        $result[0]['back_template_details'] = app($this->templateClass)->getTemplateDetails($result[0]['back_template']);
-        $result[0]['total_comments'] = $this->getComments($id);
+        // $result[0]['front_objects'] = $this->getObjectsCustom($result[0]['front_template'], $id);
+        // $result[0]['back_objects'] = $this->getObjectsCustom($result[0]['back_template'], $id);
+        // $result[0]['front_template_details'] = app($this->templateClass)->getTemplateDetails($result[0]['front_template']);
+        // $result[0]['back_template_details'] = app($this->templateClass)->getTemplateDetails($result[0]['back_template']);
+        // $result[0]['total_comments'] = $this->getComments($id);
         return $result[0];
       }else{
         return null;
