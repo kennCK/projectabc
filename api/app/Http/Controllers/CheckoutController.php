@@ -451,7 +451,7 @@ class CheckoutController extends APIController
     }
 
     public function managePurchasedObjects($oldTemplateId, $newTemplateId){
-       $objects = $this->getPruchasedObjects($oldTemplateId);
+       $objects = app($this->objectClass)->getPurchasedObjects($oldTemplateId);
        if(sizeof($objects) > 0){
           $i = 0;
           foreach ($objects as $key) {
