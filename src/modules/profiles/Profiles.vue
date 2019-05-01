@@ -26,7 +26,7 @@
                     <i class="pull-right fa fa-close" @click="hideComments(item.id)"></i>
                   </div>
                   <div class="contents">
-                    <comments :payloadValue="item.id" :payload="'profiles'"></comments>
+                    <comments :payloadValue="item.id" :payload="'profiles'" :load="false"></comments>
                   </div>
                 </div>
               </li>
@@ -82,7 +82,7 @@
           <tr v-for="item in data" @click="editProfile(item)">
             <td>
               <img :src="config.BACKEND_URL + item.profile" v-if="item.profile !== null" height="40px" width="40px" style="margin-right: 10px;border-radius: 50%; margin-top: 5px; margin-bottom: 5px;">
-              <i class="fa fa-user-circle-o" style="font-size: 40px !important; line-height: 40px !important; vertical-align: middle" v-if="item.profile === null"></i>
+              <i class="fa fa-user-circle-o" style="font-size: 40px !important; line-height: 40px !important; vertical-align: middle; margin: 5px 0px;" v-if="item.profile === null"></i>
               {{item.email}}</td>
             <td>{{item.first_name}}</td>
             <td>{{item.last_name}}</td>

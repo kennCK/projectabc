@@ -13,13 +13,12 @@
     </div>
     <div class="govList-wrapper" v-if="data !== null">
       <div class="container">
-        <div class="row govList-item" v-for="(item, index) in data.variables" :key="index" >
-          <div class="col center-text">
-            {{item.payload}}
-          </div>
-          <div class="col center-text">
-            {{item.payload_value}}
-          </div>
+        <div class="row govList-item form-group" v-for="(item, index) in data.variables" :key="index" >
+          <input type="text" class="form-control form-control-custom" style="float: left; width: 35%; margin-right: 2%" placeholder="Type variation value here..." v-model="item.payload" @keyup.enter="update(item)">
+          <input type="text" class="form-control form-control-custom" style="float: left; width: 35%;" placeholder="Type variation value here..." v-model="item.payload_value" @keyup.enter="update(item)">
+          <button class="btn btn-primary form-control-custom" style="margin-left: 10px;" @click="update(item)">
+            <i class="fa fa-sync"></i>
+          </button>
           <div class="col-auto">
             <button @click="deleteEntry(item.id)" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
           </div>
@@ -39,6 +38,7 @@
   }
   .govList-item {
     border-bottom: 1px #ccc solid;
+    float: left;
     padding-top: 2%;
     padding-bottom: 2%;
   }
@@ -87,6 +87,18 @@ export default {
         this.payloadArray.push(this.payload)
         this.payload = null
         this.payloadValue = null
+      }
+    },
+    update(item){
+      if(item.payload_value !== null && item.payload_value !== ''){
+        this.APIRequest('product_attributes/update', item).then(response => {
+          if(response.data === true){
+            this.errorMessage = null
+            this.$parent.retrieve()
+          }
+        })
+      }else{
+        this.errorMessage = 'Fill up the required fields.'
       }
     },
     deleteEntry(id){
