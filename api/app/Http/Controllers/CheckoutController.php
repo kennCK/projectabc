@@ -337,7 +337,7 @@ class CheckoutController extends APIController
       }
 
       if(($paymentType == 'authorized' || $paymentType == 'express') && $paymentPayload == 'credit_card'){
-        $paymentMethod = $this->getPaymentMethod('id', $paymentPayloadValue);
+        $paymentMethod = app($this->paymentMethodClass)->getPaymentMethod('id', $paymentPayloadValue);
         $updateData['payment_payload_value'] = $paymentPayloadValue;
         $charge = null;
         if($paymentMethod->payload == 'credit_card'){
