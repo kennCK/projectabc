@@ -248,7 +248,7 @@ export default {
     paypalAuthorized(data){
     },
     updateRequest(parameter){
-      this.APIRequest('checkouts/update', parameter).then(response => {
+      this.APIRequest('custom_checkouts/update', parameter).then(response => {
         if(response.data === true){
           AUTH.checkAuthentication(null)
           ROUTER.push('/thankyou/' + this.item.order_number)
