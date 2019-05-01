@@ -87,10 +87,10 @@
                 <i class="fa fa-credit-card"></i>
                 ********{{$dataReceipt['method']['stripe']['last4']}}
             </label>
-        @elseif($dataReceipt['method']['payload'] == 'cod')
-            <label>
-                {{$dataReceipt['method']['payload_value']}}
-            </label>
+        // @elseif($dataReceipt['method']['payload'] == 'cod')
+            <!-- <label> -->
+                // {{$dataReceipt['method']['payload_value']}}
+            <!-- </label> -->
         @elseif($dataReceipt['method']['paypal'] != null)
             <label>
                 <i class="fa fa-paypal"></i> {{$dataReceipt['method']['paypal']['email']}}
