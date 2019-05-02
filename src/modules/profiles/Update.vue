@@ -63,6 +63,16 @@
                 <label for="address">Birthdate</label>
                 <input type="date" class="form-control" v-model="item.birthdate" placeholder="Optional">
               </div>
+      
+              <div class="form-group">
+                <label for="address">Position</label>
+                <input type="text" class="form-control" v-model="item.position" placeholder="Optional">
+              </div>
+
+              <div class="form-group">
+                <label for="address">Department</label>
+                <input type="text" class="form-control" v-model="item.deparment" placeholder="Optional">
+              </div>
 
               <div class="form-group margin-top-25">
                 <label for="address">Emergency Contact Person</label>
@@ -78,21 +88,18 @@
             <span class="sidebar">
               <span class="sidebar-header" style="margin-top: 25px;">Profile Picture</span>
               <span class="image" v-if="item.profile !== null">
-                <img :src="config.BACKEND_URL + item.profile" height="auto" width="100%" >
+                <img :src="config.BACKEND_URL + item.profile" height="auto" width="100%" class="imageProfile" >
               </span>
               <span class="image" v-else>
                 <i class="fa fa-user-circle-o" ></i>
               </span>
-              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-right: 1%;" @click="addImage()">Upload
-                <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
+
+              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-left: 1%; width: 98%;" @click="showImages('profile')">Select
               </button>
 
-              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="browseImagesProfileFlag = true">Select
-              </button>
-
-              <div class="browse-images-holder">
-                <div class="browse-images" v-if="browseImagesProfileFlag">
-                  <browse-images :object="this.item" :index="0" :view="'profile-view'" ></browse-images>
+              <div class="browse-images-holder" v-if="buttonClicked === 'profile' && browseImagesFlag === true">
+                <div class="browse-images" >
+                  <browse-images></browse-images>
                 </div>
               </div>
 
@@ -103,15 +110,12 @@
               <span class="image" v-else>
                 <i class="fas fa-signature"></i>
               </span>
-              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-right: 1%;" @click="addImage()">Upload
-                <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
-              </button>
-
-              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="browseImagesSignatureFlag = true">Select
+        
+              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-left: 1%; width: 98%" @click="showImages('signature')">Select
               </button>
 
               <div class="browse-images-holder">
-                <div class="browse-images" v-if="browseImagesSignatureFlag">
+                <div class="browse-images" v-if="buttonClicked === 'signature' && browseImagesFlag === true">
                   <browse-images></browse-images>
                 </div>
               </div>
@@ -120,7 +124,7 @@
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-danger" @click="hideModal()">Close</button>
-              <button type="button" class="btn btn-primary" @click="submit()">Submit</button>
+              <button type="button" class="btn btn-primary" @click="submit()">Update</button>
           </div>
         </div>
       </div>
@@ -159,9 +163,12 @@
 .sidebar .image{
   width: 100%;
   float: left;
-  min-height: 200px;
-  overflow-y: hidden;
+  height: 200px;
   text-align: center;
+}
+.sidebar .imageProfile{
+  max-height: 200px;
+  width: 100%;
 }
 .image i{
   font-size: 150px;
@@ -202,10 +209,9 @@ export default {
       config: CONFIG,
       errorMessage: null,
       item: null,
-      file: null,
-      browseImagesProfileFlag: false,
-      browseImagesSignatureFlag: false,
-      offset: 1
+      offset: 1,
+      buttonClicked: null,
+      browseImagesFlag: false
     }
   },
   components: {
@@ -221,36 +227,6 @@ export default {
     },
     hideModal(){
       $('#editProfileModal').modal('hide')
-    },
-    addImage(){
-      $('#profilePicture')[0].click()
-    },
-    setupFile(event){
-      let files = event.target.files || event.dataTransfer.files
-      if(!files.length){
-        return false
-      }else{
-        this.file = files[0]
-        this.createFile(files[0])
-      }
-    },
-    createFile(file){
-      let fileReader = new FileReader()
-      fileReader.readAsDataURL(event.target.files[0])
-      this.upload()
-    },
-    upload(){
-      let formData = new FormData()
-      formData.append('file', this.file)
-      formData.append('profile_url', this.file.name)
-      formData.append('account_id', this.user.userID)
-      $('#loading').css({display: 'block'})
-      axios.post(this.config.BACKEND_URL + '/account_profiles/create', formData).then(response => {
-        if(response.data.data > 0){
-          AUTH.checkAuthentication(null)
-          $('#loading').css({display: 'none'})
-        }
-      })
     },
     retrieve(){
       let parameter = {
@@ -272,7 +248,7 @@ export default {
     },
     update(){
       if(this.validate()){
-        this.APIRequest('account_informations/update', this.item).then(response => {
+        this.APIRequest('profiles/update', this.item).then(response => {
           if(response.data === true){
             this.retrieve()
           }
@@ -324,6 +300,18 @@ export default {
           }
         })
       }
+    },
+    manageImageUrl(url){
+      if(this.buttonClicked === 'signature'){
+        this.item.signature = url
+      }else{
+        this.item.profile = url
+      }
+      this.update()
+    },
+    showImages(button){
+      this.buttonClicked = button
+      this.browseImagesFlag = true
     }
   }
 }

@@ -26,6 +26,7 @@ class CheckoutController extends APIController
     public $paypalTransactionClass = 'Increment\Payment\Http\PaypalTransactionController';
     public $shippingAddressClass = 'Increment\Marketplace\Http\ShippingAddressController';
     public $merchantClass = 'Increment\Marketplace\Http\MerchantController';
+    public $productClass = 'Increment\Marketplace\Http\ProductController';
     public $templateClass = 'App\Http\Controllers\TemplateController';
     public $objectClass = 'App\Http\Controllers\ObjectController';
 
@@ -180,7 +181,7 @@ class CheckoutController extends APIController
               $this->subTotal += $price;
             }
           }else if($payload == 'product'){
-            $result[$i]['product'] = app('App\Http\Controllers\ProductController')->retrieveProductById($payloadValue, null);
+            $result[$i]['product'] = app($this->productClass)->retrieveProductById($payloadValue, null);
           }
           $i++;
         }
@@ -211,7 +212,7 @@ class CheckoutController extends APIController
             }
           }else if($payload == 'product'){
             $this->subTotal += floatval($result[$i]['price']) * floatval($result[$i]['qty']);
-            $result[$i]['product'] = app('Increment\Marketplace\Http\ProductController')->retrieveProductById($payloadValue, $accountId);
+            $result[$i]['product'] = app($this->productClass)->retrieveProductById($payloadValue, $accountId);
             
           }else if($payload == 'profile'){
             $result[$i]['profile'] =  app('App\Http\Controllers\ProfileController')->retrieveById($payloadValue);
