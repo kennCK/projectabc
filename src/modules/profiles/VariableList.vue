@@ -30,14 +30,9 @@
 <style scoped>
   .govList-wrapper {
     background: #f4f4f4;
-    border-bottom: 1px #f2f2f2 solid;
-    border-left: 1px #ccc solid;
-    border-right: 1px #ccc solid;
-    border-top: 1px #ccc solid;
     border-radius: 0.25em;
   }
   .govList-item {
-    border-bottom: 1px #ccc solid;
     float: left;
     padding-top: 2%;
     padding-bottom: 2%;

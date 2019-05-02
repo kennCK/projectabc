@@ -63,6 +63,16 @@
                 <label for="address">Birthdate</label>
                 <input type="date" class="form-control" v-model="item.birthdate" placeholder="Optional">
               </div>
+      
+              <div class="form-group">
+                <label for="address">Position</label>
+                <input type="text" class="form-control" v-model="item.position" placeholder="Optional">
+              </div>
+
+              <div class="form-group">
+                <label for="address">Department</label>
+                <input type="text" class="form-control" v-model="item.deparment" placeholder="Optional">
+              </div>
 
               <div class="form-group margin-top-25">
                 <label for="address">Emergency Contact Person</label>
@@ -238,7 +248,7 @@ export default {
     },
     update(){
       if(this.validate()){
-        this.APIRequest('account_informations/update', this.item).then(response => {
+        this.APIRequest('profiles/update', this.item).then(response => {
           if(response.data === true){
             this.retrieve()
           }
