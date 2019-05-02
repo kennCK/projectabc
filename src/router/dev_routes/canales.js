@@ -311,6 +311,14 @@ export default{
     meta: {
       tokenRequired: false
     }
+  },
+  {
+    path: '/billing_terms',
+    name: 'billingTerms',
+    component: resolve => require(['modules/docs/BillingTermsContent.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
   }
   ]
 }
