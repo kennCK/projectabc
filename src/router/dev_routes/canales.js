@@ -303,6 +303,22 @@ export default{
     meta: {
       tokenRequired: false
     }
+  },
+  {
+    path: '/return_policy',
+    name: 'returnPolicy',
+    component: resolve => require(['modules/docs/ReturnPolicyContent.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
+  },
+  {
+    path: '/billing_terms',
+    name: 'billingTerms',
+    component: resolve => require(['modules/docs/BillingTermsContent.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
   }
   ]
 }
