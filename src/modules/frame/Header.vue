@@ -88,7 +88,7 @@
                 <span class="notification-header" @click="redirect('/messenger')">
                   View Messages
                 </span>
-                <span class="notification-item" v-for="item, index in user.messages.data" v-if="user.messages.data !== null">
+                <span class="notification-item" v-for="item, index in user.messages.data" v-if="user.messages.data !== null" @click="redirect('/messenger/' + item.title.username)">
                   <span class="notification-title">
                         {{item.title.username}}
                   </span>

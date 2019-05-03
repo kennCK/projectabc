@@ -151,7 +151,7 @@ export default {
         }],
         account_id: this.user.userID
       }
-      this.APIRequest('checkouts/retrieve_summary', parameter).then(response => {
+      this.APIRequest('custom_checkouts/retrieve_summary', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data[0]
         }else{

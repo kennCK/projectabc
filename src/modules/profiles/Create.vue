@@ -70,6 +70,16 @@
               </div>
 
               <div class="form-group">
+                <label for="address">Position</label>
+                <input type="text" class="form-control" v-model="data.position" placeholder="Optional">
+              </div>
+
+              <div class="form-group">
+                <label for="address">Department</label>
+                <input type="text" class="form-control" v-model="data.deparment" placeholder="Optional">
+              </div>
+
+              <div class="form-group">
                 <label for="address">Emergency Contact Person</label>
                 <input type="text" class="form-control" v-model="data.emergency_contact_name" placeholder="Optional">
               </div>
@@ -87,14 +97,12 @@
               <span class="image" v-else>
                 <i class="fa fa-user-circle-o" ></i>
               </span>
-              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-right: 1%;" @click="addImage()">Upload
-                <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
+
+              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-left: 1%; width: 98%;" @click="showImages('profile')">Select
               </button>
 
-              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="browseImagesProfileFlag = true">Select
-              </button>
-              <div class="browse-images-holder">
-                <div class="browse-images" v-if="browseImagesProfileFlag">
+              <div class="browse-images-holder" v-if="buttonClicked === 'profile' && browseImagesFlag === true">
+                <div class="browse-images">
                   <browse-images :object="this.data" :index="0" :view="'profile-view'" ></browse-images>
                 </div>
               </div>
@@ -106,14 +114,12 @@
               <span class="image" v-else>
                 <i class="fas fa-signature"></i>
               </span>
-              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-right: 1%;" @click="addImage()">Upload
-                <input type="file" id="profilePicture" accept="image/*" @change="setupFile($event)">
+
+              <button class="btn btn-primary custom-block" style="margin-top: 5px; margin-left: 1%; width: 98%;" @click="showImages('signature')">Select
               </button>
 
-              <button class="btn btn-warning custom-block" style="margin-top: 5px; margin-left: 1%;" @click="browseImagesSignatureFlag = true">Select
-              </button>
-              <div class="browse-images-holder">
-                <div class="browse-images" v-if="browseImagesSignatureFlag">
+              <div class="browse-images-holder" v-if="buttonClicked === 'signature' && browseImagesFlag === true">
+                <div class="browse-images">
                   <browse-images :object="this.data" :index="0" :view="'signature-view'"></browse-images>
                 </div>
               </div>
@@ -220,8 +226,8 @@ export default {
         signature: null
       },
       file: null,
-      browseImagesProfileFlag: false,
-      browseImagesSignatureFlag: false
+      browseImagesFlag: false,
+      buttonClicked: null
     }
   },
   components: {
@@ -238,60 +244,17 @@ export default {
     hideModal(){
       $('#createProfileModal').modal('hide')
     },
-    addImage(){
-      $('#profilePicture')[0].click()
-    },
-    setupFile(event){
-      let files = event.target.files || event.dataTransfer.files
-      if(!files.length){
-        return false
+    manageImageUrl(url){
+      if(this.buttonClicked === 'signature'){
+        this.data.signature = url
       }else{
-        this.file = files[0]
-        this.createFile(files[0])
+        this.data.profile = url
       }
+      this.update()
     },
-    createFile(file){
-      let fileReader = new FileReader()
-      fileReader.readAsDataURL(event.target.files[0])
-      this.upload()
-    },
-    upload(){
-      let formData = new FormData()
-      formData.append('file', this.file)
-      formData.append('profile_url', this.file.name)
-      formData.append('account_id', this.user.userID)
-      $('#loading').css({display: 'block'})
-      axios.post(this.config.BACKEND_URL + '/account_profiles/create', formData).then(response => {
-        if(response.data.data > 0){
-          AUTH.checkAuthentication(null)
-          $('#loading').css({display: 'none'})
-        }
-      })
-    },
-    retrieve(){
-      let parameter = {
-        condition: [{
-          value: this.user.userID,
-          column: 'account_id',
-          clause: '='
-        }]
-      }
-      this.APIRequest('account_informations/retrieve', parameter).then(response => {
-        if(response.data.length > 0){
-          this.data = response.data[0]
-        }else{
-          this.data = null
-        }
-      })
-    },
-    update(){
-      if(this.validate()){
-        this.APIRequest('account_informations/update', this.data).then(response => {
-          if(response.data === true){
-            this.retrieve()
-          }
-        })
-      }
+    showImages(button){
+      this.buttonClicked = button
+      this.browseImagesFlag = true
     },
     validate(){
       let i = this.data
@@ -327,6 +290,7 @@ export default {
         this.data.account_id = this.user.userID
         this.APIRequest('profiles/create', this.data).then(res => {
           this.$parent.retrieve()
+          this.hideModal()
           let message = res.error.message
           if(typeof message.username !== undefined && typeof message.username !== 'undefined'){
             this.errorMessage = message.username[0]
@@ -353,7 +317,6 @@ export default {
               emergency_contact_number: null,
               signature: null
             }
-            this.hideModal()
           }
         })
       }

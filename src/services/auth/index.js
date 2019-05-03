@@ -298,7 +298,7 @@ export default {
     if(!this.echo){
       this.echo = new Echo({
         broadcaster: 'pusher',
-        key: '0e902f164497c0a13a68',
+        key: Config.PUSHER_KEY,
         cluster: 'ap1',
         encrypted: true,
         auth: {
