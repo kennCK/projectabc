@@ -24,8 +24,7 @@ export default {
     notifSetting: null,
     messages: {
       data: null,
-      current: 1,
-      prevCurrent: null
+      totalUnreadMessages: 0
     }
   },
   messenger: {
@@ -216,6 +215,7 @@ export default {
     }
     vue.APIRequest('messenger_groups/retrieve_summary', parameter).then(response => {
       this.user.messages.data = response.data
+      this.user.messages.totalUnreadMessages = response.total_unread_messages
     })
   },
   startNotifTimer(accountId){
@@ -312,8 +312,9 @@ export default {
       })
     }
     this.echo.channel('idfactory').listen('Message', (response) => {
-      if(parseInt(response.message.account_id) !== this.user.userID && response.message.status === 'support'){
+      if(parseInt(response.message.account_id) !== this.user.userID && response.message.type === 'support'){
         this.playNotificationSound()
+        console.log('hi')
         if(this.support.messengerGroupId !== parseInt(response.message.messenger_group_id) && this.support.messengerGroupId !== null){
           this.support.badge++
         }
@@ -325,7 +326,7 @@ export default {
             this.support.messages.push(response.message)
           }
         }
-      }else if(parseInt(response.message.account_id) !== this.user.userID && response.message.status !== 'support'){
+      }else if(parseInt(response.message.account_id) !== this.user.userID && response.message.type !== 'support'){
         this.playNotificationSound()
         if(this.messenger.messengerGroupId !== parseInt(response.message.messenger_group_id) && this.messenger.messengerGroupId !== null){
           this.messenger.badge++
