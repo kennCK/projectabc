@@ -14,16 +14,16 @@
         <ul class="header-primary-menu">
 <!--           <li class="nav-item" v-on:click="redirect('/signup_partner')"><a class="nav-link">Be our Partner</a></li>
           <li class="nav-item" v-on:click="redirect('/signup')"><a class="nav-link">Register</a></li> -->
-          <li class="nav-item btn btn-warning" v-on:click="redirect('/signup')"> Start Free 30 Day Trial</li>
-          <li class="nav-item" v-on:click="redirect('/login')"><a class="nav-link">Login</a></li>
+          <li class="nav-item btn btn-warning" v-on:click="redirect('/signup')" data-toggle="collapse" data-target="#navbarSupportedContent"> Start Free 30 Day Trial</li>
+          <li class="nav-item" v-on:click="redirect('/login')" data-toggle="collapse" data-target="#navbarSupportedContent"><a class="nav-link">Login</a></li>
         </ul>
       </span>
     </div>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
         <!-- <li class="nav-item" v-on:click="redirect('/signup_partner')"><a class="nav-link">Be our Partner</a></li> -->
-        <li class="nav-item" v-on:click="redirect('/signup')"><a class="nav-link">Start Free 30 Day Trial</a></li>
-        <li class="nav-item" v-on:click="redirect('/login')"><a class="nav-link">Login</a></li>
+        <li class="nav-item" v-on:click="redirect('/signup')" data-toggle="collapse" data-target="#navbarSupportedContent"><a class="nav-link">Start Free 30 Day Trial</a></li>
+        <li class="nav-item" v-on:click="redirect('/login')" data-toggle="collapse" data-target="#navbarSupportedContent"><a class="nav-link">Login</a></li>
       </ul>
     </div>
   </div>
@@ -33,7 +33,6 @@
   width: 100%;
   float: left;
   min-height: 70px;
-  background: #00bff3;
   overflow-y: hidden;
 }
 .header-section{
@@ -74,7 +73,7 @@
 }
 .btn-white{
   background: #fff;
-  color: #00bff3 !important;
+  color: #22b173 !important;
 }
 .fa-bars{
   border: solid 1px #fff;
@@ -113,7 +112,7 @@
   color: #fff !important;
 }
 .navbar-toggler:hover{
-  color: #00bff3 !important;
+  color: #22b173 !important;
   background: #fff !important;
 }
 
@@ -174,7 +173,7 @@
     position: absolute !important;
     z-index: 100000 !important;
     float: left;
-    border-bottom: solid 1px #00bff3;
+    border-bottom: solid 1px #22b173;
   }
   .navbar-nav{
     background: #fff !important;
@@ -186,12 +185,12 @@
   }
 
   .navbar-nav .nav-link:hover{
-    background: #00bff3;
+    background: #22b173;
     color: #fff;
   }
 
   .navbar-nav .nav-link{
-    color: #00bff3;
+    color: #22b173;
   }
   .navbar-menu-toggler-md{
     width: 100%;
