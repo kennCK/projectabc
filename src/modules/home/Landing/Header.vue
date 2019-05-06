@@ -14,8 +14,8 @@
         <ul class="header-primary-menu">
 <!--           <li class="nav-item" v-on:click="redirect('/signup_partner')"><a class="nav-link">Be our Partner</a></li>
           <li class="nav-item" v-on:click="redirect('/signup')"><a class="nav-link">Register</a></li> -->
-          <li class="nav-item btn btn-warning" v-on:click="redirect('/signup')" data-toggle="collapse" data-target="#navbarSupportedContent"> Start Free 30 Day Trial</li>
-          <li class="nav-item" v-on:click="redirect('/login')" data-toggle="collapse" data-target="#navbarSupportedContent"><a class="nav-link">Login</a></li>
+          <li class="nav-item btn btn-warning" v-on:click="redirect('/signup')"> Start Free 30 Day Trial</li>
+          <li class="nav-item" v-on:click="redirect('/login')"><a class="nav-link">Login</a></li>
         </ul>
       </span>
     </div>
