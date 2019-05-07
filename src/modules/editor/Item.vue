@@ -162,6 +162,14 @@ ul li:hover{
 #dropdownMenuSettingsButton:hover{
   cursor: pointer;
 }
+@media (max-width: 991px){
+  .item{
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
 </style>
 <script>
 import ROUTER from '../../router'

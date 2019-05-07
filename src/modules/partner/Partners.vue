@@ -51,6 +51,11 @@
   width: 100%;
   float: left;
 }
+@media (max-width: 991px){
+  .partner-holder{
+    width: 100%;
+  }
+}
 </style>
 <script>
 import ROUTER from '../../router'

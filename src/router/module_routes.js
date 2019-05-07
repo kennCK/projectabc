@@ -5,6 +5,9 @@ let beforeEnter = (to, from, next) => {
   AUTH.currentPath = to.path
   let userID = localStorage.getItem('account_id')
   let token = localStorage.getItem('usertoken')
+  if(token !== null && userID > 0 && to.path === '/login'){
+    next({path: '/templates'})
+  }
   if(userID > 0 || token !== null || to.meta.tokenRequired !== true){
     if(to.path === '/' && userID > 0 && token !== null){
       next({path: '/'})

@@ -67,6 +67,7 @@
 }
 .main-sidebar{
   overflow-y: hidden;
+  z-index: 10000;
 }
 
 .sidebar-menu{
@@ -298,7 +299,7 @@
     position: absolute;
     top:0;
     left: 0;
-    z-index: 10;
+    z-index: 30;
     background-color: rgba(0,0,0,0.5);
     margin-top: 50px;
   }

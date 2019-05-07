@@ -86,6 +86,15 @@
 .reviews i{
   padding-right: 5px;
 }
+@media (max-width: 991px){
+  .partner-info{
+    width: 100%;
+  }
+  .partner-reviews{
+    width: 100%;
+    padding-left: 10px;
+  }
+}
 </style>
 <script>
 import ROUTER from '../../router'
