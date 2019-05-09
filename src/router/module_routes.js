@@ -3,26 +3,18 @@ let CONFIG = require('config.js')
 let beforeEnter = (to, from, next) => {
   // TODO Redirect if no token when token is required in meta.tokenRequired
   AUTH.currentPath = to.path
-  let userID = localStorage.getItem('account_id')
+  let userID = parseInt(localStorage.getItem('account_id'))
   let token = localStorage.getItem('usertoken')
-  if(token !== null && userID > 0 && to.path === '/login'){
-    next({path: '/templates'})
-  }
-  if(userID > 0 || token !== null || to.meta.tokenRequired !== true){
-    if(to.path === '/' && userID > 0 && token !== null){
-      next({path: '/'})
+  if(token !== null && userID > 0){
+    if(to.path === '/' || to.path === '/login'){
+      next({path: '/templates'})
     }else{
       next()
     }
-  }else{
+  }else if(to.meta.tokenRequired === true){
     next({path: '/'})
-    // if(userID <= 0){
-    //   next({
-    //     path: '/'
-    //   })
-    // }else{
-    //   next()
-    // }
+  }else{
+    next()
   }
 }
 var devRoutes = []

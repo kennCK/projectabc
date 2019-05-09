@@ -314,7 +314,6 @@ export default {
     this.echo.channel('idfactory').listen('Message', (response) => {
       if(parseInt(response.message.account_id) !== this.user.userID && response.message.type === 'support'){
         this.playNotificationSound()
-        console.log('hi')
         if(this.support.messengerGroupId !== parseInt(response.message.messenger_group_id) && this.support.messengerGroupId !== null){
           this.support.badge++
         }

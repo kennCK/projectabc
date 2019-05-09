@@ -27,8 +27,6 @@ import global from './helpers/global'
 export default {
   name: 'app',
   mounted(){
-    // this.validate()
-    console.log(this.tokenData.token)
   },
   created(){
     // this.validate()
