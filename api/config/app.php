@@ -182,6 +182,7 @@ return [
         Increment\Common\Comment\CommentServiceProvider::class,
         Increment\Common\Rating\RatingServiceProvider::class,
         Increment\Common\Image\ImageServiceProvider::class,
+        Increment\Common\Tutorial\TutorialServiceProvider::class,
         Increment\Marketplace\MarketplaceServiceProvider::class,
         Increment\Messenger\MessengerServiceProvider::class,
         Increment\Plan\PlanServiceProvider::class,

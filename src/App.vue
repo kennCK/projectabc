@@ -5,6 +5,7 @@
        <system-header></system-header>
        <system-sidebar></system-sidebar>
        <support-messenger></support-messenger>
+       <tutorial></tutorial>
       </div>
       <div v-else>
         <login-header></login-header>
@@ -67,7 +68,8 @@ export default {
     'privacy-policy': () => import('modules/docs/PrivacyPolicy.vue'),
     'terms-and-conditions': () => import('modules/docs/TermsAndConditions.vue'),
     'guide': () => import('modules/guide/Guide.vue'),
-    'support-messenger': () => import('components/increment/support/Support.vue')
+    'support-messenger': () => import('components/increment/support/Support.vue'),
+    'tutorial': () => import('components/increment/generic/tutorial/Tutorial.vue')
   }
 }
 </script>

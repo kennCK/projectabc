@@ -147,6 +147,11 @@
   overflow-y: hidden;
 }
 
+@media (max-width: 991px){
+  .items, .sidebar{
+    width: 100%;
+  }
+}
 </style>
 <script>
 import ROUTER from '../../router'
