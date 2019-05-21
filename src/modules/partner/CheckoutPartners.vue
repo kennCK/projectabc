@@ -4,7 +4,7 @@
       <partner-filter></partner-filter>
     </div>
     <div class="partner-list" v-if="data !== null">
-      <partner v-for="item, index in data" v-if="data !==null" :item="item" :key="item.id" :index="index" :printingButton="false"></partner>
+      <partner v-for="item, index in data" v-if="data !==null" :item="item" :key="item.id" :index="index" :printingButton="true"></partner>
     </div>
     <empty v-if="data === null" :title="'No printing partners available!'" :action="'Please be back soon.'">
     </empty>
@@ -12,7 +12,7 @@
 </template>
 <style scoped>
 .partner-holder{
-  width: 70%;
+  width: 100%;
   float: left;
   margin-top: 25px;
 }
@@ -126,6 +126,9 @@ export default {
           this.prevIndex = null
         }
       }
+    },
+    updatePrinting(id){
+      this.$parent.updatePrinting(id)
     }
   }
 }

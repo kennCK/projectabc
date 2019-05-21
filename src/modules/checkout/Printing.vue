@@ -1,12 +1,8 @@
 <template>
   <div class="checkout-printing">
     <div class="items">
-      <ul class="printing-menu">
-        <li @click="activeOption = 'all'">All</li>
-        <li @click="activeOption = 'previous'">Previous</li>
-      </ul>
       <div class="printing-partner-holder">
-        
+        <printing-partners></printing-partners>
       </div>
     </div>
     <div class="sidebar">
@@ -90,12 +86,12 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      errorMessage: null,
-      activeOption: 'all'
+      errorMessage: null
     }
   },
   components: {
-    'total': require('components/increment/ecommerce/checkout/Total.vue')
+    'total': require('components/increment/ecommerce/checkout/Total.vue'),
+    'printing-partners': require('modules/partner/CheckoutPartners.vue')
   },
   props: ['data', 'method'],
   methods: {
@@ -107,6 +103,16 @@ export default {
     },
     setPreviousActiveStep(){
       this.$parent.setPreviousActiveStep()
+    },
+    updatePrinting(id){
+      let parameter = {
+        account_id: id,
+        checkout_id: this.data.id
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('checkout_partners/create', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+      })
     }
   }
 }

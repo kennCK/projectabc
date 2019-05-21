@@ -12,10 +12,10 @@
         <label class="text-danger action-link"><i class="fas fa-store"></i>View Store</label>
       </div>
       <div class="partner-reviews">
-        <label class="input-group">
+<!--         <label class="input-group">
           <input type="text" style="border-top-right-radius: 0px;border-bottom-right-radius: 0px;" v-bind:id="'code' + item.id" class="form-control" v-model="item.code">
           <button class="btn btn-primary" @click="copy('code' + item.id)" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;"><i class="fa fa-copy"></i></button>
-        </label>
+        </label> -->
         <label class="reviews">
           <span class="badge badge-warning">{{Math.floor(item.rating.avg)}}</span>
           <i v-bind:class="{'fas fa-star': item.rating.avg >= i, 'fa fa-star-o': item.rating.avg < i}" class="text-warning" v-for="i in 5"></i>
@@ -24,6 +24,7 @@
         <label>
           {{item.rating.size}} Reviews
         </label>
+        <button class="btn btn-primary" v-if="printingButton === true" @click="printMeHere()">I want to print here</button>
       </div>
     </div>
 
@@ -110,7 +111,7 @@ export default {
       prevId: null
     }
   },
-  props: ['item', 'index'],
+  props: ['item', 'index', 'printingButton'],
   methods: {
     makeActive(){
       this.$parent.makeActive(this.index)
@@ -123,6 +124,9 @@ export default {
       copyText.select()
       document.execCommand('copy')
       console.log(copyText.value)
+    },
+    printMeHere(){
+      this.$parent.updatePrinting(this.item.id)
     }
   }
 }
