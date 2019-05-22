@@ -251,8 +251,3 @@ $controller = 'MessengerGroupController@';
 Route::post($route.'create', $controller."create");
 Route::post($route.'retrieve', $controller."retrieve");
 
-// Checkout Partner
-$route = env('PACKAGE_ROUTE', '').'/checkout_partners/';
-$controller = 'CheckoutPartnerController@';
-Route::post($route.'create', $controller."create");
-Route::post($route.'retrieve', $controller."retrieve");
