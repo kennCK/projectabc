@@ -2,7 +2,7 @@
   <div class="checkout-printing">
     <div class="items">
       <div class="printing-partner-holder">
-        <printing-partners></printing-partners>
+        <printing-partners :checkout="data"></printing-partners>
       </div>
     </div>
     <div class="sidebar">
@@ -106,12 +106,12 @@ export default {
     },
     updatePrinting(id){
       let parameter = {
-        account_id: id,
-        checkout_id: this.data.id
+        id: this.data.id,
+        merchant_id: id
       }
       $('#loading').css({display: 'block'})
-      this.APIRequest('checkout_partners/create', parameter).then(response => {
-        $('#loading').css({display: 'none'})
+      this.APIRequest('custom_checkouts/update_merchant', parameter).then(response => {
+        this.$parent.retrieve()
       })
     }
   }

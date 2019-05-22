@@ -26,4 +26,9 @@ class CheckoutPartnerController extends APIController
     		return $this->response();
     	}
     }
+
+    public function getCheckoutPartner($checkoutId){
+    	$result = CheckoutPartner::where('checkout_id', '=', $checkoutId)->get();
+    	return (sizeof($result) > 0) ? $result[0] : null;
+    }
 }

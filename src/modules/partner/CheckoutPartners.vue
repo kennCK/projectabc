@@ -1,12 +1,18 @@
 <template>
   <div class="partner-holder">
-    <div class="filter">
+    <div class="partner-list" v-if="checkout !== null">
+      <div class="selected-partner">
+        <b>Selected Printing</b>
+      </div>
+      <partner v-if="checkout.merchant !==null" :item="checkout.merchant" :printingButton="false" :selectedId="checkout.merchant.id"></partner>
+    </div>
+    <div class="filter" v-if="data !== null">
       <partner-filter></partner-filter>
     </div>
     <div class="partner-list" v-if="data !== null">
-      <partner v-for="item, index in data" v-if="data !==null" :item="item" :key="item.id" :index="index" :printingButton="true"></partner>
+      <partner v-for="item, index in data" v-if="data !== null" :item="item" :key="item.id" :index="index" :printingButton="true" :selectedId="checkout.id"></partner>
     </div>
-    <empty v-if="data === null" :title="'No printing partners available!'" :action="'Please be back soon.'">
+    <empty v-if="data === null && checkout.merchant === null" :title="'No printing partners available!'" :action="'Please be back soon.'">
     </empty>
   </div>
 </template>
@@ -14,7 +20,6 @@
 .partner-holder{
   width: 100%;
   float: left;
-  margin-top: 25px;
 }
 .filter{
   width: 100%;
@@ -43,6 +48,12 @@
   width: 100%;
   float: left;
 }
+.selected-partner{
+  width: 100%;
+  float: left;
+  height: 50px;
+  line-height: 50px;
+}
 @media (max-width: 991px){
   .partner-holder{
     width: 100%;
@@ -70,6 +81,7 @@ export default {
       searchValue: null
     }
   },
+  props: ['checkout'],
   components: {
     'partner': require('modules/partner/Partner.vue'),
     'partner-filter': require('modules/partner/Filter.vue'),
@@ -101,6 +113,13 @@ export default {
             clause: '='
           }]
         }
+      }
+      if(this.checkout !== null && this.checkout.merchant !== null){
+        parameter.condition.push({
+          value: this.checkout.merchant.id,
+          column: 'id',
+          clause: '!='
+        })
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('merchants/retrieve', parameter).then(response => {

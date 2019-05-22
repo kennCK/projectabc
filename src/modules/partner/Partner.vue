@@ -27,7 +27,6 @@
         <button class="btn btn-primary" v-if="printingButton === true" @click="printMeHere()">I want to print here</button>
       </div>
     </div>
-
   </div>
 </template>
 <style scoped>
@@ -36,9 +35,7 @@
   float: left;
   min-height: 100px;
   overflow-y: hidden;
-  border-bottom: solid 1px #ddd;
-  border-right: solid 1px #ddd;
-  border-left: solid 1px #ddd;
+  border: solid 1px #ddd;
 }
 .partner-container{
   margin-bottom: 10px;
@@ -111,7 +108,7 @@ export default {
       prevId: null
     }
   },
-  props: ['item', 'index', 'printingButton'],
+  props: ['item', 'index', 'printingButton', 'selectedId'],
   methods: {
     makeActive(){
       this.$parent.makeActive(this.index)
