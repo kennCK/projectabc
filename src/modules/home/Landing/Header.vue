@@ -4,7 +4,7 @@
       <span class="logo">
         <a class="navbar-brand" v-on:click="redirect('/')">
           <img src="../../../assets/img/logo_white.png" style="margin-bottom: 5px;">
-          <label>ID FACTORY</label>
+          <label v-html="config.APP_NAME_HTML"></label>
         </a>
       </span>
       <span class="menu">
@@ -224,11 +224,13 @@
 <script>
 import ROUTER from '../../../router'
 import AUTH from '../../../services/auth'
+import CONFIG from '../../../config.js'
 export default {
   mounted(){
   },
   data(){
     return {
+      config: CONFIG
     }
   },
   methods: {

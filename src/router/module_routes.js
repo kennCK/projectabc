@@ -6,7 +6,7 @@ let beforeEnter = (to, from, next) => {
   let userID = parseInt(localStorage.getItem('account_id'))
   let token = localStorage.getItem('usertoken')
   if(token !== null && userID > 0){
-    if(to.path === '/' || to.path === '/login'){
+    if(to.path === '/' || to.path === '/'){
       next({path: '/templates'})
     }else{
       next()
@@ -18,8 +18,8 @@ let beforeEnter = (to, from, next) => {
   }
 }
 var devRoutes = []
-let canales = require('./dev_routes/canales.js')
-devRoutes = devRoutes.concat(canales.default.routes)
+let paprint = require('./dev_routes/paprint.js')
+devRoutes = devRoutes.concat(paprint.default.routes)
 for(let x = 0; x < devRoutes.length; x++){
   devRoutes[x]['beforeEnter'] = beforeEnter
 }

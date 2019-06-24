@@ -3,7 +3,7 @@
     <div class="system-header">
       <a class="navbar-brand" v-on:click="redirect('dashboard')">
         <img src="../../assets/img/logo_white.png" class="logo-brand">
-        <label class="navbar-brand hide-on-mobile"><b class="text-white">ID FACTORY</b></label>
+        <label class="navbar-brand hide-on-mobile" v-html="config.APP_NAME_HTML"></label>
       </a>
     </div>
     <nav class="header-navbar">
