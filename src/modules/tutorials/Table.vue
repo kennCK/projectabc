@@ -15,7 +15,7 @@
             <td>{{item.first_name}}</td>
             <td>{{item.last_name}}</td>
             <td>
-              <button class="btn btn-primary" v-on:click="save(0)">Edit</button>
+              <button class="btn btn-primary" v-on:click="save(index)">Edit</button>
             </td>
           </tr>
         </tbody>
@@ -28,7 +28,7 @@
   height: 50px !important;
 }
 .table{
-  margin-bottom: 200px;
+  /* margin-bottom: 200px; */
 }
 </style>
 <script>
