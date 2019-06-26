@@ -47,6 +47,10 @@
       <h1>Kerwin</h1>
       <kerwin></kerwin>
     </div>
+    <div id="user">
+      <h1>Hanny</h1>
+      <hanny></hanny>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -80,7 +84,8 @@ export default{
     'jed': require('modules/tutorials/Jed.vue'),
     'franz': require('modules/tutorials/Franz.vue'),
     'mark': require('modules/tutorials/Mark.vue'),
-    'kerwin': require('modules/tutorials/Kerwin.vue')
+    'kerwin': require('modules/tutorials/Kerwin.vue'),
+    'hanny': require('modules/tutorials/Hanny.vue')
   },
   methods: {
     save(){
