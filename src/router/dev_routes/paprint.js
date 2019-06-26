@@ -319,6 +319,14 @@ export default{
     meta: {
       tokenRequired: false
     }
+  },
+  {
+    path: '/tutorials',
+    name: 'tutorials',
+    component: resolve => require(['modules/tutorials/Tutorials.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
