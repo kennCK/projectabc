@@ -6,6 +6,7 @@
        <system-sidebar></system-sidebar>
        <support-messenger></support-messenger>
        <tutorial></tutorial>
+       <system-footer></system-footer>
       </div>
       <div v-else>
         <login-header></login-header>
