@@ -17,17 +17,12 @@
       <input type="text" class="form-control col-lg-6" placeholder="Last Name" v-model="lastName">
       <button class="btn btn-primary" style="margin-top: 10px;" v-on:click="addName()">Save Name</button>
     </div>
-
-   
-
     <custom-table :list="names" @makeActive="activeIndex = $event"></custom-table>
-
     <div class="form-group" v-if="activeIndex !== null">
       <input type="text" class="form-control col-lg-6" placeholder="First Name" v-model="names[activeIndex].first_name">
       <br>
       <input type="text" class="form-control col-lg-6" placeholder="Last Name" v-model="names[activeIndex].last_name">
     </div>
-
     <div id="user">
       <h1>Keyrwin</h1>
       <keyrwin></keyrwin>
@@ -56,7 +51,6 @@
       <h1>Hanny</h1>
       <hanny></hanny>
     </div>
-
   </div>
 </template>
 <style scoped>
@@ -109,4 +103,3 @@ export default{
   }
 }
 </script>
-

@@ -28,10 +28,7 @@
   height: 50px !important;
 }
 .table{
-
   margin-bottom: 50px;
-
-  /* margin-bottom: 200px; */
 }
 </style>
 <script>

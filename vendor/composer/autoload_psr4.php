@@ -7,8 +7,13 @@ $baseDir = dirname($vendorDir);
 
 return array(
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     'Pusher\\' => array($vendorDir . '/pusher/pusher-php-server/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
 >>>>>>> 7cff7b6f7d999335676083119683ca71f058ded3
+=======
+    'Pusher\\' => array($vendorDir . '/pusher/pusher-php-server/src'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
+>>>>>>> 02795f80200353a4fe33a4fe5762f217f2c97a75
 );
