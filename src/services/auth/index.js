@@ -340,5 +340,21 @@ export default {
         }
       }
     })
+  },
+  triggerAudioCall(){
+    $('#audio-call').css({'display': 'block'})
+    this.playNotificationSound()
+    // setTimeout(() => {
+    //   $('#audio-call').css({display: 'none'})
+    // }, 2000)
+  },
+  endAudioCall(){
+    $('#accept-call').css({'display': 'none'})
+    this.playNotificationSound()
+    $('#audio-call').css({'display': 'none'})
+  },
+  acceptCall(){
+    $('#accept-call').css({'display': 'block'})
+    $('#audio-call').css({'display': 'none'})
   }
 }

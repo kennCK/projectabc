@@ -7,6 +7,7 @@
        <support-messenger></support-messenger>
        <tutorial></tutorial>
        <system-footer></system-footer>
+       <audio-call></audio-call>
       </div>
       <div v-else>
         <login-header></login-header>
@@ -68,7 +69,8 @@ export default {
     'terms-and-conditions': () => import('modules/docs/TermsAndConditions.vue'),
     'guide': () => import('modules/guide/Guide.vue'),
     'support-messenger': () => import('components/increment/support/Support.vue'),
-    'tutorial': () => import('components/increment/generic/tutorial/Tutorial.vue')
+    'tutorial': () => import('components/increment/generic/tutorial/Tutorial.vue'),
+    'audio-call': () => import('modules/call/Audio.vue')
   }
 }
 </script>
