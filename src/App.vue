@@ -7,6 +7,7 @@
        <support-messenger></support-messenger>
        <tutorial></tutorial>
        <system-footer></system-footer>
+       <audio-call></audio-call>
       </div>
       <div v-else-if="tokenData.token !== null && parseInt(user.userID) > 0 && auth.mode === 1">
         <system-editor></system-editor>
@@ -73,7 +74,8 @@ export default {
     'guide': () => import('modules/guide/Guide.vue'),
     'support-messenger': () => import('components/increment/support/Support.vue'),
     'tutorial': () => import('components/increment/generic/tutorial/Tutorial.vue'),
-    'system-editor': () => import('modules/editor/EditorV2.vue')
+    'system-editor': () => import('modules/editor/EditorV2.vue'),
+    'audio-call': () => import('modules/call/Audio.vue')
   }
 }
 </script>
