@@ -279,7 +279,15 @@ class ClassLoader
      */
     public function setApcuPrefix($apcuPrefix)
     {
+<<<<<<< HEAD
+<<<<<<< HEAD
+        $this->apcuPrefix = function_exists('apcu_fetch') && filter_var(ini_get('apc.enabled'), FILTER_VALIDATE_BOOLEAN) ? $apcuPrefix : null;
+=======
         $this->apcuPrefix = function_exists('apcu_fetch') && ini_get('apc.enabled') ? $apcuPrefix : null;
+>>>>>>> 7cff7b6f7d999335676083119683ca71f058ded3
+=======
+        $this->apcuPrefix = function_exists('apcu_fetch') && ini_get('apc.enabled') ? $apcuPrefix : null;
+>>>>>>> 02795f80200353a4fe33a4fe5762f217f2c97a75
     }
 
     /**
@@ -377,11 +385,25 @@ class ClassLoader
             $subPath = $class;
             while (false !== $lastPos = strrpos($subPath, '\\')) {
                 $subPath = substr($subPath, 0, $lastPos);
+<<<<<<< HEAD
+<<<<<<< HEAD
+                $search = $subPath . '\\';
+                if (isset($this->prefixDirsPsr4[$search])) {
+                    $pathEnd = DIRECTORY_SEPARATOR . substr($logicalPathPsr4, $lastPos + 1);
+                    foreach ($this->prefixDirsPsr4[$search] as $dir) {
+                        if (file_exists($file = $dir . $pathEnd)) {
+=======
+=======
+>>>>>>> 02795f80200353a4fe33a4fe5762f217f2c97a75
                 $search = $subPath.'\\';
                 if (isset($this->prefixDirsPsr4[$search])) {
                     foreach ($this->prefixDirsPsr4[$search] as $dir) {
                         $length = $this->prefixLengthsPsr4[$first][$search];
                         if (file_exists($file = $dir . DIRECTORY_SEPARATOR . substr($logicalPathPsr4, $length))) {
+<<<<<<< HEAD
+>>>>>>> 7cff7b6f7d999335676083119683ca71f058ded3
+=======
+>>>>>>> 02795f80200353a4fe33a4fe5762f217f2c97a75
                             return $file;
                         }
                     }
