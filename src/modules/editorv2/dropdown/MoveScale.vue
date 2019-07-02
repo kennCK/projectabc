@@ -40,12 +40,12 @@
 export default{
   data () {
     return {
-      menus: ['Templates', 'Image', 'Object']
+      menus: ['Move', 'Scale']
     }
   },
   methods: {
     select(item) {
-      this.$emit('add', item)
+      this.$emit('moveEvent', item)
     }
   }
 }

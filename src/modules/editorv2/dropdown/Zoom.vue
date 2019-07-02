@@ -1,7 +1,7 @@
 <template>
   <div class="menu-holder">
     <ul class="editor-menu">
-      <li v-for="(item, index) in menus" :key="index" @click="select(item)">{{item}}</li>
+      <li v-for="(item, index) in menus" :key="index" @click="select(item)">Zoom to {{item}}%</li>
     </ul>
   </div>
 </template>
@@ -40,12 +40,12 @@
 export default{
   data () {
     return {
-      menus: ['Templates', 'Image', 'Object']
+      menus: [25, 50, 75, 100, 125, 150, 200, 250, 300]
     }
   },
   methods: {
     select(item) {
-      this.$emit('add', item)
+      this.$emit('zoomEvent', item)
     }
   }
 }
