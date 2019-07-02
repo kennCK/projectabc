@@ -97,6 +97,14 @@ export default{
     }
   },
   {
+    path: '/editor/v2/:code?',
+    name: 'editor',
+    component: resolve => require(['modules/editor/Editorv2.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
     path: '/images',
     name: 'images',
     component: resolve => require(['components/increment/generic/image/Images.vue'], resolve),

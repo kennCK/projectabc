@@ -1,12 +1,15 @@
 <template>
   <div id="app">
     <div v-bind:style="(globalVariables.showModal) ? 'overflow-y:hidden; height:'+deviceHeight+'px!important': ''">
-      <div v-if="tokenData.token !== null && parseInt(user.userID) > 0">
+      <div v-if="tokenData.token !== null && parseInt(user.userID) > 0 && auth.mode === 0">
        <system-header></system-header>
        <system-sidebar></system-sidebar>
        <support-messenger></support-messenger>
        <tutorial></tutorial>
        <system-footer></system-footer>
+      </div>
+      <div v-else-if="tokenData.token !== null && parseInt(user.userID) > 0 && auth.mode === 1">
+        <system-editor></system-editor>
       </div>
       <div v-else>
         <login-header></login-header>
@@ -35,6 +38,7 @@ export default {
   data(){
     return {
       user: AUTH.user,
+      auth: AUTH,
       tokenData: AUTH.tokenData,
       currentRoute: ROUTER.currentRoute.name,
       deviceHeight: document.documentElement.clientHeight,
@@ -68,7 +72,8 @@ export default {
     'terms-and-conditions': () => import('modules/docs/TermsAndConditions.vue'),
     'guide': () => import('modules/guide/Guide.vue'),
     'support-messenger': () => import('components/increment/support/Support.vue'),
-    'tutorial': () => import('components/increment/generic/tutorial/Tutorial.vue')
+    'tutorial': () => import('components/increment/generic/tutorial/Tutorial.vue'),
+    'system-editor': () => import('modules/editor/EditorV2.vue')
   }
 }
 </script>

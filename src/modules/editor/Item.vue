@@ -16,7 +16,7 @@
             <objects :objects="item.objects" :heightTemplate="parseInt(item.height)" :widthTemplate="parseInt(item.width)" v-if="item.objects !== null"></objects>
           </div>
           <ul>
-            <li v-on:click="show(item, 'editor')" style="border-left: 0px;">Editor</li>
+            <li @click="redirect('editor/v2/')" style="border-left: 0px;">Editor</li>
             <li>
               <div class="dropdown">
                 <label id="dropdownMenuSettingsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
