@@ -7,6 +7,7 @@ import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 import Config from '../../config.js'
 export default {
+  mode: 0,
   user: {
     userID: 0,
     username: '',

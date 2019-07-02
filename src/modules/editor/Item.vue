@@ -225,6 +225,7 @@ export default {
       })
     },
     show(item, id){
+      AUTH.mode = 1
       for (var i = 0; i < this.$children.length; i++) {
         if(this.$children[i].$el.id === id){
           if(id === 'editor'){
