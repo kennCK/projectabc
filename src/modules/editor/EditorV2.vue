@@ -2,12 +2,15 @@
   <div class="editor-v2">
     <div class="editor-header">
       <span class="pull-left">
-        <label class="text-primary" style="font-size: 18px;">{{title}}</label>
+        <i class="fa fa-bars editor-menu"></i>
+        <label class="text-white" style="font-size: 18px;">
+          {{title}}
+        </label>
       </span>
       <span class="pull-right">
-        <button class="btn btn-primary">Save</button>
+        <button class="btn btn-danger">Save</button>
         <button class="btn btn-warning">Add to cart</button>
-        <i class="fa fa-phone audio-call bg-primary action-link"></i>
+        <i class="fa fa-phone audio-call bg-white text-primary action-link" @click="auth.triggerAudioCall()"></i>
       </span>
     </div>
     <div class="editor-tools">
@@ -24,8 +27,48 @@
 .editor-header{
   width: 100%;
   float: left;
-  height: 50px;
-  line-height: 50px;
+  height: 40px;
+  background: $primary;
+}
+
+
+i{
+  font-size: 28px;
+  color: white;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  float: left;
+}
+
+.editor-header button{
+  margin-top: 2px;
+  margin-right: 5px;
+}
+
+.editor-header label{
+  line-height: 40px;
+  margin-bottom: 0px;
+  float: left;
+}
+
+.editor-menu:hover{
+  background: gray;
+  cursor: pointer;
+}
+
+.audio-call{
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  border-radius: 50%;
+  line-height: 35px;
+  margin-top: 2px;
+  font-size: 24px;
+  float: left;
+  margin-right: 5px;
+  float: left;
 }
 
 .editor-tools{
@@ -35,18 +78,6 @@
   border-bottom: solid 1px #ccc;
   border-top: solid 1px #ccc;
   line-height: 40px;
-}
-
-.audio-call{
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  border-radius: 50%;
-  line-height: 40px;
-  margin-top: 7px;
-  font-size: 24px;
-  float: left;
-  margin-right: 5px;
 }
 </style>
 <script>
@@ -61,7 +92,8 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      title: 'Test'
+      title: 'Test',
+      auth: AUTH
     }
   },
   components: {

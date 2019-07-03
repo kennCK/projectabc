@@ -16,7 +16,7 @@
             <objects :objects="item.objects" :heightTemplate="parseInt(item.height)" :widthTemplate="parseInt(item.width)" v-if="item.objects !== null"></objects>
           </div>
           <ul>
-            <li @click="redirect('editor/v2/')" style="border-left: 0px;">Editor</li>
+            <li @click="openEditor(item.code)" style="border-left: 0px;">Editor</li>
             <li>
               <div class="dropdown">
                 <label id="dropdownMenuSettingsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -199,6 +199,10 @@ export default {
     makeActive(){
       this.$parent.makeActive(this.index)
     },
+    openEditor(code){
+      AUTH.mode = 1
+      this.redirect('editor/v2/')
+    },
     redirect(parameter){
       ROUTER.push(parameter)
     },
@@ -225,7 +229,6 @@ export default {
       })
     },
     show(item, id){
-      AUTH.mode = 1
       for (var i = 0; i < this.$children.length; i++) {
         if(this.$children[i].$el.id === id){
           if(id === 'editor'){
