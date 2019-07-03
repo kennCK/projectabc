@@ -3,7 +3,7 @@
     <div class="editor-header">
       <span class="pull-left">
         <i class="fa fa-bars editor-menu" v-bind:class="{'gray': activeDropdown === 'mainMenu'}" @click="showDropdown('mainMenu')"></i>
-        <editor-menu v-if="activeDropdown === 'mainMenu'"></editor-menu>
+        <dropdown-menu v-if="activeDropdown === 'mainMenu'"></dropdown-menu>
       </span>
       
       <span class="editor-dropdown text-white" @click="showDropdown('moveScale')">
@@ -153,10 +153,10 @@ export default {
     }
   },
   components: {
-    'editor-menu': require('modules/editorv2/Menu.vue'),
+    'dropdown-menu': require('modules/editorv2/dropdowns/Menu.vue'),
     'editor-body': require('modules/editorv2/Body.vue'),
-    'dropdown-zoom': require('modules/editorv2/dropdown/Zoom.vue'),
-    'dropdown-movescale': require('modules/editorv2/dropdown/MoveScale.vue'),
+    'dropdown-zoom': require('modules/editorv2/dropdowns/Zoom.vue'),
+    'dropdown-movescale': require('modules/editorv2/dropdowns/MoveScale.vue'),
     'color-picker': require('modules/editorv2/colors/Picker.vue')
   },
   methods: {

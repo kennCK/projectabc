@@ -5,7 +5,7 @@
 				<li v-for="(item, index) in layerTabs" :key="index" v-bind:class="{'active': item === activeTab}" @click="activeTab = item">{{item}}</li>
 			</ul>
 			<div class="option-contents">
-				
+				<editor-layers></editor-layers>
 			</div>
 		</div>
 		<div class="editor-body" v-bind:style="{'background': color}">
@@ -84,6 +84,9 @@ export default{
     }
   },
   props: ['color'],
+  components: {
+    'editor-layers': require('modules/editorv2/layers/Layers.vue')
+  },
   methods: {
     select(item) {
       this.$emit('add', item)
