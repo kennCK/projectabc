@@ -7,11 +7,11 @@
 			<div class="option-contents">
 				<editor-layers v-if="activeTab === 'Layers'"></editor-layers>
 				<editor-assets v-if="activeTab === 'Assets'"></editor-assets>
-				<editor-pages v-if="activeTab === 'Pages'"></editor-pages>
+				<editor-pages v-if="activeTab === 'Pages'" :template="template"></editor-pages>
 			</div>
 		</div>
 		<div class="editor-body">
-			<page :pages="pages"></page>
+			<page :template="template"></page>
 		</div>
 		<div class="editor-settings">
 			<ul>
@@ -20,8 +20,8 @@
 					<i class="fa fa-chevron-up pull-right" v-if="item.show === true" @click="item.show = false"></i>
 					<span class="option-holder" v-if="item.show === true">
 						<settings-text v-if="item.title === 'Text'"></settings-text>
-						<settings-color :position="{right: '13%', top: '0%'}" :color="color" @selectedColor="changeColor($event)" v-if="item.title === 'Color'"></settings-color>
-						<settings-settings v-if="item.title === 'Settings'"></settings-settings>
+						<settings-color :position="{right: '13%', top: '0%'}" v-if="item.title === 'Color'"></settings-color>
+						<settings-settings v-if="item.title === 'Settings'" :template="template"></settings-settings>
 						<settings-stroke v-if="item.title === 'Stroke'"></settings-stroke>
 						<settings-shadow v-if="item.title === 'Shadow'"></settings-shadow>
 					</span>
@@ -121,7 +121,7 @@ export default{
   data () {
     return {
       layerTabs: ['Pages', 'Layers', 'Assets'],
-      activeTab: 'Layers',
+      activeTab: 'Pages',
       settings: [{
         title: 'Color',
         show: false
@@ -138,22 +138,10 @@ export default{
         title: 'Text',
         show: false
       }],
-      pages: [{
-        style: {
-          height: '400px',
-          width: '600px',
-          background: this.color
-        }
-      }, {
-        style: {
-          height: '400px',
-          width: '600px',
-          background: this.color
-        }
-      }]
+      selectedPage: null
     }
   },
-  props: ['color', 'template'],
+  props: ['template'],
   components: {
     'editor-layers': require('modules/editorv2/layers/Layers.vue'),
     'editor-assets': require('modules/editorv2/layers/Assets.vue'),
@@ -168,9 +156,6 @@ export default{
   methods: {
     select(item) {
       this.$emit('add', item)
-    },
-    changeColor(color){
-      this.$emit('changeColor', color)
     }
   }
 }

@@ -3,10 +3,10 @@
     <div>
       <span class="attribute-item">
       	<label>Background</label>
-        <input type="text" class="form-control" v-model="color"/>
+        <input type="text" class="form-control" v-model="template.pages[template.selectedPage].style.background"/>
         <i v-bind:class="{'active': showColor === true}" class="fas fa-eye-dropper icon-right bordered-hover" @click="showColor = !showColor"></i>
       </span>
-      <color-picker :color="color" @selectedColor="color = $event" v-if="showColor === true" :position="{right: '13%'}"></color-picker>
+      <color-picker :color="color" @selectedColor="setColor($event)" v-if="showColor === true" :position="{right: '13%'}"></color-picker>
     </div>
     <div class="attribute-double">
     	<span class="half">
@@ -137,8 +137,15 @@ export default{
       test: null
     }
   },
+  props: ['template'],
   components: {
     'color-picker': require('modules/editorv2/colors/Picker.vue')
+  },
+  methods: {
+    setColor(color){
+      this.color = color
+      this.template.pages[this.template.selectedPage].style.background = color
+    }
   }
 }
 </script>

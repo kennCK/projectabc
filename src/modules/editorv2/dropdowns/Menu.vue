@@ -40,7 +40,7 @@
 export default{
   data () {
     return {
-      menus: ['Templates', 'Image', 'Object']
+      menus: ['Templates', 'Export as PNG', 'Export as JPG']
     }
   },
   methods: {

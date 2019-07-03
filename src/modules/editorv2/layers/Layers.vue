@@ -1,6 +1,9 @@
 <template>
   <div class="layer-holder">
     <ul class="layer-wrapper">
+      <li class="layer-item">
+        <i class="fas fa-plus pull-right"></i>
+      </li>
       <li class="layer-item" v-for="(item, index) in layers" :key="index">
         <i class="fa" v-bind:class="{'fa-eye': item.eye === true,  'fa-eye-slash': item.eye === false}" @click="item.eye = !item.eye"></i>
         <i class="fa fa-image" v-if="item.type === 'image'"></i>

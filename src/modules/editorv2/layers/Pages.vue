@@ -4,7 +4,7 @@
       <li class="pages-item">
         <i class="fas fa-plus pull-right" @click="add()"></i>
       </li>
-      <li class="pages-item" v-for="(item, index) in pages" :key="index">
+      <li class="pages-item" v-for="(item, index) in template.pages" :key="index" @click="template.selectedPage = index" v-bind:class="{'active': template.selectedPage === index}">
         <i class="fa" v-bind:class="{'fa-eye': item.eye === true,  'fa-eye-slash': item.eye === false}" @click="item.eye = !item.eye"></i>
         <span>{{item.title}}</span>
         <i class="fa fa-trash text-danger pull-right"></i>
@@ -59,6 +59,11 @@
   .pull-right{
     line-height: 30px;
   }
+
+  .active{
+    background: $gray;
+    color: white;
+  }
 </style>
 <script>
 import ROUTER from 'src/router'
@@ -68,19 +73,25 @@ import axios from 'axios'
 export default {
   data(){
     return {
-      pages: []
     }
   },
   props: ['template'],
   methods: {
     add(){
-    	let newPage = {
-    		stlye: {
-    			height: this.template.style.height,
-    			width: this.template.style.width,
-    			background: this.template.style.background
-    		}
-    	}
+      let newPage = {
+        style: {
+          height: this.template.style.height,
+          width: this.template.style.width,
+          background: this.template.style.background
+        },
+        layers: [],
+        title: 'Page ' + (this.template.pages.length + 1),
+        eye: true
+      }
+      this.template.pages.push(newPage)
+    },
+    setPageActive(index){
+      this.$emit('setPageActiveEvent', index)
     }
   }
 }

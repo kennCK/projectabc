@@ -10,6 +10,7 @@
   min-height: 50px;
   overflow-y: hidden;
   width: 225px;
+  z-index: 1000;
 }
 </style>
 <script>

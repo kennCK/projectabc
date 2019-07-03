@@ -74,7 +74,7 @@
       </span>
     </div>
     <div class="editor-body">
-      <editor-body :color="color" @changeColor="color = $event" :template="template"></editor-body>
+      <editor-body :template="template"></editor-body>
 <!--       <color-picker :color="color" @selectedColor="color = $event"></color-picker> -->
     </div>
   </div>
@@ -191,12 +191,17 @@ export default {
       selectedDrawing: 'fas fa-pencil-alt',
       selectedSettings: null,
       activeDropdown: null,
-      color: '#ffffff',
       template: {
         title: 'This is a test',
         type: 'Tarpaulin',
+        style: {
+          height: '500px',
+          width: '600px',
+          background: '#ffffff'
+        },
         pages: [],
-        plugins: []
+        plugins: [],
+        selectedPage: null
       }
     }
   },
