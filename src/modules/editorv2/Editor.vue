@@ -19,13 +19,26 @@
       </span>
 
       <span class="editor-dropdown text-white">
-        <label style="padding: 0px 10px;">T</label>
+        <label style="padding: 0px 5px;">T</label>
       </span>
 
       <span class="editor-dropdown text-white">
-        <label style="padding: 0px 10px;">
+        <label style="padding: 0px 5px;">
           <i class="fa fa-image"></i>
         </label>
+      </span>
+      <span class="editor-dropdown text-white">
+        <label style="padding: 0px 5px;">
+          <i class="fas fa-dice-d6"></i>
+        </label>
+      </span>
+
+      <span class="editor-dropdown text-white" @click="showDropdown('object')">
+        <label>
+          <i v-bind:class="selectedObject" class="text-white"></i>
+        </label>
+        <i class="fa fa-chevron-down"></i>
+        <dropdown-object v-if="activeDropdown === 'object'" @objectEvent="selectedObject = $event"></dropdown-object>
       </span>
 
       <label class="text-white" style="font-size: 13px; padding-left: 100px;">
@@ -127,10 +140,10 @@
   padding-right: 10px;
   line-height: 40px;
 }
-.editor-dropdown i{
-  padding-left: 5px;
-}
 
+.editor-dropdown label{
+  padding-right: 5px;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -148,6 +161,7 @@ export default {
       auth: AUTH,
       selectedZoom: 100,
       selectedMoveScale: 'Move',
+      selectedObject: 'fas fa-square',
       activeDropdown: null,
       color: '#ffffff'
     }
@@ -157,6 +171,7 @@ export default {
     'editor-body': require('modules/editorv2/Body.vue'),
     'dropdown-zoom': require('modules/editorv2/dropdowns/Zoom.vue'),
     'dropdown-movescale': require('modules/editorv2/dropdowns/MoveScale.vue'),
+    'dropdown-object': require('modules/editorv2/dropdowns/Objects.vue'),
     'color-picker': require('modules/editorv2/colors/Picker.vue')
   },
   methods: {
