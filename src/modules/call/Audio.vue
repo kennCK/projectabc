@@ -36,10 +36,12 @@ export default {
   },
   methods: {
     endAudio(){
-      AUTH.endAudioCall()
+      $('#accept-call').css({'display': 'none'})
+      $('#audio-call').css({'display': 'none'})
     },
     accCall(){
-      AUTH.acceptCall()
+      $('#accept-call').css({'display': 'block'})
+      $('#audio-call').css({'display': 'none'})
     }
   }
 }
