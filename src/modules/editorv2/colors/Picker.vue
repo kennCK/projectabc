@@ -1,5 +1,5 @@
 <template>
-  <div class="content-holder">
+  <div class="content-holder" v-bind:style="position">
     <Sketch v-model="newColor" @input="pickColor()"></Sketch>
   </div>
 </template>
@@ -7,8 +7,6 @@
 @import "~assets/style/colors.scss";
 .content-holder{
   position: absolute;
-  top: 45px;
-  left: 40%;
   min-height: 50px;
   overflow-y: hidden;
   width: 225px;
@@ -22,6 +20,7 @@ export default{
       newColor: '#ffffff'
     }
   },
+  props: ['position'],
   components: {
     Sketch
   },

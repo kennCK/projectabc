@@ -17,7 +17,8 @@
 				<li v-for="(item, index) in settings" :key="index">{{item.title}}
 					<i class="fa fa-chevron-down pull-right" v-if="item.show === false" @click="item.show = true"></i>
 					<i class="fa fa-chevron-up pull-right" v-if="item.show === true" @click="item.show = false"></i>
-					<span class="option-holder" v-if="">
+					<span class="option-holder" v-if="item.show === true && item.title === 'Text'">
+						<settings-text></settings-text>
 					</span>
 				</li>
 			</ul>
@@ -93,12 +94,13 @@
 	.editor-settings ul li{
 		width: 100%;
 		float: left;
-		height: 30px;
+		min-height: 30px;
 		line-height: 30px;
 		font-size: 11px;
 		color: black;
 		padding-left: 5px;
 		border-bottom: solid 1px $gray;
+		overflow-y: hidden;
 	}
 	.pull-right{
 		padding-right: 5px;
@@ -128,7 +130,8 @@ export default{
   components: {
     'editor-layers': require('modules/editorv2/layers/Layers.vue'),
     'editor-assets': require('modules/editorv2/layers/Assets.vue'),
-    'editor-pages': require('modules/editorv2/layers/Pages.vue')
+    'editor-pages': require('modules/editorv2/layers/Pages.vue'),
+    'settings-text': require('modules/editorv2/settings/Text.vue')
   },
   methods: {
     select(item) {
