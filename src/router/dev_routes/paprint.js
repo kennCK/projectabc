@@ -1,4 +1,3 @@
-
 export default{
   routes: [{
     path: '/canales',
@@ -92,6 +91,14 @@ export default{
     path: '/templates',
     name: 'templates',
     component: resolve => require(['modules/editor/Templates.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/editor/v2/:code?',
+    name: 'editor',
+    component: resolve => require(['modules/editorv2/Editor.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -318,6 +325,14 @@ export default{
     component: resolve => require(['modules/docs/BillingTermsContent.vue'], resolve),
     meta: {
       tokenRequired: false
+    }
+  },
+  {
+    path: '/tutorials',
+    name: 'tutorials',
+    component: resolve => require(['modules/tutorials/Tutorials.vue'], resolve),
+    meta: {
+      tokenRequired: true
     }
   }
   ]

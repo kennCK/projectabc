@@ -414,6 +414,7 @@ export default {
         // {users: 'ALL', description: 'Data Entries', icon: 'fas fa-users', path: 'data_entries', flag: false, subMenu: null},
         {users: 'ALL', description: 'Profiles', icon: 'fas fa-users', path: 'profiles', flag: false, subMenu: null},
         {users: 'ALL', description: 'Images', icon: 'fas fa-image', path: 'images', flag: false, subMenu: null},
+        {users: 'ALL', description: 'Tutorials', icon: 'fas fa-image', path: 'tutorials', flag: false, subMenu: null},
         {users: 'USER', description: 'Find Printing', icon: 'fas fa-print', path: 'printings', flag: false, subMenu: null},
         {users: 'USER', description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace', flag: false, subMenu: null},
         {users: 'PARTNER', description: 'My Store', icon: 'fas fa-store', path: 'marketplace', flag: false, subMenu: [{users: 'PARTNER', description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace', flag: false}, {users: 'PARTNER', description: 'Products', icon: 'fa fa-shopping-cart', path: 'products', flag: false}, {users: 'PARTNER', description: 'Orders', icon: 'fa fa-file', path: 'orders', flag: false}, {users: 'PARTNER', description: 'Coupons', icon: 'fa fa-tags', path: 'coupons', flag: false}]
