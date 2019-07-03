@@ -1,10 +1,14 @@
 <template>
   <div class="pages-holder">
     <ul class="pages-wrapper">
+      <li class="pages-item">
+        <i class="fas fa-plus pull-right" @click="add()"></i>
+      </li>
       <li class="pages-item" v-for="(item, index) in pages" :key="index">
         <i class="fa" v-bind:class="{'fa-eye': item.eye === true,  'fa-eye-slash': item.eye === false}" @click="item.eye = !item.eye"></i>
         <span>{{item.title}}</span>
         <i class="fa fa-trash text-danger pull-right"></i>
+        <i class="fa fa-clone text-primary pull-right"></i>
       </li>
     </ul>
   </div>
@@ -57,16 +61,26 @@
   }
 </style>
 <script>
+import ROUTER from 'src/router'
+import AUTH from 'src/services/auth'
+import CONFIG from 'src/config.js'
+import axios from 'axios'
 export default {
-  data () {
+  data(){
     return {
-      pages: [{
-        title: 'Page 1',
-        eye: true
-      }, {
-        title: 'Page 2',
-        eye: true
-      }]
+      pages: []
+    }
+  },
+  props: ['template'],
+  methods: {
+    add(){
+    	let newPage = {
+    		stlye: {
+    			height: this.template.style.height,
+    			width: this.template.style.width,
+    			background: this.template.style.background
+    		}
+    	}
     }
   }
 }

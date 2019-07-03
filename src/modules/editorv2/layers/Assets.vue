@@ -3,10 +3,13 @@
     <div class="filter">
       <i class="fa fa-search"></i>
       <input type="text" placeholder="Search" class="form-control">
+      <i class="fas fa-plus pull-right bordered-hover" @click="showImages()"></i>
     </div>
+    <browse-image></browse-image>
   </div>
 </template>
-<style scoped>
+<style scoped lang="scss">
+@import "~assets/style/colors.scss";
   .holder{
     width: 100%;
     float: left;
@@ -21,9 +24,10 @@
   }
   .filter i{
     position: absolute;
-    top: 21%;
+    line-height: 30px;
     z-index: 1;
-    padding-left: 5px;
+    text-align: center;
+    width: 30px;
     font-size: 13px;
   }
 
@@ -31,7 +35,33 @@
     position: absolute;
     z-index: 0;
     font-size: 11px !important;
-    padding-left: 20px;
+    padding-left: 25px;
     border: none;
   }
+  .pull-right{
+    line-height: 30px;
+    right: 5px;
+    border-radius: 2px;
+  }
+
+  .bordered-hover:hover{
+    background: $primary;
+    color: white;
+    cursor: pointer;
+  }
 </style>
+<script>
+export default {
+  components: {
+    'browse-image': require('components/increment/generic/image/BrowseModal.vue')
+  },
+  methods: {
+    showImages(){
+      $('#browseImagesModal').modal('show')
+    },
+    manageImageUrl(url){
+      console.log(url)
+    }
+  }
+}
+</script>

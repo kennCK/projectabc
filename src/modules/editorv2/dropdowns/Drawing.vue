@@ -1,8 +1,9 @@
 <template>
   <div class="menu-holder">
     <ul class="editor-menu">
-      <li style="border-bottom: solid 1px white;">Window Settings</li>
+      <li style="border-bottom: solid 1px white;">Drawing Tools</li>
       <li v-for="(item, index) in menus" :key="index" @click="select(item)">
+        <i v-bind:class="item.icon" style="padding-right: 10px;" v-if="item.icon !== null"></i>
         {{item.title}}
       </li>
     </ul>
@@ -40,6 +41,7 @@ i{
   text-align: center;
   color: white;
 }
+
 .editor-menu li:hover{
   color: $secondary;
   cursor: pointer;
@@ -50,21 +52,20 @@ export default{
   data () {
     return {
       menus: [{
-        title: 'Text'
+        title: 'Pencil',
+        icon: 'fas fa-pencil-alt'
       }, {
-        title: 'Settings'
+        title: 'Pen Tool',
+        icon: 'fas fa-pen-nib'
       }, {
-        title: 'Color'
-      }, {
-        title: 'Stroke'
-      }, {
-        title: 'Shadow'
+        title: 'Bend Tool',
+        icon: null
       }]
     }
   },
   methods: {
     select(item) {
-      this.$emit('settingsEvent', item.icon)
+      this.$emit('add', item)
     }
   }
 }
