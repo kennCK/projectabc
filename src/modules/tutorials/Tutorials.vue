@@ -17,7 +17,7 @@
       <input type="text" class="form-control col-lg-6" placeholder="Last Name" v-model="lastName">
       <button class="btn btn-primary" style="margin-top: 10px;" v-on:click="addName()">Save Name</button>
     </div>
-    <custom-table :list="names" @makeActive="activeIndex = $event" @make></custom-table>
+    <custom-table :list="names" @makeActive="activeIndex = $event"></custom-table>
     <div class="form-group" v-if="activeIndex !== null">
       <input type="text" class="form-control col-lg-6" placeholder="First Name" v-model="names[activeIndex].first_name">
       <br>
@@ -103,4 +103,3 @@ export default{
   }
 }
 </script>
-
