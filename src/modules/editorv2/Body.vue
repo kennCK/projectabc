@@ -14,7 +14,12 @@
 		</div>
 		<div class="editor-settings">
 			<ul>
-				<li v-for="(item, index) in settings" :key="index" v-bind:class="{'active': item === activeSetting}" @click="activeSetting = item">{{item}}</li>
+				<li v-for="(item, index) in settings" :key="index">{{item.title}}
+					<i class="fa fa-chevron-down pull-right" v-if="item.show === false" @click="item.show = true"></i>
+					<i class="fa fa-chevron-up pull-right" v-if="item.show === true" @click="item.show = false"></i>
+					<span class="option-holder" v-if="">
+					</span>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -25,20 +30,27 @@
 		width: 100%;
 		height: 100%;
 	}
+	
 	.editor-layers{
 		width: 12%;
 		float: left;
 		height: 100%;
 	}
+	
 	ul{
 		list-style: none;
 		padding: 0px;
 		margin: 0px;
-		border-bottom: solid 1px $gray;
 		border-right: solid 1px $gray;
-		height: 40px;
+		min-height: 40px;
+		overflow-y: hidden;
 	}
-	ul li{
+	
+	.editor-layers ul{
+		border-bottom: solid 1px $gray;
+	}
+
+	.editor-layers ul li{
 		width: 32%;
 		float: left;
 		height: 40px;
@@ -53,8 +65,9 @@
 		cursor: pointer;
 		color: black;
 	}
+	
 	.active{
-		color: black;
+		color: black !important;
 	}
 
 	.option-contents{
@@ -63,26 +76,52 @@
 		height: calc(100% - 10px);
 		border-right: solid 1px $gray;
 	}
+	
 	.editor-body{
 		width: 76%;
 		float: left;
 		height: 100%;
 	}
+
 	.editor-settings{
 		width: 12%;
 		float: left;
 		height: 100%;
 		border-left: solid 1px $gray;
 	}
+
+	.editor-settings ul li{
+		width: 100%;
+		float: left;
+		height: 30px;
+		line-height: 30px;
+		font-size: 11px;
+		color: black;
+		padding-left: 5px;
+		border-bottom: solid 1px $gray;
+	}
+	.pull-right{
+		padding-right: 5px;
+		line-height: 30px;
+	}
+
 </style>
 <script>
 export default{
   data () {
     return {
       layerTabs: ['Pages', 'Layers', 'Assets'],
-      settings: ['Settings'],
       activeTab: 'Layers',
-      activeSetting: 'Settings'
+      settings: [{
+        title: 'Settings',
+        show: true
+      }, {
+        title: 'Text',
+        show: true
+      }, {
+        title: 'Color',
+        show: true
+      }]
     }
   },
   props: ['color'],

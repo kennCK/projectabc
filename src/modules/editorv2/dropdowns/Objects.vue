@@ -1,8 +1,9 @@
 <template>
   <div class="menu-holder">
     <ul class="editor-menu">
+      <li style="border-bottom: solid 1px white;">Insert Objects</li>
       <li v-for="(item, index) in menus" :key="index" @click="select(item)">
-        <i v-bind:class="item.icon"  class="text-white" style="padding-right: 10px;"></i>
+        <i v-bind:class="item.icon" style="padding-right: 10px;"></i>
         {{item.title}}
       </li>
     </ul>
@@ -33,6 +34,12 @@
   height: 30px;
   line-height: 30px;
   padding-left: 10px;
+}
+
+i{
+  width: 30px;
+  text-align: center;
+  color: white;
 }
 .editor-menu li:hover{
   color: $secondary;

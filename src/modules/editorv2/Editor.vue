@@ -18,16 +18,16 @@
         <dropdown-zoom v-if="activeDropdown === 'zoom'" @zoomEvent="selectedZoom = $event"></dropdown-zoom>
       </span>
 
-      <span class="editor-dropdown text-white">
+      <span class="editor-dropdown text-white" @click="showDropdown('text')">
         <label style="padding: 0px 5px;">T</label>
       </span>
 
-      <span class="editor-dropdown text-white">
+      <span class="editor-dropdown text-white" @click="showDropdown('image')">
         <label style="padding: 0px 5px;">
           <i class="fa fa-image"></i>
         </label>
       </span>
-      <span class="editor-dropdown text-white">
+      <span class="editor-dropdown text-white" @click="showDropdown('frame')">
         <label style="padding: 0px 5px;">
           <i class="fas fa-dice-d6"></i>
         </label>
@@ -39,6 +39,14 @@
         </label>
         <i class="fa fa-chevron-down"></i>
         <dropdown-object v-if="activeDropdown === 'object'" @objectEvent="selectedObject = $event"></dropdown-object>
+      </span>
+
+      <span class="editor-dropdown text-white" @click="showDropdown('settings')">
+        <label>
+          <i class="fas fa-cog text-white"></i>
+        </label>
+        <i class="fa fa-chevron-down"></i>
+        <dropdown-settings v-if="activeDropdown === 'settings'" @objectEvent="selectedObject = $event"></dropdown-settings>
       </span>
 
       <label class="text-white" style="font-size: 13px; padding-left: 100px;">
@@ -172,6 +180,7 @@ export default {
     'dropdown-zoom': require('modules/editorv2/dropdowns/Zoom.vue'),
     'dropdown-movescale': require('modules/editorv2/dropdowns/MoveScale.vue'),
     'dropdown-object': require('modules/editorv2/dropdowns/Objects.vue'),
+    'dropdown-settings': require('modules/editorv2/dropdowns/Settings'),
     'color-picker': require('modules/editorv2/colors/Picker.vue')
   },
   methods: {

@@ -1,8 +1,11 @@
 <template>
   <div class="menu-holder">
     <ul class="editor-menu">
-      <li style="border-bottom: solid 1px white;">Zoom View</li>
-      <li v-for="(item, index) in menus" :key="index" @click="select(item)">Zoom to {{item}}%</li>
+      <li style="border-bottom: solid 1px white;">Settings Window</li>
+      <li v-for="(item, index) in menus" :key="index" @click="select(item)">
+        <i v-bind:class="item.icon" style="padding-right: 10px;"></i>
+        {{item.title}}
+      </li>
     </ul>
   </div>
 </template>
@@ -32,6 +35,12 @@
   line-height: 30px;
   padding-left: 10px;
 }
+
+i{
+  width: 30px;
+  text-align: center;
+  color: white;
+}
 .editor-menu li:hover{
   color: $secondary;
   cursor: pointer;
@@ -41,12 +50,21 @@
 export default{
   data () {
     return {
-      menus: [25, 50, 75, 100, 125, 150, 200, 250, 300]
+      menus: [{
+        title: 'Text',
+        icon: 'fas fa-bold'
+      }, {
+        title: 'Settings',
+        icon: 'fas fa-cog'
+      }, {
+        title: 'Color',
+        icon: 'fas fa-palette'
+      }]
     }
   },
   methods: {
     select(item) {
-      this.$emit('zoomEvent', item)
+      this.$emit('settingsEvent', item.icon)
     }
   }
 }
