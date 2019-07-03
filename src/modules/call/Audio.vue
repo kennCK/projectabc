@@ -3,18 +3,18 @@
     <div class="customModal" style="float: right" id="audio-call">
       <span class="holder">   <!--  Ringing -->
         <div class="call-animation">
-            <img class="img-circle" src="https://i.redd.it/1xbnnr11axx11.jpg" alt="" width="120"/>
+            <img class="img-circle" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
             </div>
             <i class="fa fa-phone pull-left bg-danger icons" @click="endAudio"></i>
             <i class="fa fa-phone pull-right bg-primary icons" @click="accCall"></i>
-            <h6 class="text-center text-white">Calling...</h6>
+            <h6 style="margin-top: 10px" class="text-center text-white">Calling...</h6>
             <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
       </span>
     </div>
     <div class="customModal" style="float: right" id="accept-call">
        <span class="holder">   <!--  Ongoing -->
         <div class="call-animation">
-            <img class="img-circle pull-right" src="https://i.redd.it/1xbnnr11axx11.jpg" alt="" width="120"/>
+            <img class="img-circle pull-right" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
             </div>
             <i class="fa fa-phone pull-left bg-danger icons" @click="endAudio"></i>
             <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
@@ -36,10 +36,12 @@ export default {
   },
   methods: {
     endAudio(){
-      AUTH.endAudioCall()
+      $('#accept-call').css({'display': 'none'})
+      $('#audio-call').css({'display': 'none'})
     },
     accCall(){
-      AUTH.acceptCall()
+      $('#accept-call').css({'display': 'block'})
+      $('#audio-call').css({'display': 'none'})
     }
   }
 }
@@ -65,6 +67,7 @@ export default {
   display: none;
   padding-right: 10px;
   padding-top: 50px;
+  right:0;
 }
 .holder{
     float: left;
@@ -90,8 +93,8 @@ export default {
 }
 .call-animation {
     background: #fff;
-    width: 135px;
-    height: 135px;
+    width: 80px;
+    height: 80px;
     position: relative;
     margin: 0 auto;
     border-radius: 100%;
@@ -101,11 +104,12 @@ export default {
     -moz-backface-visibility: hidden;
     -ms-backface-visibility: hidden;
     backface-visibility: hidden;
+    top:-3px;
   
 }
  img {
-        width: 135px;
-        height: 135px;
+        width: 70px;
+        height: 70px;
         border-radius: 100%;
         position: absolute;
         left: 0px;
