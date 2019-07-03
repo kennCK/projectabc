@@ -5,7 +5,9 @@
 				<li v-for="(item, index) in layerTabs" :key="index" v-bind:class="{'active': item === activeTab}" @click="activeTab = item">{{item}}</li>
 			</ul>
 			<div class="option-contents">
-				<editor-layers></editor-layers>
+				<editor-layers v-if="activeTab === 'Layers'"></editor-layers>
+				<editor-assets v-if="activeTab === 'Assets'"></editor-assets>
+				<editor-pages v-if="activeTab === 'Pages'"></editor-pages>
 			</div>
 		</div>
 		<div class="editor-body" v-bind:style="{'background': color}">
@@ -77,7 +79,7 @@
 export default{
   data () {
     return {
-      layerTabs: ['Layers', 'Assets', 'Pages'],
+      layerTabs: ['Pages', 'Layers', 'Assets'],
       settings: ['Settings'],
       activeTab: 'Layers',
       activeSetting: 'Settings'
@@ -85,7 +87,9 @@ export default{
   },
   props: ['color'],
   components: {
-    'editor-layers': require('modules/editorv2/layers/Layers.vue')
+    'editor-layers': require('modules/editorv2/layers/Layers.vue'),
+    'editor-assets': require('modules/editorv2/layers/Assets.vue'),
+    'editor-pages': require('modules/editorv2/layers/Pages.vue')
   },
   methods: {
     select(item) {

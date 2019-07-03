@@ -2,6 +2,7 @@
   <div class="layer-holder">
     <ul class="layer-wrapper">
       <li class="layer-item" v-for="(item, index) in layers" :key="index">
+        <i class="fa" v-bind:class="{'fa-eye': item.eye === true,  'fa-eye-slash': item.eye === false}" @click="item.eye = !item.eye"></i>
         <i class="fa fa-image" v-if="item.type === 'image'"></i>
         <i class="fa fa-square" v-if="item.type === 'object'"></i>
         <i class="fa fa-paragraph" v-if="item.type === 'text'"></i>
@@ -78,34 +79,41 @@ export default {
         title: 'test',
         editFlag: false,
         type: 'image',
-        objects: []
+        objects: [],
+        eye: true
       }, {
         title: 'background',
         editFlag: false,
         type: 'object',
-        objects: []
+        objects: [],
+        eye: true
       }, {
         title: 'title',
         editFlag: false,
         type: 'text',
-        objects: []
+        objects: [],
+        eye: true
       }, {
         title: 'title',
         editFlag: false,
         type: 'frame',
         show: false,
+        eye: true,
         objects: [{
           title: 'test',
           editFlag: false,
-          type: 'image'
+          type: 'image',
+          eye: true
         }, {
           title: 'background',
           editFlag: false,
-          type: 'object'
+          type: 'object',
+          eye: true
         }, {
           title: 'title',
           editFlag: false,
-          type: 'text'
+          type: 'text',
+          eye: true
         }]
       }]
     }
