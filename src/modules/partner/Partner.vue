@@ -60,6 +60,7 @@
   padding-left: 10px;
 }
 .partner-info{
+  margin-top: 5px;
   width: 35%;
   float: left;
 }
@@ -75,6 +76,7 @@
 .partner-reviews{
   width: 50%;
   float: left;
+  margin-top: 5px;
 }
 .partner-reviews label{
   width: 95%;
@@ -100,18 +102,31 @@
     /* text-align: center; */
     margin-left: 33px;
     margin-top: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
   .partner-profile img{
     width: 100%;
     border-radius: 5px;
   }
-  .item-name{
+  /* .item-name{
     text-align: center;
     padding-bottom: 10px;
-  }
+  } */
   .partner-info{
-    /* margin-left: 5px; */
+    width: 60%;
+  }
+  .partner-reviews{
+    width: 40%;
+    float: right;
+    margin-top: 25px;
+  }
+  .partner-reviews label{
+    width: 95%;
+    float: right;
+    margin-right: 5%;
+  }
+  .reviews i{
+    padding-right: 5px;
   }
 }
 </style>
