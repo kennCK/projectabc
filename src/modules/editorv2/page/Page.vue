@@ -1,8 +1,11 @@
 <template>
 	<div class="holder">
-		<div class="page-holder" v-for="(item, index) in template.contents.pages" :key="index">
-			<div class="page-container" :style="item.style">
-			</div>	
+		<div class="page-holder" v-for="(page, pageIndex) in template.contents.pages" :key="pageIndex">
+			<div class="page-container" :style="page.style">
+				<div v-bind:style="layer.style" v-for="(layer, layerIndex) in page.layers" :key="layerIndex">
+					<div v-bind:style="object.style" v-for="(object, objectIndex) in layer.objects" :key="objectIndex"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -27,6 +30,7 @@
 	margin-bottom: 20px;
 	margin-left: auto;
 	margin-right: auto;
+	position: relative;
 }
 </style>
 <script>
