@@ -2,32 +2,32 @@
   <div class="layer-holder">
     <ul class="layer-wrapper">
       <li class="layer-item">
-        <i class="fas fa-plus pull-right" @click="add()"></i>
-        <i class="fa fa-trash text-danger pull-right"></i>
-        <i class="fa fa-clone text-primary pull-right"></i>
+        <i class="fas fa-plus pull-right" @click="global.addLayer()"></i>
+        <i class="fa fa-trash text-danger pull-right" @click="remove(page.selected_layer)"></i>
+        <i class="fa fa-clone text-primary pull-right" @click="duplicate(page.selected_layer)"></i>
       </li>
-      <li class="layer-item" v-for="(item, index) in page.layers" :key="index" v-bind:class="{'active': page.selected_layer === index}" @click="page.selected_layer = index">
+      <li class="layer-item" v-for="(layer, layerIndex) in page.layers" :key="layerIndex" v-bind:class="{'active': page.selected_layer === layerIndex && layer.show === false}" @click="makeActive(layer, layerIndex)">
 
-        <i class="fa" v-bind:class="{'fa-eye': item.eye === true,  'fa-eye-slash': item.eye === false}" @click="item.eye = !item.eye"></i>
+        <i class="fa" v-bind:class="{'fa-eye': layer.eye === true,  'fa-eye-slash': layer.eye === false}" @click="layer.eye = !layer.eye"></i>
         
-        <i class="fas" v-bind:class="{'fa-unlock': item.locked === false,  'fa-lock': item.locked === true}" @click="item.locked = !item.locked"></i>
+        <i class="fas" v-bind:class="{'fa-unlock': layer.locked === false,  'fa-lock': layer.locked === true}" @click="layer.locked = !layer.locked"></i>
         
 
-        <span v-if="item.edit_flag === false" @dblclick="item.edit_flag = true">{{item.title + (index + 1)}}</span>
+        <span v-if="layer.edit_flag === false" @dblclick="layer.edit_flag = true">{{layer.title + (layerIndex + 1)}}</span>
         
-        <input type="text" v-model="item.title" v-if="item.edit_flag === true" @keyup.enter="item.edit_flag = false"> 
+        <input type="text" v-model="layer.title" v-if="layer.edit_flag === true" @keyup.enter="layer.edit_flag = false"> 
 
-        <i class="fas fa-chevron-down pull-right" v-if="item.show === false && item.objects.length > 0" @click="item.show = true"></i>
+        <i class="fas fa-chevron-down pull-right" v-if="layer.show === false && layer.objects.length > 0" @click="layer.show = true, makeActiveObject(layer, layer.objects[0], 0)"></i>
         
-        <i class="fas fa-chevron-up pull-right" v-if="item.show === true && item.objects.length > 0" @click="item.show = false"></i>
+        <i class="fas fa-chevron-up pull-right" v-if="layer.show === true && layer.objects.length > 0" @click="makeActive(layer, layerIndex), layer.show = false"></i>
 
-        <ul v-if="item.type === 'frame' && item.show === true">
-          <li v-for="(lItem, lIndex) in item.objects" :key="lIndex">
-            <i class="fa fa-image" v-if="lItem.type === 'image'"></i>
-            <i class="fa fa-square" v-if="lItem.type === 'object'"></i>
-            <i class="fa fa-paragraph" v-if="lItem.type === 'text'"></i>
-            <span v-if="lItem.edit_flag === false" @dblclick="lItem.edit_flag = true">{{lItem.title}}</span>
-            <input type="text" v-model="lItem.title"  v-if="lItem.edit_flag === true" @keyup.enter="lItem.edit_flag = false">
+        <ul v-if="layer.show === true && layer.objects.length > 0">
+          <li v-for="(object, objectIndex) in layer.objects" :key="objectIndex" v-bind:class="{'active': layer.selected_object === objectIndex && page.selected_layer === layerIndex}" @click="makeActiveObject(layer, object, objectIndex)">
+            <i class="fa fa-image" v-if="object.type === 'image'"></i>
+            <i class="fa fa-square" v-if="object.type === 'object'"></i>
+            <i class="fa fa-paragraph" v-if="object.type === 'text'"></i>
+            <span v-if="object.edit_flag === false" @dblclick="object.edit_flag = true">{{object.title}}</span>
+            <input type="text" v-model="object.title"  v-if="object.edit_flag === true" @keyup.enter="object.edit_flag = false">
           </li>
         </ul>
       </li>
@@ -75,6 +75,7 @@
   input{
     border: none;
     height: 30px;
+    background: transparent;
   }
 
   .pull-right{
@@ -87,25 +88,38 @@
   }
 </style>
 <script>
+import GLOBAL from 'src/modules/editorv2/global.js'
 export default {
   data () {
     return {
+      global: GLOBAL,
+      clickFlag: false
     }
   },
   props: ['page'],
   methods: {
-    add(){
-      let layer = {
-        title: 'Layer ',
-        edit_flag: false,
-        style: this.page.style,
-        eye: false,
-        show: false,
-        objects: [],
-        selected_object: null,
-        locked: false
+    remove(index){
+      this.page.layers.splice(index, 1)
+    },
+    duplicate(index){
+      let copy = this.page.layers[index]
+      this.page.layers.push(copy)
+    },
+    makeActive(item, index){
+      if(this.clickFlag === false){
+        this.page.selected_layer = index
+        this.global.activeLayerIndex = index
+        this.global.objectSettings = item.style
+        this.global.selectedTopMenu = 'Layers'
       }
-      this.page.layers.push(layer)
+      this.clickFlag = false
+    },
+    makeActiveObject(layer, item, index){
+      this.clickFlag = true
+      this.global.selectedTopMenu = 'Object'
+      layer.selected_object = index
+      this.global.activeObjectIndex = index
+      this.global.objectSettings = item.style
     }
   }
 }
