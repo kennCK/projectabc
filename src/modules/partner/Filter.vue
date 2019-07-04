@@ -1,12 +1,18 @@
 <template>
   <div class="filter">
     <div class="input-group">
-      <span class="input-group-addon">Filter By</span>
-      <select class="form-control" v-model="filterValue" @change="retrieve()">
+      <span id="content-desktop" class="input-group-addon">Filter By</span>
+      <select id="content-desktop" class="form-control" v-model="filterValue" @change="retrieve()">
         <option value="name">Name</option>
         <option value="address">Location</option>
       </select>
-      <span class="input-group-addon">Search</span>
+      <span id="content-mobile" class="input-group-addon"><i class="fas fa-filter"></i></span>
+      <select id="content-mobile" class="form-control" v-model="filterValue" @change="retrieve()">
+        <option value="name">Name</option>
+        <option value="address">Location</option>
+      </select>
+      <span id="content-desktop" class="input-group-addon">Search</span>
+      <span id="content-mobile" class="input-group-addon"><i class="fas fa-search"></i></span>
       <input type="text" class="form-control" v-model="searchValue" @keyup.enter="retrieve()" placeholder="Search here...">
     </div>
   </div>
@@ -17,7 +23,6 @@
   float: left;
   height: 45px;
 }
-
 .form-control{
   height: 45px !important;
 }
@@ -42,6 +47,24 @@
 @media (max-width: 991px){
   .partner-holder{
     width: 100%;
+  }
+}
+#content-desktop{
+  display: inherit;
+}
+#content-mobile{
+  display: none;
+}
+@media only screen and (max-width: 400px){
+  #content-desktop{
+    display: none;
+  }
+  #content-mobile{
+    display: inherit;
+    width: 32px !important;
+  }
+  .form-control{
+    width: 80px;
   }
 }
 </style>
