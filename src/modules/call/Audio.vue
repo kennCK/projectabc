@@ -8,6 +8,8 @@
             <i class="fa fa-phone pull-left bg-danger icons" @click="ignoreAudio"></i>
             <i class="fa fa-phone pull-right bg-primary icons" @click="accCall"></i>
             <h6 style="margin-top: 10px" class="text-center text-white">Calling...</h6>
+            <h6 style="margin-top: 10px" class="text-center text-white">hellooo</h6>
+            <h6 style="margin-top: 10px" class="text-center text-white">yeahhh</h6>
             <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
       </span>
     </div>
