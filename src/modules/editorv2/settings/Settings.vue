@@ -1,9 +1,9 @@
 <template>
-  <div class="text-holder">
+  <div class="text-holder" v-if="property !== null">
     <div>
       <span class="attribute-item">
       	<label>Background</label>
-        <input type="text" class="form-control" v-model="color"/>
+        <input type="text" class="form-control" v-model="property.background"/>
         <i v-bind:class="{'active': showColor === true}" class="fas fa-eye-dropper icon-right bordered-hover" @click="showColor = !showColor"></i>
       </span>
       <color-picker :color="color" @selectedColor="setColor($event)" v-if="showColor === true" :position="{right: '13%'}"></color-picker>
@@ -11,16 +11,16 @@
     <div class="attribute-double">
     	<span class="half">
     		<i class="fas fa-arrows-alt-h"></i>
-    		<input type="number" class="form-control">
+    		<input type="text" class="form-control" @keyup.enter="setSize('height')" v-model="property.height" :disabled="global.selectedLeftMenu === 'Pages'">
     	</span>
     	<span class="half">
     		<i class="fas fa-arrows-alt-v"></i>
-    		<input type="number" class="form-control">
+    		<input type="text" class="form-control" @keyup.enter="setSize('width')" v-model="property.width" :disabled="global.selectedLeftMenu === 'Pages'">
     	</span>
     </div>
-    <div class="attribute-item">
+    <div class="attribute-item" v-if="global.selectedLeftMenu !== 'Pages'">
     	<label>Rounded</label>
-      <input type="number" class="form-control" style="padding-right: 0px;" />
+      <input type="text" class="form-control" style="padding-right: 0px;" v-model="property.border_radius"/>
     </div>
   </div>
 </template>
@@ -128,23 +128,24 @@
   }
 </style>
 <script>
+import GLOBAL from 'src/modules/editorv2/global.js'
 export default{
   data () {
     return {
       fontStyles: ['Arial', 'Helvitica', 'Sans-serif'],
-      color: '#ffffff',
       showColor: false,
-      test: null
+      test: null,
+      global: GLOBAL,
+      color: null
     }
   },
-  props: ['template'],
+  props: ['property'],
   components: {
     'color-picker': require('modules/editorv2/colors/Picker.vue')
   },
   methods: {
     setColor(color){
-      this.color = color
-      this.template.pages[this.template.selectedPage].style.background = color
+      this.property.background = color
     }
   }
 }

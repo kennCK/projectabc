@@ -3,10 +3,10 @@
     <ul class="layer-wrapper">
       <li class="layer-item">
         <i class="fas fa-plus pull-right" @click="add()"></i>
-        <i class="fa fa-trash text-danger pull-right"></i>
-        <i class="fa fa-clone text-primary pull-right"></i>
+        <i class="fa fa-trash text-danger pull-right" @click="remove(page.selected_layer)"></i>
+        <i class="fa fa-clone text-primary pull-right" @click="duplicate(page.selected_layer)"></i>
       </li>
-      <li class="layer-item" v-for="(item, index) in page.layers" :key="index" v-bind:class="{'active': page.selected_layer === index}" @click="page.selected_layer = index">
+      <li class="layer-item" v-for="(item, index) in page.layers" :key="index" v-bind:class="{'active': page.selected_layer === index}" @click="makeActive(item, index)">
 
         <i class="fa" v-bind:class="{'fa-eye': item.eye === true,  'fa-eye-slash': item.eye === false}" @click="item.eye = !item.eye"></i>
         
@@ -75,6 +75,7 @@
   input{
     border: none;
     height: 30px;
+    background: transparent;
   }
 
   .pull-right{
@@ -87,9 +88,11 @@
   }
 </style>
 <script>
+import GLOBAL from 'src/modules/editorv2/global.js'
 export default {
   data () {
     return {
+      global: GLOBAL
     }
   },
   props: ['page'],
@@ -98,14 +101,34 @@ export default {
       let layer = {
         title: 'Layer ',
         edit_flag: false,
-        style: this.page.style,
-        eye: false,
+        style: {
+          background: 'transparent',
+          height: '100%',
+          width: '100%',
+          top: '0',
+          left: '0',
+          border_radius: '0px',
+          position: 'absolute'
+        },
+        eye: true,
         show: false,
         objects: [],
         selected_object: null,
         locked: false
       }
       this.page.layers.push(layer)
+    },
+    remove(index){
+      this.page.layers.splice(index, 1)
+    },
+    duplicate(index){
+      let copy = this.page.layers[index]
+      this.page.layers.push(copy)
+    },
+    makeActive(item, index){
+      this.page.selected_layer = index
+      this.global.activeLayerIndex = index
+      this.global.objectSettings = item.style
     }
   }
 }

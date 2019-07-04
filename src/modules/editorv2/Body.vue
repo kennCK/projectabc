@@ -2,7 +2,7 @@
 	<div class="holder">
 		<div class="editor-layers">
 			<ul>
-				<li v-for="(item, index) in layerTabs" :key="index" v-bind:class="{'active': item === activeTab}" @click="activeTab = item">{{item}}</li>
+				<li v-for="(item, index) in layerTabs" :key="index" v-bind:class="{'active': item === activeTab}" @click="makeActive(item)">{{item}}</li>
 			</ul>
 			<div class="option-contents">
 				<editor-layers v-if="activeTab === 'Layers'"  :page="template.contents.pages[template.contents.selected_page]"></editor-layers>
@@ -21,7 +21,7 @@
 					<span class="option-holder" v-if="item.show === true">
 						<settings-text v-if="item.title === 'Text'"></settings-text>
 						<settings-color :position="{right: '13%', top: '0%'}" v-if="item.title === 'Color'"></settings-color>
-						<settings-settings v-if="item.title === 'Settings'" :template="template"></settings-settings>
+						<settings-settings v-if="item.title === 'Settings'" :property="global.objectSettings"></settings-settings>
 						<settings-stroke v-if="item.title === 'Stroke'"></settings-stroke>
 						<settings-shadow v-if="item.title === 'Shadow'"></settings-shadow>
 					</span>
@@ -117,6 +117,7 @@
 	}
 </style>
 <script>
+import GLOBAL from 'src/modules/editorv2/global.js'
 export default{
   data () {
     return {
@@ -138,7 +139,8 @@ export default{
         title: 'Text',
         show: false
       }],
-      selectedPage: null
+      selectedPage: null,
+      global: GLOBAL
     }
   },
   props: ['template'],
@@ -156,6 +158,10 @@ export default{
   methods: {
     select(item) {
       this.$emit('add', item)
+    },
+    makeActive(item){
+      this.activeTab = item
+      this.global.selectedLeftMenu = item
     }
   }
 }
