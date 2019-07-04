@@ -35,12 +35,8 @@
     "tooltip.js": "^1.3.2",
     "vue-chartjs": "^3.4.2",
     "vue-clip": "^1.0.0",
-<<<<<<< HEAD
-    "vue-directive-tooltip": "^1.6.2",
-=======
     "vue-color": "^2.7.0",
     "vue-directive-tooltip": "^1.4.5",
->>>>>>> f8654e23560ca48e028d85607a143e1f603cf988
     "vue-paypal-checkout": "^3.2.0",
     "vue-router": "^2.8.1",
     "vue-simple-audio": "^1.0.6",
