@@ -4,7 +4,7 @@
   </div>
 </template>
 <style lang="scss" scoped>
-@import "~@/styles/colors.scss";
+@import "~assets/style/colors.scss";
 .html-content-holder{
   width: 100%;
   float: left;
@@ -29,7 +29,6 @@ iframe{
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px $tertiary;
   border-radius: 2px;
   margin-top: 20px;
   margin-bottom: 20px;
