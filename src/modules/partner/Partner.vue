@@ -6,10 +6,10 @@
         <i class="fa fa-user-circle-o" v-else></i>
       </div>
       <div class="partner-info">
-        <label><h5>{{item.name}}</h5></label>
+        <label class="item-name"><h5>{{item.name}}</h5></label>
         <label><i class="fas fa-map-marker-alt"></i>{{item.address}}</label>
         <label class="text-warning action-link" v-on:click="redirect('/messenger/' + item.account.username)"><i class="fas fa-envelope"></i>Send Message</label>
-        <label class="text-danger action-link"><i class="fas fa-store"></i>View Store</label>
+        <label class="text-danger action-link" v-on:click="redirect('/store/'+ item.code)"><i class="fas fa-store"></i>View Store</label>
       </div>
       <div class="partner-reviews">
 <!--         <label class="input-group">
@@ -60,6 +60,7 @@
   padding-left: 10px;
 }
 .partner-info{
+  margin-top: 5px;
   width: 35%;
   float: left;
 }
@@ -75,6 +76,7 @@
 .partner-reviews{
   width: 50%;
   float: left;
+  margin-top: 5px;
 }
 .partner-reviews label{
   width: 95%;
@@ -91,6 +93,40 @@
   .partner-reviews{
     width: 100%;
     padding-left: 10px;
+  }
+}
+@media only screen and (max-width: 400px){
+  .partner-profile{
+    width: 80%;
+    float: left;
+    /* text-align: center; */
+    margin-left: 33px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .partner-profile img{
+    width: 100%;
+    border-radius: 5px;
+  }
+  /* .item-name{
+    text-align: center;
+    padding-bottom: 10px;
+  } */
+  .partner-info{
+    width: 60%;
+  }
+  .partner-reviews{
+    width: 40%;
+    float: right;
+    margin-top: 25px;
+  }
+  .partner-reviews label{
+    width: 95%;
+    float: right;
+    margin-right: 5%;
+  }
+  .reviews i{
+    padding-right: 5px;
   }
 }
 </style>
