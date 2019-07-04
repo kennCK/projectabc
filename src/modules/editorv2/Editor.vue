@@ -60,7 +60,7 @@
     </div>
     <div class="editor-body">
       <editor-body :color="color"></editor-body>
-      <color-picker :color="color" @selectedColor="color = $event"></color-picker>
+<!--       <color-picker :color="color" @selectedColor="color = $event"></color-picker> -->
     </div>
   </div>
 </template>
