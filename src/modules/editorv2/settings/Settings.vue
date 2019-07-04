@@ -1,35 +1,26 @@
 <template>
   <div class="text-holder">
-    <div class="attribute-item">
-      <i class="fas fa-font"></i>
-      <select class="form-control">
-        <option v-for="(item, index) in fontStyles" :key="index">  {{item}}
-        </option>
-      </select>
-    </div>
     <div>
       <span class="attribute-item">
-        <i class="fas fa-palette"></i>
+      	<label>Background</label>
         <input type="text" class="form-control" v-model="color"/>
         <i v-bind:class="{'active': showColor === true}" class="fas fa-eye-dropper icon-right bordered-hover" @click="showColor = !showColor"></i>
       </span>
-      <color-picker :color="color" @selectedColor="color = $event" v-if="showColor === true" :position="{right: '13%'}"></color-picker>
+      <color-picker :color="color" @selectedColor="setColor($event)" v-if="showColor === true" :position="{right: '13%'}"></color-picker>
     </div>
-    <div class="attribute-multiple">
-      <i class="fas fa-bold bordered-hover"></i>
-      <i class="fas fa-italic bordered-hover"></i>
-      <label style="text-decoration: inital" class="bordered-hover">T</label>
-      <label style="text-decoration: underline" class="bordered-hover">T</label>
-      <label style="text-decoration: line-through" class="bordered-hover">T</label>
-      <label style="text-decoration: overline" class="bordered-hover">T</label>
+    <div class="attribute-double">
+    	<span class="half">
+    		<i class="fas fa-arrows-alt-h"></i>
+    		<input type="number" class="form-control">
+    	</span>
+    	<span class="half">
+    		<i class="fas fa-arrows-alt-v"></i>
+    		<input type="number" class="form-control">
+    	</span>
     </div>
-    <div class="attribute-multiple">
-      <i class="fas fa-align-left bordered-hover"></i>
-      <i class="fas fa-align-right bordered-hover"></i>
-      <i class="fas fa-align-center bordered-hover"></i>
-      <i class="fas fa-align-justify bordered-hover"></i>
-      <i class="fas fa-indent bordered-hover"></i>
-      <i class="fas fa-outdent bordered-hover"></i>
+    <div class="attribute-item">
+    	<label>Rounded</label>
+      <input type="number" class="form-control" style="padding-right: 0px;" />
     </div>
   </div>
 </template>
@@ -49,6 +40,12 @@
     height: 30px;
     border-bottom: solid 1px $gray;
   }
+  .attribute-item label{
+  	position: absolute;
+  	line-height: 28px;
+  	z-index: 1;
+  }
+
   .attribute-item i{
     width: 30px;
     position: absolute;
@@ -59,16 +56,24 @@
 
   .attribute-item .icon-right{
     right: 0px;
-    text-align: center;
   }
 
-  .attribute-item .form-control{
-    position: absolute;
-    z-index: 0;
+	.form-control{
+		z-index: 0;
     height: 28px !important;
     font-size: 11px !important;
-    padding-left: 35px !important;
-    border: none !important;
+    border-top: none !important;
+    border-left: solid 1px $gray;
+    border-right: none !important;
+    border-bottom: none !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+    margin-top: 1px;
+	}
+  .attribute-item .form-control{
+    position: absolute;
+    width: 50%;
+    right: 0px;
   }
 
   .attribute-multiple{
@@ -98,6 +103,29 @@
     background: $primary;
     color: white;
   }
+
+  .attribute-double{
+  	width: 100%;
+  	float: left;
+  	border-bottom: solid 1px $gray;
+  	line-height: 28px;
+  }
+
+  .half{
+  	width: 50%;
+  	float: left;
+  	border-right: solid 1px $gray;
+  }
+  .half i{
+  	float: left;
+  	line-height: 30px;
+  	width: 30%;
+  	text-align: center;
+  }
+  .half .form-control{
+  	width: 70%;
+  	float: right;
+  }
 </style>
 <script>
 export default{
@@ -105,11 +133,19 @@ export default{
     return {
       fontStyles: ['Arial', 'Helvitica', 'Sans-serif'],
       color: '#ffffff',
-      showColor: false
+      showColor: false,
+      test: null
     }
   },
+  props: ['template'],
   components: {
     'color-picker': require('modules/editorv2/colors/Picker.vue')
+  },
+  methods: {
+    setColor(color){
+      this.color = color
+      this.template.pages[this.template.selectedPage].style.background = color
+    }
   }
 }
 </script>

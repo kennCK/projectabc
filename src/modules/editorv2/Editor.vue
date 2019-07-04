@@ -41,16 +41,31 @@
         <dropdown-object v-if="activeDropdown === 'object'" @objectEvent="selectedObject = $event"></dropdown-object>
       </span>
 
+      <span class="editor-dropdown text-white" @click="showDropdown('drawing')">
+        <label>
+          <i v-bind:class="selectedDrawing" class="text-white"></i>
+        </label>
+        <i class="fa fa-chevron-down"></i>
+        <dropdown-drawing v-if="activeDropdown === 'drawing'" @objectEvent="selectedDrawing = $event"></dropdown-drawing>
+      </span>
+
       <span class="editor-dropdown text-white" @click="showDropdown('settings')">
         <label>
           <i class="fas fa-cog text-white"></i>
         </label>
         <i class="fa fa-chevron-down"></i>
-        <dropdown-settings v-if="activeDropdown === 'settings'" @objectEvent="selectedObject = $event"></dropdown-settings>
+        <dropdown-settings v-if="activeDropdown === 'settings'" @objectEvent="selectedSettings = $event"></dropdown-settings>
+      </span>
+
+
+      <span class="editor-dropdown text-white" @click="showDropdown('frame')">
+        <label style="padding: 0px 5px;">
+          <i class="fas fa-clone"></i>
+        </label>
       </span>
 
       <label class="text-white" style="font-size: 13px; padding-left: 100px;">
-        {{title}}
+        {{template.type}} / <b>{{template.title}}</b>
       </label>
       <span class="pull-right">
         <button class="btn btn-danger">Save</button>
@@ -59,7 +74,7 @@
       </span>
     </div>
     <div class="editor-body">
-      <editor-body :color="color"></editor-body>
+      <editor-body :template="template"></editor-body>
 <!--       <color-picker :color="color" @selectedColor="color = $event"></color-picker> -->
     </div>
   </div>
@@ -77,6 +92,8 @@
   float: left;
   height: 40px;
   background: $primary;
+  position: fixed;
+  z-index: 2;
 }
 
 
@@ -139,6 +156,7 @@
   float: left;
   height: calc(100vh - 40px);
   background: white;
+  margin-top: 40px;
 }
 
 .editor-dropdown{
@@ -170,8 +188,26 @@ export default {
       selectedZoom: 100,
       selectedMoveScale: 'Move',
       selectedObject: 'fas fa-square',
+      selectedDrawing: 'fas fa-pencil-alt',
+      selectedSettings: null,
       activeDropdown: null,
-      color: '#ffffff'
+      template: {
+        title: 'This is a test',
+        type: 'Tarpaulin',
+        contents: {
+          style: {
+            height: '300px',
+            width: '500px',
+            background: '#ffffff'
+          },
+          pages: [],
+          plugins: [],
+          selected_page: null,
+          selected_plugin: null
+        },
+        purpose: 0,
+        status: 0
+      }
     }
   },
   components: {
@@ -180,6 +216,7 @@ export default {
     'dropdown-zoom': require('modules/editorv2/dropdowns/Zoom.vue'),
     'dropdown-movescale': require('modules/editorv2/dropdowns/MoveScale.vue'),
     'dropdown-object': require('modules/editorv2/dropdowns/Objects.vue'),
+    'dropdown-drawing': require('modules/editorv2/dropdowns/Drawing.vue'),
     'dropdown-settings': require('modules/editorv2/dropdowns/Settings'),
     'color-picker': require('modules/editorv2/colors/Picker.vue')
   },

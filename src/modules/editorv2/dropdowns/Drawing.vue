@@ -1,7 +1,11 @@
 <template>
   <div class="menu-holder">
     <ul class="editor-menu">
-      <li v-for="(item, index) in menus" :key="index" @click="select(item)">{{item}}</li>
+      <li style="border-bottom: solid 1px white;">Drawing Tools</li>
+      <li v-for="(item, index) in menus" :key="index" @click="select(item)">
+        <i v-bind:class="item.icon" style="padding-right: 10px;" v-if="item.icon !== null"></i>
+        {{item.title}}
+      </li>
     </ul>
   </div>
 </template>
@@ -31,6 +35,13 @@
   line-height: 30px;
   padding-left: 10px;
 }
+
+i{
+  width: 30px;
+  text-align: center;
+  color: white;
+}
+
 .editor-menu li:hover{
   color: $secondary;
   cursor: pointer;
@@ -40,7 +51,16 @@
 export default{
   data () {
     return {
-      menus: ['Templates', 'Export as PNG', 'Export as JPG']
+      menus: [{
+        title: 'Pencil',
+        icon: 'fas fa-pencil-alt'
+      }, {
+        title: 'Pen Tool',
+        icon: 'fas fa-pen-nib'
+      }, {
+        title: 'Bend Tool',
+        icon: null
+      }]
     }
   },
   methods: {

@@ -1,9 +1,8 @@
 <template>
   <div class="menu-holder">
     <ul class="editor-menu">
-      <li style="border-bottom: solid 1px white;">Settings Window</li>
+      <li style="border-bottom: solid 1px white;">Window Settings</li>
       <li v-for="(item, index) in menus" :key="index" @click="select(item)">
-        <i v-bind:class="item.icon" style="padding-right: 10px;"></i>
         {{item.title}}
       </li>
     </ul>
@@ -51,14 +50,15 @@ export default{
   data () {
     return {
       menus: [{
-        title: 'Text',
-        icon: 'fas fa-bold'
+        title: 'Text'
       }, {
-        title: 'Settings',
-        icon: 'fas fa-cog'
+        title: 'Settings'
       }, {
-        title: 'Color',
-        icon: 'fas fa-palette'
+        title: 'Color'
+      }, {
+        title: 'Stroke'
+      }, {
+        title: 'Shadow'
       }]
     }
   },
