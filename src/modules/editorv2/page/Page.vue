@@ -2,7 +2,9 @@
 	<div class="holder">
 		<div class="page-holder" v-for="(page, pageIndex) in template.contents.pages" :key="pageIndex">
 			<div class="page-container" :style="page.style">
-				<div v-bind:style="layer.style" v-for="(layer, layerIndex) in page.layers" :key="layerIndex"></div>
+				<div v-bind:style="layer.style" v-for="(layer, layerIndex) in page.layers" :key="layerIndex">
+					<div v-bind:style="object.style" v-for="(object, objectIndex) in layer.objects" :key="objectIndex"></div>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -161,7 +161,7 @@ export default{
     },
     makeActive(item){
       this.activeTab = item
-      this.global.selectedLeftMenu = item
+      this.global.selectedTopMenu = item
     }
   }
 }
