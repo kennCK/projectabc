@@ -12,7 +12,8 @@
   </div>
 </template>
 <style lang="scss" scoped>
-@import "~@/styles/colors.scss";
+@import "~assets/style/colors.scss";
+
 .phone-wrapper{
   width: 100%;
   height: 100%;
@@ -59,7 +60,7 @@
 }
 </style>
 <script>
-import HtmlContent from '@/components/devices/Content.vue'
+import HtmlContent from 'src/components/devices/Content.vue'
 export default {
   props: ['content'],
   components: {
