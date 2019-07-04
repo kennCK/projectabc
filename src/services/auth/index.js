@@ -7,6 +7,7 @@ import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 import Config from '../../config.js'
 export default {
+  mode: 0,
   user: {
     userID: 0,
     username: '',
@@ -340,5 +341,12 @@ export default {
         }
       }
     })
+  },
+  triggerAudioCall(){
+    $('#audio-call').css({'display': 'block'})
+    this.playNotificationSound()
+    // setTimeout(() => {
+    //   $('#audio-call').css({display: 'none'})
+    // }, 2000)
   }
 }
