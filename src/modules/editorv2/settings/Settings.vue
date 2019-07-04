@@ -3,7 +3,7 @@
     <div>
       <span class="attribute-item">
       	<label>Background</label>
-        <input type="text" class="form-control" v-model="template.pages[template.selectedPage].style.background"/>
+        <input type="text" class="form-control" v-model="color"/>
         <i v-bind:class="{'active': showColor === true}" class="fas fa-eye-dropper icon-right bordered-hover" @click="showColor = !showColor"></i>
       </span>
       <color-picker :color="color" @selectedColor="setColor($event)" v-if="showColor === true" :position="{right: '13%'}"></color-picker>

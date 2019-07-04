@@ -3,12 +3,13 @@
     <ul class="pages-wrapper">
       <li class="pages-item">
         <i class="fas fa-plus pull-right" @click="add()"></i>
-      </li>
-      <li class="pages-item" v-for="(item, index) in template.pages" :key="index" @click="template.selectedPage = index" v-bind:class="{'active': template.selectedPage === index}">
-        <i class="fa" v-bind:class="{'fa-eye': item.eye === true,  'fa-eye-slash': item.eye === false}" @click="item.eye = !item.eye"></i>
-        <span>{{item.title}}</span>
         <i class="fa fa-trash text-danger pull-right"></i>
         <i class="fa fa-clone text-primary pull-right"></i>
+      </li>
+      <li class="pages-item" v-for="(item, index) in template.contents.pages" :key="index" @click="template.contents.selected_page = index" v-bind:class="{'active': template.contents.selected_page === index}">
+        <i class="fa" v-bind:class="{'fa-eye': item.eye === true,  'fa-eye-slash': item.eye === false}" @click="item.eye = !item.eye"></i>
+        <i class="fas" v-bind:class="{'fa-unlock': item.locked === false,  'fa-lock': item.locked === true}" @click="item.locked = !item.locked"></i>
+        <span>{{item.title + ' ' + (index + 1)}}</span>
       </li>
     </ul>
   </div>
@@ -79,19 +80,15 @@ export default {
   methods: {
     add(){
       let newPage = {
-        style: {
-          height: this.template.style.height,
-          width: this.template.style.width,
-          background: this.template.style.background
-        },
+        style: this.template.contents.style,
+        title: 'Page',
+        eye: true,
         layers: [],
-        title: 'Page ' + (this.template.pages.length + 1),
-        eye: true
+        selected_layer: null,
+        edit_flag: false,
+        locked: false
       }
-      this.template.pages.push(newPage)
-    },
-    setPageActive(index){
-      this.$emit('setPageActiveEvent', index)
+      this.template.contents.pages.push(newPage)
     }
   }
 }

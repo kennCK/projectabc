@@ -1,6 +1,6 @@
 <template>
 	<div class="holder">
-		<div class="page-holder" v-for="(item, index) in template.pages" :key="index">
+		<div class="page-holder" v-for="(item, index) in template.contents.pages" :key="index">
 			<div class="page-container" :style="item.style">
 			</div>	
 		</div>

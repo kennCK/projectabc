@@ -5,7 +5,7 @@
 				<li v-for="(item, index) in layerTabs" :key="index" v-bind:class="{'active': item === activeTab}" @click="activeTab = item">{{item}}</li>
 			</ul>
 			<div class="option-contents">
-				<editor-layers v-if="activeTab === 'Layers'"></editor-layers>
+				<editor-layers v-if="activeTab === 'Layers'"  :page="template.contents.pages[template.contents.selected_page]"></editor-layers>
 				<editor-assets v-if="activeTab === 'Assets'"></editor-assets>
 				<editor-pages v-if="activeTab === 'Pages'" :template="template"></editor-pages>
 			</div>

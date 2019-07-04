@@ -2,25 +2,32 @@
   <div class="layer-holder">
     <ul class="layer-wrapper">
       <li class="layer-item">
-        <i class="fas fa-plus pull-right"></i>
+        <i class="fas fa-plus pull-right" @click="add()"></i>
+        <i class="fa fa-trash text-danger pull-right"></i>
+        <i class="fa fa-clone text-primary pull-right"></i>
       </li>
-      <li class="layer-item" v-for="(item, index) in layers" :key="index">
+      <li class="layer-item" v-for="(item, index) in page.layers" :key="index" v-bind:class="{'active': page.selected_layer === index}" @click="page.selected_layer = index">
+
         <i class="fa" v-bind:class="{'fa-eye': item.eye === true,  'fa-eye-slash': item.eye === false}" @click="item.eye = !item.eye"></i>
-        <i class="fa fa-image" v-if="item.type === 'image'"></i>
-        <i class="fa fa-square" v-if="item.type === 'object'"></i>
-        <i class="fa fa-paragraph" v-if="item.type === 'text'"></i>
-        <i class="fas fa-dice-d6" v-if="item.type === 'frame'"></i>
-        <span v-if="item.editFlag === false" @dblclick="item.editFlag = true">{{item.title}}</span>
-        <input type="text" v-model="item.title" v-if="item.editFlag === true" @keyup.enter="item.editFlag = false"> 
-        <i class="fas fa-chevron-down pull-right" v-if="item.type === 'frame' & item.show === false" @click="item.show = true"></i>
-        <i class="fas fa-chevron-up pull-right" v-if="item.type === 'frame' & item.show === true" @click="item.show = false"></i>
+        
+        <i class="fas" v-bind:class="{'fa-unlock': item.locked === false,  'fa-lock': item.locked === true}" @click="item.locked = !item.locked"></i>
+        
+
+        <span v-if="item.edit_flag === false" @dblclick="item.edit_flag = true">{{item.title + (index + 1)}}</span>
+        
+        <input type="text" v-model="item.title" v-if="item.edit_flag === true" @keyup.enter="item.edit_flag = false"> 
+
+        <i class="fas fa-chevron-down pull-right" v-if="item.show === false && item.objects.length > 0" @click="item.show = true"></i>
+        
+        <i class="fas fa-chevron-up pull-right" v-if="item.show === true && item.objects.length > 0" @click="item.show = false"></i>
+
         <ul v-if="item.type === 'frame' && item.show === true">
           <li v-for="(lItem, lIndex) in item.objects" :key="lIndex">
             <i class="fa fa-image" v-if="lItem.type === 'image'"></i>
             <i class="fa fa-square" v-if="lItem.type === 'object'"></i>
             <i class="fa fa-paragraph" v-if="lItem.type === 'text'"></i>
-            <span v-if="lItem.editFlag === false" @dblclick="lItem.editFlag = true">{{lItem.title}}</span>
-            <input type="text" v-model="lItem.title"  v-if="lItem.editFlag === true" @keyup.enter="lItem.editFlag = false">
+            <span v-if="lItem.edit_flag === false" @dblclick="lItem.edit_flag = true">{{lItem.title}}</span>
+            <input type="text" v-model="lItem.title"  v-if="lItem.edit_flag === true" @keyup.enter="lItem.edit_flag = false">
           </li>
         </ul>
       </li>
@@ -73,52 +80,32 @@
   .pull-right{
     line-height: 30px;
   }
+
+  .active{
+    background: $gray;
+    color: white;
+  }
 </style>
 <script>
 export default {
   data () {
     return {
-      layers: [{
-        title: 'test',
-        editFlag: false,
-        type: 'image',
-        objects: [],
-        eye: true
-      }, {
-        title: 'background',
-        editFlag: false,
-        type: 'object',
-        objects: [],
-        eye: true
-      }, {
-        title: 'title',
-        editFlag: false,
-        type: 'text',
-        objects: [],
-        eye: true
-      }, {
-        title: 'title',
-        editFlag: false,
-        type: 'frame',
+    }
+  },
+  props: ['page'],
+  methods: {
+    add(){
+      let layer = {
+        title: 'Layer ',
+        edit_flag: false,
+        style: this.page.style,
+        eye: false,
         show: false,
-        eye: true,
-        objects: [{
-          title: 'test',
-          editFlag: false,
-          type: 'image',
-          eye: true
-        }, {
-          title: 'background',
-          editFlag: false,
-          type: 'object',
-          eye: true
-        }, {
-          title: 'title',
-          editFlag: false,
-          type: 'text',
-          eye: true
-        }]
-      }]
+        objects: [],
+        selected_object: null,
+        locked: false
+      }
+      this.page.layers.push(layer)
     }
   }
 }

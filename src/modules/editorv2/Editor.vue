@@ -194,14 +194,19 @@ export default {
       template: {
         title: 'This is a test',
         type: 'Tarpaulin',
-        style: {
-          height: '500px',
-          width: '600px',
-          background: '#ffffff'
+        contents: {
+          style: {
+            height: '300px',
+            width: '500px',
+            background: '#ffffff'
+          },
+          pages: [],
+          plugins: [],
+          selected_page: null,
+          selected_plugin: null
         },
-        pages: [],
-        plugins: [],
-        selectedPage: null
+        purpose: 0,
+        status: 0
       }
     }
   },
