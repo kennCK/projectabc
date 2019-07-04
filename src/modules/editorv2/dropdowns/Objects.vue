@@ -47,6 +47,7 @@ i{
 }
 </style>
 <script>
+import GLOBAL from 'src/modules/editorv2/global.js'
 export default{
   data () {
     return {
@@ -65,6 +66,7 @@ export default{
   methods: {
     select(item) {
       this.$emit('objectEvent', item.icon)
+      GLOBAL.addObject(item.title)
     }
   }
 }

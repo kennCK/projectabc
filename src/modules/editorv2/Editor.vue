@@ -3,54 +3,74 @@
     <div class="editor-header">
       <span class="pull-left">
         <i class="fa fa-bars editor-menu" v-bind:class="{'gray': activeDropdown === 'mainMenu'}" @click="showDropdown('mainMenu')"></i>
-        <dropdown-menu v-if="activeDropdown === 'mainMenu'"></dropdown-menu>
+        <dropdown-menu v-if="activeDropdown === 'mainMenu'" @closed="activeDropdown = null"></dropdown-menu>
       </span>
-      
-      <span class="editor-dropdown text-white" @click="showDropdown('moveScale')">
-        <label>{{selectedMoveScale}}</label>
-        <i class="fa fa-chevron-down"></i>
-        <dropdown-movescale v-if="activeDropdown === 'moveScale'" @moveEvent="selectedMoveScale = $event"></dropdown-movescale>
-      </span>
-      
-      <span class="editor-dropdown text-white" @click="showDropdown('zoom')">
-        <label>{{selectedZoom}}%</label>
-        <i class="fa fa-chevron-down"></i>
-        <dropdown-zoom v-if="activeDropdown === 'zoom'" @zoomEvent="selectedZoom = $event"></dropdown-zoom>
-      </span>
+      <div v-if="global.template !== null">
+        <span class="editor-dropdown text-white" @click="showDropdown('moveScale')">
+          <label>{{selectedMoveScale}}</label>
+          <i class="fa fa-chevron-down"></i>
+          <dropdown-movescale v-if="activeDropdown === 'moveScale'" @moveEvent="selectedMoveScale = $event"></dropdown-movescale>
+        </span>
+        
+        <span class="editor-dropdown text-white" @click="showDropdown('zoom')">
+          <label>{{selectedZoom}}%</label>
+          <i class="fa fa-chevron-down"></i>
+          <dropdown-zoom v-if="activeDropdown === 'zoom'" @zoomEvent="selectedZoom = $event"></dropdown-zoom>
+        </span>
 
-      <span class="editor-dropdown text-white" @click="showDropdown('text')">
-        <label style="padding: 0px 5px;">T</label>
-      </span>
+        <span class="editor-dropdown text-white" @click="showDropdown('text')">
+          <label style="padding: 0px 5px;">T</label>
+        </span>
 
-      <span class="editor-dropdown text-white" @click="showDropdown('image')">
-        <label style="padding: 0px 5px;">
-          <i class="fa fa-image"></i>
-        </label>
-      </span>
-      <span class="editor-dropdown text-white" @click="showDropdown('frame')">
-        <label style="padding: 0px 5px;">
-          <i class="fas fa-dice-d6"></i>
-        </label>
-      </span>
+        <span class="editor-dropdown text-white" @click="showDropdown('image')">
+          <label style="padding: 0px 5px;">
+            <i class="fa fa-image"></i>
+          </label>
+        </span>
+        <span class="editor-dropdown text-white" @click="showDropdown('frame')">
+          <label style="padding: 0px 5px;">
+            <i class="fas fa-dice-d6"></i>
+          </label>
+        </span>
 
-      <span class="editor-dropdown text-white" @click="showDropdown('object')">
-        <label>
-          <i v-bind:class="selectedObject" class="text-white"></i>
-        </label>
-        <i class="fa fa-chevron-down"></i>
-        <dropdown-object v-if="activeDropdown === 'object'" @objectEvent="selectedObject = $event"></dropdown-object>
-      </span>
+        <span class="editor-dropdown text-white" @click="showDropdown('object')">
+          <label>
+            <i v-bind:class="selectedObject" class="text-white"></i>
+          </label>
+          <i class="fa fa-chevron-down"></i>
+          <dropdown-object v-if="activeDropdown === 'object'" @objectEvent="selectedObject = $event"></dropdown-object>
+        </span>
 
-      <span class="editor-dropdown text-white" @click="showDropdown('settings')">
-        <label>
-          <i class="fas fa-cog text-white"></i>
-        </label>
-        <i class="fa fa-chevron-down"></i>
-        <dropdown-settings v-if="activeDropdown === 'settings'" @objectEvent="selectedObject = $event"></dropdown-settings>
-      </span>
+        <span class="editor-dropdown text-white" @click="showDropdown('drawing')">
+          <label>
+            <i v-bind:class="selectedDrawing" class="text-white"></i>
+          </label>
+          <i class="fa fa-chevron-down"></i>
+          <dropdown-drawing v-if="activeDropdown === 'drawing'" @objectEvent="selectedDrawing = $event"></dropdown-drawing>
+        </span>
 
-      <label class="text-white" style="font-size: 13px; padding-left: 100px;">
-        {{title}}
+        <span class="editor-dropdown text-white" @click="showDropdown('settings')">
+          <label>
+            <i class="fas fa-cog text-white"></i>
+          </label>
+          <i class="fa fa-chevron-down"></i>
+          <dropdown-settings v-if="activeDropdown === 'settings'" @objectEvent="selectedSettings = $event"></dropdown-settings>
+        </span>
+
+
+        <span class="editor-dropdown text-white" @click="showDropdown('frame')">
+          <label style="padding: 0px 5px;">
+            <i class="fas fa-clone"></i>
+          </label>
+        </span>
+      </div>
+
+      <label class="text-white" style="font-size: 13px; padding-left: 100px;" v-if="global.template !== null">
+        {{global.template.type}} / <b @dblclick="global.template.edit_flag = true" v-if="global.template.edit_flag === false">{{global.template.title}}</b>
+        <input type="text" v-model="global.template.title" class="title-input" v-else @keyup.enter="global.template.edit_flag = false">
+      </label>
+      <label v-else class="text-white" style="padding-left: 10px;">
+        <b>Add new template</b>
       </label>
       <span class="pull-right">
         <button class="btn btn-danger">Save</button>
@@ -58,9 +78,9 @@
         <i class="fa fa-phone audio-call bg-white text-primary action-link" @click="auth.triggerAudioCall()"></i>
       </span>
     </div>
-    <div class="editor-body">
-      <editor-body :color="color"></editor-body>
-      <color-picker :color="color" @selectedColor="color = $event"></color-picker>
+    <div class="editor-body" v-if="global.template !== null">
+      <editor-body :template="global.template"></editor-body>
+<!--       <color-picker :color="color" @selectedColor="color = $event"></color-picker> -->
     </div>
   </div>
 </template>
@@ -77,6 +97,8 @@
   float: left;
   height: 40px;
   background: $primary;
+  position: fixed;
+  z-index: 2;
 }
 
 
@@ -139,6 +161,7 @@
   float: left;
   height: calc(100vh - 40px);
   background: white;
+  margin-top: 40px;
 }
 
 .editor-dropdown{
@@ -157,6 +180,7 @@
 import ROUTER from '../../router'
 import AUTH from '../../services/auth'
 import CONFIG from '../../config.js'
+import GLOBAL from 'src/modules/editorv2/global.js'
 import axios from 'axios'
 export default {
   mounted(){
@@ -170,8 +194,10 @@ export default {
       selectedZoom: 100,
       selectedMoveScale: 'Move',
       selectedObject: 'fas fa-square',
+      selectedDrawing: 'fas fa-pencil-alt',
+      selectedSettings: null,
       activeDropdown: null,
-      color: '#ffffff'
+      global: GLOBAL
     }
   },
   components: {
@@ -180,6 +206,7 @@ export default {
     'dropdown-zoom': require('modules/editorv2/dropdowns/Zoom.vue'),
     'dropdown-movescale': require('modules/editorv2/dropdowns/MoveScale.vue'),
     'dropdown-object': require('modules/editorv2/dropdowns/Objects.vue'),
+    'dropdown-drawing': require('modules/editorv2/dropdowns/Drawing.vue'),
     'dropdown-settings': require('modules/editorv2/dropdowns/Settings'),
     'color-picker': require('modules/editorv2/colors/Picker.vue')
   },

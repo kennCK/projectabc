@@ -5,7 +5,7 @@
         <div class="call-animation">
             <img class="img-circle" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
             </div>
-            <i class="fa fa-phone pull-left bg-danger icons" @click="endAudio"></i>
+            <i class="fa fa-phone pull-left bg-danger icons" @click="ignoreAudio"></i>
             <i class="fa fa-phone pull-right bg-primary icons" @click="accCall"></i>
             <h6 style="margin-top: 10px" class="text-center text-white">Calling...</h6>
             <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
@@ -16,31 +16,60 @@
         <div class="call-animation">
             <img class="img-circle pull-right" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
             </div>
-            <i class="fa fa-phone pull-left bg-danger icons" @click="endAudio"></i>
+            <i class="fa fa-phone pull-right bg-danger endicon" @click="endAudio"></i>
             <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
-            <h6 style="margin-top: 5px" class="text-center text-white">Ongoing Call</h6>
+            <h6 style="margin-top: 5px" class="text-center text-white">{{timeDisplay}}</h6>
         </span>
     </div>
   </div>
 </template>
 <script>
 import AUTH from 'src/services/auth'
+import { setInterval, clearInterval } from 'timers'
 export default {
   data(){
     return{
       user: AUTH.user,
       top: 200,
       right: 300,
-      status: 1
+      status: 1,
+      seconds: 0,
+      minutes: 0,
+      hours: 0,
+      timer: null,
+      timeDisplay: `00:00:00`
     }
   },
   methods: {
     endAudio(){
       $('#accept-call').css({'display': 'none'})
-      $('#audio-call').css({'display': 'none'})
+      clearInterval(this.timer)
+      this.seconds = 0
+      this.minutes = 0
+      this.hours = 0
     },
     accCall(){
       $('#accept-call').css({'display': 'block'})
+      $('#audio-call').css({'display': 'none'})
+      this.timeDisplay = `00:00:00`
+      this.timer = setInterval(() => {
+        this.seconds++
+        if (this.seconds === 60){
+          this.seconds = 0
+          this.minutes++
+        }
+        if (this.minutes === 60){
+          this.minutes = 0
+          this.hours++
+        }
+        let s = this.seconds.toString().padStart(2, '0')
+        let m = this.minutes.toString().padStart(2, '0')
+        let h = this.hours.toString().padStart(2, '0')
+        console.log('counting')
+        this.timeDisplay = `${h}:${m}:${s}`
+      }, 1000)
+    },
+    ignoreAudio(){
       $('#audio-call').css({'display': 'none'})
     }
   }
@@ -87,18 +116,32 @@ export default {
     text-align: center;
     // padding-right: 10px;
 }
+.endicon{
+    // font-size: 3em;
+    font-size: 32px;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    color: white;
+    line-height: 50px;
+    padding: 0%;
+    text-align: center;
+    position: absolute; 
+    top: 19px;
+    right: 19px;
+}
 #end-call:hover{
     cursor: pointer;
     color: $hover;
 }
 .call-animation {
-    background: #fff;
+    background: white;
     width: 80px;
     height: 80px;
     position: relative;
     margin: 0 auto;
     border-radius: 100%;
-    border: solid 5px #fff;
+    border: solid 5px white;
     animation: play 2s ease infinite;
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
