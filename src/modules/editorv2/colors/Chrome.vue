@@ -1,20 +1,16 @@
 <template>
   <div class="content-holder" v-bind:style="position">
-    <Sketch v-model="newColor" @input="pickColor()"></Sketch>
+    <Chrome v-model="newColor" @input="pickColor()"></Chrome>
   </div>
 </template>
 <style lang="scss" scoped>
 @import "~assets/style/colors.scss";
 .content-holder{
-  position: absolute;
-  min-height: 50px;
-  overflow-y: hidden;
-  width: 225px;
-  z-index: 1000;
+  width: 80%;
 }
 </style>
 <script>
-import { Sketch } from 'vue-color'
+import { Chrome } from 'vue-color'
 export default{
   data () {
     return {
@@ -23,7 +19,7 @@ export default{
   },
   props: ['position'],
   components: {
-    Sketch
+    Chrome
   },
   methods: {
     pickColor(){

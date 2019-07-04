@@ -37,15 +37,42 @@
 }
 </style>
 <script>
+import GLOBAL from 'src/modules/editorv2/global.js'
 export default{
   data () {
     return {
-      menus: ['Templates', 'Image', 'Object']
+      menus: ['Templates', 'Export as PNG', 'Export as JPG']
     }
   },
   methods: {
     select(item) {
-      this.$emit('add', item)
+      this.$emit('closed', item)
+      switch(item){
+        case 'Templates':
+          this.addTemplate()
+          break
+      }
+    },
+    addTemplate(){
+      let newTemplate = {
+        title: 'This is a test',
+        type: 'Tarpaulin',
+        edit_flag: false,
+        contents: {
+          style: {
+            height: '300px',
+            width: '500px',
+            background: '#ffffff'
+          },
+          pages: [],
+          plugins: [],
+          selected_page: null,
+          selected_plugin: null
+        },
+        purpose: 0,
+        status: 0
+      }
+      GLOBAL.addTemplate(newTemplate)
     }
   }
 }

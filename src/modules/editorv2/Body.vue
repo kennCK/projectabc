@@ -2,22 +2,28 @@
 	<div class="holder">
 		<div class="editor-layers">
 			<ul>
-				<li v-for="(item, index) in layerTabs" :key="index" v-bind:class="{'active': item === activeTab}" @click="activeTab = item">{{item}}</li>
+				<li v-for="(item, index) in layerTabs" :key="index" v-bind:class="{'active': item === activeTab}" @click="makeActive(item)">{{item}}</li>
 			</ul>
 			<div class="option-contents">
-				<editor-layers v-if="activeTab === 'Layers'"></editor-layers>
+				<editor-layers v-if="activeTab === 'Layers'"  :page="template.contents.pages[template.contents.selected_page]"></editor-layers>
 				<editor-assets v-if="activeTab === 'Assets'"></editor-assets>
-				<editor-pages v-if="activeTab === 'Pages'"></editor-pages>
+				<editor-pages v-if="activeTab === 'Pages'" :template="template"></editor-pages>
 			</div>
 		</div>
-		<div class="editor-body" v-bind:style="{'background': color}">
+		<div class="editor-body">
+			<page :template="template"></page>
 		</div>
 		<div class="editor-settings">
 			<ul>
-				<li v-for="(item, index) in settings" :key="index">{{item.title}}
+				<li v-for="(item, index) in settings" :key="index"><b class="text-primary">{{item.title}}</b>
 					<i class="fa fa-chevron-down pull-right" v-if="item.show === false" @click="item.show = true"></i>
 					<i class="fa fa-chevron-up pull-right" v-if="item.show === true" @click="item.show = false"></i>
-					<span class="option-holder" v-if="">
+					<span class="option-holder" v-if="item.show === true">
+						<settings-text v-if="item.title === 'Text'"></settings-text>
+						<settings-color :position="{right: '13%', top: '0%'}" v-if="item.title === 'Color'"></settings-color>
+						<settings-settings v-if="item.title === 'Settings'" :property="global.objectSettings"></settings-settings>
+						<settings-stroke v-if="item.title === 'Stroke'"></settings-stroke>
+						<settings-shadow v-if="item.title === 'Shadow'"></settings-shadow>
 					</span>
 				</li>
 			</ul>
@@ -35,6 +41,7 @@
 		width: 12%;
 		float: left;
 		height: 100%;
+		position: fixed;
 	}
 	
 	ul{
@@ -79,60 +86,82 @@
 	
 	.editor-body{
 		width: 76%;
-		float: left;
+		left: 12%;
 		height: 100%;
+		overflow: auto;
+		position: fixed;
 	}
 
 	.editor-settings{
 		width: 12%;
-		float: left;
+		right: 0px;
 		height: 100%;
 		border-left: solid 1px $gray;
+		position: fixed;
 	}
 
 	.editor-settings ul li{
 		width: 100%;
 		float: left;
-		height: 30px;
+		min-height: 30px;
 		line-height: 30px;
 		font-size: 11px;
 		color: black;
 		padding-left: 5px;
 		border-bottom: solid 1px $gray;
+		overflow-y: hidden;
 	}
 	.pull-right{
 		padding-right: 5px;
 		line-height: 30px;
 	}
-
 </style>
 <script>
+import GLOBAL from 'src/modules/editorv2/global.js'
 export default{
   data () {
     return {
       layerTabs: ['Pages', 'Layers', 'Assets'],
-      activeTab: 'Layers',
+      activeTab: 'Pages',
       settings: [{
+        title: 'Color',
+        show: false
+      }, {
         title: 'Settings',
         show: true
       }, {
-        title: 'Text',
-        show: true
+        title: 'Shadow',
+        show: false
       }, {
-        title: 'Color',
-        show: true
-      }]
+        title: 'Stroke',
+        show: false
+      }, {
+        title: 'Text',
+        show: false
+      }],
+      selectedPage: null,
+      global: GLOBAL
     }
   },
-  props: ['color'],
+  props: ['template'],
   components: {
     'editor-layers': require('modules/editorv2/layers/Layers.vue'),
     'editor-assets': require('modules/editorv2/layers/Assets.vue'),
-    'editor-pages': require('modules/editorv2/layers/Pages.vue')
+    'editor-pages': require('modules/editorv2/layers/Pages.vue'),
+    'settings-settings': require('modules/editorv2/settings/Settings.vue'),
+    'settings-shadow': require('modules/editorv2/settings/Shadow.vue'),
+    'settings-text': require('modules/editorv2/settings/Text.vue'),
+    'settings-stroke': require('modules/editorv2/settings/Stroke.vue'),
+    'settings-color': require('modules/editorv2/colors/Picker.vue'),
+    'page': require('modules/editorv2/page/Page.vue')
   },
   methods: {
     select(item) {
       this.$emit('add', item)
+    },
+    makeActive(item){
+      this.activeTab = item
+      this.global.selectedTopMenu = item
     }
   }
 }

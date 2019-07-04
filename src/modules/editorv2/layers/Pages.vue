@@ -1,10 +1,15 @@
 <template>
   <div class="pages-holder">
     <ul class="pages-wrapper">
-      <li class="pages-item" v-for="(item, index) in pages" :key="index">
-        <i class="fa" v-bind:class="{'fa-eye': item.eye === true,  'fa-eye-slash': item.eye === false}" @click="item.eye = !item.eye"></i>
-        <span>{{item.title}}</span>
+      <li class="pages-item">
+        <i class="fas fa-plus pull-right" @click="global.addPage()"></i>
         <i class="fa fa-trash text-danger pull-right"></i>
+        <i class="fa fa-clone text-primary pull-right"></i>
+      </li>
+      <li class="pages-item" v-for="(item, index) in template.contents.pages" :key="index" @click="makeActive(item, index)" v-bind:class="{'active': template.contents.selected_page === index}">
+        <i class="fa" v-bind:class="{'fa-eye': item.eye === true,  'fa-eye-slash': item.eye === false}" @click="item.eye = !item.eye"></i>
+        <i class="fas" v-bind:class="{'fa-unlock': item.locked === false,  'fa-lock': item.locked === true}" @click="item.locked = !item.locked"></i>
+        <span>{{item.title + ' ' + (index + 1)}}</span>
       </li>
     </ul>
   </div>
@@ -55,18 +60,30 @@
   .pull-right{
     line-height: 30px;
   }
+
+  .active{
+    background: $gray;
+    color: white;
+  }
 </style>
 <script>
+import ROUTER from 'src/router'
+import AUTH from 'src/services/auth'
+import CONFIG from 'src/config.js'
+import axios from 'axios'
+import GLOBAL from 'src/modules/editorv2/global.js'
 export default {
-  data () {
+  data(){
     return {
-      pages: [{
-        title: 'Page 1',
-        eye: true
-      }, {
-        title: 'Page 2',
-        eye: true
-      }]
+      global: GLOBAL
+    }
+  },
+  props: ['template'],
+  methods: {
+    makeActive(item, index){
+      this.template.contents.selected_page = index
+      GLOBAL.activePageIndex = index
+      GLOBAL.objectSettings = item.style
     }
   }
 }
