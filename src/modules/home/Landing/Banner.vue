@@ -2,22 +2,46 @@
 	<div class="cw-banner bg-secondary">
     <div class="text text-white">
       <span class="title">
-        <h1>Design an ID. We Print.</h1>
+        <h1>Design and printing is made a lot easier.</h1>
       </span>
       <span class="description">
         <h4>
-          ID Factory lets you design and create custom professional-looking IDs. Ideal for companies, corporate events, condos and many more.
-          (Create. Print. Manage. All in one place.)
+          Here in PaPrint, we help customers with low graphic design skills and connect them easily to the best printing companies.
         </h4>
         <button class="btn btn-warning btn-banner" v-on:click="redirect('/signup')"> Start free 30-day trial</button>
       </span>
-    </div>
-    <div class="image">
-      <img src="../../../assets/img/banner.png" width="100%">
-    </div>
-  </div>
+    </div> 
+    <div class="division">
+        <div class="phone">
+          <Phone :content="'http://localhost:8008/#/'"></Phone>
+        </div>
+     </div> 
+   </div>
 </template>
+</span>
 <style scoped>
+@import "~assets/style/colors.scss";
+
+
+.division{
+  border:1px;
+  width: 50%;
+  min-height: 450px;
+  overflow-y: hidden;
+  margin-top: 75px;
+  margin-bottom: 25px;
+}
+
+
+.phone{
+  width: 280px;
+  height: 500px;
+  float: left;
+  position: relative;
+  margin-left: 220px;
+  margin-right: 220px;
+}
+
 .btn-banner {
   padding-top: 0px !important;
   padding: 50px;
@@ -54,13 +78,6 @@
   float: left;
   text-align: justify;
 }
-.image{
-  width: 40%;
-  right: 10%;
-  bottom: -10px;
-  display: block;
-  position: absolute;
-}
 @media screen and (max-width: 992px){
   .text{
     width: 90%;
@@ -81,17 +98,23 @@
     margin-right: 0%;
     padding: 0;
   }
+
+
 }
 </style>
 <script>
 import ROUTER from '../../../router'
 import AUTH from '../../../services/auth'
+import Phone from 'src/components/devices/HuaweiP30.vue'
 export default {
   mounted(){
   },
   data(){
     return {
     }
+  },
+  components: {
+    Phone
   },
   methods: {
     redirect(parameter){

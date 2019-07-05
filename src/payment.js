@@ -1,6 +1,6 @@
 import CONFIG from 'config.js'
 export default{
-  currency: 'usd',
+  currency: 'PHP',
   flag: false,
   stripe: {
     live_pk: 'pk_test_MGWJovoYWYwfmZkZ9EAWXC7y',

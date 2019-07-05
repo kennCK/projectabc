@@ -14,7 +14,7 @@
                 </span>
                 <i v-bind:class="toggleSidebar + ' pull-right'" aria-hidden="true" v-on:click="changeToggleSidebarIcon()" id="toggleIcon"></i>
             </li>
-            <li v-for="item, index in menu" v-bind:class="{ 'active-menu': item.flag === true }" v-on:click="setActive(index)" v-if="(((item.users === user.type || item.users === 'ALL') && user.type !== 'ADMIN') || user.type === 'ADMIN') && menuFlag === true" class="menu-holder">
+            <li v-for="(item, index) in menu" :key="index" v-bind:class="{ 'active-menu': item.flag === true }" v-on:click="setActive(index)" v-if="(((item.users === user.type || item.users === 'ALL') && user.type !== 'ADMIN') || user.type === 'ADMIN') && menuFlag === true" class="menu-holder">
               <i v-bind:class="item.icon" class=" visible"></i> 
               <label>{{item.description}}</label>
               <ul class="sub-menu" v-if="item.subMenu !== null">
