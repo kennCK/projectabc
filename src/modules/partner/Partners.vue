@@ -12,16 +12,17 @@
 </template>
 <style scoped>
 .partner-holder{
-  width: 70%;
+  width: 100%;
   float: left;
   margin-top: 25px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 .filter{
   width: 100%;
   float: left;
   height: 45px;
 }
-
 .form-control{
   height: 45px !important;
 }
@@ -38,7 +39,6 @@
   background: #028170 !important;
   color: #fff !important;
 }
-
 .partner-list{
   width: 100%;
   float: left;
@@ -46,6 +46,15 @@
 @media (max-width: 991px){
   .partner-holder{
     width: 100%;
+  }
+}
+@media only screen and (max-width: 400px){
+  .partner-holder{
+    width: 100%;
+    float: left;
+    margin-top: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
 </style>

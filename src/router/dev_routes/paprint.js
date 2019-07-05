@@ -1,4 +1,3 @@
-
 export default{
   routes: [{
     path: '/canales',
@@ -100,6 +99,21 @@ export default{
     path: '/files',
     name: 'files',
     component: resolve => require(['modules/file/Files.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/editor/v2/:code?',
+    name: 'editor',
+    component: resolve => require(['modules/editorv2/Editor.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/images',
+    name: 'images',
+    component: resolve => require(['components/increment/generic/image/Images.vue'], resolve),
     meta: {
       tokenRequired: true
     }
