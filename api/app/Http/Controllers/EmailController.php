@@ -93,12 +93,12 @@ class EmailController extends APIController
     }
 
     public function newMessage($accountId){
-        $online = app('Increment\Account\Http\AccountOnlineController')->getStatus($accountId);
-        $user = $this->retrieveAccountDetails($accountId);
-        if($user != null && $online == false){
-            Mail::to($user['email'])->send(new NewMessage($user));
-            return true;
-        }
+        // $online = app('Increment\Account\Http\AccountOnlineController')->getStatus($accountId);
+        // $user = $this->retrieveAccountDetails($accountId);
+        // if($user != null && $online == false){
+        //     Mail::to($user['email'])->send(new NewMessage($user));
+        //     return true;
+        // }
         return false;
     }
 
