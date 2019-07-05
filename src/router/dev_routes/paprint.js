@@ -102,7 +102,8 @@ export default{
     meta: {
       tokenRequired: true
     }
-  }, {
+  },
+  {
     path: '/editor/v2/:code?',
     name: 'editor',
     component: resolve => require(['modules/editorv2/Editor.vue'], resolve),
