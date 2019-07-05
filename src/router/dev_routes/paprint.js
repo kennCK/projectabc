@@ -97,9 +97,9 @@ export default{
     }
   },
   {
-    path: '/images',
-    name: 'images',
-    component: resolve => require(['components/increment/generic/image/Images.vue'], resolve),
+    path: '/files',
+    name: 'files',
+    component: resolve => require(['modules/file/Files.vue'], resolve),
     meta: {
       tokenRequired: true
     }
