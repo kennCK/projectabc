@@ -218,6 +218,7 @@ export default {
       this.user.messages.data = response.data
       this.user.messages.totalUnreadMessages = response.total_unread_messages
     })
+    console.log(this.user.messages.data)
   },
   startNotifTimer(accountId){
     if(this.notifTimer.timer === null){

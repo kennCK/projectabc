@@ -84,7 +84,7 @@
                 <i class="fas fa-envelope" style="font-size: 22px;margin-top: 2px;"></i>
                 <label class="badge badge-danger" style="margin-left: -15px;" v-if="parseInt(user.messages.totalUnreadMessages) > 0">{{user.messages.totalUnreadMessages}}</label>
               </span>
-              <span class="dropdown-menu dropdown-menu-right dropdown-menu-notification" aria-labelledby="notifications">
+              <span class="dropdown-menu dropdown-menu-right dropdown-menu-notification" aria-labelledby="notifications" v-if="user.messages.data !== null && user.messages.data[0] !== null">
                 <span class="notification-header" @click="redirect('/messenger')">
                   Recent
                   <label class="badge badge-danger">{{user.messages.totalUnreadMessages}}</label>
