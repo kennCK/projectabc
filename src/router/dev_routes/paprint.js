@@ -96,6 +96,14 @@ export default{
     }
   },
   {
+    path: '/files',
+    name: 'files',
+    component: resolve => require(['modules/file/Files.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
     path: '/editor/v2/:code?',
     name: 'editor',
     component: resolve => require(['modules/editorv2/Editor.vue'], resolve),

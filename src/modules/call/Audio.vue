@@ -1,26 +1,24 @@
 <template>
-  <div class="container1">
-    <div class="customModal" style="float: right" id="audio-call">
-      <span class="holder">   <!--  Ringing -->
-        <div class="call-animation">
-            <img class="img-circle" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
-            </div>
-            <i class="fa fa-phone pull-left bg-danger icons" @click="ignoreAudio"></i>
-            <i class="fa fa-phone pull-right bg-primary icons" @click="accCall"></i>
-            <h6 style="margin-top: 10px" class="text-center text-white">Calling...</h6>
-            <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
-      </span>
-    </div>
-    <div class="customModal" style="float: right" id="accept-call">
-       <span class="holder">   <!--  Ongoing -->
-        <div class="call-animation">
-            <img class="img-circle pull-right" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
-            </div>
-            <i class="fa fa-phone pull-right bg-danger endicon" @click="endAudio"></i>
-            <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
-            <h6 style="margin-top: 5px" class="text-center text-white">{{timeDisplay}}</h6>
-        </span>
-    </div>
+  <div class="audioModal" v-bind:style="position" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" id="audio-call">
+    <span class="holder" v-if="status === 0">   <!--  Ringing -->
+      <div class="call-animation">
+          <img class="img-circle" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
+      </div>
+      <i class="fa fa-phone pull-left bg-danger icons" @click="ignoreAudio"></i>
+      <i class="fa fa-phone pull-right bg-primary icons" @click="accCall"></i>
+      <h6 style="margin-top: 10px" class="text-center text-white">Calling...</h6>
+      <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
+    </span>
+
+    <span class="holder" v-if="status === 1">   <!--  Ongoing -->
+      <div class="call-animation">
+        <img class="img-circle pull-right" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
+      </div>
+      <i class="fa fa-phone pull-right bg-danger endicon" @click="endAudio"></i>
+      <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
+      <h6 style="margin-top: 5px" class="text-center text-white">{{timeDisplay}}</h6>
+    </span>
+
   </div>
 </template>
 <script>
@@ -30,27 +28,32 @@ export default {
   data(){
     return{
       user: AUTH.user,
-      top: 200,
-      right: 300,
-      status: 1,
+      position: {
+        top: '0',
+        right: '0'
+      },
+      status: 0,
       seconds: 0,
       minutes: 0,
       hours: 0,
       timer: null,
-      timeDisplay: `00:00:00`
+      timeDisplay: `00:00:00`,
+      posX: 0,
+      posY: 0,
+      selected: null
     }
   },
   methods: {
     endAudio(){
-      $('#accept-call').css({'display': 'none'})
+      this.status = 0
+      $('#audio-call').css({'display': 'none'})
       clearInterval(this.timer)
       this.seconds = 0
       this.minutes = 0
       this.hours = 0
     },
     accCall(){
-      $('#accept-call').css({'display': 'block'})
-      $('#audio-call').css({'display': 'none'})
+      this.status = 1
       this.timeDisplay = `00:00:00`
       this.timer = setInterval(() => {
         this.seconds++
@@ -70,19 +73,37 @@ export default {
       }, 1000)
     },
     ignoreAudio(){
+      this.status = 0
       $('#audio-call').css({'display': 'none'})
+    },
+    moveObject(event){
+      this.posX = event.x
+      this.posY = event.y
+    },
+    dragEnd(event){
+      let x = this.posX - event.x
+      let y = this.posY - event.y
+      this.manageAttributes(x, y * -1)
+    },
+    manageAttributes(x, y){
+      var top = this.position.top
+      var right = this.position.right
+      if(String(top).indexOf('p') > -1){
+        top = parseInt(top.substr(0, top.length - 2))
+      }
+      if(String(right).indexOf('p') > -1){
+        right = parseInt(right.substr(0, right.length - 2))
+      }
+      this.position.top = (top + y) + 'px'
+      this.position.right = (right + x) + 'px'
     }
   }
 }
 </script>
 <style scoped lang="scss">
 @import "~assets/style/colors.scss";
-.container1 {
-  position: relative;
-  width: 100%;
-}
-.customModal{
-  position: fixed;
+.audioModal{
+  position: absolute;
   background: #555;
   // top: 60px;
   // right: 0;
@@ -96,7 +117,7 @@ export default {
   display: none;
   padding-right: 10px;
   padding-top: 50px;
-  right:0;
+ // right:0;
 }
 .holder{
     float: left;
