@@ -51,6 +51,10 @@ export default {
       this.seconds = 0
       this.minutes = 0
       this.hours = 0
+      this.position = {
+        top: '0',
+        right: '0'
+      }
     },
     accCall(){
       this.status = 1
@@ -75,6 +79,10 @@ export default {
     ignoreAudio(){
       this.status = 0
       $('#audio-call').css({'display': 'none'})
+      this.position = {
+        top: '0',
+        right: '0'
+      }
     },
     moveObject(event){
       this.posX = event.x
@@ -103,7 +111,7 @@ export default {
 <style scoped lang="scss">
 @import "~assets/style/colors.scss";
 .audioModal{
-  position: absolute;
+  position: fixed;
   background: #555;
   // top: 60px;
   // right: 0;
@@ -179,6 +187,10 @@ export default {
         left: 0px;
         top: 0px;
     }
+  #audio-call:hover {
+    cursor: grabbing;
+    cursor: grab;
+  }
 @keyframes play {
 
     0% {
