@@ -1,25 +1,25 @@
 <template>
-	<div class="cw-banner bg-secondary">
-    <div class="text text-white">
-      <span class="title">
-        <h1>Design and printing is made a lot easier.</h1>
-      </span>
-      <span class="description">
-        <h4>
+	<div class="cw-banner">
+       <div class="text text-white">
+        <span class="title">
+         <h1>Design and printing is made a lot easier.</h1>
+       </span>
+        <span class="description">
+         <h4>
           Here in PaPrint, we help customers with low graphic design skills and connect them easily to the best printing companies.
-        </h4>
-        <button class="btn btn-warning btn-banner" v-on:click="redirect('/signup')"> Start free 30-day trial</button>
-      </span>
-    </div> 
-    <div class="division">
+         </h4>
+          <button class="btn btn-warning btn-banner" v-on:click="redirect('/signup')"> Start free 30-day trial</button>
+        </span>
+        </div> 
+      <div class="division">
         <div class="phone">
           <Phone :content="'http://localhost:8008/#/'"></Phone>
         </div>
      </div> 
-   </div>
+  </div>
 </template>
 </span>
-<style scoped>
+<style lang="scss"scoped>
 @import "~assets/style/colors.scss";
 
 
@@ -34,12 +34,11 @@
 
 
 .phone{
-  width: 280px;
-  height: 500px;
-  float: left;
+  width: 40%;   
+  height: 600px;
+  float: right;
   position: relative;
-  margin-left: 220px;
-  margin-right: 220px;
+  margin-right: 20%;
 }
 
 .btn-banner {
@@ -57,6 +56,11 @@
   min-height: 100px;
   overflow-y: hidden;
   position: relative;
+  background: url('~assets/img/image.png');
+  background-size: 100% auto;
+  background-repeat: no repeat;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 .text{
   width: 45%;
