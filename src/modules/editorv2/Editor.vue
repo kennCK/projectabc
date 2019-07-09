@@ -78,9 +78,14 @@
         <i class="fa fa-phone audio-call bg-white text-primary action-link" @click="auth.triggerAudioCall()"></i>
       </span>
     </div>
-    <div class="editor-body" v-if="global.template !== null">
+    <div class="editor-body">
       <editor-body :template="global.template"></editor-body>
+      <overlay :template="global.template" v-if="global.rightPaneOverlay !== null"></overlay>
 <!--       <color-picker :color="color" @selectedColor="color = $event"></color-picker> -->
+    </div>
+    <div class="screen-mode" >
+      <i class="fas fa-arrows-alt-h" v-if="auth.mode === 0" @click="auth.mode = 1"></i>
+      <i class="fas fa-compress" v-if="auth.mode === 1" @click="auth.mode = 0"></i>
     </div>
   </div>
 </template>
@@ -162,6 +167,7 @@
   height: calc(100vh - 40px);
   background: white;
   margin-top: 40px;
+  position: relative;
 }
 
 .editor-dropdown{
@@ -174,6 +180,29 @@
 
 .editor-dropdown label{
   padding-right: 5px;
+}
+
+.screen-mode{
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  bottom: 10px;
+  left: 10px;
+  border-radius: 50%;
+  background: $primary;
+  color: white;
+  line-height: 50px;
+  text-align: center;
+}
+
+.screen-mode i{
+  line-height: 50px;
+  font-size: 32px;
+}
+
+.screen-mode:hover{
+  cursor: pointer;
+  background: $secondary;
 }
 </style>
 <script>
@@ -208,7 +237,8 @@ export default {
     'dropdown-object': require('modules/editorv2/dropdowns/Objects.vue'),
     'dropdown-drawing': require('modules/editorv2/dropdowns/Drawing.vue'),
     'dropdown-settings': require('modules/editorv2/dropdowns/Settings'),
-    'color-picker': require('modules/editorv2/colors/Picker.vue')
+    'color-picker': require('modules/editorv2/colors/Picker.vue'),
+    'overlay': require('modules/editorv2/overlays/RightPane.vue')
   },
   methods: {
     redirect(parameter){

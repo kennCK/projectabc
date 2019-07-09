@@ -5,6 +5,7 @@ export default {
   activeLayerIndex: null,
   activeObjectIndex: null,
   objectSettings: null,
+  rightPaneOverlay: null,
   addTemplate(template){
     this.template = template
   },

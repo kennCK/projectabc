@@ -2,9 +2,17 @@
 	<div class="holder">
 		<div class="editor-layers">
 			<ul>
-				<li v-for="(item, index) in layerTabs" :key="index" v-bind:class="{'active': item === activeTab}" @click="makeActive(item)">{{item}}</li>
+        <li class="hidden text-center" v-if="active > 0">
+          <i class="fas fa-chevron-left" @click="active--, makeActive(layerTabs[active])"></i>
+        </li>
+				<li class="shown" v-bind:class="{'active': layerTabs[active] === activeTab}" @click="makeActive(layerTabs[active])">{{layerTabs[active]}}</li>
+        <li class="shown" v-bind:class="{'active': layerTabs[active + 1] === activeTab}" @click="makeActive(layerTabs[active + 1])">{{layerTabs[active + 1]}}</li>
+        <li class="hidden text-center" v-bind:style="{width: (active === 0) ? '20%' : '10%'}" @click="active++, makeActive(layerTabs[active])" v-if="active < (layerTabs.length - 1)">
+          <i class="fas fa-chevron-right"></i>
+        </li>
 			</ul>
 			<div class="option-contents">
+        <users v-if="activeTab === 'Designers'"></users>
 				<editor-layers v-if="activeTab === 'Layers'"  :page="template.contents.pages[template.contents.selected_page]"></editor-layers>
 				<editor-assets v-if="activeTab === 'Assets'"></editor-assets>
 				<editor-pages v-if="activeTab === 'Pages'" :template="template"></editor-pages>
@@ -35,6 +43,7 @@
 	.holder{
 		width: 100%;
 		height: 100%;
+    position: absolute;
 	}
 	
 	.editor-layers{
@@ -58,15 +67,22 @@
 	}
 
 	.editor-layers ul li{
-		width: 32%;
 		float: left;
 		height: 40px;
-		margin-left: 1%;
 		line-height: 40px;
 		font-size: 11px;
 		color: $gray;
 		text-align: center;
+
 	}
+
+  .editor-layers ul .shown{
+    width: 40%;
+  }
+
+  .editor-layers ul .hidden{
+    width: 10%;
+  }
 
 	ul li:hover{
 		cursor: pointer;
@@ -121,8 +137,8 @@ import GLOBAL from 'src/modules/editorv2/global.js'
 export default{
   data () {
     return {
-      layerTabs: ['Pages', 'Layers', 'Assets'],
-      activeTab: 'Pages',
+      layerTabs: ['Designers', 'Marketplace', 'Pages', 'Layers', 'Assets'],
+      activeTab: 'Designers',
       settings: [{
         title: 'Color',
         show: false
@@ -140,7 +156,8 @@ export default{
         show: false
       }],
       selectedPage: null,
-      global: GLOBAL
+      global: GLOBAL,
+      active: 0
     }
   },
   props: ['template'],
@@ -153,7 +170,8 @@ export default{
     'settings-text': require('modules/editorv2/settings/Text.vue'),
     'settings-stroke': require('modules/editorv2/settings/Stroke.vue'),
     'settings-color': require('modules/editorv2/colors/Picker.vue'),
-    'page': require('modules/editorv2/page/Page.vue')
+    'page': require('modules/editorv2/page/Page.vue'),
+    'users': require('modules/editorv2/overlays/Users.vue')
   },
   methods: {
     select(item) {

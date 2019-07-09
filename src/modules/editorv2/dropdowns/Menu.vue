@@ -30,6 +30,7 @@
   overflow-y: hidden;
   width: 150px;
   left: 155px;
+  z-index: 20;
 }
 
 .editor-menu{
@@ -103,10 +104,19 @@ export default{
         this.show(index)
         return
       }
-      this.$emit('closed', item.title)
+      this.$emit('closed', item)
       switch(item.payload){
         case 'new_template':
           this.addTemplate()
+          break
+        case 'marketplace_template':
+          GLOBAL.rightPaneOverlay = 'marketplace'
+          break
+        case 'designer':
+          GLOBAL.rightPaneOverlay = 'designer'
+          break
+        case 'printing':
+          GLOBAL.rightPaneOverlay = 'printing'
           break
       }
     },
