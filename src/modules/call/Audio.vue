@@ -1,6 +1,6 @@
 <template>
   <div class="audioModal" v-bind:style="position" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" id="audio-call">
-    <span class="holder" v-if="status === 0">   <!--  Ringing -->
+    <span class="holder" v-if="auth.audio.status === 0">   <!--  Ringing,Receiver -->
       <div class="call-animation">
           <img class="img-circle" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
       </div>
@@ -10,20 +10,29 @@
       <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
     </span>
 
-    <span class="holder" v-if="status === 1">   <!--  Ongoing -->
+    <span class="holder" v-if="auth.audio.status === 1">   <!--  Ongoing -->
       <div class="call-animation">
         <img class="img-circle pull-right" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
       </div>
       <i class="fa fa-phone pull-right bg-danger endicon" @click="endAudio"></i>
       <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
-      <h6 style="margin-top: 5px" class="text-center text-white">{{timeDisplay}}</h6>
+      <h6 style="margin-top: 5px" class="text-center text-white">{{auth.audio.timeDisplay}}</h6>
+    </span>
+
+     <span class="holder" v-if="auth.audio.status === 2">   <!--  Calling, Sender -->
+      <div class="call-animation">
+        <img class="img-circle pull-right" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
+      </div>
+      <i class="fa fa-phone pull-right bg-danger endicon" @click="endAudio"></i>
+       <h6 style="margin-top: 10px" class="text-center text-white">Calling...</h6>
+      <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
     </span>
 
   </div>
 </template>
 <script>
 import AUTH from 'src/services/auth'
-import { setInterval, clearInterval } from 'timers'
+// import { setInterval, clearInterval } from 'timers'
 export default {
   data(){
     return{
@@ -32,12 +41,12 @@ export default {
         top: '0',
         right: '0'
       },
-      status: 0,
-      seconds: 0,
-      minutes: 0,
-      hours: 0,
+      auth: AUTH,
+      // seconds: 0,
+      // minutes: 0,
+      // hours: 0,
       timer: null,
-      timeDisplay: `00:00:00`,
+     // timeDisplay: `00:00:00`,
       posX: 0,
       posY: 0,
       selected: null
@@ -45,44 +54,48 @@ export default {
   },
   methods: {
     endAudio(){
-      this.status = 0
-      $('#audio-call').css({'display': 'none'})
-      clearInterval(this.timer)
-      this.seconds = 0
-      this.minutes = 0
-      this.hours = 0
       this.position = {
         top: '0',
         right: '0'
       }
+      let parameter = {
+        receiver: this.auth.audio.receiverId,
+        sender: this.user.userID,
+        action: 0
+      }
+      this.APIRequest('audio_calls/send', parameter, (response) => {
+        console.log(response)
+      })
+      this.auth.audio.status = 0
+      // $('#audio-call').css({'display': 'none'})
+      this.auth.endAudioCallTimer()
     },
     accCall(){
-      this.status = 1
-      this.timeDisplay = `00:00:00`
-      this.timer = setInterval(() => {
-        this.seconds++
-        if (this.seconds === 60){
-          this.seconds = 0
-          this.minutes++
-        }
-        if (this.minutes === 60){
-          this.minutes = 0
-          this.hours++
-        }
-        let s = this.seconds.toString().padStart(2, '0')
-        let m = this.minutes.toString().padStart(2, '0')
-        let h = this.hours.toString().padStart(2, '0')
-        console.log('counting')
-        this.timeDisplay = `${h}:${m}:${s}`
-      }, 1000)
+      let parameter = {
+        receiver: this.auth.audio.receiverId,
+        sender: this.user.userID,
+        action: 1
+      }
+      this.APIRequest('audio_calls/send', parameter, (response) => {
+      })
+      this.auth.audio.status = 1
+      this.auth.startAudioCallTimer()
     },
     ignoreAudio(){
-      this.status = 0
       $('#audio-call').css({'display': 'none'})
       this.position = {
         top: '0',
         right: '0'
       }
+      let parameter = {
+        receiver: this.auth.audio.receiverId,
+        sender: this.user.userID,
+        action: 0
+      }
+      this.APIRequest('audio_calls/send', parameter, (response) => {
+        console.log(response)
+      })
+      this.auth.audio.status = 0
     },
     moveObject(event){
       this.posX = event.x
