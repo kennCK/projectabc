@@ -74,7 +74,7 @@
       </label>
       <span class="pull-right">
         <button class="btn btn-danger">Save</button>
-        <button class="btn btn-warning">Add to cart</button>
+        <button class="btn btn-warning" @click="redirect('/checkout')">Add to cart</button>
         <i class="fa fa-phone audio-call bg-white text-primary action-link" @click="auth.triggerAudioCall()"></i>
       </span>
     </div>
@@ -211,6 +211,10 @@ export default {
     'color-picker': require('modules/editorv2/colors/Picker.vue')
   },
   methods: {
+    redirect(parameter){
+      AUTH.mode = 0
+      AUTH.redirect(parameter)
+    },
     showDropdown(item){
       if(item === this.activeDropdown){
         this.activeDropdown = null
