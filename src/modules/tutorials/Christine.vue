@@ -12,7 +12,7 @@ import AUTH from 'src/services/auth'
 export default {
   methods: {
     showAudio(){
-      AUTH.triggerAudioCall()
+      AUTH.triggerAudioCall(2, 2)
     }
   }
 }
