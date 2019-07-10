@@ -108,6 +108,9 @@ export default{
       switch(item.payload){
         case 'new_template':
           this.addTemplate()
+          GLOBAL.leftPane.title = 'Pages'
+          GLOBAL.leftPane.index = 3
+          GLOBAL.overlay.title = null
           break
         case 'marketplace_template':
           GLOBAL.selectedTopMenu = 'Marketplace'

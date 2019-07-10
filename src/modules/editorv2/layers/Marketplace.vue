@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     makeActive(item, index){
-      this.global.overlay.title = 'designer'
+      this.global.overlay.title = 'marketplace'
       this.global.overlay.description = item
       this.global.overlay.payload = 'category'
       this.global.overlay.payload_value = item

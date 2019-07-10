@@ -196,7 +196,7 @@
 
 .screen-mode i{
   line-height: 50px;
-  font-size: 32px;
+  font-size: 24px;
 }
 
 .screen-mode:hover{
