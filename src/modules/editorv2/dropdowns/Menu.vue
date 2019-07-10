@@ -107,10 +107,22 @@ export default{
       this.$emit('closed', item)
       switch(item.payload){
         case 'new_template':
-          this.addTemplate()
-          GLOBAL.leftPane.title = 'Pages'
-          GLOBAL.leftPane.index = 3
-          GLOBAL.overlay.title = null
+          if(GLOBAL.template === null){
+            this.addTemplate()
+            GLOBAL.leftPane.title = 'Pages'
+            GLOBAL.leftPane.index = 3
+            GLOBAL.overlay.title = null
+          } else {
+            GLOBAL.prompts = {
+              title: 'Unsave Template',
+              message: 'You have unsave work. Are you sure you want to disregard this changes?',
+              btn: {
+                yes: 'Yes',
+                no: 'No'
+              }
+            }
+            $('#promptMessage').modal('show')
+          }
           break
         case 'marketplace_template':
           GLOBAL.selectedTopMenu = 'Marketplace'

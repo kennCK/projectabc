@@ -15,6 +15,14 @@ export default {
     payload: null,
     payload_value: null
   },
+  prompts: {
+    title: null,
+    message: null,
+    btn: {
+      yes: null,
+      no: null
+    }
+  },
   addTemplate(template){
     this.template = template
   },
