@@ -87,6 +87,7 @@
       <i class="fas fa-arrows-alt-h" v-if="auth.mode === 0" @click="auth.mode = 1"></i>
       <i class="fas fa-compress" v-if="auth.mode === 1" @click="auth.mode = 0"></i>
     </div>
+    <prompt-message></prompt-message>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -241,7 +242,8 @@ export default {
     'dropdown-drawing': require('modules/editorv2/dropdowns/Drawing.vue'),
     'dropdown-settings': require('modules/editorv2/dropdowns/Settings'),
     'color-picker': require('modules/editorv2/colors/Picker.vue'),
-    'overlay': require('modules/editorv2/overlays/RightPane.vue')
+    'overlay': require('modules/editorv2/overlays/RightPane.vue'),
+    'prompt-message': require('modules/editorv2/prompts/Overlay.vue')
   },
   methods: {
     redirect(parameter){
