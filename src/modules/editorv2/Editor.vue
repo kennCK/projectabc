@@ -65,7 +65,7 @@
         </span>
       </div>
 
-      <label class="text-white" style="font-size: 13px; padding-left: 100px;" v-if="global.template !== null">
+      <label class="text-white edit-cursor" style="font-size: 13px; padding-left: 100px;" v-if="global.template !== null">
         {{global.template.type}} / <b @dblclick="global.template.edit_flag = true" v-if="global.template.edit_flag === false">{{global.template.title}}</b>
         <input type="text" v-model="global.template.title" class="title-input" v-else @keyup.enter="global.template.edit_flag = false">
       </label>
@@ -80,7 +80,7 @@
     </div>
     <div class="editor-body">
       <editor-body :template="global.template"></editor-body>
-      <overlay :template="global.template" v-if="global.rightPaneOverlay !== null"></overlay>
+      <overlay :template="global.template" v-if="global.overlay.title !== null"></overlay>
 <!--       <color-picker :color="color" @selectedColor="color = $event"></color-picker> -->
     </div>
     <div class="screen-mode" >
@@ -187,7 +187,6 @@
   height: 50px;
   width: 50px;
   bottom: 10px;
-  left: 10px;
   border-radius: 50%;
   background: $primary;
   color: white;
@@ -203,6 +202,10 @@
 .screen-mode:hover{
   cursor: pointer;
   background: $secondary;
+}
+
+.edit-cursor:hover{
+  cursor: text;
 }
 </style>
 <script>

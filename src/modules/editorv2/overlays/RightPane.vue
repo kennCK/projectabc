@@ -1,12 +1,12 @@
 <template>
-  <div class="right-page-holder" v-bind:style="{left: (template !== null) ? '12%' : '0%'}">
+  <div class="right-page-holder">
     <div class="filter">
       <i class="fas fa-search"></i>
       <input type="text" class="form-control" placeholder="Search">
-      <i class="fas fa-close" @click="global.rightPaneOverlay = null"></i>
+      <i class="fas fa-close" @click="global.overlay.title = null"></i>
     </div>
     <div class="result-holder">
-      <users v-if="global.rightPaneOverlay === 'designer'"></users>
+      <profile v-if="global.overlay.title === 'designer'"></profile>
     </div>
   </div>
 </template>
@@ -19,6 +19,7 @@
   background: white;
   border-right: solid 1px $gray; 
   z-index: 0;
+  left: 12%;
 }
 .filter{
   height: 40px;
@@ -57,6 +58,10 @@
   z-index: 0;
   padding-left: 6px !important;
   font-size: 11px !important;
+  border-top: 0px !important;
+  border-left: 0px !important;
+  border-right: 0px !important;
+  border-bottom: 0px !important;
   width: 90% !important;
 }
 
@@ -78,7 +83,7 @@ export default {
   },
   props: ['template'],
   components: {
-    'users': require('modules/editorv2/overlays/Users.vue')
+    'profile': require('modules/editorv2/overlays/Profile.vue')
   }
 }
 </script>

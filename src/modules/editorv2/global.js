@@ -5,7 +5,16 @@ export default {
   activeLayerIndex: null,
   activeObjectIndex: null,
   objectSettings: null,
-  rightPaneOverlay: null,
+  leftPane: {
+    title: 'Pages',
+    index: 2
+  },
+  overlay: {
+    title: null,
+    description: null,
+    payload: null,
+    payload_value: null
+  },
   addTemplate(template){
     this.template = template
   },

@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-holder">
+  <div class="pages-holder" v-if="template !== null">
     <ul class="pages-wrapper">
       <li class="pages-item">
         <i class="fas fa-plus pull-right" @click="global.addPage()"></i>

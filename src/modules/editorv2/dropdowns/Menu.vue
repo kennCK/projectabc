@@ -110,13 +110,22 @@ export default{
           this.addTemplate()
           break
         case 'marketplace_template':
-          GLOBAL.rightPaneOverlay = 'marketplace'
+          GLOBAL.selectedTopMenu = 'Marketplace'
+          GLOBAL.leftPane.title = 'Marketplace'
+          GLOBAL.leftPane.index = 1
+          GLOBAL.overlay.title = null
           break
         case 'designer':
-          GLOBAL.rightPaneOverlay = 'designer'
+          GLOBAL.selectedTopMenu = 'Designers'
+          GLOBAL.leftPane.title = 'Designers'
+          GLOBAL.leftPane.index = 0
+          GLOBAL.overlay.title = null
           break
         case 'printing':
-          GLOBAL.rightPaneOverlay = 'printing'
+          GLOBAL.selectedTopMenu = 'Printing'
+          GLOBAL.leftPane.title = 'Printing'
+          GLOBAL.leftPane.index = 2
+          GLOBAL.overlay.title = null
           break
       }
     },

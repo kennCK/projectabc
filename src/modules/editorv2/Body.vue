@@ -2,20 +2,21 @@
 	<div class="holder">
 		<div class="editor-layers">
 			<ul>
-        <li class="hidden text-center" v-if="active > 0">
-          <i class="fas fa-chevron-left" @click="active--, makeActive(layerTabs[active])"></i>
+        <li class="hidden text-center" v-if="global.leftPane.index > 0">
+          <i class="fas fa-chevron-left" @click="global.leftPane.index--, makeActive(layerTabs[global.leftPane.index])"></i>
         </li>
-				<li class="shown" v-bind:class="{'active': layerTabs[active] === activeTab}" @click="makeActive(layerTabs[active])">{{layerTabs[active]}}</li>
-        <li class="shown" v-bind:class="{'active': layerTabs[active + 1] === activeTab}" @click="makeActive(layerTabs[active + 1])">{{layerTabs[active + 1]}}</li>
-        <li class="hidden text-center" v-bind:style="{width: (active === 0) ? '20%' : '10%'}" @click="active++, makeActive(layerTabs[active])" v-if="active < (layerTabs.length - 1)">
+				<li class="shown" v-bind:class="{'active': layerTabs[global.leftPane.index] === global.leftPane.title}" @click="makeActive(layerTabs[global.leftPane.index])">{{layerTabs[global.leftPane.index]}}</li>
+        <li class="shown" v-bind:class="{'active': layerTabs[global.leftPane.index + 1] === global.leftPane.title}" @click="makeActive(layerTabs[global.leftPane.index + 1])">{{layerTabs[global.leftPane.index + 1]}}</li>
+        <li class="hidden text-center" v-bind:style="{width: (global.leftPane.index === 0) ? '20%' : '10%'}" @click="global.leftPane.index++, makeActive(layerTabs[global.leftPane.index])" v-if="global.leftPane.index < (layerTabs.length - 1)">
           <i class="fas fa-chevron-right"></i>
         </li>
 			</ul>
 			<div class="option-contents">
-        <users v-if="activeTab === 'Designers'"></users>
-				<editor-layers v-if="activeTab === 'Layers'"  :page="template.contents.pages[template.contents.selected_page]"></editor-layers>
-				<editor-assets v-if="activeTab === 'Assets'"></editor-assets>
-				<editor-pages v-if="activeTab === 'Pages'" :template="template"></editor-pages>
+        <marketplace v-if="global.leftPane.title === 'Marketplace'"></marketplace>
+        <users v-if="global.leftPane.title === 'Designers'"></users>
+				<editor-layers v-if="global.leftPane.title === 'Layers'"  :page="template.contents.pages[template.contents.selected_page]"></editor-layers>
+				<editor-assets v-if="global.leftPane.title === 'Assets'"></editor-assets>
+				<editor-pages v-if="global.leftPane.title === 'Pages'" :template="template"></editor-pages>
 			</div>
 		</div>
 		<div class="editor-body">
@@ -137,8 +138,7 @@ import GLOBAL from 'src/modules/editorv2/global.js'
 export default{
   data () {
     return {
-      layerTabs: ['Designers', 'Marketplace', 'Pages', 'Layers', 'Assets'],
-      activeTab: 'Designers',
+      layerTabs: ['Designers', 'Marketplace', 'Printing', 'Pages', 'Layers', 'Assets'],
       settings: [{
         title: 'Color',
         show: false
@@ -156,8 +156,7 @@ export default{
         show: false
       }],
       selectedPage: null,
-      global: GLOBAL,
-      active: 0
+      global: GLOBAL
     }
   },
   props: ['template'],
@@ -171,15 +170,17 @@ export default{
     'settings-stroke': require('modules/editorv2/settings/Stroke.vue'),
     'settings-color': require('modules/editorv2/colors/Picker.vue'),
     'page': require('modules/editorv2/page/Page.vue'),
-    'users': require('modules/editorv2/overlays/Users.vue')
+    'users': require('modules/editorv2/layers/Users.vue'),
+    'marketplace': require('modules/editorv2/layers/Marketplace.vue')
   },
   methods: {
     select(item) {
       this.$emit('add', item)
     },
     makeActive(item){
-      this.activeTab = item
+      this.global.leftPane.title = item
       this.global.selectedTopMenu = item
+      this.global.overlay.title = null
     }
   }
 }
