@@ -2,12 +2,12 @@
   <div class="audioModal" v-bind:style="position" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" id="audio-call">
     <span class="holder" v-if="auth.audio.status === 0">   <!--  Ringing,Receiver -->
       <div class="call-animation">
-          <img class="img-circle" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
+          <img class="img-circle" v-bind:src="config.BACKEND_URL + auth.audio.senderUser.profile.url" alt="" width="120"/>
       </div>
       <i class="fa fa-phone pull-left bg-danger icons" @click="ignoreAudio"></i>
-      <i class="fa fa-phone pull-right bg-primary icons" @click="accCall"></i>
-      <h6 style="margin-top: 10px" class="text-center text-white">Calling...</h6>
-      <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
+      <i class="fa fa-phone pull-right bg-primary icons" @click="acceptCall"></i>
+      <h6 style="margin-top: 10px" class="text-center text-white">Incoming Call</h6>
+      <h6 style="margin-top: 10px" class="text-center text-white">{{auth.audio.senderUser.username}}</h6>
     </span>
 
     <span class="holder" v-if="auth.audio.status === 1">   <!--  Ongoing -->
@@ -21,22 +21,24 @@
 
      <span class="holder" v-if="auth.audio.status === 2">   <!--  Calling, Sender -->
       <div class="call-animation">
-        <img class="img-circle pull-right" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
+        <img class="img-circle pull-right" v-bind:src="config.BACKEND_URL + auth.audio.receiverUser.profile.url" alt="" width="120"/>
       </div>
       <i class="fa fa-phone pull-right bg-danger endicon" @click="endAudio"></i>
-       <h6 style="margin-top: 10px" class="text-center text-white">Calling...</h6>
-      <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
+       <h6 style="margin-top: 10px" class="text-center text-white">Calling</h6>
+      <h6 style="margin-top: 10px" class="text-center text-white">{{auth.audio.receiverUser.username}}</h6>
     </span>
 
   </div>
 </template>
 <script>
 import AUTH from 'src/services/auth'
+import CONFIG from 'src/config.js'
 // import { setInterval, clearInterval } from 'timers'
 export default {
   data(){
     return{
       user: AUTH.user,
+      config: CONFIG,
       position: {
         top: '0',
         right: '0'
@@ -70,7 +72,7 @@ export default {
       // $('#audio-call').css({'display': 'none'})
       this.auth.endAudioCallTimer()
     },
-    accCall(){
+    acceptCall(){
       let parameter = {
         receiver: this.auth.audio.receiverId,
         sender: this.user.userID,
@@ -192,18 +194,18 @@ export default {
     top:-3px;
   
 }
- img {
-        width: 70px;
-        height: 70px;
-        border-radius: 100%;
-        position: absolute;
-        left: 0px;
-        top: 0px;
-    }
-  #audio-call:hover {
-    cursor: grabbing;
-    cursor: grab;
+img {
+    width: 70px;
+    height: 70px;
+    border-radius: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
   }
+#audio-call:hover {
+  cursor: grabbing;
+  cursor: grab;
+}
 @keyframes play {
 
     0% {

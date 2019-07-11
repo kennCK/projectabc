@@ -14,7 +14,9 @@ export default {
     minutes: 0,
     hours: 0,
     timer: null,
-    receiverId: null
+    receiverId: null,
+    senderUser: null,
+    receiverUser: null
   },
   mode: 0,
   user: {
@@ -326,6 +328,8 @@ export default {
       let action = parseInt(response.user.action)
       let sender = response.user.sender
       let receiver = response.user.receiver
+      this.audio.senderUser = sender
+      this.audio.receiverUser = receiver
       if(sender.id !== this.user.userID){
         this.audio.receiverId = sender.id
       }
@@ -380,13 +384,17 @@ export default {
         action: 2
       }
       vue.APIRequest('audio_calls/send', parameter, (response) => {
-        console.log(response)
+        //
       })
     } else {
       this.playNotificationSound()
     }
   },
   startAudioCallTimer(){
+    clearInterval(this.audio.timer)
+    this.audio.seconds = 0
+    this.audio.minutes = 0
+    this.audio.hours = 0
     this.audio.timer = setInterval(() => {
       this.audio.seconds++
       if (this.audio.seconds === 60){
