@@ -1,9 +1,9 @@
 <template>
 	<div class="holder">
-		<div class="page-holder" v-for="(page, pageIndex) in template.contents.pages" :key="pageIndex">
-			<div class="page-container" :style="page.style">
+		<div class="page-holder" v-for="(page, pageIndex) in contents.pages" :key="pageIndex">
+			<div class="page-container" :style="{height: global.setting.zoom.height + 'px', width: global.setting.zoom.width + 'px'}">
 				<div v-bind:style="layer.style" v-for="(layer, layerIndex) in page.layers" :key="layerIndex">
-					<div v-bind:style="object.style" v-for="(object, objectIndex) in layer.objects" :key="objectIndex"></div>
+					<div v-bind:style="object.style" class="object" v-bind:class="{'selected-object': objectIndex === layer.selected_object}" v-for="(object, objectIndex) in layer.objects" :key="objectIndex" @click="selectObject(objectIndex, layer)"></div>
 				</div>
 			</div>
 		</div>
@@ -32,9 +32,28 @@
 	margin-right: auto;
 	position: relative;
 }
+
+.object{
+	cursor: move;
+}
+
+.selected-object{
+	border: solid 1px black !important;
+}
 </style>
 <script>
+import GLOBAL from 'src/modules/editorv2/global.js'
 export default{
-  props: ['template']
+  data () {
+    return {
+      global: GLOBAL
+    }
+  },
+  props: ['contents'],
+  methods: {
+    selectObject(index, layer){
+      layer.selected_object = index
+    }
+  }
 }
 </script>

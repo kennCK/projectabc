@@ -14,13 +14,13 @@
 			<div class="option-contents">
         <marketplace v-if="global.leftPane.title === 'Marketplace'"></marketplace>
         <users v-if="global.leftPane.title === 'Designers'"></users>
-				<editor-layers v-if="global.leftPane.title === 'Layers'"  :page="template.contents.pages[template.contents.selected_page]"></editor-layers>
+				<editor-layers v-if="global.leftPane.title === 'Layers'"  :page="contents.pages[contents.selected_page]"></editor-layers>
 				<editor-assets v-if="global.leftPane.title === 'Assets'"></editor-assets>
-				<editor-pages v-if="global.leftPane.title === 'Pages'" :template="template"></editor-pages>
+				<editor-pages v-if="global.leftPane.title === 'Pages'" :contents="contents"></editor-pages>
 			</div>
 		</div>
 		<div class="editor-body">
-			<page :template="template"></page>
+			<page :contents="contents"></page>
 		</div>
 		<div class="editor-settings">
 			<ul>
@@ -159,7 +159,7 @@ export default{
       global: GLOBAL
     }
   },
-  props: ['template'],
+  props: ['contents'],
   components: {
     'editor-layers': require('modules/editorv2/layers/Layers.vue'),
     'editor-assets': require('modules/editorv2/layers/Assets.vue'),

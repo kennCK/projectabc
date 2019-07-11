@@ -1,6 +1,6 @@
 <template>
-  <div class="layer-holder" v-if="global.template !== null">
-    <ul class="layer-wrapper" v-if="global.template.contents.pages.length > 0">
+  <div class="layer-holder" v-if="global.contents !== null">
+    <ul class="layer-wrapper" v-if="global.contents.pages.length > 0">
       <li class="layer-item">
         <i class="fas fa-plus pull-right" @click="global.addLayer()"></i>
         <i class="fa fa-trash text-danger pull-right" @click="remove(page.selected_layer)"></i>

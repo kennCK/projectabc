@@ -107,7 +107,7 @@ export default{
       this.$emit('closed', item)
       switch(item.payload){
         case 'new_template':
-          if(GLOBAL.template === null){
+          if(GLOBAL.contents === null){
             this.addTemplate()
             GLOBAL.leftPane.title = 'Pages'
             GLOBAL.leftPane.index = 3
@@ -145,25 +145,31 @@ export default{
       }
     },
     addTemplate(){
-      let newTemplate = {
-        title: 'This is a test',
-        type: 'Tarpaulin',
-        edit_flag: false,
-        contents: {
-          style: {
-            height: '300px',
-            width: '500px',
-            background: '#ffffff'
-          },
-          pages: [],
-          plugins: [],
-          selected_page: null,
-          selected_plugin: null
+      let height = 300
+      let width = 500
+      GLOBAL.title = 'This is a test'
+      GLOBAL.category = 'Tarpaulin'
+      GLOBAL.status = 'personal'
+      GLOBAL.purchased = null
+      GLOBAL.contents = {
+        style: {
+          height: height + 'px',
+          width: width + 'px',
+          background: '#ffffff'
         },
-        purpose: 0,
-        status: 0
+        pages: [],
+        plugins: [],
+        selected_page: null,
+        selected_plugin: null
       }
-      GLOBAL.addTemplate(newTemplate)
+      GLOBAL.setting.page = {
+        height: height,
+        width: width
+      }
+      GLOBAL.setting.zoom = {
+        height: height,
+        width: width
+      }
     },
     show(index){
       if(this.prevIndex === null){
