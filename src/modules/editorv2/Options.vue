@@ -81,6 +81,7 @@ export default {
   data () {
     return {
       global: GLOBAL,
+      template: GLOBAL.template,
       menus: [{
         title: 'Find Printing',
         description: 'Do you need to talk with our printing partner? Checkout and they are waiting for you.',
@@ -106,25 +107,25 @@ export default {
   },
   methods: {
     selectOption(item){
-      GLOBAL.optionFlag = false
+      this.template.optionFlag = false
       switch(item.payload){
         case 'Marketplace':
-          GLOBAL.selectedTopMenu = 'Marketplace'
-          GLOBAL.leftPane.title = 'Marketplace'
-          GLOBAL.leftPane.index = 1
-          GLOBAL.overlay.title = null
+          this.template.selectedTopMenu = 'Marketplace'
+          this.template.leftPane.title = 'Marketplace'
+          this.template.leftPane.index = 1
+          this.template.overlay.title = null
           break
         case 'Designers':
-          GLOBAL.selectedTopMenu = 'Designers'
-          GLOBAL.leftPane.title = 'Designers'
-          GLOBAL.leftPane.index = 0
-          GLOBAL.overlay.title = null
+          this.template.selectedTopMenu = 'Designers'
+          this.template.leftPane.title = 'Designers'
+          this.template.leftPane.index = 0
+          this.template.overlay.title = null
           break
         case 'Printing':
-          GLOBAL.selectedTopMenu = 'Printing'
-          GLOBAL.leftPane.title = 'Printing'
-          GLOBAL.leftPane.index = 2
-          GLOBAL.overlay.title = null
+          this.template.selectedTopMenu = 'Printing'
+          this.template.leftPane.title = 'Printing'
+          this.template.leftPane.index = 2
+          this.template.overlay.title = null
           break
       }
     }

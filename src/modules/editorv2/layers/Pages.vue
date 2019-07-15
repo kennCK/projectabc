@@ -82,8 +82,8 @@ export default {
   methods: {
     makeActive(item, index){
       this.contents.selected_page = index
-      GLOBAL.activePageIndex = index
-      GLOBAL.objectSettings = item.style
+      GLOBAL.template.activePageIndex = index
+      GLOBAL.template.objectSettings = item.style
     }
   }
 }

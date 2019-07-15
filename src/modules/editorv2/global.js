@@ -1,53 +1,55 @@
 import Vue from 'vue'
 import AUTH from 'src/services/auth'
 export default {
-  contents: null,
-  title: null,
-  edit_flag: false,
-  status: 0,
-  category: null,
-  purchased: null,
-  zoom: 100,
-  setting: {
-    page: {
-      width: null,
-      height: null
+  template: {
+    contents: null,
+    title: null,
+    edit_flag: false,
+    status: 0,
+    category: null,
+    purchased: null,
+    zoom: 100,
+    setting: {
+      page: {
+        width: null,
+        height: null
+      },
+      zoom: {
+        width: null,
+        height: null
+      }
     },
-    zoom: {
-      width: null,
-      height: null
-    }
+    selectedTopMenu: null,
+    activePageIndex: null,
+    activeLayerIndex: null,
+    activeObjectIndex: null,
+    objectSettings: null,
+    leftPane: {
+      title: 'Pages',
+      index: 2
+    },
+    overlay: {
+      title: null,
+      description: null,
+      payload: null,
+      payload_value: null
+    },
+    prompts: {
+      title: null,
+      message: null,
+      btn: {
+        yes: null,
+        no: null
+      }
+    },
+    optionFlag: true
   },
-  selectedTopMenu: null,
-  activePageIndex: null,
-  activeLayerIndex: null,
-  activeObjectIndex: null,
-  objectSettings: null,
-  leftPane: {
-    title: 'Pages',
-    index: 2
-  },
-  overlay: {
-    title: null,
-    description: null,
-    payload: null,
-    payload_value: null
-  },
-  prompts: {
-    title: null,
-    message: null,
-    btn: {
-      yes: null,
-      no: null
-    }
-  },
-  optionFlag: true,
   addTemplate(template){
     this.template = template
   },
   addPage(){
     let newPage = {
-      style: this.contents.style,
+      style: this.template.contents.style,
       title: 'Page',
       eye: true,
       layers: [],
@@ -55,7 +57,7 @@ export default {
       edit_flag: false,
       locked: false
     }
-    this.contents.pages.push(newPage)
+    this.template.contents.pages.push(newPage)
   },
   addLayer(){
     let layer = {
@@ -76,7 +78,7 @@ export default {
       selected_object: null,
       locked: false
     }
-    this.contents.pages[this.activePageIndex].layers.push(layer)
+    this.template.contents.pages[this.template.activePageIndex].layers.push(layer)
   },
   addObject(type){
     let object = {
@@ -102,34 +104,34 @@ export default {
     }else{
       //
     }
-    this.contents.pages[this.activePageIndex].layers[this.activeLayerIndex].objects.push(object)
+    this.template.contents.pages[this.template.activePageIndex].layers[this.template.activeLayerIndex].objects.push(object)
   },
   zoomHandler(multiplier){
     this.zoom = multiplier
-    if(this.setting.page.width !== null && this.setting.page.height !== null){
-      this.setting.zoom.width = parseInt(this.setting.page.width * (multiplier / 100))
-      this.setting.zoom.height = parseInt(this.setting.page.height * (multiplier / 100))
+    if(this.template.setting.page.width !== null && this.template.setting.page.height !== null){
+      this.template.setting.zoom.width = parseInt(this.template.setting.page.width * (multiplier / 100))
+      this.template.setting.zoom.height = parseInt(this.template.setting.page.height * (multiplier / 100))
     }
   },
   save(){
     let vue = new Vue()
     let contents = {
-      contents: this.contents,
-      setting: this.setting,
-      zoom: this.zoom,
-      selectedTopMenu: this.selectedTopMenu,
-      activePageIndex: this.activePageIndex,
-      activeLayerIndex: this.activeLayerIndex,
-      activeObjectIndex: this.activeObjectIndex
+      contents: this.template.contents,
+      setting: this.template.setting,
+      zoom: this.template.zoom,
+      selectedTopMenu: this.template.selectedTopMenu,
+      activePageIndex: this.template.activePageIndex,
+      activeLayerIndex: this.template.activeLayerIndex,
+      activeObjectIndex: this.template.activeObjectIndex
     }
     let stringContents = JSON.stringify(contents)
     let parameter = {
       account_id: AUTH.user.userID,
-      title: this.title,
+      title: this.template.title,
       contents: '' + stringContents + '',
-      status: this.status,
+      status: this.template.status,
       purchased: null,
-      category: this.category
+      category: this.template.category
     }
     vue.APIRequest('templates/create', parameter).then(response => {
       console.log(response)

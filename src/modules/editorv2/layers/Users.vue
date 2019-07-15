@@ -126,15 +126,16 @@ export default {
       }],
       config: CONFIG,
       global: GLOBAL,
+      template: GLOBAL.template,
       selected: null
     }
   },
   methods: {
     makeActive(item, index){
-      this.global.overlay.title = 'designer'
-      this.global.overlay.description = item.username
-      this.global.overlay.payload = 'account_id'
-      this.global.overlay.payload_value = item.id
+      this.template.overlay.title = 'designer'
+      this.template.overlay.description = item.username
+      this.template.overlay.payload = 'account_id'
+      this.template.overlay.payload_value = item.id
       this.selected = index
     }
   }

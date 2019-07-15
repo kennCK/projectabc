@@ -95,7 +95,8 @@ export default{
         }]
       }, {
         title: 'Print', subMenu: [], payload: 'print'
-      }]
+      }],
+      template: GLOBAL.template
     }
   },
   methods: {
@@ -107,13 +108,13 @@ export default{
       this.$emit('closed', item)
       switch(item.payload){
         case 'new_template':
-          if(GLOBAL.contents === null){
+          if(this.template.contents === null){
             this.addTemplate()
-            GLOBAL.leftPane.title = 'Pages'
-            GLOBAL.leftPane.index = 3
-            GLOBAL.overlay.title = null
+            this.template.leftPane.title = 'Pages'
+            this.template.leftPane.index = 3
+            this.template.overlay.title = null
           } else {
-            GLOBAL.prompts = {
+            this.template.prompts = {
               title: 'Unsave Template',
               message: 'You have unsave work. Are you sure you want to disregard this changes?',
               btn: {
@@ -125,33 +126,34 @@ export default{
           }
           break
         case 'marketplace_template':
-          GLOBAL.selectedTopMenu = 'Marketplace'
-          GLOBAL.leftPane.title = 'Marketplace'
-          GLOBAL.leftPane.index = 1
-          GLOBAL.overlay.title = null
+          this.template.selectedTopMenu = 'Marketplace'
+          this.template.leftPane.title = 'Marketplace'
+          this.template.leftPane.index = 1
+          this.template.overlay.title = null
           break
         case 'designer':
-          GLOBAL.selectedTopMenu = 'Designers'
-          GLOBAL.leftPane.title = 'Designers'
-          GLOBAL.leftPane.index = 0
-          GLOBAL.overlay.title = null
+          this.template.selectedTopMenu = 'Designers'
+          this.template.leftPane.title = 'Designers'
+          this.template.leftPane.index = 0
+          this.template.overlay.title = null
           break
         case 'printing':
-          GLOBAL.selectedTopMenu = 'Printing'
-          GLOBAL.leftPane.title = 'Printing'
-          GLOBAL.leftPane.index = 2
-          GLOBAL.overlay.title = null
+          this.template.selectedTopMenu = 'Printing'
+          this.template.leftPane.title = 'Printing'
+          this.template.leftPane.index = 2
+          this.template.overlay.title = null
           break
       }
     },
     addTemplate(){
       let height = 300
       let width = 500
-      GLOBAL.title = 'This is a test'
-      GLOBAL.category = 'Tarpaulin'
-      GLOBAL.status = 'personal'
-      GLOBAL.purchased = null
-      GLOBAL.contents = {
+      this.template.title = 'This is a test'
+      this.template.category = 'Tarpaulin'
+      this.template.status = 'personal'
+      this.template.purchased = null
+      this.template.optionFlag = false
+      this.template.contents = {
         style: {
           height: height + 'px',
           width: width + 'px',
@@ -162,11 +164,11 @@ export default{
         selected_page: null,
         selected_plugin: null
       }
-      GLOBAL.setting.page = {
+      this.template.setting.page = {
         height: height,
         width: width
       }
-      GLOBAL.setting.zoom = {
+      this.template.setting.zoom = {
         height: height,
         width: width
       }

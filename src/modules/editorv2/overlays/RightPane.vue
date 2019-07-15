@@ -3,10 +3,10 @@
     <div class="filter">
       <i class="fas fa-search"></i>
       <input type="text" class="form-control" placeholder="Search">
-      <i class="fas fa-close" @click="global.overlay.title = null"></i>
+      <i class="fas fa-close" @click="globalTemplate.overlay.title = null"></i>
     </div>
     <div class="result-holder">
-      <profile v-if="global.overlay.title === 'designer'"></profile>
+      <profile v-if="globalTemplate.overlay.title === 'designer'"></profile>
     </div>
   </div>
 </template>
@@ -78,7 +78,7 @@ import GLOBAL from 'src/modules/editorv2/global.js'
 export default {
   data () {
     return {
-      global: GLOBAL
+      globalTemplate: GLOBAL.template
     }
   },
   props: ['template'],

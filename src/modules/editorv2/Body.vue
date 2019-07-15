@@ -2,25 +2,25 @@
 	<div class="holder">
 		<div class="editor-layers">
 			<ul>
-        <li class="hidden text-center" v-if="global.leftPane.index > 0">
-          <i class="fas fa-chevron-left" @click="global.leftPane.index--, makeActive(layerTabs[global.leftPane.index])"></i>
+        <li class="hidden text-center" v-if="template.leftPane.index > 0">
+          <i class="fas fa-chevron-left" @click="template.leftPane.index--, makeActive(layerTabs[template.leftPane.index])"></i>
         </li>
-				<li class="shown" v-bind:class="{'active': layerTabs[global.leftPane.index] === global.leftPane.title}" @click="makeActive(layerTabs[global.leftPane.index])">{{layerTabs[global.leftPane.index]}}</li>
-        <li class="shown" v-bind:class="{'active': layerTabs[global.leftPane.index + 1] === global.leftPane.title}" @click="makeActive(layerTabs[global.leftPane.index + 1])">{{layerTabs[global.leftPane.index + 1]}}</li>
-        <li class="hidden text-center" v-bind:style="{width: (global.leftPane.index === 0) ? '20%' : '10%'}" @click="global.leftPane.index++, makeActive(layerTabs[global.leftPane.index])" v-if="global.leftPane.index < (layerTabs.length - 1)">
+				<li class="shown" v-bind:class="{'active': layerTabs[template.leftPane.index] === template.leftPane.title}" @click="makeActive(layerTabs[template.leftPane.index])">{{layerTabs[template.leftPane.index]}}</li>
+        <li class="shown" v-bind:class="{'active': layerTabs[template.leftPane.index + 1] === template.leftPane.title}" @click="makeActive(layerTabs[template.leftPane.index + 1])">{{layerTabs[template.leftPane.index + 1]}}</li>
+        <li class="hidden text-center" v-bind:style="{width: (template.leftPane.index === 0) ? '20%' : '10%'}" @click="template.leftPane.index++, makeActive(layerTabs[template.leftPane.index])" v-if="template.leftPane.index < (layerTabs.length - 1)">
           <i class="fas fa-chevron-right"></i>
         </li>
 			</ul>
 			<div class="option-contents">
-        <marketplace v-if="global.leftPane.title === 'Marketplace'"></marketplace>
-        <users v-if="global.leftPane.title === 'Designers'"></users>
-				<editor-layers v-if="global.leftPane.title === 'Layers'"  :page="contents.pages[contents.selected_page]"></editor-layers>
-				<editor-assets v-if="global.leftPane.title === 'Assets'"></editor-assets>
-				<editor-pages v-if="global.leftPane.title === 'Pages'" :contents="contents"></editor-pages>
+        <marketplace v-if="template.leftPane.title === 'Marketplace'"></marketplace>
+        <users v-if="template.leftPane.title === 'Designers'"></users>
+				<editor-layers v-if="template.leftPane.title === 'Layers'"  :page="template.contents.pages[template.contents.selected_page]"></editor-layers>
+				<editor-assets v-if="template.leftPane.title === 'Assets'"></editor-assets>
+				<editor-pages v-if="template.leftPane.title === 'Pages'" :contents="template.contents"></editor-pages>
 			</div>
 		</div>
 		<div class="editor-body">
-			<page :contents="contents"></page>
+			<page :contents="template.contents"></page>
 		</div>
 		<div class="editor-settings">
 			<ul>
@@ -30,7 +30,7 @@
 					<span class="option-holder" v-if="item.show === true">
 						<settings-text v-if="item.title === 'Text'"></settings-text>
 						<settings-color :position="{right: '13%', top: '0%'}" v-if="item.title === 'Color'"></settings-color>
-						<settings-settings v-if="item.title === 'Settings'" :property="global.objectSettings"></settings-settings>
+						<settings-settings v-if="item.title === 'Settings'" :property="template.objectSettings"></settings-settings>
 						<settings-stroke v-if="item.title === 'Stroke'"></settings-stroke>
 						<settings-shadow v-if="item.title === 'Shadow'"></settings-shadow>
 					</span>
@@ -156,7 +156,8 @@ export default{
         show: false
       }],
       selectedPage: null,
-      global: GLOBAL
+      global: GLOBAL,
+      template: GLOBAL.template
     }
   },
   props: ['contents'],
@@ -178,9 +179,9 @@ export default{
       this.$emit('add', item)
     },
     makeActive(item){
-      this.global.leftPane.title = item
-      this.global.selectedTopMenu = item
-      this.global.overlay.title = null
+      this.template.leftPane.title = item
+      this.template.selectedTopMenu = item
+      this.template.overlay.title = null
     }
   }
 }

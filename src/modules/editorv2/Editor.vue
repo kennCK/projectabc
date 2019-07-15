@@ -5,7 +5,7 @@
         <i class="fa fa-bars editor-menu" v-bind:class="{'gray': activeDropdown === 'mainMenu'}" @click="showDropdown('mainMenu')"></i>
         <dropdown-menu v-if="activeDropdown === 'mainMenu'" @closed="activeDropdown = null"></dropdown-menu>
       </span>
-      <div v-if="global.contents !== null">
+      <div v-if="template.contents !== null">
         <span class="editor-dropdown text-white" @click="showDropdown('moveScale')">
           <label>{{selectedMoveScale}}</label>
           <i class="fa fa-chevron-down"></i>
@@ -65,23 +65,23 @@
         </span>
       </div>
 
-      <label class="text-white edit-cursor" style="font-size: 13px; padding-left: 100px;" v-if="global.title !== null">
-        {{global.category}} / <b @dblclick="global.edit_flag = true" v-if="global.edit_flag === false">{{global.title}}</b>
-        <input type="text" v-model="global.title" class="title-input" v-else @keyup.enter="global.edit_flag = false">
+      <label class="text-white edit-cursor" style="font-size: 13px; padding-left: 100px;" v-if="template.title !== null">
+        {{template.category}} / <b @dblclick="template.edit_flag = true" v-if="template.edit_flag === false">{{template.title}}</b>
+        <input type="text" v-model="template.title" class="title-input" v-else @keyup.enter="template.edit_flag = false">
       </label>
       <label v-else class="text-white" style="padding-left: 10px;">
         <b>Add new template</b>
       </label>
-      <span class="pull-right" v-if="global.contents !== null">
+      <span class="pull-right" v-if="template.contents !== null">
         <button class="btn btn-danger" @click="save()">Save</button>
         <button class="btn btn-warning" @click="redirect('/checkout')">Add to cart</button>
         <i class="fa fa-phone audio-call bg-white text-primary action-link" @click="auth.triggerAudioCall()"></i>
       </span>
     </div>
     <div class="editor-body">
-      <editor-body :contents="global.contents" v-if="global.optionFlag === false"></editor-body>
-      <overlay :contents="global.contents" v-if="global.overlay.title !== null && global.optionFlag === false"></overlay>
-      <initial-options v-if="global.contents === null && global.optionFlag === true"></initial-options>
+      <editor-body :contents="template.contents" v-if="template.optionFlag === false"></editor-body>
+      <overlay :contents="template.contents" v-if="template.overlay.title !== null && template.optionFlag === false"></overlay>
+      <initial-options v-if="template.contents === null && template.optionFlag === true"></initial-options>
 <!--       <color-picker :color="color" @selectedColor="color = $event"></color-picker> -->
     </div>
     <div class="screen-mode" >
@@ -235,6 +235,7 @@ export default {
       selectedSettings: null,
       activeDropdown: null,
       global: GLOBAL,
+      template: GLOBAL.template,
       code: this.$route.params.code
     }
   },

@@ -1,6 +1,6 @@
 <template>
-  <div class="layer-holder" v-if="global.contents !== null">
-    <ul class="layer-wrapper" v-if="global.contents.pages.length > 0">
+  <div class="layer-holder" v-if="template.contents !== null">
+    <ul class="layer-wrapper" v-if="template.contents.pages.length > 0">
       <li class="layer-item">
         <i class="fas fa-plus pull-right" @click="global.addLayer()"></i>
         <i class="fa fa-trash text-danger pull-right" @click="remove(page.selected_layer)"></i>
@@ -93,7 +93,8 @@ export default {
   data () {
     return {
       global: GLOBAL,
-      clickFlag: false
+      clickFlag: false,
+      template: GLOBAL.template
     }
   },
   props: ['page'],
@@ -108,18 +109,18 @@ export default {
     makeActive(item, index){
       if(this.clickFlag === false){
         this.page.selected_layer = index
-        this.global.activeLayerIndex = index
-        this.global.objectSettings = item.style
-        this.global.selectedTopMenu = 'Layers'
+        this.template.activeLayerIndex = index
+        this.template.objectSettings = item.style
+        this.template.selectedTopMenu = 'Layers'
       }
       this.clickFlag = false
     },
     makeActiveObject(layer, item, index){
       this.clickFlag = true
-      this.global.selectedTopMenu = 'Object'
+      this.template.selectedTopMenu = 'Object'
       layer.selected_object = index
-      this.global.activeObjectIndex = index
-      this.global.objectSettings = item.style
+      this.template.activeObjectIndex = index
+      this.template.objectSettings = item.style
     }
   }
 }
