@@ -72,15 +72,16 @@
       <label v-else class="text-white" style="padding-left: 10px;">
         <b>Add new template</b>
       </label>
-      <span class="pull-right">
+      <span class="pull-right" v-if="global.contents !== null">
         <button class="btn btn-danger" @click="save()">Save</button>
         <button class="btn btn-warning" @click="redirect('/checkout')">Add to cart</button>
         <i class="fa fa-phone audio-call bg-white text-primary action-link" @click="auth.triggerAudioCall()"></i>
       </span>
     </div>
     <div class="editor-body">
-      <editor-body :contents="global.contents"></editor-body>
-      <overlay :contents="global.contents" v-if="global.overlay.title !== null"></overlay>
+      <editor-body :contents="global.contents" v-if="global.optionFlag === false"></editor-body>
+      <overlay :contents="global.contents" v-if="global.overlay.title !== null && global.optionFlag === false"></overlay>
+      <initial-options v-if="global.contents === null && global.optionFlag === true"></initial-options>
 <!--       <color-picker :color="color" @selectedColor="color = $event"></color-picker> -->
     </div>
     <div class="screen-mode" >
@@ -217,6 +218,9 @@ import GLOBAL from 'src/modules/editorv2/global.js'
 import axios from 'axios'
 export default {
   mounted(){
+    if(this.code !== null){
+      this.retrieve()
+    }
   },
   data(){
     return {
@@ -230,7 +234,8 @@ export default {
       selectedDrawing: 'fas fa-pencil-alt',
       selectedSettings: null,
       activeDropdown: null,
-      global: GLOBAL
+      global: GLOBAL,
+      code: this.$route.params.code
     }
   },
   components: {
@@ -243,7 +248,8 @@ export default {
     'dropdown-settings': require('modules/editorv2/dropdowns/Settings'),
     'color-picker': require('modules/editorv2/colors/Picker.vue'),
     'overlay': require('modules/editorv2/overlays/RightPane.vue'),
-    'prompt-message': require('modules/editorv2/prompts/Overlay.vue')
+    'prompt-message': require('modules/editorv2/prompts/Overlay.vue'),
+    'initial-options': require('modules/editorv2/Options.vue')
   },
   methods: {
     redirect(parameter){
@@ -259,6 +265,27 @@ export default {
     },
     save(){
       this.global.save()
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.code,
+          column: 'code',
+          clause: '='
+        }]
+      }
+      this.APIRequest('templates/retrieve', parameter).then(response => {
+        let contents = JSON.parse(response.data[0].contents)
+        console.log(contents.setting)
+        // if(response.data.length > 0){
+        //   let template = response.data[0]
+        //   GLOBAL.title = template.title
+        //   GLOBAL.category = template.category
+        //   GLOBAL.purchased = template.purchased
+        //   GLOBAL.status = template.status
+        //   GLOBAL.contents = JSON.parse(template.contents)
+        // }
+      })
     }
   }
 }

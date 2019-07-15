@@ -17,6 +17,7 @@ class TemplateController extends APIController
 
   public function create(Request $request){
     $data = $request->all();
+    $data['code'] = $this->generateCode();
     $this->model = new Template();
     $this->insertDB($data);
     return $this->response();
@@ -28,5 +29,15 @@ class TemplateController extends APIController
     $this->retrieveDB($data);
     $result = $this->response['data'];
     return $this->response();
+  }
+
+  public function generateCode(){
+    $code = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 32);
+    $codeExist = Template::where('code', '=', $code)->get();
+    if(sizeof($codeExist) > 0){
+      $this->generateCodee();
+    }else{
+      return $code;
+    }
   }
 }

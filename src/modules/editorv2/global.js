@@ -41,6 +41,7 @@ export default {
       no: null
     }
   },
+  optionFlag: true,
   addTemplate(template){
     this.template = template
   },
