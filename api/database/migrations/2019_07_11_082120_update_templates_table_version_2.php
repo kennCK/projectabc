@@ -15,7 +15,7 @@ class UpdateTemplatesTableVersion2 extends Migration
     {
         Schema::table('templates', function (Blueprint $table) {
             $table->longText('contents')->after('title');
-            $title->rename('categories', 'category');
+            $table->renameColumn('categories', 'category');
         });
     }
 

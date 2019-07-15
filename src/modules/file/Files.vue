@@ -1,127 +1,49 @@
 <template>
-  <div class="filter">
-    <button class="btn btn-primary pull-right" data-toggle="modal" data-target=""><i class="fa fa-plus"></i> Add Template</button>
-    <br></br>
-    <div class="input-group">
-      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-       Type
-    </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" value="personnal">Personnal</a>
-        <a class="dropdown-item" value="location">Location</a>
-      </div>
-      <input type="text" class="form-control" v-model="searchValue" placeholder="Search files...">
-      <select class="icons" @change="" v-model="filterValue">
-        <option v-for="(item, index) in sort"  :key="index">
-          {{item.title}}</option>
-      </select>
-      <select class="icons" v-model="arrangeValue">
-         <option selected="selected" value="list"> &#xf0c9;</option>
-         <option value="grid"> &#xf00a;</option>
-        </select>
-    </div>
-    <br></br>
-    <div> 
+  <div class="files-wrapper">
+    <button class="btn btn-primary pull-right" @click="redirect('/templates')"><i class="fa fa-plus"></i> Add Template</button>
+    <generic-filter :category="category" @changeSortEvent="retrieve($event)"></generic-filter>
+    <div class="container-files" v-if="categoryParameter === null">
       <ul v-for="(item, index) in folders" :key="index" class="folder">
-        <li id="file-list"><i id="file" class="fas fa-folder"></i> <span id="filename">{{item.title}}</span></li>
+        <li id="file-list" @click="redirect('/files/' + item.title)"><i id="file" class="fas fa-folder"></i> <span id="filename">{{item.title}}</span></li>
       </ul>
+    </div>
+    <div v-else class="container-files">
+      <category-contents :category="categoryParameter"></category-contents>
     </div>
   </div>
 </template>
 <style scoped lang="scss">
 @import "~assets/style/colors.scss";
+.files-wrapper{
+  width:100%;
+  height: auto;
+  float: left;
+  margin-bottom: 15px;
+}
+.container-files{
+  float: left;
+  width: 100%;
+}
 ul{
   list-style: none;
+  margin: 0px;
+  padding: 0px;
 }
-#file{
-  font-size: 300%;
+ul li{
+  height: 50px;
+  line-height: 50px;
+  padding-left: 10px;
+}
+ul li:hover{
+  cursor: pointer;
+  background: $secondary;
+  color: white;
+}
+ul li i{
+  font-size: 24px;
   color: $primary;
 }
-li#file-list{
-  position: relative;
-}
-.folder{
-  font-size: 150%;
-  
-}
-span#filename {
-    position: absolute;
-    bottom: 8px;
-    left: 73px;
-}
-.icons{
-  line-height: 40px !important;
-  font-size: 13px !important;
-  font-family: 'FontAwesome', 'Lato';
-}
-.arrange{
-  margin-left: 600px !important;
-  line-height: 40px !important;
-  font-size: 15px !important;
-  font-family: 'FontAwesome', 'Lato';
-}
-.filter{
-  width: 80% !important;
-  float: left !important;
-  margin-top: 50px;
-  margin-left: 10%;
-}
-.form-control{
-  height: 40px !important;
-  width: 15px !important;
-  font: unset !important;
-}
-.input-group{
-}
-.input-group-addon{
-  width: 100px !important;
-  background: #22b173 !important;
-  color: #fff !important;
-}
-.input-group-title{
-  width: 100px !important;
-  background: #028170 !important;
-  color: #fff !important;
-}
-button.btn.btn-primary.dropdown-toggle {
-    min-height: 40px;
-}
 @media (max-width: 991px){
-  .partner-holder{
-    width: 20%;
-  }
-  .input-filter{
-  margin-bottom: 25px !important;
-  margin-top: 20px !important;
-  margin-left: 110px !important;
-  height: 50% !important;
-}
-.arrange{
-  margin-left: 600px !important;
-  line-height: 40px !important;
-  font-size: 15px !important;
-  font-family: 'FontAwesome', 'Lato';
-}
-.input-group{
-  margin-bottom: 25px !important;
-}
-.input-group-addon{
-  width: 100px !important;
-  background: #22b173 !important;
-  color: #fff !important;
-}
-.input-group-title{
-  width: 100px !important;
-  background: #028170 !important;
-  color: #fff !important;
-}
-.input-filter{
-  margin-bottom: 25px !important;
-  margin-top: 20px !important;
-  margin-left: 110px !important;
-  height: 50% !important;
-}
-
 }
 </style>
 <script>
@@ -131,21 +53,44 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
-    AUTH.checkPlan()
+    this.retrieve({'title': 'asc'}, {value: null, column: 'title'})
+    console.log(this.categoryParameter)
   },
   data(){
     return {
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
-      filterValue1: 'personnal',
-      filterValue: 'Current date first',
-      searchValue: null,
-      arrangeValue: 'list',
-      sort: [{
-        title: 'Current date first', status1: true
+      category: [{
+        title: 'Personnal',
+        sorting: [{
+          title: 'Title ascending',
+          payload: 'title',
+          payload_value: 'asc'
+        }, {
+          title: 'Title descending',
+          payload: 'title',
+          payload_value: 'desc'
+        }]
       }, {
-        title: 'Current date last', status1: false
+        title: 'Customers',
+        sorting: [{
+          title: 'Title ascending',
+          payload: 'title',
+          payload_value: 'asc'
+        }, {
+          title: 'Title descending',
+          payload: 'title',
+          payload_value: 'desc'
+        }, {
+          title: 'Description ascending',
+          payload: 'description',
+          payload_value: 'asc'
+        }, {
+          title: 'Description descending',
+          payload: 'description',
+          payload_value: 'desc'
+        }]
       }],
       folders: [{
         title: 'T-shirts'
@@ -156,9 +101,9 @@ export default {
       }, {
         title: 'Cellphones'
       }, {
-        title: 'Tarpaulins'
+        title: 'Tarpaulin'
       }, {
-        title: 'Temp1'
+        title: 'temp'
       }, {
         title: 'Temp2'
       }, {
@@ -176,18 +121,47 @@ export default {
       }, {
         title: 'Temp9'
       }],
-
-      status1: true
+      categoryParameter: this.$route.params.category ? this.$route.params.category : null
+    }
+  },
+  components: {
+    'dynamic-empty': require('components/increment/generic/empty/EmptyDynamicIcon.vue'),
+    'category-contents': require('modules/file/Contents.vue'),
+    'generic-filter': require('components/increment/ecommerce/marketplace/Filter.vue')
+  },
+  watch: {
+    '$route.params.category': function(){
+      if(this.$route.params.category){
+        this.categoryParameter = this.$route.params.category
+      }else{
+        this.categoryParameter = null
+      }
     }
   },
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+      if(parameter === 'editor/v2'){
+        AUTH.mode = 1
+      }
     },
-    retrieve(){
-      this.$parent.filterValue1 = this.filterValue1
-      this.$parent.searchValue = this.searchValue
-      this.$parent.retrieve()
+    retrieve(sort){
+      let parameter = {
+        condition: [{
+          value: 'saved',
+          column: 'status',
+          clause: '='
+        }],
+        sort: sort,
+        account_id: this.user.userID
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('products/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.data = response.data
+        }
+      })
     }
   }
 }
