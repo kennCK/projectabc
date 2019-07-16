@@ -1,20 +1,20 @@
 <template>
-  <div class="modal" tabindex="-1" role="dialog" id="promptMessage" v-if="this.template.prompts !== null">
+  <div class="modal" tabindex="-1" role="dialog" id="promptMessage" v-if="global.template.contents.prompts !== null">
     <div class="modal-dialog" role="document" >
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{this.template.prompts.title}}</h5>
+          <h5 class="modal-title">{{global.template.contents.prompts.title}}</h5>
           <button type="button" class="close"  @click="hide()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>{{this.template.prompts.message}}</p>
+          <p>{{global.template.contents.prompts.message}}</p>
         </div>
         <div class="modal-footer">
           
-          <button type="button" class="btn btn-danger" @click="hide()">{{this.template.prompts.btn.no}}</button>
-          <button type="button" class="btn btn-primary" @click="yes()">{{this.template.prompts.btn.yes}}</button>
+          <button type="button" class="btn btn-danger" @click="hide()">{{global.template.contents.prompts.btn.no}}</button>
+          <button type="button" class="btn btn-primary" @click="yes()">{{global.template.contents.prompts.btn.yes}}</button>
         </div>
       </div>
     </div>
@@ -31,8 +31,7 @@ import GLOBAL from 'src/modules/editorv2/global.js'
 export default {
   data () {
     return {
-      global: GLOBAL,
-      template: GLOBAL.template
+      global: GLOBAL
     }
   },
   methods: {
@@ -40,18 +39,18 @@ export default {
       $('#promptMessage').modal('hide')
     },
     yes(){
-      if(this.template.prompts.title === 'Unsave Template'){
+      if(GLOBAL.template.contents.prompts.title === 'Unsave Template'){
         this.addTemplate()
       }
     },
     addTemplate(){
       let height = 300
       let width = 500
-      this.template.title = 'This is a test'
-      this.template.category = 'Tarpaulin'
-      this.template.status = 'personal'
-      this.template.purchased = null
-      this.template.contents = {
+      GLOBAL.template.contents.title = 'This is a test'
+      GLOBAL.template.contents.category = 'Tarpaulin'
+      GLOBAL.template.contents.status = 'personal'
+      GLOBAL.template.contents.purchased = null
+      GLOBAL.template.contents.contents = {
         style: {
           height: height + 'px',
           width: width + 'px',
@@ -62,11 +61,11 @@ export default {
         selected_page: null,
         selected_plugin: null
       }
-      this.template.setting.page = {
+      GLOBAL.template.contents.setting.page = {
         height: height,
         width: width
       }
-      this.template.setting.zoom = {
+      GLOBAL.template.contents.setting.zoom = {
         height: height,
         width: width
       }

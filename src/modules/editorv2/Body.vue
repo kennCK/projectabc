@@ -2,25 +2,25 @@
 	<div class="holder">
 		<div class="editor-layers">
 			<ul>
-        <li class="hidden text-center" v-if="template.leftPane.index > 0">
-          <i class="fas fa-chevron-left" @click="template.leftPane.index--, makeActive(layerTabs[template.leftPane.index])"></i>
+        <li class="hidden text-center" v-if="contents.leftPane.index > 0">
+          <i class="fas fa-chevron-left" @click="contents.leftPane.index--, makeActive(layerTabs[contents.leftPane.index])"></i>
         </li>
-				<li class="shown" v-bind:class="{'active': layerTabs[template.leftPane.index] === template.leftPane.title}" @click="makeActive(layerTabs[template.leftPane.index])">{{layerTabs[template.leftPane.index]}}</li>
-        <li class="shown" v-bind:class="{'active': layerTabs[template.leftPane.index + 1] === template.leftPane.title}" @click="makeActive(layerTabs[template.leftPane.index + 1])">{{layerTabs[template.leftPane.index + 1]}}</li>
-        <li class="hidden text-center" v-bind:style="{width: (template.leftPane.index === 0) ? '20%' : '10%'}" @click="template.leftPane.index++, makeActive(layerTabs[template.leftPane.index])" v-if="template.leftPane.index < (layerTabs.length - 1)">
+				<li class="shown" v-bind:class="{'active': layerTabs[contents.leftPane.index] === contents.leftPane.title}" @click="makeActive(layerTabs[contents.leftPane.index])">{{layerTabs[contents.leftPane.index]}}</li>
+        <li class="shown" v-bind:class="{'active': layerTabs[contents.leftPane.index + 1] === contents.leftPane.title}" @click="makeActive(layerTabs[contents.leftPane.index + 1])">{{layerTabs[contents.leftPane.index + 1]}}</li>
+        <li class="hidden text-center" v-bind:style="{width: (contents.leftPane.index === 0) ? '20%' : '10%'}" @click="contents.leftPane.index++, makeActive(layerTabs[contents.leftPane.index])" v-if="contents.leftPane.index < (layerTabs.length - 1)">
           <i class="fas fa-chevron-right"></i>
         </li>
 			</ul>
 			<div class="option-contents">
-        <marketplace v-if="template.leftPane.title === 'Marketplace'"></marketplace>
-        <users v-if="template.leftPane.title === 'Designers'"></users>
-				<editor-layers v-if="template.leftPane.title === 'Layers'"  :page="template.contents.pages[template.contents.selected_page]"></editor-layers>
-				<editor-assets v-if="template.leftPane.title === 'Assets'"></editor-assets>
-				<editor-pages v-if="template.leftPane.title === 'Pages'" :contents="template.contents"></editor-pages>
+        <marketplace v-if="contents.leftPane.title === 'Marketplace'"></marketplace>
+        <users v-if="contents.leftPane.title === 'Designers'"></users>
+				<editor-layers v-if="contents.leftPane.title === 'Layers'"></editor-layers>
+				<editor-assets v-if="contents.leftPane.title === 'Assets'"></editor-assets>
+				<editor-pages v-if="contents.leftPane.title === 'Pages'"></editor-pages>
 			</div>
 		</div>
 		<div class="editor-body">
-			<page :contents="template.contents"></page>
+			<page></page>
 		</div>
 		<div class="editor-settings">
 			<ul>
@@ -30,7 +30,7 @@
 					<span class="option-holder" v-if="item.show === true">
 						<settings-text v-if="item.title === 'Text'"></settings-text>
 						<settings-color :position="{right: '13%', top: '0%'}" v-if="item.title === 'Color'"></settings-color>
-						<settings-settings v-if="item.title === 'Settings'" :property="template.objectSettings"></settings-settings>
+						<settings-settings v-if="item.title === 'Settings'" :property="contents.objectSettings"></settings-settings>
 						<settings-stroke v-if="item.title === 'Stroke'"></settings-stroke>
 						<settings-shadow v-if="item.title === 'Shadow'"></settings-shadow>
 					</span>
@@ -157,10 +157,9 @@ export default{
       }],
       selectedPage: null,
       global: GLOBAL,
-      template: GLOBAL.template
+      contents: GLOBAL.template.contents
     }
   },
-  props: ['contents'],
   components: {
     'editor-layers': require('modules/editorv2/layers/Layers.vue'),
     'editor-assets': require('modules/editorv2/layers/Assets.vue'),
@@ -179,9 +178,9 @@ export default{
       this.$emit('add', item)
     },
     makeActive(item){
-      this.template.leftPane.title = item
-      this.template.selectedTopMenu = item
-      this.template.overlay.title = null
+      this.contents.leftPane.title = item
+      this.contents.selectedTopMenu = item
+      this.contents.overlay.title = null
     }
   }
 }

@@ -1,9 +1,9 @@
 <template>
   <div class="profile-wrapper">
     <div class="header">
-      {{global.overlay.description}}
-      <i class="fa fa-phone pull-right" @click="auth.triggerAudioCall(2, global.overlay.payload_value)"></i>
-      <i class="fas fa-envelope pull-right"  @click="redirect('/messenger/' + global.overlay.description)"></i>
+      {{global.template.contents.overlay.description}}
+      <i class="fa fa-phone pull-right" @click="auth.triggerAudioCall(2, global.template.contents.overlay.payload_value)"></i>
+      <i class="fas fa-envelope pull-right"  @click="redirect('/messenger/' + global.template.contents.overlay.description)"></i>
     </div>
     <div class="gallery">
       <div class="gallery-item" v-for="(item) in 5" :key="item"></div>

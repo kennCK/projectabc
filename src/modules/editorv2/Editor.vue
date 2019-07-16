@@ -5,7 +5,7 @@
         <i class="fa fa-bars editor-menu" v-bind:class="{'gray': activeDropdown === 'mainMenu'}" @click="showDropdown('mainMenu')"></i>
         <dropdown-menu v-if="activeDropdown === 'mainMenu'" @closed="activeDropdown = null"></dropdown-menu>
       </span>
-      <div v-if="template.contents !== null">
+      <div v-if="contents.content !== null">
         <span class="editor-dropdown text-white" @click="showDropdown('moveScale')">
           <label>{{selectedMoveScale}}</label>
           <i class="fa fa-chevron-down"></i>
@@ -72,16 +72,16 @@
       <label v-else class="text-white" style="padding-left: 10px;">
         <b>Add new template</b>
       </label>
-      <span class="pull-right" v-if="template.contents !== null">
+      <span class="pull-right" v-if="contents.content !== null">
         <button class="btn btn-danger" @click="save()">Save</button>
         <button class="btn btn-warning" @click="redirect('/checkout')">Add to cart</button>
         <i class="fa fa-phone audio-call bg-white text-primary action-link" @click="auth.triggerAudioCall()"></i>
       </span>
     </div>
     <div class="editor-body">
-      <editor-body :contents="template.contents" v-if="template.optionFlag === false"></editor-body>
-      <overlay :contents="template.contents" v-if="template.overlay.title !== null && template.optionFlag === false"></overlay>
-      <initial-options v-if="template.contents === null && template.optionFlag === true"></initial-options>
+      <editor-body v-if="contents.optionFlag === false"></editor-body>
+      <overlay v-if="contents.overlay.title !== null && contents.optionFlag === false"></overlay>
+      <initial-options v-if="contents.content === null && contents.optionFlag === true"></initial-options>
 <!--       <color-picker :color="color" @selectedColor="color = $event"></color-picker> -->
     </div>
     <div class="screen-mode" >
@@ -219,7 +219,7 @@ import axios from 'axios'
 export default {
   mounted(){
     if(this.code !== null){
-      this.retrieve()
+      // GLOBAL.retrieve()
     }
   },
   data(){
@@ -236,6 +236,7 @@ export default {
       activeDropdown: null,
       global: GLOBAL,
       template: GLOBAL.template,
+      contents: GLOBAL.template.contents,
       code: this.$route.params.code
     }
   },
@@ -266,27 +267,6 @@ export default {
     },
     save(){
       this.global.save()
-    },
-    retrieve(){
-      let parameter = {
-        condition: [{
-          value: this.code,
-          column: 'code',
-          clause: '='
-        }]
-      }
-      this.APIRequest('templates/retrieve', parameter).then(response => {
-        let contents = JSON.parse(response.data[0].contents)
-        console.log(contents.setting)
-        // if(response.data.length > 0){
-        //   let template = response.data[0]
-        //   GLOBAL.title = template.title
-        //   GLOBAL.category = template.category
-        //   GLOBAL.purchased = template.purchased
-        //   GLOBAL.status = template.status
-        //   GLOBAL.contents = JSON.parse(template.contents)
-        // }
-      })
     }
   }
 }
