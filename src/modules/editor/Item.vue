@@ -201,7 +201,7 @@ export default {
     },
     openEditor(code){
       AUTH.mode = 1
-      this.redirect('editor/v2/')
+      this.redirect('editor/v2/' + code)
     },
     redirect(parameter){
       ROUTER.push(parameter)

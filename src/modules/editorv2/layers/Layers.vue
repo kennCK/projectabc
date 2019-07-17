@@ -1,12 +1,12 @@
 <template>
-  <div class="layer-holder">
-    <ul class="layer-wrapper">
+  <div class="layer-holder" v-if="global.template.contents.content !== null">
+    <ul class="layer-wrapper" v-if="global.template.contents.content.pages.length > 0">
       <li class="layer-item">
         <i class="fas fa-plus pull-right" @click="global.addLayer()"></i>
-        <i class="fa fa-trash text-danger pull-right" @click="remove(page.selected_layer)"></i>
-        <i class="fa fa-clone text-primary pull-right" @click="duplicate(page.selected_layer)"></i>
+        <i class="fa fa-trash text-danger pull-right" @click="remove(global.template.contents.content.pages[activePageIndex].selected_layer)"></i>
+        <i class="fa fa-clone text-primary pull-right" @click="duplicate(global.template.contents.content.pages[activePageIndex].selected_layer)"></i>
       </li>
-      <li class="layer-item" v-for="(layer, layerIndex) in page.layers" :key="layerIndex" v-bind:class="{'active': page.selected_layer === layerIndex && layer.show === false}" @click="makeActive(layer, layerIndex)">
+      <li class="layer-item" v-for="(layer, layerIndex) in global.template.contents.content.pages[activePageIndex].layers" :key="layerIndex" v-bind:class="{'active': global.template.contents.content.pages[activePageIndex].selected_layer === layerIndex && layer.show === false}" @click="makeActive(layer, layerIndex)">
 
         <i class="fa" v-bind:class="{'fa-eye': layer.eye === true,  'fa-eye-slash': layer.eye === false}" @click="layer.eye = !layer.eye"></i>
         
@@ -22,7 +22,7 @@
         <i class="fas fa-chevron-up pull-right" v-if="layer.show === true && layer.objects.length > 0" @click="makeActive(layer, layerIndex), layer.show = false"></i>
 
         <ul v-if="layer.show === true && layer.objects.length > 0">
-          <li v-for="(object, objectIndex) in layer.objects" :key="objectIndex" v-bind:class="{'active': layer.selected_object === objectIndex && page.selected_layer === layerIndex}" @click="makeActiveObject(layer, object, objectIndex)">
+          <li v-for="(object, objectIndex) in layer.objects" :key="objectIndex" v-bind:class="{'active': layer.selected_object === objectIndex && global.template.contents.content.pages[activePageIndex].selected_layer === layerIndex}" @click="makeActiveObject(layer, object, objectIndex)">
             <i class="fa fa-image" v-if="object.type === 'image'"></i>
             <i class="fa fa-square" v-if="object.type === 'object'"></i>
             <i class="fa fa-paragraph" v-if="object.type === 'text'"></i>
@@ -93,33 +93,33 @@ export default {
   data () {
     return {
       global: GLOBAL,
-      clickFlag: false
+      clickFlag: false,
+      activePageIndex: GLOBAL.template.contents.activePageIndex
     }
   },
-  props: ['page'],
   methods: {
     remove(index){
-      this.page.layers.splice(index, 1)
+      GLOBAL.template.contents.content.pages[this.activePageIndex].layers.splice(index, 1)
     },
     duplicate(index){
       let copy = this.page.layers[index]
-      this.page.layers.push(copy)
+      GLOBAL.template.contents.content.pages[this.activePageIndex].layers.push(copy)
     },
     makeActive(item, index){
       if(this.clickFlag === false){
-        this.page.selected_layer = index
-        this.global.activeLayerIndex = index
-        this.global.objectSettings = item.style
-        this.global.selectedTopMenu = 'Layers'
+        GLOBAL.template.contents.content.pages[this.activePageIndex].selected_layer = index
+        GLOBAL.template.contents.activeLayerIndex = index
+        GLOBAL.template.contents.objectSettings = item.style
+        GLOBAL.template.contents.selectedTopMenu = 'Layers'
       }
       this.clickFlag = false
     },
     makeActiveObject(layer, item, index){
       this.clickFlag = true
-      this.global.selectedTopMenu = 'Object'
+      GLOBAL.template.contents.selectedTopMenu = 'Object'
       layer.selected_object = index
-      this.global.activeObjectIndex = index
-      this.global.objectSettings = item.style
+      GLOBAL.template.contents.activeObjectIndex = index
+      GLOBAL.template.contents.objectSettings = item.style
     }
   }
 }

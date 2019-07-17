@@ -5,7 +5,7 @@
         <i class="fa fa-bars editor-menu" v-bind:class="{'gray': activeDropdown === 'mainMenu'}" @click="showDropdown('mainMenu')"></i>
         <dropdown-menu v-if="activeDropdown === 'mainMenu'" @closed="activeDropdown = null"></dropdown-menu>
       </span>
-      <div v-if="global.template !== null">
+      <div v-if="contents.content !== null">
         <span class="editor-dropdown text-white" @click="showDropdown('moveScale')">
           <label>{{selectedMoveScale}}</label>
           <i class="fa fa-chevron-down"></i>
@@ -65,23 +65,30 @@
         </span>
       </div>
 
-      <label class="text-white" style="font-size: 13px; padding-left: 100px;" v-if="global.template !== null">
-        {{global.template.type}} / <b @dblclick="global.template.edit_flag = true" v-if="global.template.edit_flag === false">{{global.template.title}}</b>
-        <input type="text" v-model="global.template.title" class="title-input" v-else @keyup.enter="global.template.edit_flag = false">
+      <label class="text-white edit-cursor" style="font-size: 13px; padding-left: 100px;" v-if="template.title !== null">
+        {{template.category}} / <b @dblclick="template.edit_flag = true" v-if="template.edit_flag === false">{{template.title}}</b>
+        <input type="text" v-model="template.title" class="title-input" v-else @keyup.enter="template.edit_flag = false">
       </label>
       <label v-else class="text-white" style="padding-left: 10px;">
         <b>Add new template</b>
       </label>
-      <span class="pull-right">
-        <button class="btn btn-danger">Save</button>
-        <button class="btn btn-warning">Add to cart</button>
+      <span class="pull-right" v-if="contents.content !== null">
+        <button class="btn btn-danger" @click="save()">Save</button>
+        <button class="btn btn-warning" @click="redirect('/checkout')">Add to cart</button>
         <i class="fa fa-phone audio-call bg-white text-primary action-link" @click="auth.triggerAudioCall()"></i>
       </span>
     </div>
-    <div class="editor-body" v-if="global.template !== null">
-      <editor-body :template="global.template"></editor-body>
+    <div class="editor-body">
+      <editor-body v-if="contents.optionFlag === false"></editor-body>
+      <overlay v-if="contents.overlay.title !== null && contents.optionFlag === false"></overlay>
+      <initial-options v-if="contents.content === null && contents.optionFlag === true"></initial-options>
 <!--       <color-picker :color="color" @selectedColor="color = $event"></color-picker> -->
     </div>
+    <div class="screen-mode" >
+      <i class="fas fa-arrows-alt-h" v-if="auth.mode === 0" @click="auth.mode = 1"></i>
+      <i class="fas fa-compress" v-if="auth.mode === 1" @click="auth.mode = 0"></i>
+    </div>
+    <prompt-message></prompt-message>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -162,6 +169,7 @@
   height: calc(100vh - 40px);
   background: white;
   margin-top: 40px;
+  position: relative;
 }
 
 .editor-dropdown{
@@ -175,6 +183,32 @@
 .editor-dropdown label{
   padding-right: 5px;
 }
+
+.screen-mode{
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  bottom: 10px;
+  border-radius: 50%;
+  background: $primary;
+  color: white;
+  line-height: 50px;
+  text-align: center;
+}
+
+.screen-mode i{
+  line-height: 50px;
+  font-size: 24px;
+}
+
+.screen-mode:hover{
+  cursor: pointer;
+  background: $secondary;
+}
+
+.edit-cursor:hover{
+  cursor: text;
+}
 </style>
 <script>
 import ROUTER from '../../router'
@@ -184,6 +218,9 @@ import GLOBAL from 'src/modules/editorv2/global.js'
 import axios from 'axios'
 export default {
   mounted(){
+    if(this.code !== null){
+      // GLOBAL.retrieve()
+    }
   },
   data(){
     return {
@@ -197,7 +234,10 @@ export default {
       selectedDrawing: 'fas fa-pencil-alt',
       selectedSettings: null,
       activeDropdown: null,
-      global: GLOBAL
+      global: GLOBAL,
+      template: GLOBAL.template,
+      contents: GLOBAL.template.contents,
+      code: this.$route.params.code
     }
   },
   components: {
@@ -208,15 +248,25 @@ export default {
     'dropdown-object': require('modules/editorv2/dropdowns/Objects.vue'),
     'dropdown-drawing': require('modules/editorv2/dropdowns/Drawing.vue'),
     'dropdown-settings': require('modules/editorv2/dropdowns/Settings'),
-    'color-picker': require('modules/editorv2/colors/Picker.vue')
+    'color-picker': require('modules/editorv2/colors/Picker.vue'),
+    'overlay': require('modules/editorv2/overlays/RightPane.vue'),
+    'prompt-message': require('modules/editorv2/prompts/Overlay.vue'),
+    'initial-options': require('modules/editorv2/Options.vue')
   },
   methods: {
+    redirect(parameter){
+      AUTH.mode = 0
+      AUTH.redirect(parameter)
+    },
     showDropdown(item){
       if(item === this.activeDropdown){
         this.activeDropdown = null
       }else{
         this.activeDropdown = item
       }
+    },
+    save(){
+      this.global.save()
     }
   }
 }
