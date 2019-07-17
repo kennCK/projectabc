@@ -1,5 +1,5 @@
 <template>
-	<div class="holder">
+	<div class="holder" v-if="global.template.contents.content !== null">
 		<div class="page-holder" v-for="(page, pageIndex) in global.template.contents.content.pages" :key="pageIndex">
 			<div class="page-container" :style="{height: global.template.contents.setting.zoom.height + 'px', width: global.template.contents.setting.zoom.width + 'px'}">
 				<div v-bind:style="layer.style" v-for="(layer, layerIndex) in page.layers" :key="layerIndex">

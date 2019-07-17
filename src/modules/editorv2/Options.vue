@@ -80,8 +80,6 @@ import GLOBAL from 'src/modules/editorv2/global.js'
 export default {
   data () {
     return {
-      global: GLOBAL,
-      template: GLOBAL.template,
       menus: [{
         title: 'Find Printing',
         description: 'Do you need to talk with our printing partner? Checkout and they are waiting for you.',
@@ -107,25 +105,25 @@ export default {
   },
   methods: {
     selectOption(item){
-      this.template.optionFlag = false
+      GLOBAL.template.contents.optionFlag = false
       switch(item.payload){
         case 'Marketplace':
-          this.template.selectedTopMenu = 'Marketplace'
-          this.template.leftPane.title = 'Marketplace'
-          this.template.leftPane.index = 1
-          this.template.overlay.title = null
+          GLOBAL.template.contents.selectedTopMenu = 'Marketplace'
+          GLOBAL.template.contents.leftPane.title = 'Marketplace'
+          GLOBAL.template.contents.leftPane.index = 1
+          GLOBAL.template.contents.overlay.title = null
           break
         case 'Designers':
-          this.template.selectedTopMenu = 'Designers'
-          this.template.leftPane.title = 'Designers'
-          this.template.leftPane.index = 0
-          this.template.overlay.title = null
+          GLOBAL.template.contents.selectedTopMenu = 'Designers'
+          GLOBAL.template.contents.leftPane.title = 'Designers'
+          GLOBAL.template.contents.leftPane.index = 0
+          GLOBAL.template.contents.overlay.title = null
           break
         case 'Printing':
-          this.template.selectedTopMenu = 'Printing'
-          this.template.leftPane.title = 'Printing'
-          this.template.leftPane.index = 2
-          this.template.overlay.title = null
+          GLOBAL.template.contents.selectedTopMenu = 'Printing'
+          GLOBAL.template.contents.leftPane.title = 'Printing'
+          GLOBAL.template.contents.leftPane.index = 2
+          GLOBAL.template.contents.overlay.title = null
           break
       }
     }

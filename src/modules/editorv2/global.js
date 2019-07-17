@@ -116,7 +116,11 @@ export default {
     }
     let activePageIndex = this.template.contents.activePageIndex
     let activeLayerIndex = this.template.contents.activeLayerIndex
+    this.template.contents.content.pages[activePageIndex].layers[activeLayerIndex].show = true
     this.template.contents.content.pages[activePageIndex].layers[activeLayerIndex].objects.push(object)
+    let length = this.template.contents.content.pages[activePageIndex].layers[activeLayerIndex].objects - 1
+    this.template.contents.content.pages[activePageIndex].layers[activeLayerIndex].selected_object = length
+    this.template.contents.activeObjectIndex = length
   },
   zoomHandler(multiplier){
     this.zoom = multiplier
