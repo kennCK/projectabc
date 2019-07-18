@@ -15,8 +15,8 @@ export default {
     hours: 0,
     timer: null,
     receiverId: null,
-    senderUser: null,
-    receiverUser: null
+    senderUser: '',
+    receiverUser: ''
   },
   mode: 0,
   user: {
