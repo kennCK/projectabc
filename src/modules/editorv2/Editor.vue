@@ -219,7 +219,14 @@ import axios from 'axios'
 export default {
   mounted(){
     if(this.code !== null){
-      // GLOBAL.retrieve()
+      let parameter = {
+        condition: [{
+          value: this.code,
+          clause: '=',
+          column: 'code'
+        }]
+      }
+      GLOBAL.retrieve(parameter)
     }
   },
   data(){
@@ -237,7 +244,7 @@ export default {
       global: GLOBAL,
       template: GLOBAL.template,
       contents: GLOBAL.template.contents,
-      code: this.$route.params.code
+      code: this.$route.params.code ? this.$route.params.code : null
     }
   },
   components: {

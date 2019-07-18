@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import AUTH from 'src/services/auth'
 export default {
+  saveSetting: false,
   template: {
     contents: {
       content: null,
@@ -109,7 +110,8 @@ export default {
         left: '0',
         borderRadius: '0px',
         position: 'absolute',
-        border: 'solid 1px #ddd'
+        border: 'solid 1px #ddd',
+        zIndex: '1'
       }
     }else{
       //
@@ -140,18 +142,36 @@ export default {
       purchased: this.template.purchased,
       category: this.template.category
     }
-    vue.APIRequest('templates/create', parameter).then(response => {
-      console.log(response)
-    })
-  },
-  retrieve(condition){
-    let parameter = {
-      condition: condition
+    if(this.saveSetting === false){
+      vue.APIRequest('templates/create', parameter).then(response => {
+        if(response.data > 0){
+          let parameter = {
+            condition: [{
+              value: response.data,
+              clause: '=',
+              column: 'id'
+            }]
+          }
+          this.retrieve(parameter)
+        }
+      })
+    }else{
+      parameter['id'] = this.template.id
+      vue.APIRequest('templates/update', parameter).then(response => {
+        if(response.data === true){
+        }
+      })
     }
+  },
+  retrieve(parameter){
     let vue = new Vue()
+    $('#loading').css({'display': 'block'})
     vue.APIRequest('templates/retrieve', parameter).then(response => {
+      $('#loading').css({'display': 'none'})
       if(response.data.length > 0){
         this.template = response.data[0]
+        this.template.contents = JSON.parse(this.template.contents)
+        this.saveSetting = true
       }
     })
   }

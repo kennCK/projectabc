@@ -28,6 +28,13 @@ class TemplateController extends APIController
     $this->model = new Template();
     $this->retrieveDB($data);
     $result = $this->response['data'];
+    // if(sizeof($result) > 0){
+    //   $i = 0;
+    //   foreach ($result as $key) {
+    //     $this->response['data'][$i]['contents'] = response()->json()
+    //     $i++;
+    //   }
+    // }
     return $this->response();
   }
 
