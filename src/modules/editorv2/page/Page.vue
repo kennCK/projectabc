@@ -5,10 +5,10 @@
 				<div v-bind:style="layer.style" v-for="(layer, layerIndex) in page.layers" :key="layerIndex">
 					<div v-bind:style="object.style" class="object" v-bind:class="{'selected-object': objectIndex === layer.selected_object}" v-for="(object, objectIndex) in layer.objects" :key="objectIndex" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)">
             <!-- Resize edge -->
-            <span class="resize resize-top-left" style="left: 0; top: 0;" v-if="objectIndex === layer.selected_object"></span>
-            <span class="resize resize-top-right" style="right: 0; top: 0;" v-if="objectIndex === layer.selected_object"></span>
-            <span class="resize resize-bottom-left" style="left: 0; bottom: 0;" v-if="objectIndex === layer.selected_object"></span>
-            <span class="resize resize-bottom-right" style="right: 0; bottom: 0;" v-if="objectIndex === layer.selected_object"></span>
+            <span class="resize resize-top-left" style="left: 0; top: 0;" v-if="objectIndex === layer.selected_object" @mouseover="position.resize = 'bottom-left'"></span>
+            <span class="resize resize-top-right" style="right: 0; top: 0;" v-if="objectIndex === layer.selected_object" @mouseover="position.resize = 'top-right'"></span>
+            <span class="resize resize-bottom-left" style="left: 0; bottom: 0;" v-if="objectIndex === layer.selected_object" @mouseover="position.resize = 'bottom-left'"></span>
+            <span class="resize resize-bottom-right" style="right: 0; bottom: 0;" v-if="objectIndex === layer.selected_object" @mouseover="position.resize = 'bottom-right'"></span>
           </div>
 				</div>
 			</div>
@@ -93,7 +93,10 @@ export default{
         top: null,
         left: null,
         charTop: null,
-        charLeft: null
+        charLeft: null,
+        width: null,
+        height: null,
+        resize: null
       }
     }
   },
@@ -127,7 +130,7 @@ export default{
         this.position.charLeft = 'px'
       }
     },
-    manageAttributes(x, y, object){
+    changePosition(x, y, object){
       this.position.top = parseInt(this.position.top)
       this.position.left = parseInt(this.position.left)
       object.style.top = (this.position.top + y) + 'px'
@@ -136,7 +139,7 @@ export default{
     drag(event, object){
       let x = this.posX - event.x
       let y = this.posY - event.y
-      this.manageAttributes(x * -1, y * -1, object)
+      this.changePosition(x * -1, y * -1, object)
     }
   }
 }
