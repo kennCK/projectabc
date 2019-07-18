@@ -251,3 +251,12 @@ $controller = 'MessengerGroupController@';
 Route::post($route.'create', $controller."create");
 Route::post($route.'retrieve', $controller."retrieve");
 
+// Account Login Status Controller
+$route = env('PACKAGE_ROUTE', '').'/account_login_status/';  
+$controller = 'AccountLoginStatusController@';
+Route::post($route.'create', $controller."create");
+Route::post($route.'retrieve', $controller."retrieve");
+Route::post($route.'update', $controller."update");
+Route::post($route.'delete', $controller."delete");
+
+
