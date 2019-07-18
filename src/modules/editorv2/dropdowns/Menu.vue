@@ -107,13 +107,13 @@ export default{
       this.$emit('closed', item)
       switch(item.payload){
         case 'new_template':
-          if(GLOBAL.contents === null){
+          if(GLOBAL.template.contents.content === null){
             this.addTemplate()
-            GLOBAL.leftPane.title = 'Pages'
-            GLOBAL.leftPane.index = 3
-            GLOBAL.overlay.title = null
+            GLOBAL.template.contents.leftPane.title = 'Pages'
+            GLOBAL.template.contents.leftPane.index = 3
+            GLOBAL.template.contents.overlay.title = null
           } else {
-            GLOBAL.prompts = {
+            GLOBAL.template.contents.prompts = {
               title: 'Unsave Template',
               message: 'You have unsave work. Are you sure you want to disregard this changes?',
               btn: {
@@ -125,33 +125,35 @@ export default{
           }
           break
         case 'marketplace_template':
-          GLOBAL.selectedTopMenu = 'Marketplace'
-          GLOBAL.leftPane.title = 'Marketplace'
-          GLOBAL.leftPane.index = 1
-          GLOBAL.overlay.title = null
+          GLOBAL.template.contents.selectedTopMenu = 'Marketplace'
+          GLOBAL.template.contents.leftPane.title = 'Marketplace'
+          GLOBAL.template.contents.leftPane.index = 1
+          GLOBAL.template.contents.overlay.title = null
           break
         case 'designer':
-          GLOBAL.selectedTopMenu = 'Designers'
-          GLOBAL.leftPane.title = 'Designers'
-          GLOBAL.leftPane.index = 0
-          GLOBAL.overlay.title = null
+          GLOBAL.template.contents.selectedTopMenu = 'Designers'
+          GLOBAL.template.contents.leftPane.title = 'Designers'
+          GLOBAL.template.contents.leftPane.index = 0
+          GLOBAL.template.contents.overlay.title = null
           break
         case 'printing':
-          GLOBAL.selectedTopMenu = 'Printing'
-          GLOBAL.leftPane.title = 'Printing'
-          GLOBAL.leftPane.index = 2
-          GLOBAL.overlay.title = null
+          GLOBAL.template.contents.selectedTopMenu = 'Printing'
+          GLOBAL.template.contents.leftPane.title = 'Printing'
+          GLOBAL.template.contents.leftPane.index = 2
+          GLOBAL.template.contents.overlay.title = null
           break
       }
     },
     addTemplate(){
       let height = 300
       let width = 500
-      GLOBAL.title = 'This is a test'
-      GLOBAL.category = 'Tarpaulin'
-      GLOBAL.status = 'personal'
-      GLOBAL.purchased = null
-      GLOBAL.contents = {
+      GLOBAL.template.contents.optionFlag = false
+      GLOBAL.template.title = 'This is a test'
+      GLOBAL.template.category = 'Tarpaulin'
+      GLOBAL.template.status = 'personal'
+      GLOBAL.template.purchased = null
+      GLOBAL.template.optionFlag = false
+      GLOBAL.template.contents.content = {
         style: {
           height: height + 'px',
           width: width + 'px',
@@ -162,11 +164,11 @@ export default{
         selected_page: null,
         selected_plugin: null
       }
-      GLOBAL.setting.page = {
+      GLOBAL.template.contents.setting.page = {
         height: height,
         width: width
       }
-      GLOBAL.setting.zoom = {
+      GLOBAL.template.contents.setting.zoom = {
         height: height,
         width: width
       }

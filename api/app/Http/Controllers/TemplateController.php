@@ -32,7 +32,7 @@ class TemplateController extends APIController
   }
 
   public function generateCode(){
-    $code = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 32);
+    $code = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 64);
     $codeExist = Template::where('code', '=', $code)->get();
     if(sizeof($codeExist) > 0){
       $this->generateCodee();

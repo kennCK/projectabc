@@ -88,16 +88,15 @@ export default {
         'Tarpaulin', 'TShirt', 'Calling Cards', 'ID Cards'
       ],
       config: CONFIG,
-      global: GLOBAL,
       selected: null
     }
   },
   methods: {
     makeActive(item, index){
-      this.global.overlay.title = 'marketplace'
-      this.global.overlay.description = item
-      this.global.overlay.payload = 'category'
-      this.global.overlay.payload_value = item
+      GLOBAL.template.contents.overlay.title = 'marketplace'
+      GLOBAL.template.contents.overlay.description = item
+      GLOBAL.template.contents.overlay.payload = 'category'
+      GLOBAL.template.contents.overlay.payload_value = item
       this.selected = index
     }
   }

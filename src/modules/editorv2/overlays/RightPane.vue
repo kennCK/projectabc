@@ -3,10 +3,10 @@
     <div class="filter">
       <i class="fas fa-search"></i>
       <input type="text" class="form-control" placeholder="Search">
-      <i class="fas fa-close" @click="global.overlay.title = null"></i>
+      <i class="fas fa-close" @click="global.template.contents.overlay.title = null"></i>
     </div>
     <div class="result-holder">
-      <profile v-if="global.overlay.title === 'designer'"></profile>
+      <profile v-if="global.template.contents.overlay.title === 'designer'"></profile>
     </div>
   </div>
 </template>
@@ -81,7 +81,6 @@ export default {
       global: GLOBAL
     }
   },
-  props: ['template'],
   components: {
     'profile': require('modules/editorv2/overlays/Profile.vue')
   }
