@@ -1,5 +1,5 @@
 <template>
-  <div class="audioModal" v-bind:style="position" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" id="audio-call">
+  <div class="audioModal" v-bind:style="initialPosition" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="drag($event)" v-on:drag="drag($event)" id="audio-call">
     <span class="holder" v-if="auth.audio.status === 0">   <!--  Ringing,Receiver -->
       <div class="call-animation" v-if="auth.audio.senderUser.profile.url !== null">
           <img class="img-circle" :src="config.BACKEND_URL + auth.audio.senderUser.profile.url" alt="" width="120"/>
@@ -46,23 +46,25 @@ export default {
     return{
       user: AUTH.user,
       config: CONFIG,
+      posX: null,
+      posY: null,
+      auth: AUTH,
+      timer: null,
+      selected: null,
       // localStream: null,
       // remoteStream: null,
       // pc1: null,
       // pc2: null,
       position: {
         top: '0',
-        right: '0'
+        right: '0',
+        charTop: null,
+        charRight: null
       },
-      auth: AUTH,
-      // seconds: 0,
-      // minutes: 0,
-      // hours: 0,
-      timer: null,
-     // timeDisplay: `00:00:00`,
-      posX: 0,
-      posY: 0,
-      selected: null
+      initialPosition: {
+        top: '0',
+        right: '0'
+      }
     }
   },
   methods: {
@@ -113,31 +115,35 @@ export default {
     moveObject(event){
       this.posX = event.x
       this.posY = event.y
-      var top = this.position.top
-      var right = this.position.right
-      if(String(top).indexOf('p') > -1){
-        top = parseInt(top.substr(0, top.length - 2))
+      this.position.top = this.initialPosition.top
+      this.position.right = this.initialPosition.right
+      if(String(this.position.top).indexOf('%') > -1){
+        this.position.top = parseInt(this.position.top.substr(0, this.position.top.length - 1))
+        this.position.charTop = '%'
       }
-      if(String(right).indexOf('p') > -1){
-        right = parseInt(right.substr(0, right.length - 2))
+      if(String(this.position.top).indexOf('p') > -1){
+        this.position.top = parseInt(this.position.top.substr(0, this.position.top.length - 2))
+        this.position.charTop = 'px'
+      }
+      if(String(this.position.right).indexOf('%') > -1){
+        this.position.right = parseInt(this.position.right.substr(0, this.position.right.length - 1))
+        this.position.charRight = '%'
+      }
+      if(String(this.position.right).indexOf('p') > -1){
+        this.position.right = parseInt(this.position.right.substr(0, this.position.right.length - 2))
+        this.position.charRight = 'px'
       }
     },
     drag(event){
       let x = this.posX - event.x
       let y = this.posY - event.y
-      this.manageAttributes(x, y * -1)
+      this.changePosition(x, y * -1)
     },
-    manageAttributes(x, y){
-      var top = this.position.top
-      var right = this.position.right
-      if(String(top).indexOf('p') > -1){
-        top = parseInt(top.substr(0, top.length - 2))
-      }
-      if(String(right).indexOf('p') > -1){
-        right = parseInt(right.substr(0, right.length - 2))
-      }
-      this.position.top = (top + y) + 'px'
-      this.position.right = (right + x) + 'px'
+    changePosition(x, y){
+      this.position.top = parseInt(this.position.top)
+      this.position.right = parseInt(this.position.right)
+      this.initialPosition.top = (this.position.top + y) + 'px'
+      this.initialPosition.right = (this.position.right + x) + 'px'
     }
   //   call(){
   //     this.pc1 = new RTCPeerConnection()
