@@ -1,6 +1,5 @@
 <template>
 	<div class="body">
-		<landing-banner></landing-banner>
     <landing-steps></landing-steps>
     <landing-bizmarketplace></landing-bizmarketplace>
     <landing-mc></landing-mc>
@@ -12,7 +11,6 @@ import ROUTER from '../../router'
 import AUTH from '../../services/auth'
 export default {
   components: {
-    'landing-banner': require('modules/home/Landing/Banner.vue'),
     'landing-bizmarketplace': require('modules/home/Landing/BizMarketplace.vue'),
     'landing-steps': require('modules/home/Landing/Steps.vue'),
     'landing-features': require('modules/home/Landing/Features.vue'),
