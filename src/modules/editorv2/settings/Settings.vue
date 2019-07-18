@@ -11,16 +11,16 @@
     <div class="attribute-double">
     	<span class="half">
     		<i class="fas fa-arrows-alt-h"></i>
-    		<input type="text" class="form-control" v-model="property.height" :disabled="disableOn.indexOf(global.selectedTopMenu) > -1">
+    		<input type="text" class="form-control" v-model="property.height" :disabled="disableOn.indexOf(template.selectedTopMenu) > -1">
     	</span>
     	<span class="half">
     		<i class="fas fa-arrows-alt-v"></i>
-    		<input type="text" class="form-control" v-model="property.width" :disabled="disableOn.indexOf(global.selectedTopMenu) > -1">
+    		<input type="text" class="form-control" v-model="property.width" :disabled="disableOn.indexOf(template.selectedTopMenu) > -1">
     	</span>
     </div>
-    <div class="attribute-item" v-if="disableOn.indexOf(global.selectedTopMenu) < 0">
+    <div class="attribute-item" v-if="disableOn.indexOf(template.selectedTopMenu) < 0">
     	<label>Rounded</label>
-      <input type="text" class="form-control" style="padding-right: 0px;" v-model="property.borderRadius" :disabled="disableOn.indexOf(global.selectedTopMenu) > -1"/>
+      <input type="text" class="form-control" style="padding-right: 0px;" v-model="property.borderRadius" :disabled="disableOn.indexOf(template.selectedTopMenu) > -1"/>
     </div>
   </div>
 </template>
@@ -137,7 +137,8 @@ export default{
       test: null,
       global: GLOBAL,
       color: null,
-      disableOn: ['Pages', 'Layers']
+      disableOn: ['Pages', 'Layers'],
+      template: GLOBAL.template
     }
   },
   props: ['property'],

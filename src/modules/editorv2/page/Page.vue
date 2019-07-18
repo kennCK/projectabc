@@ -1,9 +1,9 @@
 <template>
-	<div class="holder">
-		<div class="page-holder" v-for="(page, pageIndex) in contents.pages" :key="pageIndex">
-			<div class="page-container" :style="{height: global.setting.zoom.height + 'px', width: global.setting.zoom.width + 'px'}">
+	<div class="holder" v-if="global.template.contents.content !== null">
+		<div class="page-holder" v-for="(page, pageIndex) in global.template.contents.content.pages" :key="pageIndex">
+			<div class="page-container" :style="{height: global.template.contents.setting.zoom.height + 'px', width: global.template.contents.setting.zoom.width + 'px'}">
 				<div v-bind:style="layer.style" v-for="(layer, layerIndex) in page.layers" :key="layerIndex">
-					<div v-bind:style="object.style" class="object" v-bind:class="{'selected-object': objectIndex === layer.selected_object}" v-for="(object, objectIndex) in layer.objects" :key="objectIndex" @click="selectObject(objectIndex, layer)"></div>
+					<div v-bind:style="object.style" class="object" v-bind:class="{'selected-object': objectIndex === layer.selected_object}" v-for="(object, objectIndex) in layer.objects" :key="objectIndex" @click="selectObject(objectIndex, layer, object)"></div>
 				</div>
 			</div>
 		</div>
@@ -49,10 +49,13 @@ export default{
       global: GLOBAL
     }
   },
-  props: ['contents'],
   methods: {
-    selectObject(index, layer){
+    selectObject(index, layer, object){
       layer.selected_object = index
+      this.clickFlag = true
+      GLOBAL.template.contents.selectedTopMenu = 'Object'
+      GLOBAL.template.contents.activeObjectIndex = index
+      GLOBAL.template.contents.objectSettings = object.style
     }
   }
 }

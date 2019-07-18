@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateTemplatesTableVersion2 extends Migration
+class UpdateTemplatesTableAddCode extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,7 @@ class UpdateTemplatesTableVersion2 extends Migration
     public function up()
     {
         Schema::table('templates', function (Blueprint $table) {
-            $table->longText('contents')->after('title');
-            $table->renameColumn('categories', 'category');
+            $table->string('code')->after('id');
         });
     }
 

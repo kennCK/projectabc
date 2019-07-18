@@ -1,44 +1,49 @@
 import Vue from 'vue'
 import AUTH from 'src/services/auth'
 export default {
-  contents: null,
-  title: null,
-  edit_flag: false,
-  status: 0,
-  category: null,
-  purchased: null,
-  zoom: 100,
-  setting: {
-    page: {
-      width: null,
-      height: null
+  template: {
+    contents: {
+      content: null,
+      zoom: 100,
+      setting: {
+        page: {
+          width: null,
+          height: null
+        },
+        zoom: {
+          width: null,
+          height: null
+        }
+      },
+      selectedTopMenu: null,
+      activePageIndex: null,
+      activeLayerIndex: null,
+      activeObjectIndex: null,
+      objectSettings: null,
+      leftPane: {
+        title: 'Pages',
+        index: 2
+      },
+      overlay: {
+        title: null,
+        description: null,
+        payload: null,
+        payload_value: null
+      },
+      prompts: null,
+      optionFlag: true
     },
-    zoom: {
-      width: null,
-      height: null
-    }
-  },
-  selectedTopMenu: null,
-  activePageIndex: null,
-  activeLayerIndex: null,
-  activeObjectIndex: null,
-  objectSettings: null,
-  leftPane: {
-    title: 'Pages',
-    index: 2
-  },
-  overlay: {
     title: null,
-    description: null,
-    payload: null,
-    payload_value: null
+    edit_flag: false,
+    status: 0,
+    category: null,
+    purchased: null
   },
-  prompts: {
-    title: null,
-    message: null,
-    btn: {
-      yes: null,
-      no: null
+  addPrompts(title, message, btn){
+    this.template.contents.prompts = {
+      title: title,
+      message: message,
+      btn: btn // yes and no object
     }
   },
   addTemplate(template){
@@ -46,7 +51,7 @@ export default {
   },
   addPage(){
     let newPage = {
-      style: this.contents.style,
+      style: this.template.contents.content.style,
       title: 'Page',
       eye: true,
       layers: [],
@@ -54,7 +59,11 @@ export default {
       edit_flag: false,
       locked: false
     }
-    this.contents.pages.push(newPage)
+    this.template.contents.content.pages.push(newPage)
+    let active = this.template.contents.content.pages.length - 1
+    this.template.contents.activePageIndex = active
+    this.template.contents.content.selected_page = active
+    this.addLayer()
   },
   addLayer(){
     let layer = {
@@ -75,7 +84,11 @@ export default {
       selected_object: null,
       locked: false
     }
-    this.contents.pages[this.activePageIndex].layers.push(layer)
+    let activePageIndex = this.template.contents.activePageIndex
+    this.template.contents.content.pages[activePageIndex].layers.push(layer)
+    let length = this.template.contents.content.pages[activePageIndex].layers - 1
+    this.template.contents.content.pages[activePageIndex].selected_layer = length
+    this.template.contents.activeLayerIndex = length
   },
   addObject(type){
     let object = {
@@ -101,37 +114,45 @@ export default {
     }else{
       //
     }
-    this.contents.pages[this.activePageIndex].layers[this.activeLayerIndex].objects.push(object)
+    let activePageIndex = this.template.contents.activePageIndex
+    let activeLayerIndex = this.template.contents.activeLayerIndex
+    this.template.contents.content.pages[activePageIndex].layers[activeLayerIndex].show = true
+    this.template.contents.content.pages[activePageIndex].layers[activeLayerIndex].objects.push(object)
+    let length = this.template.contents.content.pages[activePageIndex].layers[activeLayerIndex].objects - 1
+    this.template.contents.content.pages[activePageIndex].layers[activeLayerIndex].selected_object = length
+    this.template.contents.activeObjectIndex = length
   },
   zoomHandler(multiplier){
     this.zoom = multiplier
-    if(this.setting.page.width !== null && this.setting.page.height !== null){
-      this.setting.zoom.width = parseInt(this.setting.page.width * (multiplier / 100))
-      this.setting.zoom.height = parseInt(this.setting.page.height * (multiplier / 100))
+    if(this.template.contents.setting.page.width !== null && this.template.contents.setting.page.height !== null){
+      this.template.contents.setting.zoom.width = parseInt(this.template.contents.setting.page.width * (multiplier / 100))
+      this.template.contents.setting.zoom.height = parseInt(this.template.contents.setting.page.height * (multiplier / 100))
     }
   },
   save(){
     let vue = new Vue()
-    let contents = {
-      contents: this.contents,
-      setting: this.setting,
-      zoom: this.zoom,
-      selectedTopMenu: this.selectedTopMenu,
-      activePageIndex: this.activePageIndex,
-      activeLayerIndex: this.activeLayerIndex,
-      activeObjectIndex: this.activeObjectIndex
-    }
-    let stringContents = JSON.stringify(contents)
+    let stringContents = JSON.stringify(this.template.contents)
     let parameter = {
       account_id: AUTH.user.userID,
-      title: this.title,
+      title: this.template.title,
       contents: '' + stringContents + '',
-      status: this.status,
-      purchased: null,
-      category: this.category
+      status: this.template.status,
+      purchased: this.template.purchased,
+      category: this.template.category
     }
     vue.APIRequest('templates/create', parameter).then(response => {
       console.log(response)
+    })
+  },
+  retrieve(condition){
+    let parameter = {
+      condition: condition
+    }
+    let vue = new Vue()
+    vue.APIRequest('templates/retrieve', parameter).then(response => {
+      if(response.data.length > 0){
+        this.template = response.data[0]
+      }
     })
   }
 }

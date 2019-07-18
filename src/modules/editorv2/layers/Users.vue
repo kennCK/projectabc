@@ -131,10 +131,10 @@ export default {
   },
   methods: {
     makeActive(item, index){
-      this.global.overlay.title = 'designer'
-      this.global.overlay.description = item.username
-      this.global.overlay.payload = 'account_id'
-      this.global.overlay.payload_value = item.id
+      GLOBAL.template.contents.overlay.title = 'designer'
+      GLOBAL.template.contents.overlay.description = item.username
+      GLOBAL.template.contents.overlay.payload = 'account_id'
+      GLOBAL.template.contents.overlay.payload_value = item.id
       this.selected = index
     }
   }

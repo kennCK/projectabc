@@ -96,7 +96,7 @@ export default{
     }
   },
   {
-    path: '/files',
+    path: '/files/:category?',
     name: 'files',
     component: resolve => require(['modules/file/Files.vue'], resolve),
     meta: {
