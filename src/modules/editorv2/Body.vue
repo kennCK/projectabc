@@ -82,17 +82,15 @@
 		border-bottom: solid 1px $gray;
 	}
 
-	.editor-layers li{
+	.editor-layers ul li{
 		float: left;
 		height: 40px;
 		line-height: 40px;
 		font-size: 11px;
 		color: $gray;
 		text-align: center;
-    list-style: none;
     padding: 0px;
     margin: 0px;
-    border-right: solid 1px $gray;
 	}
 
   .editor-layers ul .shown{
@@ -166,7 +164,6 @@
   .sortable{
     width: 100%;
     cursor: move;
-    margin-bottom: 10px;
     overflow-x: hidden;
   }
 
