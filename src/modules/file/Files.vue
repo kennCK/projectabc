@@ -2,12 +2,13 @@
   <div class="files-wrapper">
     <button class="btn btn-primary pull-right" @click="redirect('/templates')"><i class="fa fa-plus"></i> Add Template</button>
     <generic-filter :category="category" @changeSortEvent="retrieve($event)"></generic-filter>
-    <div class="container-files" v-if="categoryParameter === null">
-      <ul v-for="(item, index) in folders" :key="index" class="folder">
-        <li id="file-list" @click="redirect('/files/' + item.title)"><i id="file" class="fas fa-folder"></i> <span id="filename">{{item.title}}</span></li>
-      </ul>
-    </div>
+      <div class="container-files" v-if="categoryParameter === null">
+       <ul v-for="(item, index) in folders" :key="index" class="folder">
+        <li id="file-list" @click="redirect('/files/' + item.title, item.title)"><i id="file" class="fas fa-folder"></i> <span id="filename">{{item. title}}</span></li>
+        </ul>
+      </div>
     <div v-else class="container-files">
+      <li><span @click="redirect('/files')">File Management </span><i class="fas fa-angle-right"></i> {{selectedFolder}}</li>
       <category-contents :category="categoryParameter"></category-contents>
     </div>
   </div>
@@ -23,6 +24,12 @@
 .container-files{
   float: left;
   width: 100%;
+}
+li{
+  list-style: none;
+}
+span{
+  cursor: pointer;
 }
 ul{
   list-style: none;
@@ -121,6 +128,7 @@ export default {
       }, {
         title: 'Temp9'
       }],
+      selectedFolder: null,
       categoryParameter: this.$route.params.category ? this.$route.params.category : null
     }
   },
@@ -139,7 +147,8 @@ export default {
     }
   },
   methods: {
-    redirect(parameter){
+    redirect(parameter, folderName){
+      this.selectedFolder = folderName
       ROUTER.push(parameter)
       if(parameter === 'editor/v2'){
         AUTH.mode = 1
