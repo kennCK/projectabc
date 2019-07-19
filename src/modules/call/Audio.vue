@@ -23,6 +23,9 @@
         <img class="img-circle pull-right" v-if="auth.audio.senderUser.profile.url !== null" :src="config.BACKEND_URL + auth.audio.senderUser.profile.url" alt="" width="120"/>
         <i class="fa fa-user-circle-o" v-else></i>
       </div>
+        <i class="fa fa-phone pull-right bg-danger endicon" @click="endAudio"></i>
+        <h6 style="margin-top: 10px" class="text-center text-white">{{auth.audio.senderUser.username}}</h6>
+        <h6 style="margin-top: 10px" class="text-center text-white">{{auth.audio.timeDisplay}}</h6>
     </span>
      <span class="holder" v-if="auth.audio.status === 2">   <!--  Calling, Sender -->
       <div class="call-animation" v-if="auth.audio.receiverUser.profile.url !== null">
@@ -200,10 +203,7 @@ export default {
   //     console.error('Error:' + error.name)
   //   }
   // },
-  //   created(){
-  //     console.log('webRTC is Created!')
-  //     let prom = navigator.mediaDevices.getUserMedia({audio: true, video: true}).then(this.gotDevices).catch(this.handleMediaError)
-  //   }
+  //
   }
 }
 </script>
