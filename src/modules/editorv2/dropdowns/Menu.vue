@@ -172,6 +172,7 @@ export default{
         height: height,
         width: width
       }
+      this.saveSetting = false
     },
     show(index){
       if(this.prevIndex === null){
