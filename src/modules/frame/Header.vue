@@ -751,6 +751,13 @@ export default {
       }
     },
     logOut(){
+      let parameter = {
+        account_id: this.user.userID,
+        status: 0
+      }
+      this.APIRequest('account_login_status/update', parameter).then(response => {
+        //
+      })
       AUTH.deaunthenticate()
     },
     redirect(parameter){

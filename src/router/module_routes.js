@@ -3,6 +3,7 @@ let CONFIG = require('config.js')
 let beforeEnter = (to, from, next) => {
   // TODO Redirect if no token when token is required in meta.tokenRequired
   AUTH.currentPath = to.path
+  console.log(AUTH.currentPath)
   let userID = parseInt(localStorage.getItem('account_id'))
   let token = localStorage.getItem('usertoken')
   if(token !== null && userID > 0){

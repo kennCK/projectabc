@@ -16,7 +16,7 @@
           <!--<li class="nav-item" v-on:click="redirect('/signup_partner')"><a class="nav-link">Be our Partner</a></li>
             <li class="nav-item" v-on:click="redirect('/signup')"><a class="nav-link">Register</a></li> -->
             <li class="nav-item btn btn-warning" v-on:click="redirect('/signup')"> Start Free 30 Day Trial</li>
-            <li class="nav-item btn btn-primary" style="margin-right:5px" v-on:click="redirect('/login')"><a class="nav-link">Login</a></li>
+            <li class="nav-item btn btn-default" style="margin-right:5px" v-on:click="redirect('/login')"><a class="nav-link">Login</a></li>
           </ul>
         </span>
       </div>
@@ -28,7 +28,6 @@
         </ul>
       </div>
     </div>
-    <landing-banner></landing-banner>
   </div>
 </template>
 <style lang="scss"scoped>
@@ -39,9 +38,7 @@
   float: left;
   min-height: 70px;
   overflow-y: hidden;
-  background: url('~assets/img/image.png');
-  background-size: 100% auto;
-  background-repeat: no repeat;
+  background: $primary;
 }
 .header-section{
   min-height: 50px;
@@ -243,9 +240,6 @@ export default {
     return {
       config: CONFIG
     }
-  },
-  components: {
-    'landing-banner': require('modules/home/Landing/Banner.vue')
   },
   methods: {
     redirect(parameter){
