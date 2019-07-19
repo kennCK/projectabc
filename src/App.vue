@@ -14,7 +14,8 @@
        <audio-call></audio-call>
       </div>
       <div v-else>
-        <login-header></login-header>
+        <login-header v-if="auth.currentPath === '/'"></login-header>
+        <login-header-normal v-else></login-header-normal>
         <system-content></system-content>
         <landing-footer></landing-footer>
       </div>
@@ -64,6 +65,7 @@ export default {
   },
   components: {
     'login-header': () => import('modules/home/Landing/Header.vue'),
+    'login-header-normal': () => import('modules/home/Landing/HeaderNormal.vue'),
     'system-header': () => import('modules/frame/Header.vue'),
     'system-sidebar': () => import('modules/frame/Sidebar.vue'),
     'system-content': () => import('modules/frame/Content.vue'),
