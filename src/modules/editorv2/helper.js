@@ -1,5 +1,5 @@
 export default {
-  display (style, zoom, pageSize) {
+  style (style, zoom, pageSize) {
     // get height
     // get width
     // get position
@@ -7,5 +7,6 @@ export default {
     // get border
     // get the ratio of pageSize
     // return the style
+    return style
   }
 }
