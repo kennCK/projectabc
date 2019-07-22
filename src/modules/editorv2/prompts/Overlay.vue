@@ -8,14 +8,8 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <p>{{global.template.contents.prompts.message}}</p>
-        </div>
-        <div class="modal-footer">
-          
-          <button type="button" class="btn btn-danger" @click="hide()">{{global.template.contents.prompts.btn.no}}</button>
-          <button type="button" class="btn btn-primary" @click="yes()">{{global.template.contents.prompts.btn.yes}}</button>
-        </div>
+        <page-setup v-if="global.template.contents.prompts.payload === 'new_template'"></page-setup>
+        <unsave-template v-if="global.template.contents.prompts.payload === 'save'"></unsave-template>
       </div>
     </div>
   </div>
@@ -33,6 +27,10 @@ export default {
     return {
       global: GLOBAL
     }
+  },
+  components: {
+    'page-setup': require('modules/editorv2/prompts/TemplateSetup.vue'),
+    'unsave-template': require('modules/editorv2/prompts/UnsaveTemplate.vue')
   },
   methods: {
     hide(){

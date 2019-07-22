@@ -5,9 +5,9 @@
       <HtmlContent :content="content"></HtmlContent>
     </div>
     <label class="home-swipe">
-      <font-awesome-icon icon="caret-left" class="icon"></font-awesome-icon>
-      <font-awesome-icon icon="circle" class="icon"></font-awesome-icon>
-      <font-awesome-icon icon="square" class="icon"></font-awesome-icon>
+      <i class="fas fa-caret-left icon"></i>
+      <i class="fas fa-circle icon"></i>
+      <i class="fas fa-square icon"></i>
     </label>
   </div>
 </template>

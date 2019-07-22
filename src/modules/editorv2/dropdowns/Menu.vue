@@ -108,10 +108,18 @@ export default{
       switch(item.payload){
         case 'new_template':
           if(GLOBAL.template.contents.content === null){
-            this.addTemplate()
-            GLOBAL.template.contents.leftPane.title = 'Pages'
-            GLOBAL.template.contents.leftPane.index = 3
-            GLOBAL.template.contents.overlay.title = null
+            GLOBAL.template.contents.prompts = {
+              title: 'New Template Setup',
+              message: null,
+              btn: {
+                yes: 'Create',
+                no: 'Cancel'
+              },
+              payload: 'new_template'
+            }
+            setTimeout(() => {
+              $('#promptMessage').modal('show')
+            }, 1000)
           } else {
             GLOBAL.template.contents.prompts = {
               title: 'Unsave Template',
@@ -119,9 +127,12 @@ export default{
               btn: {
                 yes: 'Yes',
                 no: 'No'
-              }
+              },
+              payload: 'save'
             }
-            $('#promptMessage').modal('show')
+            setTimeout(() => {
+              $('#promptMessage').modal('show')
+            }, 1000)
           }
           break
         case 'marketplace_template':
@@ -172,7 +183,7 @@ export default{
         height: height,
         width: width
       }
-      this.saveSetting = false
+      GLOBAL.saveSetting = false
     },
     show(index){
       if(this.prevIndex === null){
