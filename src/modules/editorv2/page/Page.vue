@@ -83,6 +83,7 @@
 </style>
 <script>
 import GLOBAL from 'src/modules/editorv2/global.js'
+import HELPER from 'src/modules/editorv2/helper.js'
 export default{
   data () {
     return {
