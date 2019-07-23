@@ -1,9 +1,9 @@
 <template>
 	<div class="holder" v-if="global.template.contents.content !== null">
 		<div class="page-holder" v-for="(page, pageIndex) in global.template.contents.content.pages" :key="pageIndex">
-			<div class="page-container" :style="{height: global.template.contents.setting.zoom.height + 'px', width: global.template.contents.setting.zoom.width + 'px'}">
-				<div v-bind:style="layer.style" v-for="(layer, layerIndex) in page.layers" :key="layerIndex">
-					<div v-bind:style="object.style" class="object" v-bind:class="{'selected-object': objectIndex === layer.selected_object}" v-for="(object, objectIndex) in layer.objects" :key="objectIndex" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)">
+			<div class="page-container" :style="{height: global.template.contents.setting.zoom.height + global.template.contents.setting.units, width: global.template.contents.setting.zoom.width + global.template.contents.setting.units, background: global.template.contents.content.style.background}">
+				<div v-bind:style="helper.style(layer.style, global.template.contents.zoom, global.template.contents.setting)" v-for="(layer, layerIndex) in page.layers" :key="layerIndex">
+					<div v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting)" class="object" v-bind:class="{'selected-object': objectIndex === layer.selected_object}" v-for="(object, objectIndex) in layer.objects" :key="objectIndex" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)">
             <!-- Resize edge -->
             <span class="resize resize-top-left" style="left: 0; top: 0;" v-if="objectIndex === layer.selected_object" @mouseover="position.resize = 'bottom-left'"></span>
             <span class="resize resize-top-right" style="right: 0; top: 0;" v-if="objectIndex === layer.selected_object" @mouseover="position.resize = 'top-right'"></span>
@@ -83,6 +83,7 @@
 </style>
 <script>
 import GLOBAL from 'src/modules/editorv2/global.js'
+import HELPER from 'src/modules/editorv2/helper.js'
 export default{
   data () {
     return {
@@ -97,7 +98,8 @@ export default{
         width: null,
         height: null,
         resize: null
-      }
+      },
+      helper: HELPER
     }
   },
   methods: {
