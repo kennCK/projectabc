@@ -43,7 +43,8 @@ class AccountLoginStatusController extends APIController
     public function update(Request $request){
       $data = $request->all();
       AccountLoginStatus::where('account_id', '=', $data['account_id'])->update(array(
-        'status' => intval($data['status'])
+        'status' => intval($data['status']),
+        'updated_at' => Carbon::now()
       ));
       return response()->json(array(
         'data' => true,
