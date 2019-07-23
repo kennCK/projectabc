@@ -150,6 +150,7 @@ export default {
         width: width
       }
       GLOBAL.saveSetting = false
+      GLOBAL.addPage()
       this.hide()
     }
   }
