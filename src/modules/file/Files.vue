@@ -1,7 +1,7 @@
 <template>
   <div class="files-wrapper">
-    <button class="btn btn-primary pull-right" @click="redirect('/templates')"><i class="fa fa-plus"></i> Add Template</button>
-    <generic-filter :category="category" @changeSortEvent="retrieve($event)"></generic-filter>
+    <button class="btn btn-primary pull-right" @click="redirect('/editor/v2')"><i class="fa fa-plus"></i> Add Template</button>
+    <generic-filter v-bind:category="category" :activeCategoryIndex="1" :activeSortingIndex="0" @changeSortEvent="retrieve($event.sort, $event.filter)"></generic-filter>
       <div class="container-files" v-if="categoryParameter === null">
        <ul v-for="(item, index) in folders" :key="index" class="folder">
         <li id="file-list" @click="redirect('/files/' + item.title, item.title)"><i id="file" class="fas fa-folder"></i> <span id="filename">{{item. title}}</span></li>

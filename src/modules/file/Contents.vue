@@ -8,12 +8,12 @@
       </div>
     </div>
   </div>
-  <dynamic-empty v-else :title="'No products yet!'" :action="'Please add new files.'" :icon="'far fa-smile'" :iconColor="'text-primary'"></dynamic-empty>
+  <dynamic-empty v-else :title="'No products yet!'" :action="'Please add new designs.'" :icon="'far fa-smile'" :iconColor="'text-primary'"></dynamic-empty>
 </template>
 <style scoped lang="scss">
 @import "~assets/style/colors.scss";
 .contents-wrapper{
-  width:100%;
+  width: 100%;
   height: auto;
   float: left;
   margin-bottom: 15px;
@@ -25,7 +25,7 @@
   width: 25%;
   min-height: 50px;
   overflow-y: hidden;
-  margin-right: 5px;
+  margin-right: 10px;
 }
 .item-title{ 
   float: left;
@@ -40,6 +40,41 @@
   position: relative;
   width: 100%;
   height: 200px;
+}
+@media (max-width: 991px){
+  .contents-wrapper{
+    width: 180%;
+    height: auto;
+    float: left;
+    margin-bottom: 15px;
+    margin-top: 25px;
+}
+  .content-item{
+    border: 1px solid $gray;
+    float: left;
+    width: 25%;
+    min-height: 50px;
+    overflow-y: hidden;
+    margin-right: 50%;
+    margin-left: 15%;
+    margin-bottom: 10px;
+}
+  .item-title{ 
+    float: left;
+    text-align: center;
+    color: $primary;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+}
+  .item-content{
+    float: left;
+    width: 100%;
+    height: 200px;
+    position: relative;
+    min-height: 10px;
+}
+
 }
 </style>
 <script>
