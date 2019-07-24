@@ -1,7 +1,7 @@
 <template>
   <div class="work-experience-holder">
     <span class="header">Education
-      <button class="btn btn-primary pull-right" style="margin-right: 10px;" @click="showCreateModal()">Add</button>
+      <button class="btn btn-primary pull-right" style="margin-right: 10px;" @click="showModal('create')">Add</button>
     </span>
     <span class="content">
       <!-- Display Here -->
@@ -25,7 +25,7 @@
               <i class="fas fa-ellipsis-h text-gray more-options" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-target="dropdownMenuButtonDropdown">
               </i>
               <div class="dropdown-menu dropdown-more-options" aria-labelledby="dropdownMenuButton" >
-                <span class="dropdown-item action-link" @click="showEdit(item)">Edit</span>
+                <span class="dropdown-item action-link" @click="showModal('update', item)">Edit</span>
                 <span class="dropdown-item action-link" @click="removeEducation(item.id)">Remove</span>
               </div>
             </div>
@@ -181,7 +181,46 @@ export default {
         }
       })
     },
-    showCreateModal(){
+    showModal(action, item = null){
+      switch(action){
+        case 'create':
+          this.createEducationModal = {...Education}
+          let inputs = this.createEducationModal.inputs
+          inputs.map(input => {
+            input.value = null
+          })
+          break
+        case 'update':
+          let modalData = {...this.createEducationModal}
+          let parameter = {
+            title: 'Update Education',
+            route: 'educations/update',
+            button: {
+              left: 'Cancel',
+              right: 'Update'
+            },
+            sort: {
+              column: 'created_at',
+              value: 'desc'
+            },
+            params: [{
+              variable: 'id',
+              value: item.id
+            }]
+          }
+          modalData = {...modalData, ...parameter} // updated data without input values
+          let selectedData = this.data.slice().find(data => data.id === item.id)
+          let object = Object.keys(selectedData)
+          modalData.inputs.map(data => {
+            for(let obj in selectedData){
+              if(obj === data.variable){
+                data.value = selectedData[obj]
+              }
+            }
+          })
+          this.createEducationModal = {...modalData}
+          break
+      }
       $('#createEducationModal').modal('show')
     },
     removeEducation(id){
@@ -191,15 +230,6 @@ export default {
       this.APIRequest('educations/delete', parameter).then(response => {
         this.retrieve()
       })
-    },
-    update(){
-      if(this.validate()){
-        this.APIRequest('educations/update', this.data).then(response => {
-          if(response.data === true){
-            this.retrieve()
-          }
-        })
-      }
     },
     updatePhoto(object){
       this.APIRequest('account_profiles/update', object).then(response => {

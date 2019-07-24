@@ -17,7 +17,7 @@ export default {
     type: 'input',
     inputType: 'text',
     validation: {
-      size: 5,
+      size: 2,
       type: 'text'
     }
   }, {
@@ -31,7 +31,7 @@ export default {
     type: 'input',
     inputType: 'text',
     validation: {
-      size: 5,
+      size: 3,
       type: 'text'
     }
   }, {
