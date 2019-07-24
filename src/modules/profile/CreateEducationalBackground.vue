@@ -1,202 +1,65 @@
 <template>
-  <div class="profile-holder">
-    <span class="header">Education</span>
+  <div class="work-experience-holder">
+    <span class="header">Education
+      <button class="btn btn-primary pull-right" style="margin-right: 10px;" @click="showCreateModal()">Add</button>
+    </span>
     <span class="content">
-      <span class="inputs" v-if="data !== null">
-        <div class="form-group" style="margin-top: 25px;">
-          <label for="address">School</label>
-          <input type="text" class="form-control" placeholder="Enter Your School" v-model="data.school">
+      <!-- Display Here -->
+      <span class="display">
+        <div class="rl-container-item" v-for="(item, index) in data" :key="index">
+          <span class="header">
+            <label> 
+              {{ item.month_started }}
+              {{ item.year_started }}
+            </label>
+            -
+            <label v-if="item.month_ended && item.year_ended !== null">
+              {{ item.month_ended }}
+              {{ item.year_ended }}
+            </label>
+            <label v-else>
+              Present
+            </label>
+            <label class="pull-right">
+              <div class="dropdown" id="dropdownMenuButtonDropdown">
+              <i class="fas fa-ellipsis-h text-gray more-options" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-target="dropdownMenuButtonDropdown">
+              </i>
+              <div class="dropdown-menu dropdown-more-options" aria-labelledby="dropdownMenuButton" >
+                <span class="dropdown-item action-link" @click="showEdit(item)">Edit</span>
+                <span class="dropdown-item action-link" @click="removeEducation(item.id)">Remove</span>
+              </div>
+            </div>
+            </label>
+          </span>
+          <span class="summary-header">
+            <div style="line-height: 160%; vertical-align: middle;">
+              <i class="fas fa-university"></i>
+              <span style="position: relative; display: inline-block; left: 5px; font-size: 14px;"> 
+                {{ item.school }}
+              </span>
+            </div>
+            <div style="line-height: 160%; vertical-align: middle;">
+              <i class="fas fa-graduation-cap" style="font-size: 15px;"></i>
+              <span style="position: relative; display: inline-block; left: 5px; font-size: 14px;">
+                {{ item.degree }}
+              </span>
+            </div>
+            <div style="line-height: 160%; vertical-align: middle;">
+              <i class="fas fa-book" style="font-size: 21px;"></i>
+              <span style="position: relative; display: inline-block; left: 5px; font-size: 14px;">
+                {{ item.field_of_study }}
+              </span>
+            </div>
+          </span>
         </div>
-
-        <div class="form-group">
-          <label for="address">Degree</label>
-          <input type="text" class="form-control" placeholder="Enter Your Degree" v-model="data.degree">
-        </div>
-
-        <div class="form-group">
-          <label for="address">Field of Study</label>
-          <input type="text" class="form-control" placeholder="Enter Your Field of Study" v-model="data.field_of_study">
-        </div>
-
-        <div class="row">
-          <div class="form-group col-50">
-            <label for="address">Start Year</label>
-            <select class="form-control" style="width:95%"v-model="data.start_year">
-              <option value="2019">2019</option>
-              <option value="2018">2018</option>
-              <option value="2017">2017</option>
-              <option value="2016">2016</option>
-              <option value="2015">2015</option>
-              <option value="2014">2014</option>
-              <option value="2013">2013</option>
-              <option value="2012">2012</option>
-              <option value="2011">2011</option>
-              <option value="2010">2010</option>
-              <option value="2009">2009</option>
-              <option value="2008">2008</option>
-              <option value="2007">2007</option>
-              <option value="2006">2006</option>
-              <option value="2005">2005</option>
-              <option value="2004">2004</option>
-              <option value="2003">2003</option>
-              <option value="2002">2002</option>
-              <option value="2001">2001</option>
-              <option value="2000">2000</option>
-              <option value="1999">1999</option>
-              <option value="1998">1998</option>
-              <option value="1997">1997</option>
-              <option value="1996">1996</option>
-              <option value="1995">1995</option>
-              <option value="1994">1994</option>
-              <option value="1993">1993</option>
-              <option value="1992">1992</option>
-              <option value="1991">1991</option>
-              <option value="1990">1990</option>
-              <option value="1989">1989</option>
-              <option value="1988">1988</option>
-              <option value="1987">1987</option>
-              <option value="1986">1986</option>
-              <option value="1985">1985</option>
-              <option value="1984">1984</option>
-              <option value="1983">1983</option>
-              <option value="1982">1982</option>
-              <option value="1981">1981</option>
-              <option value="1980">1980</option>
-              <option value="1979">1979</option>
-              <option value="1978">1978</option>
-              <option value="1977">1977</option>
-              <option value="1976">1976</option>
-              <option value="1975">1975</option>
-              <option value="1974">1974</option>
-              <option value="1973">1973</option>
-              <option value="1972">1972</option>
-              <option value="1971">1971</option>
-              <option value="1970">1970</option>
-              <option value="1969">1969</option>
-              <option value="1968">1968</option>
-              <option value="1967">1967</option>
-              <option value="1966">1966</option>
-              <option value="1965">1965</option>
-              <option value="1964">1964</option>
-              <option value="1963">1963</option>
-              <option value="1962">1962</option>
-              <option value="1961">1961</option>
-              <option value="1960">1960</option>
-              <option value="1959">1959</option>
-              <option value="1958">1958</option>
-              <option value="1957">1957</option>
-              <option value="1956">1956</option>
-              <option value="1955">1955</option>
-              <option value="1954">1954</option>
-              <option value="1953">1953</option>
-              <option value="1952">1952</option>
-              <option value="1951">1951</option>
-              <option value="1950">1950</option>
-            </select>
-          </div>
-          <div class="form-group col-50">
-            <label for="address" style="margin-left:5%;">End Year</label>
-            <select class="form-control" style="margin-left:5%;width:95%;"v-model="data.end_year">
-              <option value="2025">2025</option>
-              <option value="2024">2024</option>
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
-              <option value="2021">2021</option>
-              <option value="2020">2020</option>
-              <option value="2019">2019</option>
-              <option value="2018">2018</option>
-              <option value="2017">2017</option>
-              <option value="2016">2016</option>
-              <option value="2015">2015</option>
-              <option value="2014">2014</option>
-              <option value="2013">2013</option>
-              <option value="2012">2012</option>
-              <option value="2011">2011</option>
-              <option value="2010">2010</option>
-              <option value="2009">2009</option>
-              <option value="2008">2008</option>
-              <option value="2007">2007</option>
-              <option value="2006">2006</option>
-              <option value="2005">2005</option>
-              <option value="2004">2004</option>
-              <option value="2003">2003</option>
-              <option value="2002">2002</option>
-              <option value="2001">2001</option>
-              <option value="2000">2000</option>
-              <option value="1999">1999</option>
-              <option value="1998">1998</option>
-              <option value="1997">1997</option>
-              <option value="1996">1996</option>
-              <option value="1995">1995</option>
-              <option value="1994">1994</option>
-              <option value="1993">1993</option>
-              <option value="1992">1992</option>
-              <option value="1991">1991</option>
-              <option value="1990">1990</option>
-              <option value="1989">1989</option>
-              <option value="1988">1988</option>
-              <option value="1987">1987</option>
-              <option value="1986">1986</option>
-              <option value="1985">1985</option>
-              <option value="1984">1984</option>
-              <option value="1983">1983</option>
-              <option value="1982">1982</option>
-              <option value="1981">1981</option>
-              <option value="1980">1980</option>
-              <option value="1979">1979</option>
-              <option value="1978">1978</option>
-              <option value="1977">1977</option>
-              <option value="1976">1976</option>
-              <option value="1975">1975</option>
-              <option value="1974">1974</option>
-              <option value="1973">1973</option>
-              <option value="1972">1972</option>
-              <option value="1971">1971</option>
-              <option value="1970">1970</option>
-              <option value="1969">1969</option>
-              <option value="1968">1968</option>
-              <option value="1967">1967</option>
-              <option value="1966">1966</option>
-              <option value="1965">1965</option>
-              <option value="1964">1964</option>
-              <option value="1963">1963</option>
-              <option value="1962">1962</option>
-              <option value="1961">1961</option>
-              <option value="1960">1960</option>
-              <option value="1959">1959</option>
-              <option value="1958">1958</option>
-              <option value="1957">1957</option>
-              <option value="1956">1956</option>
-              <option value="1955">1955</option>
-              <option value="1954">1954</option>
-              <option value="1953">1953</option>
-              <option value="1952">1952</option>
-              <option value="1951">1951</option>
-              <option value="1950">1950</option>
-            </select>
-          </div>
-        </div>
-        
-        <button class="btn btn-primary" style="margin-bottom: 25px;" @click="update()">Update</button>
-      </span>
-      <span class="sidebar">
-        <span class="sidebar-header" style="margin-top: 25px;">Certification</span>
-        <span class="image" v-if="user.profile !== null">
-          <img :src="config.BACKEND_URL + user.profile.url" height="auto" width="100%" >
-        </span>
-        <span class="image" v-else>
-          <i class="fa fa-user-circle-o" ></i>
-        </span>
-        <button class="btn btn-primary custom-block" style="margin-top: 5px;" @click="showImages()">Select from images
-        </button>
       </span>
     </span>
-    <browse-images-modal :object="user.profile" v-if="user.profile !== null"></browse-images-modal>
-    <browse-images-modal :object="newProfile" v-if="user.profile === null"></browse-images-modal>
+    <!-- <browse-images-modal :object="user.profile" v-if="user.profile !== null"></browse-images-modal> -->
+    <create-modal :property="createEducationModal"></create-modal>
   </div>
 </template>
 <style scoped>
-.profile-holder{
+.work-experience-holder{
   width: 95%;
   float: left;
   margin-left: 5%;
@@ -215,38 +78,12 @@
   float: left;
   overflow-y: hidden;
 }
-.inputs{
-  width: 65%;
+.display{
+  width: 100%;
   float: left;
   margin-right: 5%;
   min-height: 50px;
   overflow-y: hidden;
-}
-.sidebar{
-  width: 30%;
-  float: left;
-  min-height: 50px;
-  overflow-y: hidden;
-}
-.sidebar-header{
-  height: 40px;
-  line-height: 40px;
-  width: 100%;
-  float: left;
-}
-.sidebar .image{
-  width: 100%;
-  float: left;
-  min-height: 200px;
-  overflow-y: hidden;
-  text-align: center;
-}
-.image i{
-  font-size: 150px;
-  line-height: 200px;
-}
-.image img{
-  border-radius: 5px;
 }
 .custom-block{
   width: 100%;
@@ -254,17 +91,6 @@
 }
 .custom-block input{
   display: none;
-}
-.row {
-  display: -ms-flexbox; /* IE10 */
-  display: flex;
-  -ms-flex-wrap: wrap; /* IE10 */
-  flex-wrap: wrap;
-  margin: 0 0px;
-}
-.col-50 {
-  -ms-flex: 50%; /* IE10 */
-  flex: 50%;
 }
 @media screen and (max-width: 992px){
   .holder{
@@ -278,12 +104,45 @@
     margin-left: 0%;
   }
 }
+.rl-container-item{
+  width: 100%;
+  float: left;
+  border-radius: 5px;
+  min-height: 50px;
+  overflow-y: hidden;
+  border: solid 1px #ddd;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.rl-container-item .header{
+  width: 100%;
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  color: #555;
+}
+.rl-container-item .summary-header{
+  width: 100%;
+  float: left;
+  line-height: 25px;
+  font-size: 17px;
+  color: #555; 
+}
+.rl-container-item .footer{
+  width: 100%;
+  float: left;
+  height: 45px;
+  line-height: 40px;
+}
 </style>
 <script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
+import ROUTER from 'src/router'
+import AUTH from 'src/services/auth'
+import CONFIG from 'src/config.js'
 import axios from 'axios'
-import CONFIG from '../../config.js'
+import Education from '../modal/CreateEducation.js'
+
 export default {
   mounted(){
     this.retrieve()
@@ -294,6 +153,7 @@ export default {
       tokenData: AUTH.tokenData,
       config: CONFIG,
       data: null,
+      createEducationModal: Education,
       newProfile: {
         account_id: null,
         url: null
@@ -301,7 +161,8 @@ export default {
     }
   },
   components: {
-    'browse-images-modal': require('components/increment/generic/image/BrowseModal.vue')
+    'browse-images-modal': require('components/increment/generic/image/BrowseModal.vue'),
+    'create-modal': require('components/increment/generic/modal/Modal.vue')
   },
   methods: {
     retrieve(){
@@ -312,17 +173,28 @@ export default {
           clause: '='
         }]
       }
-      this.APIRequest('account_informations/retrieve', parameter).then(response => {
+      this.APIRequest('educations/retrieve', parameter).then(response => {
         if(response.data.length > 0){
-          this.data = response.data[0]
+          this.data = response.data
         }else{
           this.data = null
         }
       })
     },
+    showCreateModal(){
+      $('#createEducationModal').modal('show')
+    },
+    removeEducation(id){
+      let parameter = {
+        id: id
+      }
+      this.APIRequest('educations/delete', parameter).then(response => {
+        this.retrieve()
+      })
+    },
     update(){
       if(this.validate()){
-        this.APIRequest('account_informations/update', this.data).then(response => {
+        this.APIRequest('educations/update', this.data).then(response => {
           if(response.data === true){
             this.retrieve()
           }
@@ -345,13 +217,6 @@ export default {
           AUTH.checkAuthentication()
         }
       })
-    },
-    validate(){
-      let i = this.data
-      if(i.first_name !== null && i.last_name !== null && i.sex !== null){
-        return true
-      }
-      return false
     },
     showImages(){
       $('#browseImagesModal').modal('show')

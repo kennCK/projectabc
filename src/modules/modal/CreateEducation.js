@@ -10,18 +10,18 @@ for(let i = max; i >= min; i--){
 }
 
 export default {
-  id: 'createWorkModal',
+  id: 'createEducationModal',
   size: 'modal-md',
-  title: 'Add Work Experience',
+  title: 'Add Education',
   background: null,
   inputs: [{
     row: 'full',
-    label: 'Name of the Company',
-    variable: 'company_name',
-    placeholder: 'Enter Company Name',
+    label: 'School',
+    variable: 'school',
+    placeholder: 'Enter Your School',
     value: null,
     required: true,
-    id: 'companyName',
+    id: 'school',
     type: 'input',
     inputType: 'text',
     validation: {
@@ -30,12 +30,12 @@ export default {
     }
   }, {
     row: 'full',
-    label: 'Position in the Company',
-    variable: 'position',
-    placeholder: 'Enter Position in the Company',
+    label: 'Degree',
+    variable: 'degree',
+    placeholder: 'Enter Your Degree',
     value: null,
     required: true,
-    id: 'position',
+    id: 'degree',
     type: 'input',
     inputType: 'text',
     validation: {
@@ -44,12 +44,12 @@ export default {
     }
   }, {
     row: 'full',
-    label: 'Location of the Company',
-    variable: 'location',
-    placeholder: 'Enter Location of the Company',
+    label: 'Field of Study',
+    variable: 'field_of_study',
+    placeholder: 'Enter Your Field of Study',
     value: null,
     required: true,
-    id: 'location',
+    id: 'fieldOfStudy',
     type: 'input',
     inputType: 'text',
     validation: {
@@ -65,11 +65,6 @@ export default {
     id: 'yearStarted',
     type: 'select_specified',
     options: years
-    // options: {
-    //   start: CONFIG.CURRENT_YEAR,
-    //   max: CONFIG.MAX_YEAR,
-    //   label: ''
-    // }
   }, {
     row: 'half',
     label: 'Month Started',
@@ -101,11 +96,6 @@ export default {
     id: 'yearEnded',
     type: 'select_specified',
     options: years
-    // options: {
-    //   start: CONFIG.CURRENT_YEAR,
-    //   max: CONFIG.MAX_YEAR,
-    //   label: ''
-    // }
   }, {
     row: 'half',
     label: 'Month Ended',
@@ -128,22 +118,8 @@ export default {
       {value: 'November', label: 'November'},
       {value: 'December', label: 'December'}
     ]
-  }, {
-    row: 'full',
-    label: 'About your job description',
-    variable: 'work_description',
-    placeholder: 'Enter your job description',
-    value: null,
-    required: true,
-    id: 'jobDescription',
-    type: 'textarea',
-    validation: {
-      size: 5,
-      type: 'text'
-    },
-    textAreaRows: 10
   }],
-  route: 'works/create',
+  route: 'educations/create',
   button: {
     left: 'Cancel',
     right: 'Submit'

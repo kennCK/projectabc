@@ -39,7 +39,7 @@
               </span>
             </div>
             <div style="line-height: 160%; vertical-align: middle;">
-              <i class="fas fa-landmark"></i>
+              <i class="fas fa-building"></i>
               <span style="position: relative; display: inline-block; left: 5px; font-size: 14px;"> 
                 {{ item.company_name }}
               </span>
@@ -63,16 +63,12 @@
               </div>
             </div>
           </span>
-          <span class="footer" style="line-height: 160%;">
-            <button class="btn btn-primary pull-left" style="margin-top: 5px;" @click="showAddImageCertificate(item.id)">Add image certificate</button>
-          </span>
         </div>
       </span>
     </span>
     <browse-images-modal :object="user.profile" v-if="user.profile !== null"></browse-images-modal>
     <browse-images-modal :object="newWork" v-if="user.profile === null"></browse-images-modal>
     <create-modal :property="createWorkModal"></create-modal>
-    <add-certificate></add-certificate>
   </div>
 </template>
 <style scoped>
@@ -154,10 +150,10 @@
 }
 </style>
 <script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
+import ROUTER from 'src/router'
+import AUTH from 'src/services/auth'
+import CONFIG from 'src/config.js'
 import axios from 'axios'
-import CONFIG from '../../config.js'
 import Work from '../modal/CreateWork.js'
 
 export default {
@@ -173,13 +169,13 @@ export default {
       createWorkModal: Work,
       showDescription: false,
       showDescriptionIndex: null,
-      selectedWorkId: null
+      selectedWorkId: null,
+      newWork: null
     }
   },
   components: {
     'browse-images-modal': require('components/increment/generic/image/BrowseModal.vue'),
-    'create-modal': require('components/increment/generic/modal/Modal.vue'),
-    'add-certificate': require('components/increment/generic/image/BrowseModal.vue')
+    'create-modal': require('components/increment/generic/modal/Modal.vue')
   },
   methods: {
     setShowDescription(flag, index){
@@ -226,10 +222,6 @@ export default {
     },
     hideImages(){
       $('#browseImagesModal').modal('hide')
-    },
-    showAddImageCertificate(id){
-      this.selectedWorkId = id
-      $('#browseImagesModal').modal('show')
     },
     createCertificate(object){
       this.APIRequest('certificates/create', object).then(response => {
