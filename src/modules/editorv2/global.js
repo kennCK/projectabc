@@ -7,6 +7,11 @@ export default {
       content: null,
       zoom: 100,
       setting: {
+        units: null,
+        actual: {
+          height: null,
+          width: null
+        },
         page: {
           width: null,
           height: null
@@ -72,11 +77,11 @@ export default {
       edit_flag: false,
       style: {
         background: 'transparent',
-        height: '100%',
-        width: '100%',
-        top: '0',
-        left: '0',
-        borderRadius: '0px',
+        height: this.template.contents.setting.page.height,
+        width: this.template.contents.setting.page.width,
+        top: 0,
+        left: 0,
+        borderRadius: 0,
         position: 'absolute'
       },
       eye: true,
@@ -104,11 +109,11 @@ export default {
     if(type === 'Square'){
       object.style = {
         background: '#ffffff',
-        height: '100px',
-        width: '100px',
-        top: '0',
-        left: '0',
-        borderRadius: '0px',
+        height: 100,
+        width: 100,
+        top: 0,
+        left: 0,
+        borderRadius: 0,
         position: 'absolute',
         border: 'solid 1px #ddd',
         zIndex: '1'
@@ -125,7 +130,8 @@ export default {
     this.template.contents.activeObjectIndex = length
   },
   zoomHandler(multiplier){
-    this.zoom = multiplier
+    let vue = new Vue()
+    this.template.contents.zoom = multiplier
     if(this.template.contents.setting.page.width !== null && this.template.contents.setting.page.height !== null){
       this.template.contents.setting.zoom.width = parseInt(this.template.contents.setting.page.width * (multiplier / 100))
       this.template.contents.setting.zoom.height = parseInt(this.template.contents.setting.page.height * (multiplier / 100))
