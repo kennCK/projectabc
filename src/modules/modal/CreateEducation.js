@@ -1,14 +1,6 @@
 import AUTH from 'src/services/auth'
 import CONFIG from 'src/config.js'
 
-const years = []
-const min = CONFIG.years.min
-const max = CONFIG.years.max
-
-for(let i = max; i >= min; i--){
-  years.push({value: i, label: i.toString()})
-}
-
 export default {
   id: 'createEducationModal',
   size: 'modal-md',
@@ -63,8 +55,12 @@ export default {
     value: null,
     required: true,
     id: 'yearStarted',
-    type: 'select_specified',
-    options: years
+    type: 'select_decrement',
+    options: {
+      start: CONFIG.years.current + 1,
+      max: CONFIG.years.max,
+      label: ''
+    }
   }, {
     row: 'half',
     label: 'Month Started',
@@ -94,8 +90,12 @@ export default {
     value: null,
     required: true,
     id: 'yearEnded',
-    type: 'select_specified',
-    options: years
+    type: 'select_increment',
+    options: {
+      start: CONFIG.years.current - 1,
+      max: CONFIG.years.max,
+      label: ''
+    }
   }, {
     row: 'half',
     label: 'Month Ended',
