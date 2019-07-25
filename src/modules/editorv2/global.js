@@ -45,6 +45,18 @@ export default {
     category: null,
     purchased: null
   },
+  getPageScreenSize(){
+    let height = this.template.contents.setting.page.height
+    let width = this.template.contents.setting.page.width
+    let zoom = parseInt(this.template.contents.zoom)
+    let size = {
+      width: null,
+      height: null
+    }
+    size.width = parseInt(parseInt(width) * (zoom / 100))
+    size.height = parseInt(parseInt(height) * (zoom / 100))
+    return size
+  },
   addPrompts(title, message, btn){
     this.template.contents.prompts = {
       title: title,
@@ -97,6 +109,8 @@ export default {
     this.template.contents.activeLayerIndex = length
   },
   addObject(type){
+    let halfWidth = this.template.contents.setting.page.width / 2
+    let halfHeight = this.template.contents.setting.page.height / 2
     let object = {
       title: type,
       type: 'object',
@@ -111,12 +125,12 @@ export default {
         background: '#ffffff',
         height: 100,
         width: 100,
-        top: 0,
-        left: 0,
+        top: halfHeight - 60,
+        left: halfWidth - 60,
         borderRadius: 0,
         position: 'absolute',
         border: 'solid 1px #ddd',
-        zIndex: '1'
+        zIndex: 1
       }
     }else{
       //
