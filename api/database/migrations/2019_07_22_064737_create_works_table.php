@@ -19,7 +19,7 @@ class CreateWorksTable extends Migration
         $table->string('company_name');
         $table->string('position');
         $table->string('location');
-        $table->string('work_description');
+        $table->longText('work_description');
         $table->integer('year_started')->nullable();
         $table->integer('year_ended')->nullable();
         $table->string('month_started')->nullable();

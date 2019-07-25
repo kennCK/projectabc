@@ -1,6 +1,6 @@
 <template>
   <div class="work-experience-holder">
-    <span class="header">Work
+    <span class="header">Work Experience
       <button class="btn btn-primary pull-right" style="margin-right: 10px;" @click="showModal('create')">Add</button>
     </span>
     <span class="content">
@@ -8,16 +8,16 @@
       <span class="display">
         <div class="rl-container-item" v-for="(item, index) in data" :key="index">
           <span class="header">
-            <label> 
+            <label class="cards-label"> 
               {{ item.month_started }}
               {{ item.year_started }}
             </label>
             -
-            <label v-if="item.month_ended && item.year_ended !== null">
+            <label class="cards-label" v-if="item.month_ended && item.year_ended !== null">
               {{ item.month_ended }}
               {{ item.year_ended }}
             </label>
-            <label v-else>
+            <label class="cards-label" v-else>
               Present
             </label>
             <label class="pull-right">
@@ -53,13 +53,23 @@
             <div style="line-height: 160%;">
                 About Work:
               <div style="font-size: 14px;">
-                <label v-if="item.work_description.length <= 800" >
+                <div v-if="item.work_description.length <= 400 || showDescription === true && showDescriptionIndex === index" 
+                  style="word-break: break-all;">
                   {{ item.work_description }}
-                </label>
-                <label v-else>
-                  <span v-if="item.flag === false"> {{ item.work_description.substring(0, 400)}} <strong class="text-danger" @click="item.flag = true"> >>> </strong></span>
-                  <span v-if="item.flag === true"> {{ item.work_description }} <strong class="text-danger" @click="item.flag = false"> <<< </strong></span>
-                </label>
+                </div>
+                <div v-else style="word-break: break-all;">
+                  {{ item.work_description.substring(0, 400) + '...' }}
+                </div>
+                <div v-if="item.work_description.length >= 400" title="See more" style="margin: 5px 47%">
+                  <a :class="showDescription === true && showDescriptionIndex === index ? 'arrow-icon open' : 'arrow-icon'" @click="setShowDescription(index)">
+                    <span class="left-bar"></span>
+                    <span class="right-bar"></span>
+                  </a>
+                </div>
+                <!-- <label v-else>
+                  <span v-if="item.flag === false"> {{ item.work_description.substring(0, 400)}} <strong class="text-danger" @click="item.flag = true"> TEST </strong></span>
+                  <span v-if="item.flag === true"> {{ item.work_description }} <strong class="text-danger" @click="item.flag = false"> TEST </strong></span>
+                </label> -->
               </div>
             </div>
           </span>
@@ -71,7 +81,88 @@
     <create-modal :property="createWorkModal"></create-modal>
   </div>
 </template>
-<style scoped>
+<style scoped lang="scss">
+$background: lightcoral;
+$easing: cubic-bezier(.25,1.7,.35,.8);
+$duration: 0.5s;
+.arrow-icon {
+  display:block;
+  padding: 0.5em;
+  // margin: 1em auto;
+  position: relative;
+  cursor: pointer;
+  // border-radius: 4px;
+}
+.left-bar {
+  position: absolute;
+  background-color: transparent;
+  top: 0;
+  left:0;
+  width: 20px;
+  height: 5px;
+  display: block;
+  transform: rotate(35deg);
+  float: right;
+  border-radius: 2px;
+  &:after {
+    content:"";
+    background-color: black;
+    width: 20px;
+    height: 5px;
+    display: block;
+    float: right;
+    border-radius: 6px 10px 10px 6px;
+    transition: all $duration $easing;
+    z-index: -1;
+  }
+}
+.right-bar {
+  position: absolute;
+  background-color: transparent;
+  top: 0px;
+  left:14px;
+  width: 20px;
+  height: 5px;
+  display: block;
+  transform: rotate(-35deg);
+  float: right;
+  border-radius: 2px;
+  &:after {
+    content:"";
+    background-color: black;
+    width: 20px;
+    height: 5px;
+    display: block;
+    float: right;
+    border-radius: 10px 6px 6px 10px;
+    transition: all $duration $easing;
+    z-index: -1;
+  }
+}
+.open {
+    .left-bar:after {
+    transform-origin: center center;
+    transform: rotate(-70deg);
+  }
+  .right-bar:after {
+    transform-origin: center center;
+    transform: rotate(70deg);
+  }
+
+}
+.see-more-icon:hover {
+  cursor: pointer;
+}
+.cards-label {
+  font-size: 20px;
+  font-weight: 400;
+}
+span.dropdown-item.action-link {
+  height: 50px !important;
+}
+.dropdown-menu.dropdown-more-options.show {
+  padding: 0 !important;
+}
 .work-experience-holder{
   width: 95%;
   float: left;
@@ -178,12 +269,12 @@ export default {
     'create-modal': require('components/increment/generic/modal/Modal.vue')
   },
   methods: {
-    setShowDescription(flag, index){
+    setShowDescription(index){
       if(index === this.showDescriptionIndex){
         this.showDescriptionIndex = null
         this.showDescription = false
-      } else{
-        this.showDescription = flag
+      }else{
+        this.showDescription = true
         this.showDescriptionIndex = index
       }
     },

@@ -8,16 +8,16 @@
       <span class="display">
         <div class="rl-container-item" v-for="(item, index) in data" :key="index">
           <span class="header">
-            <label> 
+            <label class="cards-label"> 
               {{ item.month_started }}
               {{ item.year_started }}
             </label>
             -
-            <label v-if="item.month_ended && item.year_ended !== null">
+            <label class="cards-label" v-if="item.month_ended && item.year_ended !== null">
               {{ item.month_ended }}
               {{ item.year_ended }}
             </label>
-            <label v-else>
+            <label class="cards-label" v-else>
               Present
             </label>
             <label class="pull-right">
@@ -59,6 +59,16 @@
   </div>
 </template>
 <style scoped>
+.cards-label {
+  font-size: 20px;
+  font-weight: 400;
+}
+span.dropdown-item.action-link {
+  height: 50px !important;
+}
+.dropdown-menu.dropdown-more-options.show {
+  padding: 0 !important;
+}
 .work-experience-holder{
   width: 95%;
   float: left;
