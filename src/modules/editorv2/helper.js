@@ -41,13 +41,11 @@ export default {
     }
     tempStyle['borderRadius'] = parseInt(parseInt(style.borderRadius) * (zoom / 100)) + setting.units
     let objectAttributes = Object.keys(style)
-    for (var i = 0; i < objectAttributes.length; i++) {
-      if(modifiedArray.indexOf(objectAttributes[i]) > -1){
-        //
-      }else{
-        tempStyle[objectAttributes[i]] = style[objectAttributes[i]]
+    objectAttributes.map(item => {
+      if(modifiedArray.indexOf(item) < 0){
+        tempStyle[item] = style[item]
       }
-    }
+    })
     return tempStyle
   },
   resize(zoom, setting, style){
@@ -55,8 +53,41 @@ export default {
     tempStyle['width'] = parseInt(10 * (zoom / 100)) + setting.units
     tempStyle['height'] = parseInt(10 * (zoom / 100)) + setting.units
     let objectAttributes = Object.keys(style)
-    for (var i = 0; i < objectAttributes.length; i++) {
-      tempStyle[objectAttributes[i]] = style[objectAttributes[i]]
+    objectAttributes.map(item => {
+      tempStyle[item] = style[item]
+    })
+    return tempStyle
+  },
+  resizeEdge(zoom, setting, object, item){
+    let tempStyle = {}
+    let width = parseInt(object.width * (zoom / 100))
+    let height = parseInt(object.height * (zoom / 100))
+    let size = parseInt(10 * (zoom / 100))
+    switch(item.section){
+      case 'left':
+        tempStyle['top'] = size + setting.units
+        tempStyle['left'] = 0 + setting.units
+        tempStyle['width'] = size + setting.units
+        tempStyle['height'] = height + setting.units
+        break
+      case 'top':
+        tempStyle['top'] = 0 + setting.units
+        tempStyle['left'] = size + setting.units
+        tempStyle['width'] = width + setting.units
+        tempStyle['height'] = size + setting.units
+        break
+      case 'right':
+        tempStyle['right'] = 0 + setting.units
+        tempStyle['top'] = size + setting.units
+        tempStyle['width'] = size + setting.units
+        tempStyle['height'] = height + setting.units
+        break
+      case 'bottom':
+        tempStyle['bottom'] = 0 + setting.units
+        tempStyle['left'] = size + setting.units
+        tempStyle['width'] = width + setting.units
+        tempStyle['height'] = size + setting.units
+        break
     }
     return tempStyle
   }

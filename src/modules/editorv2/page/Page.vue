@@ -1,17 +1,21 @@
 <template>
 	<div class="holder" v-if="global.template.contents.content !== null">
-		<div class="page-holder" v-for="(page, pageIndex) in global.template.contents.content.pages" :key="pageIndex">
-			<div class="page-container" :style="{height: global.template.contents.setting.zoom.height + global.template.contents.setting.units, width: global.template.contents.setting.zoom.width + global.template.contents.setting.units, background: global.template.contents.content.style.background}">
-				<div v-bind:style="helper.style(layer.style, global.template.contents.zoom, global.template.contents.setting, 0)" v-for="(layer, layerIndex) in page.layers" :key="layerIndex">
+		
+    <div class="page-holder" v-for="(page, pageIndex) in global.template.contents.content.pages" :key="pageIndex">
+			
+      <div class="page-container" :style="{height: global.template.contents.setting.zoom.height + global.template.contents.setting.units, width: global.template.contents.setting.zoom.width + global.template.contents.setting.units, background: global.template.contents.content.style.background}">
+				
+        <div v-bind:style="helper.style(layer.style, global.template.contents.zoom, global.template.contents.setting, 0)" v-for="(layer, layerIndex) in page.layers" :key="layerIndex">
 					<div v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting, 1)" class="object" v-bind:class="{'selected-object': objectIndex === layer.selected_object}" v-for="(object, objectIndex) in layer.objects" :key="objectIndex" @click="selectObject(objectIndex, layer, object)">
             
-
-            <div v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting, 2)" class="object" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object, true)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)">
+            <div v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting, 2)" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object, true)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)">
             </div>
 
+            <!-- Resize corner -->
+            <span class="resize" v-bind:class="item.class" v-bind:style="helper.resize(global.template.contents.zoom, global.template.contents.setting, item.style)" v-if="objectIndex === layer.selected_object" @mouseover="position.resize = item.section" draggable="false" v-on:dragstart="moveObject($event, object, false)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)" v-for="(item, index) in resize" :key="'rc' + index"></span>
 
             <!-- Resize edge -->
-            <span class="resize" v-bind:class="item.class" v-bind:style="helper.resize(global.template.contents.zoom, global.template.contents.setting, item.style)" v-if="objectIndex === layer.selected_object" @mouseover="position.resize = item.section" draggable="false" v-on:dragstart="moveObject($event, object, false)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)" v-for="(item, index) in resize" :key="index"></span>
+            <span class="resize-edge" v-bind:class="item.class" v-bind:style="helper.resizeEdge(global.template.contents.zoom, global.template.contents.setting, object.style, item)" v-if="objectIndex === layer.selected_object" @mouseover="position.resize = item.section" draggable="false" v-on:dragstart="moveObject($event, object, false)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)" v-for="(item, index) in resizeEdge" :key="'re' + index"></span>
           </div>
 				</div>
 			</div>
@@ -45,41 +49,62 @@
 .object{
 	cursor: move;
   position: relative;
+  border: none !important;
 }
 
 .resize{
   position: absolute;
 }
 
+.resize-edge{
+  position: absolute;
+}
+
 .resize-top-left{
-  border-bottom: solid 1px #4285F4 !important;
-  border-right: solid 1px #4285F4 !important;
+  border: solid 1px #4285F4 !important;
   cursor: nw-resize;
 }
 
 .resize-top-right{
-  border-bottom: solid 1px #4285F4 !important;
-  border-left: solid 1px #4285F4 !important;
+  border: solid 1px #4285F4 !important;
   cursor: ne-resize;
 }
 
 .resize-bottom-left{
-  border-right: solid 1px #4285F4 !important;
-  border-top: solid 1px #4285F4 !important;
+  border: solid 1px #4285F4 !important;
   cursor: sw-resize;
 }
 
 .resize-bottom-right{
-  border-left: solid 1px #4285F4 !important;
-  border-top: solid 1px #4285F4 !important;
+  border: solid 1px #4285F4 !important;
   cursor: se-resize;
+}
+
+.re-left{
+  border-left: solid 1px #4285F4 !important;
+  cursor: w-resize;
+}
+
+.re-top{
+  border-top: solid 1px #4285F4 !important;
+  cursor: s-resize;
+}
+
+.re-right{
+  border-right: solid 1px #4285F4 !important;
+  cursor: w-resize;
+}
+
+.re-bottom{
+  border-bottom: solid 1px #4285F4 !important;
+  cursor: s-resize;
 }
 
 .object:active {
   cursor: move;
 }
 .selected-object{
-	border: solid 1px #4285F4 !important;
+	// border: solid 1px #4285F4 !important;
 }
 </style>
 <script>
@@ -130,6 +155,19 @@ export default{
           bottom: 0
         },
         section: 'bottom-right'
+      }],
+      resizeEdge: [{
+        class: 're-left',
+        section: 'left'
+      }, {
+        class: 're-top',
+        section: 'top'
+      }, {
+        class: 're-right',
+        section: 'right'
+      }, {
+        class: 're-bottom',
+        section: 'bottom'
       }]
     }
   },
@@ -181,6 +219,16 @@ export default{
         object.style.width = this.position.width + (x * -1)
         object.style.height = this.position.height + (x * -1)
         object.style.left = this.position.left + x
+      }else if(this.position.resize === 'left'){
+        object.style.width = this.position.width + (x * -1)
+        object.style.left = this.position.left + x
+      }else if(this.position.resize === 'top'){
+        object.style.height = this.position.height + y
+        object.style.top = this.position.top + (y * -1)
+      }else if(this.position.resize === 'right'){
+        object.style.width = this.position.width + x
+      }else if(this.position.resize === 'bottom'){
+        object.style.height = this.position.height + (y * -1)
       }
     },
     drag(event, object){
