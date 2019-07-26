@@ -25,6 +25,7 @@
               <i class="fas fa-ellipsis-h text-gray more-options" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-target="dropdownMenuButtonDropdown">
               </i>
               <div class="dropdown-menu dropdown-more-options" aria-labelledby="dropdownMenuButton" >
+                <span class="dropdown-item action-link dropdown-label">Settings</span>
                 <span class="dropdown-item action-link" @click="showModal('update', item)">Edit</span>
                 <span class="dropdown-item action-link" @click="removeWork(item.id)">Remove</span>
               </div>
@@ -34,7 +35,7 @@
           <span class="summary-header">
             <div style="line-height: 160%; vertical-align: middle;">
               <i class="fas fa-sitemap" style="font-size: 15px;"></i>
-              <span style="position: relative; display: inline-block; left: 5px; font-size: 14px;">
+              <span style="position: relative; display: inline-block; left: 5px; font-size: 14px; font-weight: 600; color: #000">
                 {{ item.position }}
               </span>
             </div>
@@ -51,21 +52,23 @@
               </span>
             </div>
             <div style="line-height: 160%;">
-                About Work:
+              <label style="margin: 5px 0 0 0; color: #000;">About Work:</label>
               <div style="font-size: 14px;">
-                <div v-if="item.work_description.length <= 400 || showDescription === true && showDescriptionIndex === index" 
-                  style="word-break: break-all;">
+                <div v-if="item.work_description.length <= 400">
                   {{ item.work_description }}
                 </div>
-                <div v-else style="word-break: break-all;">
-                  {{ item.work_description.substring(0, 400) + '...' }}
+                <div v-else style="word-break: break-all; font-color: 555;">
+                  {{ showDescription === true &&  showDescriptionIndex === index ? item.work_description : item.work_description.substring(0, 400) }}
+                  <a :class="showDescription === true &&  showDescriptionIndex === index ? 'see-more clicked' : 'see-more'" @click="setShowDescription(index)">
+                    {{ showDescription === true &&  showDescriptionIndex === index ? '<<<' : '>>>'}}
+                  </a>
                 </div>
-                <div v-if="item.work_description.length >= 400" title="See more" style="margin: 5px 47%">
+                <!-- <div v-if="item.work_description.length >= 400" title="See more" style="margin: 5px 47%">
                   <a :class="showDescription === true && showDescriptionIndex === index ? 'arrow-icon open' : 'arrow-icon'" @click="setShowDescription(index)">
                     <span class="left-bar"></span>
                     <span class="right-bar"></span>
                   </a>
-                </div>
+                </div> -->
                 <!-- <label v-else>
                   <span v-if="item.flag === false"> {{ item.work_description.substring(0, 400)}} <strong class="text-danger" @click="item.flag = true"> TEST </strong></span>
                   <span v-if="item.flag === true"> {{ item.work_description }} <strong class="text-danger" @click="item.flag = false"> TEST </strong></span>
@@ -82,76 +85,25 @@
   </div>
 </template>
 <style scoped lang="scss">
-$background: lightcoral;
-$easing: cubic-bezier(.25,1.7,.35,.8);
-$duration: 0.5s;
-.arrow-icon {
-  display:block;
-  padding: 0.5em;
-  // margin: 1em auto;
-  position: relative;
+@import "~assets/style/colors.scss";
+.dropdown-label {
+  color: black !important;
+  font-weight: 500 !important;
+}
+.dropdown-label:hover {
+  color: black !important;
+  background: none !important;
+  cursor: auto !important
+}
+.see-more {
+  color: red !important;
+}
+.clicked {
+  color: $secondary !important;
+}
+.see-more:hover {
   cursor: pointer;
-  // border-radius: 4px;
-}
-.left-bar {
-  position: absolute;
-  background-color: transparent;
-  top: 0;
-  left:0;
-  width: 20px;
-  height: 5px;
-  display: block;
-  transform: rotate(35deg);
-  float: right;
-  border-radius: 2px;
-  &:after {
-    content:"";
-    background-color: black;
-    width: 20px;
-    height: 5px;
-    display: block;
-    float: right;
-    border-radius: 6px 10px 10px 6px;
-    transition: all $duration $easing;
-    z-index: -1;
-  }
-}
-.right-bar {
-  position: absolute;
-  background-color: transparent;
-  top: 0px;
-  left:14px;
-  width: 20px;
-  height: 5px;
-  display: block;
-  transform: rotate(-35deg);
-  float: right;
-  border-radius: 2px;
-  &:after {
-    content:"";
-    background-color: black;
-    width: 20px;
-    height: 5px;
-    display: block;
-    float: right;
-    border-radius: 10px 6px 6px 10px;
-    transition: all $duration $easing;
-    z-index: -1;
-  }
-}
-.open {
-    .left-bar:after {
-    transform-origin: center center;
-    transform: rotate(-70deg);
-  }
-  .right-bar:after {
-    transform-origin: center center;
-    transform: rotate(70deg);
-  }
-
-}
-.see-more-icon:hover {
-  cursor: pointer;
+  color: $secondary !important;
 }
 .cards-label {
   font-size: 20px;
