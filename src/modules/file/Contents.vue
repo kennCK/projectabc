@@ -1,9 +1,9 @@
 <template>
-  <div class="contents-wrapper"  v-if="data !== null">
-    <div class="content-item" v-for="(item, index) in data" :key="index">
+  <div class="contents-wrapper" v-if="data !== null">
+    <div :class="`content-item ${listStyle}`" v-for="(item, index) in data" :key="index">
       <div class="item-content">
       </div>
-      <div class="item-title">
+      <div class="item-title" @click="redirect('/editor/v2/' + item.code)">
         {{item.title}}
       </div>
     </div>
@@ -12,6 +12,23 @@
 </template>
 <style scoped lang="scss">
 @import "~assets/style/colors.scss";
+.list-style {
+  width: 35% !important;
+  margin-right: 100% !important;
+  height: 300px !important;
+}
+.four-columns{
+  width: 21% !important;
+  height: 300px !important;
+}
+.three-columns{
+  width: 29% !important;
+  height: 300px !important;
+}
+.two-columns{
+  width: 46% !important;
+  height: 300px !important;
+}
 .contents-wrapper{
   width: 100%;
   height: auto;
@@ -25,7 +42,8 @@
   width: 25%;
   min-height: 50px;
   overflow-y: hidden;
-  margin-right: 10px;
+  margin-right: 40px;
+  margin-bottom: 40px;
 }
 .item-title{ 
   float: left;
@@ -33,7 +51,7 @@
   color: $primary;
   width: 100%;
   height: 50px;
-  line-height: 50px;
+  line-height: 135px;
 }
 .item-content{
   float: left;
@@ -84,6 +102,7 @@ import CONFIG from '../../config.js'
 export default{
   mounted (){
     this.retrieve()
+    console.log(this.listStyle)
   },
   data () {
     return {
@@ -91,9 +110,10 @@ export default{
       data: null
     }
   },
-  props: ['category'],
+  props: ['category', 'listStyle'],
   components: {
-    'dynamic-empty': require('components/increment/generic/empty/EmptyDynamicIcon.vue')
+    'dynamic-empty': require('components/increment/generic/empty/EmptyDynamicIcon.vue'),
+    'generic-filter': require('components/increment/ecommerce/marketplace/Filter.vue')
   },
   methods: {
     redirect(parameter){
