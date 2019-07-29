@@ -261,4 +261,18 @@ Route::post($route.'retrieve', $controller."retrieve");
 Route::post($route.'update', $controller."update");
 Route::post($route.'delete', $controller."delete");
 
+// Educations Controller
+$route = env('PACKAGE_ROUTE', '').'/educations/';  
+$controller = 'EducationController@';
+Route::post($route.'create', $controller."create");
+Route::post($route.'retrieve', $controller."retrieve");
+Route::post($route.'update', $controller."update");
+Route::post($route.'delete', $controller."delete");
 
+// Works Controller
+$route = env('PACKAGE_ROUTE', '').'/works/';  
+$controller = 'WorkController@';
+Route::post($route.'create', $controller."create");
+Route::post($route.'retrieve', $controller."retrieve");
+Route::post($route.'update', $controller."update");
+Route::post($route.'delete', $controller."delete");

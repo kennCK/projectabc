@@ -67,7 +67,7 @@
 
       <label class="text-white edit-cursor" style="font-size: 13px; padding-left: 100px;" v-if="global.template.title !== null">
         {{global.template.category}} / <b @dblclick="global.template.edit_flag = true" v-if="global.template.edit_flag === false">{{global.template.title}}</b>
-        <input type="text" v-model="global.template.title" class="title-input" v-else @keyup.enter="global.global.template.edit_flag = false">
+        <input type="text" v-model="global.template.title" class="title-input" v-else @keyup.enter="global.template.edit_flag = false">
       </label>
       <label v-else class="text-white" style="padding-left: 10px;">
         <b>Add new template</b>
