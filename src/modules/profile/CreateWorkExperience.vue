@@ -1,23 +1,23 @@
 <template>
   <div class="work-experience-holder">
-    <span class="header">Work
-      <button class="btn btn-primary pull-right" style="margin-right: 10px;" @click="showCreateModal()">Add</button>
+    <span class="header">Work Experience
+      <button class="btn btn-primary pull-right" style="margin-right: 10px;" @click="showModal('create')">Add</button>
     </span>
     <span class="content">
       <!-- Display Here -->
       <span class="display">
         <div class="rl-container-item" v-for="(item, index) in data" :key="index">
           <span class="header">
-            <label> 
+            <label class="cards-label"> 
               {{ item.month_started }}
               {{ item.year_started }}
             </label>
             -
-            <label v-if="item.month_ended && item.year_ended !== null">
+            <label class="cards-label" v-if="item.month_ended && item.year_ended !== null">
               {{ item.month_ended }}
               {{ item.year_ended }}
             </label>
-            <label v-else>
+            <label class="cards-label" v-else>
               Present
             </label>
             <label class="pull-right">
@@ -25,7 +25,8 @@
               <i class="fas fa-ellipsis-h text-gray more-options" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-target="dropdownMenuButtonDropdown">
               </i>
               <div class="dropdown-menu dropdown-more-options" aria-labelledby="dropdownMenuButton" >
-                <span class="dropdown-item action-link" @click="showEdit(item)">Edit</span>
+                <span class="dropdown-item action-link dropdown-label">Settings</span>
+                <span class="dropdown-item action-link" @click="showModal('update', item)">Edit</span>
                 <span class="dropdown-item action-link" @click="removeWork(item.id)">Remove</span>
               </div>
             </div>
@@ -34,12 +35,12 @@
           <span class="summary-header">
             <div style="line-height: 160%; vertical-align: middle;">
               <i class="fas fa-sitemap" style="font-size: 15px;"></i>
-              <span style="position: relative; display: inline-block; left: 5px; font-size: 14px;">
+              <span style="position: relative; display: inline-block; left: 5px; font-size: 14px; font-weight: 600; color: #000">
                 {{ item.position }}
               </span>
             </div>
             <div style="line-height: 160%; vertical-align: middle;">
-              <i class="fas fa-landmark"></i>
+              <i class="fas fa-building"></i>
               <span style="position: relative; display: inline-block; left: 5px; font-size: 14px;"> 
                 {{ item.company_name }}
               </span>
@@ -51,20 +52,29 @@
               </span>
             </div>
             <div style="line-height: 160%;">
-                About Work:
+              <label style="margin: 5px 0 0 0; color: #000;">About Work:</label>
               <div style="font-size: 14px;">
-                <label v-if="item.work_description.length <= 800" >
+                <div v-if="item.work_description.length <= 400">
                   {{ item.work_description }}
-                </label>
-                <label v-else>
-                  <span v-if="item.flag === false"> {{ item.work_description.substring(0, 400)}} <strong class="text-danger" @click="item.flag = true"> >>> </strong></span>
-                  <span v-if="item.flag === true"> {{ item.work_description }} <strong class="text-danger" @click="item.flag = false"> <<< </strong></span>
-                </label>
+                </div>
+                <div v-else style="word-break: break-all; font-color: 555;">
+                  {{ showDescription === true &&  showDescriptionIndex === index ? item.work_description : item.work_description.substring(0, 400) }}
+                  <a :class="showDescription === true &&  showDescriptionIndex === index ? 'see-more clicked' : 'see-more'" @click="setShowDescription(index)">
+                    {{ showDescription === true &&  showDescriptionIndex === index ? '<<<' : '>>>'}}
+                  </a>
+                </div>
+                <!-- <div v-if="item.work_description.length >= 400" title="See more" style="margin: 5px 47%">
+                  <a :class="showDescription === true && showDescriptionIndex === index ? 'arrow-icon open' : 'arrow-icon'" @click="setShowDescription(index)">
+                    <span class="left-bar"></span>
+                    <span class="right-bar"></span>
+                  </a>
+                </div> -->
+                <!-- <label v-else>
+                  <span v-if="item.flag === false"> {{ item.work_description.substring(0, 400)}} <strong class="text-danger" @click="item.flag = true"> TEST </strong></span>
+                  <span v-if="item.flag === true"> {{ item.work_description }} <strong class="text-danger" @click="item.flag = false"> TEST </strong></span>
+                </label> -->
               </div>
             </div>
-          </span>
-          <span class="footer" style="line-height: 160%;">
-            <button class="btn btn-primary pull-left" style="margin-top: 5px;" @click="showAddImageCertificate(item.id)">Add image certificate</button>
           </span>
         </div>
       </span>
@@ -72,10 +82,39 @@
     <browse-images-modal :object="user.profile" v-if="user.profile !== null"></browse-images-modal>
     <browse-images-modal :object="newWork" v-if="user.profile === null"></browse-images-modal>
     <create-modal :property="createWorkModal"></create-modal>
-    <add-certificate></add-certificate>
   </div>
 </template>
-<style scoped>
+<style scoped lang="scss">
+@import "~assets/style/colors.scss";
+.dropdown-label {
+  color: black !important;
+  font-weight: 500 !important;
+}
+.dropdown-label:hover {
+  color: black !important;
+  background: none !important;
+  cursor: auto !important
+}
+.see-more {
+  color: red !important;
+}
+.clicked {
+  color: $secondary !important;
+}
+.see-more:hover {
+  cursor: pointer;
+  color: $secondary !important;
+}
+.cards-label {
+  font-size: 20px;
+  font-weight: 400;
+}
+span.dropdown-item.action-link {
+  height: 50px !important;
+}
+.dropdown-menu.dropdown-more-options.show {
+  padding: 0 !important;
+}
 .work-experience-holder{
   width: 95%;
   float: left;
@@ -154,10 +193,10 @@
 }
 </style>
 <script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
+import ROUTER from 'src/router'
+import AUTH from 'src/services/auth'
+import CONFIG from 'src/config.js'
 import axios from 'axios'
-import CONFIG from '../../config.js'
 import Work from '../modal/CreateWork.js'
 
 export default {
@@ -173,21 +212,21 @@ export default {
       createWorkModal: Work,
       showDescription: false,
       showDescriptionIndex: null,
-      selectedWorkId: null
+      selectedWorkId: null,
+      newWork: null
     }
   },
   components: {
     'browse-images-modal': require('components/increment/generic/image/BrowseModal.vue'),
-    'create-modal': require('components/increment/generic/modal/Modal.vue'),
-    'add-certificate': require('components/increment/generic/image/BrowseModal.vue')
+    'create-modal': require('components/increment/generic/modal/Modal.vue')
   },
   methods: {
-    setShowDescription(flag, index){
+    setShowDescription(index){
       if(index === this.showDescriptionIndex){
         this.showDescriptionIndex = null
         this.showDescription = false
-      } else{
-        this.showDescription = flag
+      }else{
+        this.showDescription = true
         this.showDescriptionIndex = index
       }
     },
@@ -210,7 +249,46 @@ export default {
         }
       })
     },
-    showCreateModal(){
+    showModal(action, item = null){
+      switch(action){
+        case 'create':
+          this.createWorkModal = {...Work}
+          let inputs = this.createWorkModal.inputs
+          inputs.map(input => {
+            input.value = null
+          })
+          break
+        case 'update':
+          let modalData = {...this.createWorkModal}
+          let parameter = {
+            title: 'Update Work Experience',
+            route: 'works/update',
+            button: {
+              left: 'Cancel',
+              right: 'Update'
+            },
+            sort: {
+              column: 'created_at',
+              value: 'desc'
+            },
+            params: [{
+              variable: 'id',
+              value: item.id
+            }]
+          }
+          modalData = {...modalData, ...parameter} // updated data without input values
+          let selectedData = this.data.slice().find(data => data.id === item.id)
+          let object = Object.keys(selectedData)
+          modalData.inputs.map(data => {
+            for(let obj in selectedData){
+              if(obj === data.variable){
+                data.value = selectedData[obj]
+              }
+            }
+          })
+          this.createWorkModal = {...modalData}
+          break
+      }
       $('#createWorkModal').modal('show')
     },
     removeWork(id){
@@ -226,18 +304,6 @@ export default {
     },
     hideImages(){
       $('#browseImagesModal').modal('hide')
-    },
-    showAddImageCertificate(id){
-      this.selectedWorkId = id
-      $('#browseImagesModal').modal('show')
-    },
-    createCertificate(object){
-      this.APIRequest('certificates/create', object).then(response => {
-        if(response.data > 0){
-          this.hideImages()
-          AUTH.checkAuthentication()
-        }
-      })
     },
     manageImageUrl(url){
       let parameter = {
