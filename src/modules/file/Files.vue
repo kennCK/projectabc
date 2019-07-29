@@ -7,13 +7,13 @@
         @changeSortEvent="retrieve($event.sort, $event.filter)"
         @changeStyle="manageGrid($event)"
         :grid="['list', 'th', 'th-large']">
-        </generic-filter>
+    </generic-filter>
       <div class="container-files" v-if="categoryParameter === null">
-       <ul v-for="(item, index) in folders" :key="index" :class="`folder ${listStyle}`">
-        <div id="file-list" @click="redirect('/files/' + item, item)">
-          <i id="file" class="fas fa-folder"></i><span id="filename"> {{item}}</span>
-        </div>
-        </ul>
+           <ul v-for="(item, index) in folders" :key="index" :class="`folder ${listStyle}`">
+              <div id="file-list" @click="redirect('/files/' + item, item)">
+                <i id="file" class="fas fa-folder"></i><span id="filename"> {{item}}</span>
+              </div>
+           </ul>
       </div>
     <div v-else class="container-files">
       <li><span @click="redirect('/files')">File Management </span><i class="fas fa-angle-right"></i> {{selectedFolder}}</li>
@@ -32,6 +32,9 @@
 .container-files{
   float: left;
   width: 100%;
+}
+.btn-primary{
+  margin-bottom: 5px;
 }
 .list-style {
   padding: 5px 0 5px 0 !important;
@@ -68,6 +71,7 @@ ul div:hover{
   cursor: pointer;
   background: $secondary;
   color: white;
+  padding: 0px 0 1.5px 0;
 }
 ul div i{
   font-size: 24px;
