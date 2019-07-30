@@ -18,7 +18,7 @@
           <dropdown-zoom v-if="activeDropdown === 'zoom'" @zoomEvent="selectedZoom = $event"></dropdown-zoom>
         </span>
 
-        <span class="editor-dropdown text-white" @click="showDropdown('text')">
+        <span class="editor-dropdown text-white" @click="global.addObject('text')">
           <label style="padding: 0px 5px;">T</label>
         </span>
 

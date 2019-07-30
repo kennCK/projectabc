@@ -113,11 +113,11 @@ export default {
     let halfHeight = this.template.contents.setting.page.height / 2
     let object = {
       title: type,
-      type: 'object',
+      type: null,
       style: null,
       id: null,
-      content: null,
       eye: true,
+      content: null,
       edit_flag: false
     }
     if(type === 'Square'){
@@ -132,8 +132,25 @@ export default {
         border: 'solid 1px #ddd',
         zIndex: 1
       }
-    }else{
-      //
+      object.type = 'object'
+      object.content = null
+    }else if(type === 'text'){
+      object.style = {
+        background: 'transparent',
+        height: 20,
+        width: 100,
+        top: halfHeight - 60,
+        left: halfWidth - 60,
+        borderRadius: 0,
+        position: 'absolute',
+        color: '#000000',
+        fontSize: '12px',
+        textAlign: 'left',
+        textDecoration: 'initial',
+        zIndex: 1
+      }
+      object.type = 'text'
+      object.content = 'Text'
     }
     let activePageIndex = this.template.contents.activePageIndex
     let activeLayerIndex = this.template.contents.activeLayerIndex
