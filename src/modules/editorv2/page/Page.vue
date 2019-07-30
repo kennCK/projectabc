@@ -1,7 +1,7 @@
 <template>
-	<div class="holder" v-if="global.template.contents.content !== null">
+	<div class="page-container-holder" v-if="global.template.contents.content !== null" id="page-container-holder">
 		
-    <div class="page-holder" v-for="(page, pageIndex) in global.template.contents.content.pages" :key="pageIndex">
+    <div class="page-holder" v-for="(page, pageIndex) in global.template.contents.content.pages" :key="pageIndex" v-bind:id="'page' + pageIndex">
 			
       <div class="page-container" :style="{height: global.template.contents.setting.zoom.height + global.template.contents.setting.units, width: global.template.contents.setting.zoom.width + global.template.contents.setting.units, background: global.template.contents.content.style.background}">
 				
@@ -31,10 +31,11 @@
 </template>
 <style scoped lang="scss">
 @import "~assets/style/colors.scss";
-.holder{
+.page-container-holder{
 	width: 100%;
 	float: left;
 	height: 100%;
+  overflow-y: auto;
 }
 
 .page-holder{
@@ -254,6 +255,12 @@ export default{
       }else{
         this.resizeObject(x * -1, y * 1, object)
       }
+    },
+    scroll(index){
+      let top = $('#page' + index).outerHeight() * index
+      $('.page-container-holder').animate({
+        scrollTop: parseInt(top)
+      }, 500)
     }
   }
 }
