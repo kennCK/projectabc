@@ -1,14 +1,23 @@
 <template>
   <div class="files-wrapper">
-    <button class="btn btn-primary pull-right" @click="redirect('/templates')"><i class="fa fa-plus"></i> Add Template</button>
-    <generic-filter :category="category" @changeSortEvent="retrieve($event)"></generic-filter>
-    <div class="container-files" v-if="categoryParameter === null">
-      <ul v-for="(item, index) in folders" :key="index" class="folder">
-        <li id="file-list" @click="redirect('/files/' + item.title)"><i id="file" class="fas fa-folder"></i> <span id="filename">{{item.title}}</span></li>
-      </ul>
-    </div>
+    <button class="btn btn-primary pull-right" @click="redirect('/editor/v2')"><i class="fa fa-plus"></i> Add Template</button>
+    <generic-filter v-bind:category="category" 
+        :activeCategoryIndex="0"
+        :activeSortingIndex="0"
+        @changeSortEvent="retrieve($event.sort, $event.filter)"
+        @changeStyle="manageGrid($event)"
+        :grid="['list', 'th', 'th-large']">
+        </generic-filter>
+      <div class="container-files" v-if="categoryParameter === null">
+       <ul v-for="(item, index) in folders" :key="index" :class="`folder ${listStyle}`">
+        <div id="file-list" @click="redirect('/files/' + item, item)">
+          <i id="file" class="fas fa-folder"></i><span id="filename"> {{item}}</span>
+        </div>
+        </ul>
+      </div>
     <div v-else class="container-files">
-      <category-contents :category="categoryParameter"></category-contents>
+      <li><span @click="redirect('/files')">File Management </span><i class="fas fa-angle-right"></i> {{selectedFolder}}</li>
+      <category-contents :listStyle="listStyle" :category="categoryParameter"></category-contents>
     </div>
   </div>
 </template>
@@ -24,6 +33,27 @@
   float: left;
   width: 100%;
 }
+.list-style {
+  padding: 5px 0 5px 0 !important;
+}
+.three-columns{
+  padding: 5px 0 5px 0 !important;
+  width: 33% !important;
+  float: left !important;
+  padding-bottom: 5px !important;
+}
+.two-columns{
+  padding: 5px 0 5px 0 !important;
+  width: 50% !important;
+  float: left !important;
+  padding-bottom: 5px !important;
+}
+li{
+  list-style: none;
+}
+span{
+  cursor: pointer;
+}
 ul{
   list-style: none;
   margin: 0px;
@@ -34,12 +64,12 @@ ul li{
   line-height: 50px;
   padding-left: 10px;
 }
-ul li:hover{
+ul div:hover{
   cursor: pointer;
   background: $secondary;
   color: white;
 }
-ul li i{
+ul div i{
   font-size: 24px;
   color: $primary;
 }
@@ -53,8 +83,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
-    this.retrieve({'title': 'asc'}, {value: null, column: 'title'})
-    console.log(this.categoryParameter)
+    this.retrieve({title: 'asc'})
   },
   data(){
     return {
@@ -72,56 +101,11 @@ export default {
           payload: 'title',
           payload_value: 'desc'
         }]
-      }, {
-        title: 'Customers',
-        sorting: [{
-          title: 'Title ascending',
-          payload: 'title',
-          payload_value: 'asc'
-        }, {
-          title: 'Title descending',
-          payload: 'title',
-          payload_value: 'desc'
-        }, {
-          title: 'Description ascending',
-          payload: 'description',
-          payload_value: 'asc'
-        }, {
-          title: 'Description descending',
-          payload: 'description',
-          payload_value: 'desc'
-        }]
       }],
-      folders: [{
-        title: 'T-shirts'
-      }, {
-        title: 'Mugs'
-      }, {
-        title: 'I.Ds'
-      }, {
-        title: 'Cellphones'
-      }, {
-        title: 'Tarpaulin'
-      }, {
-        title: 'temp'
-      }, {
-        title: 'Temp2'
-      }, {
-        title: 'Temp3'
-      }, {
-        title: 'Temp4'
-      }, {
-        title: 'Temp5'
-      }, {
-        title: 'Temp6'
-      }, {
-        title: 'Temp7'
-      }, {
-        title: 'Temp8'
-      }, {
-        title: 'Temp9'
-      }],
-      categoryParameter: this.$route.params.category ? this.$route.params.category : null
+      folders: [],
+      selectedFolder: null,
+      categoryParameter: this.$route.params.category ? this.$route.params.category : null,
+      listStyle: 'list-style'
     }
   },
   components: {
@@ -139,29 +123,39 @@ export default {
     }
   },
   methods: {
-    redirect(parameter){
+    redirect(parameter, folderName){
+      this.selectedFolder = folderName
       ROUTER.push(parameter)
       if(parameter === 'editor/v2'){
         AUTH.mode = 1
       }
     },
     retrieve(sort){
+      console.log(sort)
       let parameter = {
-        condition: [{
-          value: 'saved',
-          column: 'status',
-          clause: '='
-        }],
-        sort: sort,
+        sort: sort.title,
         account_id: this.user.userID
       }
       $('#loading').css({display: 'block'})
-      this.APIRequest('products/retrieve', parameter).then(response => {
+      this.APIRequest('templates/retrieve_categories', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
-          this.data = response.data
+          this.folders = response.data
+        }else{
+          this.folders = []
         }
       })
+    },
+    manageGrid(event){
+      switch(event){
+        case 'th-large': this.listStyle = 'two-columns'
+          break
+        case 'th': this.listStyle = 'three-columns'
+          break
+        case 'list': this.listStyle = 'list-style'
+          break
+      }
+      console.log(this.listStyle)
     }
   }
 }
