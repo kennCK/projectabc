@@ -9,11 +9,12 @@
         :grid="['list', 'th', 'th-large']">
     </generic-filter>
       <div class="container-files" v-if="categoryParameter === null">
-           <ul v-for="(item, index) in folders" :key="index" :class="`folder ${listStyle}`">
-              <div id="file-list" @click="redirect('/files/' + item, item)">
+           <ul v-if="folders !== null" v-for="(item, index) in folders" :key="index" :class="`folder ${listStyle}`">
+              <div v-if="item !== null" class ="folder-wrapper" id="file-list" @click="redirect('/files/' + item, item)">
                 <i id="file" class="fas fa-folder"></i><span id="filename"> {{item}}</span>
               </div>
            </ul>
+          <dynamic-empty v-if="folders === null" :title="'No products yet!'" :action="'Please add new designs.'" :icon="'far fa-smile'" :iconColor="'text-primary'"></dynamic-empty>
       </div>
     <div v-else class="container-files">
       <li><span @click="redirect('/files')">File Management </span><i class="fas fa-angle-right"></i> {{selectedFolder}}</li>
@@ -37,19 +38,23 @@
   margin-bottom: 5px;
 }
 .list-style {
-  padding: 5px 0 5px 0 !important;
+  min-height: 50px !important;
+  overflow-y: hidden !important;
+  border-bottom: solid 1px $gray;
 }
 .three-columns{
   padding: 5px 0 5px 0 !important;
   width: 33% !important;
   float: left !important;
   padding-bottom: 5px !important;
+  border-bottom: solid 1px $gray;
 }
 .two-columns{
   padding: 5px 0 5px 0 !important;
   width: 50% !important;
   float: left !important;
   padding-bottom: 5px !important;
+  border-bottom: solid 1px $gray;
 }
 li{
   list-style: none;
@@ -67,17 +72,26 @@ ul li{
   line-height: 50px;
   padding-left: 10px;
 }
-ul div:hover{
+.folder{
+  min-height: 50px !important;
+  padding:10px 0px 10px 0px !important;
+}
+.folder:hover{
   cursor: pointer;
-  background: $secondary;
   color: white;
-  padding: 0px 0 1.5px 0;
+  background: $secondary;
+  min-height: 50px;
 }
 ul div i{
   font-size: 24px;
   color: $primary;
 }
 @media (max-width: 991px){
+  .list-style {
+    min-height: 50px !important;
+    overflow-y: hidden !important;
+    border-bottom: solid 1px $gray;
+  }
 }
 </style>
 <script>
@@ -106,7 +120,7 @@ export default {
           payload_value: 'desc'
         }]
       }],
-      folders: [],
+      folders: null,
       selectedFolder: null,
       categoryParameter: this.$route.params.category ? this.$route.params.category : null,
       listStyle: 'list-style'
@@ -146,8 +160,9 @@ export default {
         if(response.data.length > 0){
           this.folders = response.data
         }else{
-          this.folders = []
+          this.folders = null
         }
+        console.log(this.folders)
       })
     },
     manageGrid(event){
