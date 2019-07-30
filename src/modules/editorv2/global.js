@@ -145,8 +145,12 @@ export default {
         position: 'absolute',
         color: '#000000',
         fontSize: '12px',
+        fontStyle: 'normal',
         textAlign: 'left',
+        fontFamily: 'Arial',
         textDecoration: 'initial',
+        fontWeight: 'normal',
+        padding: '0px',
         zIndex: 1
       }
       object.type = 'text'

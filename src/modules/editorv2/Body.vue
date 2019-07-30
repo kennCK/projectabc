@@ -2,21 +2,21 @@
 	<div class="holder">
 		<div class="editor-layers">
 			<ul>
-        <li class="hidden text-center" v-if="contents.leftPane.index > 0">
-          <i class="fas fa-chevron-left" @click="contents.leftPane.index--, makeActive(layerTabs[contents.leftPane.index])"></i>
+        <li class="hidden text-center" v-if="global.template.contents.leftPane.index > 0">
+          <i class="fas fa-chevron-left" @click="global.template.contents.leftPane.index--, makeActive(layerTabs[global.template.contents.leftPane.index])"></i>
         </li>
-				<li class="shown" v-bind:class="{'active': layerTabs[contents.leftPane.index] === contents.leftPane.title}" @click="makeActive(layerTabs[contents.leftPane.index])">{{layerTabs[contents.leftPane.index]}}</li>
-        <li class="shown" v-bind:class="{'active': layerTabs[contents.leftPane.index + 1] === contents.leftPane.title}" @click="makeActive(layerTabs[contents.leftPane.index + 1])">{{layerTabs[contents.leftPane.index + 1]}}</li>
-        <li class="hidden text-center" v-bind:style="{width: (contents.leftPane.index === 0) ? '20%' : '10%'}" @click="contents.leftPane.index++, makeActive(layerTabs[contents.leftPane.index])" v-if="contents.leftPane.index < (layerTabs.length - 1)">
+				<li class="shown" v-bind:class="{'active': layerTabs[global.template.contents.leftPane.index] === global.template.contents.leftPane.title}" @click="makeActive(layerTabs[global.template.contents.leftPane.index])">{{layerTabs[global.template.contents.leftPane.index]}}</li>
+        <li class="shown" v-bind:class="{'active': layerTabs[global.template.contents.leftPane.index + 1] === global.template.contents.leftPane.title}" @click="makeActive(layerTabs[global.template.contents.leftPane.index + 1])">{{layerTabs[global.template.contents.leftPane.index + 1]}}</li>
+        <li class="hidden text-center" v-bind:style="{width: (global.template.contents.leftPane.index === 0) ? '20%' : '10%'}" @click="global.template.contents.leftPane.index++, makeActive(layerTabs[global.template.contents.leftPane.index])" v-if="global.template.contents.leftPane.index < (layerTabs.length - 1)">
           <i class="fas fa-chevron-right"></i>
         </li>
 			</ul>
 			<div class="option-contents">
-        <marketplace v-if="contents.leftPane.title === 'Marketplace'"></marketplace>
-        <users v-if="contents.leftPane.title === 'Designers'"></users>
-				<editor-layers v-if="contents.leftPane.title === 'Layers'"></editor-layers>
-				<editor-assets v-if="contents.leftPane.title === 'Assets'"></editor-assets>
-				<editor-pages v-if="contents.leftPane.title === 'Pages'"></editor-pages>
+        <marketplace v-if="global.template.contents.leftPane.title === 'Marketplace'"></marketplace>
+        <users v-if="global.template.contents.leftPane.title === 'Designers'"></users>
+				<editor-layers v-if="global.template.contents.leftPane.title === 'Layers'"></editor-layers>
+				<editor-assets v-if="global.template.contents.leftPane.title === 'Assets'"></editor-assets>
+				<editor-pages v-if="global.template.contents.leftPane.title === 'Pages'"></editor-pages>
 			</div>
 		</div>
 		<div class="editor-body">
@@ -29,9 +29,9 @@
             <i class="fa fa-chevron-down pull-right" v-if="item.show === false" @click="item.show = true"></i>
             <i class="fa fa-chevron-up pull-right" v-if="item.show === true" @click="item.show = false"></i>
             <span class="option-holder" v-if="item.show === true">
-              <settings-text v-if="item.title === 'Text'"></settings-text>
+              <settings-text v-if="item.title === 'Text'" :property="global.template.contents.objectSettings"></settings-text>
               <settings-color :position="{right: '13%', top: '0%'}" v-if="item.title === 'Color'"></settings-color>
-              <settings-settings v-if="item.title === 'Settings'" :property="contents.objectSettings"></settings-settings>
+              <settings-settings v-if="item.title === 'Settings'" :property="global.template.contents.objectSettings"></settings-settings>
               <settings-stroke v-if="item.title === 'Stroke'"></settings-stroke>
               <settings-shadow v-if="item.title === 'Shadow'"></settings-shadow>
             </span>
@@ -205,7 +205,6 @@ export default{
       }],
       selectedPage: null,
       global: GLOBAL,
-      contents: GLOBAL.template.contents,
       oldIndex: '',
       newIndex: ''
     }
@@ -229,9 +228,9 @@ export default{
       this.$emit('add', item)
     },
     makeActive(item){
-      this.contents.leftPane.title = item
-      this.contents.selectedTopMenu = item
-      this.contents.overlay.title = null
+      GLOBAL.template.contents.leftPane.title = item
+      GLOBAL.template.contents.selectedTopMenu = item
+      GLOBAL.template.contents.overlay.title = null
     },
     removeIndex(index){
       this.settings.splice(index, 1)

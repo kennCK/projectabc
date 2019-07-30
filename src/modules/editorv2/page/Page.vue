@@ -116,7 +116,7 @@
 }
 
 .input{
-  border: solid 1px white;
+  border: none;
   background: transparent;
   resize: none;
   overflow-y: hidden;

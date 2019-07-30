@@ -2,34 +2,34 @@
   <div class="text-holder">
     <div class="attribute-item">
       <i class="fas fa-font"></i>
-      <select class="form-control">
-        <option v-for="(item, index) in fontStyles" :key="index">  {{item}}
+      <select class="form-control" v-model="property.fontFamily">
+        <option v-for="(item, index) in fontFamily" :key="index">  {{item}}
         </option>
       </select>
     </div>
     <div>
       <span class="attribute-item">
         <i class="fas fa-palette"></i>
-        <input type="text" class="form-control" v-model="color"/>
+        <input type="text" class="form-control" v-model="property.color"/>
         <i v-bind:class="{'active': showColor === true}" class="fas fa-eye-dropper icon-right bordered-hover" @click="showColor = !showColor"></i>
       </span>
-      <color-picker :color="color" @selectedColor="color = $event" v-if="showColor === true" :position="{right: '13%'}"></color-picker>
+      <color-picker :color="color" @selectedColor="setColor($event)" v-if="showColor === true" :position="{right: '13%'}"></color-picker>
     </div>
     <div class="attribute-multiple">
-      <i class="fas fa-bold bordered-hover"></i>
-      <i class="fas fa-italic bordered-hover"></i>
-      <label style="text-decoration: inital" class="bordered-hover">T</label>
-      <label style="text-decoration: underline" class="bordered-hover">T</label>
-      <label style="text-decoration: line-through" class="bordered-hover">T</label>
-      <label style="text-decoration: overline" class="bordered-hover">T</label>
+      <i class="fas fa-bold bordered-hover" @click="bold()" v-bind:class="{'active': property.fontWeight === 'bold'}"></i>
+      <i class="fas fa-italic bordered-hover" v-bind:class="{'active': property.fontStyle === 'italic'}" @click="fontStyle()"></i>
+      <label style="text-decoration: inital" class="bordered-hover" v-bind:class="{'active': property.textDecoration === 'initial'}" @click="property.textDecoration = 'initial'">T</label>
+      <label style="text-decoration: underline" class="bordered-hover" v-bind:class="{'active': property.textDecoration === 'underline'}" @click="property.textDecoration = 'underline'">T</label>
+      <label style="text-decoration: line-through" class="bordered-hover" v-bind:class="{'active': property.textDecoration === 'line-through'}" @click="property.textDecoration = 'line-through'">T</label>
+      <label style="text-decoration: overline" class="bordered-hover" v-bind:class="{'active': property.textDecoration === 'overline'}" @click="property.textDecoration = 'overline'">T</label>
     </div>
     <div class="attribute-multiple">
-      <i class="fas fa-align-left bordered-hover"></i>
-      <i class="fas fa-align-right bordered-hover"></i>
-      <i class="fas fa-align-center bordered-hover"></i>
-      <i class="fas fa-align-justify bordered-hover"></i>
-      <i class="fas fa-indent bordered-hover"></i>
-      <i class="fas fa-outdent bordered-hover"></i>
+      <i class="fas fa-align-left bordered-hover" v-bind:class="{'active': property.textAlign === 'left'}" @click="property.textAlign = 'left'"></i>
+      <i class="fas fa-align-center bordered-hover" v-bind:class="{'active': property.textAlign === 'center'}" @click="property.textAlign = 'center'"></i>
+      <i class="fas fa-align-right bordered-hover" v-bind:class="{'active': property.textAlign === 'right'}" @click="property.textAlign = 'right'"></i>
+      <i class="fas fa-align-justify bordered-hover" v-bind:class="{'active': property.textAlign === 'justify'}" @click="property.textAlign = 'justify'"></i>
+      <i class="fas fa-indent bordered-hover" v-bind:class="{'active': property.padding === '10px'}" @click="property.padding = '10px'"></i>
+      <i class="fas fa-outdent bordered-hover" v-bind:class="{'active': property.padding === '0px'}" @click="property.padding = '0px'"></i>
     </div>
   </div>
 </template>
@@ -95,21 +95,44 @@
     cursor: pointer;
   }
   .active{
-    background: $primary;
-    color: white;
+    color: $primary;
   }
 </style>
 <script>
 export default{
   data () {
     return {
-      fontStyles: ['Arial', 'Helvitica', 'Sans-serif'],
+      fontFamily: ['Arial', 'Helvitica', 'Sans-serif'],
       color: '#ffffff',
       showColor: false
     }
   },
+  props: ['property'],
   components: {
     'color-picker': require('modules/editorv2/colors/Picker.vue')
+  },
+  methods: {
+    setColor(color){
+      this.property.color = color
+    },
+    bold(){
+      if(this.property.hasOwnProperty('fontWeight')){
+        if(this.property.fontWeight === 'normal'){
+          this.property['fontWeight'] = 'bold'
+        }else{
+          this.property['fontWeight'] = 'normal'
+        }
+      }else{
+        this.property['fontWeight'] = 'normal'
+      }
+    },
+    fontStyle(){
+      if(this.property.fontStyle === 'normal'){
+        this.property.fontStyle = 'italic'
+      }else{
+        this.property.fontStyle = 'normal'
+      }
+    }
   }
 }
 </script>
