@@ -8,7 +8,14 @@
         <div v-bind:style="helper.style(layer.style, global.template.contents.zoom, global.template.contents.setting, 0)" v-for="(layer, layerIndex) in page.layers" :key="layerIndex">
 					<div v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting, 1)" class="object" v-bind:class="{'selected-object': objectIndex === layer.selected_object}" v-for="(object, objectIndex) in layer.objects" :key="objectIndex" @click="selectObject(objectIndex, layer, object)">
             
-            <div v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting, 2)" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object, true)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)">
+
+            <label v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting, 2)" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object, true)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)" v-if="object.type === 'text' && object.edit_flag === false" @dblclick="object.edit_flag = !object.edit_flag">
+              {{object.content}}
+            </label>
+
+            <textarea v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting, 2)" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object, true)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)" v-if="object.type === 'text' && object.edit_flag === true" @dblclick="object.edit_flag = !object.edit_flag"  v-model="object.content" class="input"></textarea>
+
+            <div v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting, 2)" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object, true)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)" v-if="object.type  !== 'text'">
             </div>
 
             <!-- Resize corner -->
@@ -54,6 +61,7 @@
 
 .resize{
   position: absolute;
+  background: white;
 }
 
 .resize-edge{
@@ -105,6 +113,13 @@
 }
 .selected-object{
 	// border: solid 1px #4285F4 !important;
+}
+
+.input{
+  border: solid 1px white;
+  background: transparent;
+  resize: none;
+  overflow-y: hidden;
 }
 </style>
 <script>
