@@ -72,6 +72,7 @@ import AUTH from 'src/services/auth'
 import CONFIG from 'src/config.js'
 import axios from 'axios'
 import GLOBAL from 'src/modules/editorv2/global.js'
+import HELPER from 'src/modules/editorv2/helper.js'
 export default {
   data(){
     return {
@@ -83,6 +84,7 @@ export default {
       GLOBAL.template.contents.content.selected_page = index
       GLOBAL.template.contents.activePageIndex = index
       GLOBAL.template.contents.objectSettings = item.style
+      this.$emit('scrollEvent', index)
     }
   }
 }
