@@ -55,11 +55,8 @@ export default{
         title: 'Square',
         icon: 'fas fa-square'
       }, {
-        title: 'Triangle',
-        icon: 'fas fa-mountain'
-      }, {
-        title: 'Star',
-        icon: 'fas fa-star'
+        title: 'Circle',
+        icon: 'fas fa-circle'
       }]
     }
   },

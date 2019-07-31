@@ -134,6 +134,20 @@ export default {
       }
       object.type = 'object'
       object.content = content
+    }else if(type === 'Circle'){
+      object.style = {
+        background: '#ffffff',
+        height: 100,
+        width: 100,
+        top: halfHeight - 60,
+        left: halfWidth - 60,
+        borderRadius: '50%',
+        position: 'absolute',
+        border: 'solid 1px #ddd',
+        zIndex: 1
+      }
+      object.type = 'object'
+      object.content = content
     }else if(type === 'text'){
       object.style = {
         background: 'transparent',

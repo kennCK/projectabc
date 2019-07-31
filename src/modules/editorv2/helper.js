@@ -15,7 +15,7 @@ export default {
     let size = tempSize % 2 ? tempSize : tempSize - 1
     let position = parseInt(size / 2)
     let tempStyle = {}
-    let modifiedArray = ['height', 'width', 'top', 'left', 'borderRadius', 'background']
+    let modifiedArray = ['height', 'width', 'top', 'left', 'background']
     zoom = parseInt(zoom)
     if(flag === 0){
       tempStyle['height'] = parseInt(style.height * (zoom / 100)) + setting.units
@@ -39,7 +39,7 @@ export default {
       tempStyle['background'] = style.background
       tempStyle['zIndex'] = parseInt(style.zIndex) + 1
     }
-    tempStyle['borderRadius'] = parseInt(parseInt(style.borderRadius) * (zoom / 100)) + setting.units
+    // tempStyle['borderRadius'] = parseInt(parseInt(style.borderRadius) * (zoom / 100)) + setting.units
     let objectAttributes = Object.keys(style)
     objectAttributes.map(item => {
       if(modifiedArray.indexOf(item) < 0){
