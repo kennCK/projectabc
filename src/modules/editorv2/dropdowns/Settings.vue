@@ -59,6 +59,8 @@ export default{
         title: 'Stroke'
       }, {
         title: 'Shadow'
+      }, {
+        title: 'Comments'
       }]
     }
   },
