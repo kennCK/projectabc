@@ -114,7 +114,7 @@
 }
 
 .text-gray{
-  color: #555;
+  color: #555 !important;
 }
 
 .text-yellow{
