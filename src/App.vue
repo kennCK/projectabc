@@ -172,6 +172,7 @@ td i:hover{
 .fa-dot-circle{
   color: $primary !important;
 }
+
 </style>
 <script>
 import ROUTER from './router'
