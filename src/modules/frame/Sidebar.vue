@@ -57,7 +57,8 @@
     </div>
   </div>  
 </template>
-<style>
+<style lang="scss">
+@import "~assets/style/colors.scss";
 .main-sidebar, .content-holder{  
   min-height: 200px;
   overflow: hidden;
@@ -90,12 +91,12 @@
 
 .header i{
   font-size: 24px;
-  color: #22b173;
+  color: $primary;
 }/*-- toggle-sidebar i --*/
 
 .header i:hover{
   cursor: pointer;
-  color: #028170;
+  color: $primary;
 }
 
 .profile-photo{
@@ -156,7 +157,7 @@
 
 .menu-holder:hover, .menu-holder i:hover, .menu-holder label:hover, .menu-holder-hidden i:hover{
   cursor: pointer;
-  color: #22b173;
+  color: $primary;
 }
 
 .sub-menu{
@@ -172,11 +173,11 @@
   height: 35px;
   line-height: 35px;
   margin-left: 5%;
-  color: #212529;
+  color: $primary;
 }
 
 .active-menu{
-  color: #22b173 !important;
+  color: $primary !important;
 }
 
 .menu-holder-hidden{
@@ -227,7 +228,7 @@
 }
 
 /*-------------- Medium Screen for Tablets  --------------*/
-@media screen (min-width: 992px), screen and (max-width: 1199px){
+@media (min-width: 992px) and (max-width: 1199px){
   .main-sidebar{
     width: 23%;
     float: left;
