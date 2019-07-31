@@ -8,9 +8,7 @@
         <i class="fa fa-user-circle-o"></i>
       </div>
       <i class="fa fa-phone pull-left bg-danger icons" @click="ignoreAudio"></i>
-      <!-- <video id="localVideo" playsinline autoplay controls muted></video> -->
-      <i class="fa fa-phone pull-right bg-primary icons" @click="acceptCall" id = "call" v-on:click='oncall'></i>
-      <!-- <video id="remoteVideo" playsinline autoplay controls></video> -->
+      <i class="fa fa-phone pull-right bg-primary icons" @click="acceptCall" id = "call"></i>
       <h6 style="margin-top: 10px" class="text-center text-white">Incoming Call</h6>
       <h6 style="margin-top: 10px" class="text-center text-white">{{auth.audio.senderUser.username}}</h6>
     </span>
@@ -24,7 +22,8 @@
         <i class="fa fa-user-circle-o" v-else></i>
       </div>
         <i class="fa fa-phone pull-right bg-danger endicon" @click="endAudio"></i>
-        <h6 style="margin-top: 10px" class="text-center text-white">{{auth.audio.senderUser.username}}</h6>
+        <h6 style="margin-top: 10px" class="text-center text-white">
+          {{user.username === auth.audio.senderUser.username ? auth.audio.receiverUser.username : auth.audio.senderUser.username}}</h6>
         <h6 style="margin-top: 10px" class="text-center text-white">{{auth.audio.timeDisplay}}</h6>
     </span>
      <span class="holder" v-if="auth.audio.status === 2">   <!--  Calling, Sender -->
@@ -43,10 +42,19 @@
 <script>
 import AUTH from 'src/services/auth'
 import CONFIG from 'src/config.js'
-// import { setInterval, clearInterval } from 'timers'
+import RTCMultiConnection from 'rtcmulticonnection'
+// import Vue from 'vue'
+// import { WebRTC } from 'plugin';
+// import { find, head } from 'lodash';
+
+// Vue.component(WebRTC.name, WebRTC);
 export default {
   data(){
     return{
+      rtcmConnection: null,
+      localVideo: null,
+      videoList: [],
+      canvas: null,
       user: AUTH.user,
       config: CONFIG,
       posX: null,
@@ -54,20 +62,106 @@ export default {
       auth: AUTH,
       timer: null,
       selected: null,
-      // localStream: null,
-      // remoteStream: null,
-      // pc1: null,
-      // pc2: null,
       position: {
         top: '0',
         right: '0',
         charTop: null,
         charRight: null
       },
+      computed: {
+      },
+      watch: {
+      },
       initialPosition: {
         top: '0',
         right: '0'
       }
+    }
+  },
+  props: {
+    roomId: {
+      type: String,
+      default: 'public-room'
+    },
+    socketURL: {
+      type: String,
+      default: 'https://rtcmulticonnection.herokuapp.com:443/'
+    },
+    cameraHeight: {
+      type: [Number, String],
+      default: 160
+    },
+    autoplay: {
+      type: Boolean,
+      default: true
+    },
+    screenshotFormat: {
+      type: String,
+      default: 'image/jpeg'
+    },
+    enableAudio: {
+      type: Boolean,
+      default: true
+    },
+    enableVideo: {
+      type: Boolean,
+      default: true
+    },
+    enableLogs: {
+      type: Boolean,
+      default: false
+    }
+  },
+  mounted() {
+    var that = this
+    this.rtcmConnection = new RTCMultiConnection()
+    this.rtcmConnection.socketURL = this.socketURL
+    this.rtcmConnection.autoCreateMediaElement = false
+    this.rtcmConnection.enableLogs = this.enableLogs
+    this.rtcmConnection.session = {
+      audio: this.enableAudio,
+      video: this.enableVideo
+    }
+    this.rtcmConnection.sdpConstraints.mandatory = {
+      OfferToReceiveAudio: this.enableAudio,
+      OfferToReceiveVideo: this.enableVideo
+    }
+    this.rtcmConnection.onstream = function (stream) {
+      let found = that.videoList.find(video => {
+        return video.id === stream.streamid
+      })
+      if (found === undefined) {
+        let video = {
+          id: stream.streamid,
+          muted: stream.type === 'local'
+        }
+
+        that.videoList.push(video)
+
+        if (stream.type === 'local') {
+          that.localVideo = video
+        }
+      }
+
+      setTimeout(function(){
+        for (var i = 0, len = that.$refs.videos.length; i < len; i++) {
+          if (that.$refs.videos[i].id === stream.streamid) {
+            that.$refs.videos[i].srcObject = stream.stream
+            break
+          }
+        }
+      }, 1000)
+      that.$emit('joined-room', stream.streamid)
+    }
+    this.rtcmConnection.onstreamended = function (stream) {
+      var newList = []
+      that.videoList.forEach(function (item) {
+        if (item.id !== stream.streamid) {
+          newList.push(item)
+        }
+      })
+      that.videoList = newList
+      that.$emit('left-room', stream.streamid)
     }
   },
   methods: {
@@ -85,10 +179,9 @@ export default {
         console.log(response)
       })
       this.auth.audio.status = 0
-      // $('#audio-call').css({'display': 'none'})
       this.auth.endAudioCallTimer()
     },
-    oncall(){
+    acceptCall(){
       let parameter = {
         receiver: this.auth.audio.receiverId,
         sender: this.user.userID,
@@ -148,62 +241,6 @@ export default {
       this.initialPosition.top = (this.position.top + y) + 'px'
       this.initialPosition.right = (this.position.right + x) + 'px'
     }
-  //   call(){
-  //     this.pc1 = new RTCPeerConnection()
-  //     this.pc1.addEventListener('onicecandidate', e => this.addIceCandidate(this.pc1, e))
-  //     this.pc2 = new RTCPeerConnection()
-  //     this.pc2.addEventListener('onicecandidate', e => this.addIceCandidate(this.pc2, e))
-  //     this.pc2.addEventListener('track', this.gotRemoteStream)
-  //     this.localStream.getTracks().forEach(track => {
-  //       console.log('Adding local stream')
-  //       this.pc1.addTrack(track, this.localStream)
-  //     })
-  //     this.pc1.createOffer({offerToReceiveAudio: 1, offerToReceiveVideo: 1})
-  //     .then(this.gotDescription)
-  //     .catch(e => console.log(e))
-  //   },
-  //   gotRemoteStream(event){
-  //     console.log('Got Remote Stream')
-  //     let remoteVideo = document.querySelector('#remoteVideo')
-  //     this.remoteStream = event.streams[0]
-  //     remoteVideo.srcObject = event.streams[0]
-  //   },
-  //   gotDescription(description){
-  //     console.log('Got Description 1')
-  //     this.pc1.setLocalDescription(description)
-  //     this.pc2.setRemoteDescription(description)
-  //     this.pc2.createAnswer().then(this.gotDescription2)
-  //   },
-  //   gotDescription2(description){
-  //     console.log('Got Description 2')
-  //     this.pc2.setLocalDescription(description)
-  //     this.pc1.setRemoteDescription(description)
-  //   },
-  //   addIceCandidate(pc, event){
-  //     this.getOtherPC(pc).addIceCandidate(event.candidate).then(this.addIceCandidateSuccess).catch(this.addIceCandidateFailure)
-  //   },
-  //   addIceCandidateSuccess(){
-  //     console.log('Ice candidate added Successfully')
-  //   },
-  //   addIceCandidateFailure(){
-  //     console.log('Ice candidate failure')
-  //   },
-  //   getOtherPC(pc){
-  //     if(pc === this.pc1){
-  //       return this.pc2
-  //     }
-  //     return this.pc1
-  //   },
-  //   gotDevices(stream){
-  //     let localVideo = document.querySelector('#localVideo')
-  //     this.localStream = stream
-  //     localVideo.srcObject = stream
-  //   },
-  //   handleMediaError(error){
-  //     console.error('Error:' + error.name)
-  //   }
-  // },
-  //
   }
 }
 </script>
@@ -212,8 +249,6 @@ export default {
 .audioModal{
   position: fixed;
   background: #555;
-  // top: 60px;
-  // right: 0;
   width: 300px;
   height: 200px;
   z-index: 100000 !important;
@@ -224,7 +259,6 @@ export default {
   display: none;
   padding-right: 10px;
   padding-top: 50px;
- // right:0;
 }
 .holder{
     float: left;
@@ -233,7 +267,6 @@ export default {
     padding: 0% 10%;
 }
 .icons{
-    // font-size: 3em;
     font-size: 32px;
     height: 50px;
     width: 50px;
@@ -242,10 +275,8 @@ export default {
     line-height: 50px;
     padding: 0%;
     text-align: center;
-    // padding-right: 10px;
 }
 .endicon{
-    // font-size: 3em;
     font-size: 32px;
     height: 50px;
     width: 50px;
@@ -286,9 +317,16 @@ img {
     left: 0px;
     top: 0px;
   }
+video {
+  max-width: 100%;
+  width: 320px;
+}
 #audio-call:hover {
-  cursor: grabbing;
-  cursor: grab;
+  cursor: default;
+  cursor: default;
+}
+#audio-call:hover:active {
+  cursor: default;
 }
 @keyframes play {
 

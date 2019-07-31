@@ -6,6 +6,7 @@ import Vue from 'vue'
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 import Config from '../../config.js'
+import RTC from 'src/services/rtc.js'
 export default {
   audio: {
     status: 0,
@@ -16,7 +17,8 @@ export default {
     timer: null,
     receiverId: null,
     senderUser: '',
-    receiverUser: ''
+    receiverUser: '',
+    roomId: null
   },
   mode: 0,
   user: {
@@ -325,11 +327,13 @@ export default {
       })
     }
     this.echo.channel('paprint-call').listen('Call', (response) => {
+      console.log(response)
       let action = parseInt(response.user.action)
       let sender = response.user.sender
       let receiver = response.user.receiver
       this.audio.senderUser = sender
       this.audio.receiverUser = receiver
+      this.audio.roomId = sender.profile.account_id
       if(sender.id !== this.user.userID){
         this.audio.receiverId = sender.id
       }
@@ -338,6 +342,7 @@ export default {
       } else if(action === 1 && receiver.id === this.user.userID){
         this.triggerAudioCall(1, null)
         this.startAudioCallTimer()
+        RTC.join()
       } else if(action === 0 && receiver.id === this.user.userID){
         this.endAudioCallTimer()
       }
@@ -384,7 +389,6 @@ export default {
         action: 2
       }
       vue.APIRequest('audio_calls/send', parameter, (response) => {
-        //
       })
     } else {
       this.playNotificationSound()
@@ -395,6 +399,7 @@ export default {
     this.audio.seconds = 0
     this.audio.minutes = 0
     this.audio.hours = 0
+    this.audio.timeDisplay = `00:00:00`
     this.audio.timer = setInterval(() => {
       this.audio.seconds++
       if (this.audio.seconds === 60){
