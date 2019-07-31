@@ -15,7 +15,9 @@
 
             <textarea v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting, 2)" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object, true)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)" v-if="object.type === 'text' && object.edit_flag === true" @dblclick="object.edit_flag = !object.edit_flag"  v-model="object.content" class="input"></textarea>
 
-            <div v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting, 2)" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object, true)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)" v-if="object.type  !== 'text'">
+            <img v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting, 2)" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object, true)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)" v-if="object.type === 'image'" :src="config.BACKEND_URL + object.content"/>
+
+            <div v-bind:style="helper.style(object.style, global.template.contents.zoom, global.template.contents.setting, 2)" @click="selectObject(objectIndex, layer, object)" draggable="true" v-on:dragstart="moveObject($event, object, true)" v-on:dragend="drag($event, object)" v-on:drag="drag($event, object)" v-if="notDiv.indexOf(object.type) < 0">
             </div>
 
             <!-- Resize corner -->
@@ -126,12 +128,15 @@
 <script>
 import GLOBAL from 'src/modules/editorv2/global.js'
 import HELPER from 'src/modules/editorv2/helper.js'
+import CONFIG from 'src/config.js'
 export default{
   data () {
     return {
       global: GLOBAL,
+      config: CONFIG,
       posX: null,
       posY: null,
+      notDiv: ['text', 'image'],
       position: {
         top: null,
         left: null,

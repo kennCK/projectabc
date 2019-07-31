@@ -66,7 +66,7 @@ export default{
   methods: {
     select(item) {
       this.$emit('objectEvent', item.icon)
-      GLOBAL.addObject(item.title)
+      GLOBAL.addObject(item.title, null)
     }
   }
 }

@@ -108,7 +108,7 @@ export default {
     this.template.contents.content.pages[activePageIndex].selected_layer = length
     this.template.contents.activeLayerIndex = length
   },
-  addObject(type){
+  addObject(type, content){
     let halfWidth = this.template.contents.setting.page.width / 2
     let halfHeight = this.template.contents.setting.page.height / 2
     let object = {
@@ -133,7 +133,7 @@ export default {
         zIndex: 1
       }
       object.type = 'object'
-      object.content = null
+      object.content = content
     }else if(type === 'text'){
       object.style = {
         background: 'transparent',
@@ -154,7 +154,21 @@ export default {
         zIndex: 1
       }
       object.type = 'text'
-      object.content = 'Text'
+      object.content = content
+    }else if(type === 'image'){
+      object.style = {
+        background: '#ffffff',
+        height: 100,
+        width: 100,
+        top: halfHeight - 60,
+        left: halfWidth - 60,
+        borderRadius: 0,
+        position: 'absolute',
+        border: 'solid 1px #ddd',
+        zIndex: 1
+      }
+      object.type = type
+      object.content = content
     }
     let activePageIndex = this.template.contents.activePageIndex
     let activeLayerIndex = this.template.contents.activeLayerIndex
