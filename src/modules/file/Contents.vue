@@ -47,9 +47,11 @@
 }
 .content-item:hover{
   cursor: pointer;
-  border: solid 1px #ffaa81;
-  color: white;
-  background: #ffaa81;
+  border: solid 1px $gray;
+  background: $gray;
+  .item-title {
+    color: $primary;
+  }
 }
 .item-title{ 
   float: left;
@@ -80,7 +82,7 @@
     min-height: 50px;
     overflow-y: hidden;
     margin-right: 50%;
-    margin-left: 15%;
+    margin-left: 10%;
     margin-bottom: 10px;
 }
   .item-title{ 

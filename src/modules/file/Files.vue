@@ -34,8 +34,11 @@
   float: left;
   width: 100%;
 }
+.fa-folder{
+  padding-right: 5px;
+}
 .btn-primary{
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .list-style {
   min-height: 50px !important;
@@ -74,12 +77,12 @@ ul li{
 }
 .folder{
   min-height: 50px !important;
-  padding:10px 0px 10px 0px !important;
+  padding:10px 0px 10px 10px !important;
 }
 .folder:hover{
   cursor: pointer;
-  color: white;
-  background: $secondary;
+  color: $primary;
+  background: $gray;
   min-height: 50px;
 }
 ul div i{
@@ -87,11 +90,6 @@ ul div i{
   color: $primary;
 }
 @media (max-width: 991px){
-  .list-style {
-    min-height: 50px !important;
-    overflow-y: hidden !important;
-    border-bottom: solid 1px $gray;
-  }
 }
 </style>
 <script>
@@ -174,7 +172,6 @@ export default {
         case 'list': this.listStyle = 'list-style'
           break
       }
-      console.log(this.listStyle)
     }
   }
 }
