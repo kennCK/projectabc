@@ -297,7 +297,7 @@ export default {
     let plan = data[0].plan
     let notifSetting = data[0].notification_settings
     this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, checkout, plan, notifSetting)
-    ROUTER.push('/templates')
+    ROUTER.push('/marketplace')
   },
   setGoogleCode(code, scope){
     localStorage.setItem('google_code', code)
