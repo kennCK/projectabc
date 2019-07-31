@@ -1,9 +1,9 @@
 <template>
   <div class="contents-wrapper" v-if="data !== null">
     <div :class="`content-item ${listStyle}`" v-for="(item, index) in data" :key="index">
-      <div class="item-content">
+      <div class="item-content" @click="redirect('/editor/v2/' + item.code)">
       </div>
-      <div class="item-title" @click="redirect('/editor/v2/' + item.code)">
+      <div class="item-title">
         {{item.title}}
       </div>
     </div>
@@ -45,6 +45,14 @@
   margin-right: 40px;
   margin-bottom: 40px;
 }
+.content-item:hover{
+  cursor: pointer;
+  border: solid 1px $gray;
+  background: $gray;
+  .item-title {
+    color: $primary;
+  }
+}
 .item-title{ 
   float: left;
   text-align: center;
@@ -74,7 +82,7 @@
     min-height: 50px;
     overflow-y: hidden;
     margin-right: 50%;
-    margin-left: 15%;
+    margin-left: 10%;
     margin-bottom: 10px;
 }
   .item-title{ 
