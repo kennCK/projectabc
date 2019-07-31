@@ -134,7 +134,7 @@
 }
 
 .editor-menu:hover, .editor-dropdown:hover, .editor-dropdown label:hover{
-  background: gray;
+  background: $darkPrimary;
   cursor: pointer;
 }
 
@@ -203,7 +203,7 @@
 
 .screen-mode:hover{
   cursor: pointer;
-  background: $secondary;
+  background: $darkPrimary;
 }
 
 .edit-cursor:hover{

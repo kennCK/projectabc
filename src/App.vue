@@ -166,12 +166,6 @@ td i:hover{
   cursor: pointer;
   color: $primary !important; 
 }
-.fa-square{
-  color: $primary !important;
-}
-.fa-dot-circle{
-  color: $primary !important;
-}
 
 </style>
 <script>
