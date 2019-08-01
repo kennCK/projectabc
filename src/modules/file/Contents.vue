@@ -56,10 +56,12 @@
 .item-title{ 
   float: left;
   text-align: center;
-  color: $primary;
+  color: black;
   width: 100%;
-  height: 50px;
-  line-height: 135px;
+  margin-top: 50px;
+  min-height: 50px !important;
+  border-top: solid 1px $gray;
+  padding: 10px 0px 5px 0px !important;
 }
 .item-content{
   float: left;
@@ -88,7 +90,7 @@
   .item-title{ 
     float: left;
     text-align: center;
-    color: $primary;
+    color: black;
     width: 100%;
     height: 50px;
     line-height: 50px;
