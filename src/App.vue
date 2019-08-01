@@ -114,7 +114,7 @@
 }
 
 .text-gray{
-  color: #555;
+  color: #555 !important;
 }
 
 .text-yellow{
@@ -165,12 +165,6 @@ td i{
 td i:hover{
   cursor: pointer;
   color: $primary !important; 
-}
-.fa-square{
-  color: $primary !important;
-}
-.fa-dot-circle{
-  color: $primary !important;
 }
 
 </style>

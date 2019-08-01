@@ -42,7 +42,7 @@ i{
   color: white;
 }
 .editor-menu li:hover{
-  color: $secondary;
+  color: $primary;
   cursor: pointer;
 }
 </style>
@@ -55,18 +55,15 @@ export default{
         title: 'Square',
         icon: 'fas fa-square'
       }, {
-        title: 'Triangle',
-        icon: 'fas fa-mountain'
-      }, {
-        title: 'Star',
-        icon: 'fas fa-star'
+        title: 'Circle',
+        icon: 'fas fa-circle'
       }]
     }
   },
   methods: {
     select(item) {
       this.$emit('objectEvent', item.icon)
-      GLOBAL.addObject(item.title)
+      GLOBAL.addObject(item.title, null)
     }
   }
 }

@@ -18,11 +18,11 @@
           <dropdown-zoom v-if="activeDropdown === 'zoom'" @zoomEvent="selectedZoom = $event"></dropdown-zoom>
         </span>
 
-        <span class="editor-dropdown text-white" @click="global.addObject('text')">
+        <span class="editor-dropdown text-white" @click="global.addObject('text', 'Text')">
           <label style="padding: 0px 5px;">T</label>
         </span>
 
-        <span class="editor-dropdown text-white" @click="showDropdown('image')">
+        <span class="editor-dropdown text-white" @click="showImages()">
           <label style="padding: 0px 5px;">
             <i class="fa fa-image"></i>
           </label>
@@ -89,6 +89,7 @@
       <i class="fas fa-compress" v-if="auth.mode === 1" @click="auth.mode = 0"></i>
     </div>
     <prompt-message></prompt-message>
+    <images></images>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -134,7 +135,7 @@
 }
 
 .editor-menu:hover, .editor-dropdown:hover, .editor-dropdown label:hover{
-  background: gray;
+  background: $darkPrimary;
   cursor: pointer;
 }
 
@@ -203,7 +204,7 @@
 
 .screen-mode:hover{
   cursor: pointer;
-  background: $secondary;
+  background: $darkPrimary;
 }
 
 .edit-cursor:hover{
@@ -256,7 +257,8 @@ export default {
     'color-picker': require('modules/editorv2/colors/Picker.vue'),
     'overlay': require('modules/editorv2/overlays/RightPane.vue'),
     'prompt-message': require('modules/editorv2/prompts/Overlay.vue'),
-    'initial-options': require('modules/editorv2/Options.vue')
+    'initial-options': require('modules/editorv2/Options.vue'),
+    'images': require('components/increment/generic/image/BrowseModal.vue')
   },
   methods: {
     redirect(parameter){
@@ -270,8 +272,14 @@ export default {
         this.activeDropdown = item
       }
     },
+    showImages(){
+      $('#browseImagesModal').modal('show')
+    },
     save(){
       this.global.save()
+    },
+    manageImageUrl(url){
+      GLOBAL.addObject('image', url)
     }
   }
 }
