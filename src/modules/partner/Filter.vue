@@ -17,7 +17,8 @@
     </div>
   </div>
 </template>
-<style scoped>
+<style scoped lang="scss">
+@import "~assets/style/colors.scss";
 .filter{
   width: 100%;
   float: left;
@@ -31,12 +32,12 @@
 }
 .input-group-addon{
   width: 100px !important;
-  background: #22b173 !important;
+  background: $primary !important;
   color: #fff !important;
 }
 .input-group-title{
   width: 100px !important;
-  background: #028170 !important;
+  background: $primary !important;
   color: #fff !important;
 }
 

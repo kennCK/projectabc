@@ -41,7 +41,7 @@ i{
   color: white;
 }
 .editor-menu li:hover{
-  color: $secondary;
+  color: $primary;
   cursor: pointer;
 }
 </style>
@@ -59,6 +59,8 @@ export default{
         title: 'Stroke'
       }, {
         title: 'Shadow'
+      }, {
+        title: 'Comments'
       }]
     }
   },

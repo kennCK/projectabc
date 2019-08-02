@@ -68,7 +68,6 @@ footer {
   float: left;
   overflow-y: hidden;
   background: #e9e9e9;
-  margin-top: 50px;
 }
 .footer{
   width: 80%;

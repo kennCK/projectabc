@@ -14,7 +14,8 @@
        <audio-call></audio-call>
       </div>
       <div v-else>
-        <login-header></login-header>
+        <login-header v-if="auth.currentPath === '/'"></login-header>
+        <login-header-normal v-else></login-header-normal>
         <system-content></system-content>
         <landing-footer></landing-footer>
       </div>
@@ -26,6 +27,147 @@
     <guide></guide>
   </div>
 </template>
+<style lang="scss">
+@import "~assets/style/colors.scss";
+.half-width{
+  width: 50%
+}
+.push-half-right{
+  margin-left: 50%
+}
+.nav a{
+  font-size: 15px
+}
+.dropdown-menu li a{
+  padding: 10px;
+}
+.container {
+   min-height:100%;
+   position:relative;
+}
+
+/*
+  BACKGROUND
+*/
+
+.bg-primary{
+  background: $primary !important; 
+}
+
+.bg-secondary{
+  background: $primary !important; 
+}
+
+/*
+  BTNS
+*/
+.btn-primary{
+  background: $primary !important;
+  border-color: $primary !important;
+  height: 35px !important;
+}
+
+.btn-primary:hover{
+  background: $darkPrimary !important;
+  border-color: $darkPrimary !important;
+}
+
+.btn-primary:active{
+  background: $darkPrimary !important;
+  border-color: $darkPrimary !important;
+}
+
+.btn-secondary{
+  background: $secondary !important;
+  border-color: $secondary !important;
+  height: 35px !important;
+}
+
+.btn-secondary:hover{
+  background: $secondary !important;
+  border-color: $secondary !important;
+}
+
+.btn-danger{
+  background: $danger !important;
+  height: 35px !important;
+}
+
+.btn-danger:hover{
+  background: $danger !important;
+  border-color: $danger !important;
+}
+
+.btn-warning{
+  background: $warning !important;
+  height: 35px !important;
+}
+
+/* TEXT */
+
+.text-primary{
+  color: $primary !important;
+}
+
+.text-white{
+  color: $white !important;
+}
+
+.text-gray{
+  color: #555 !important;
+}
+
+.text-yellow{
+  color: $warning !important;
+}
+
+/* 
+  
+  OTHERS
+  
+*/
+.page-link{
+  color: $primary !important;
+  background: inherit;
+}
+.empty-table:hover{
+  cursor: pointer;
+  color: white !important;
+  background: $primary !important;
+}
+.page-link:hover{
+  cursor: pointer;
+  background: $primary !important;
+  color: white !important;
+}
+
+.action-link:hover{
+  color: $primary !important;
+  cursor: pointer;
+}
+.text-underline:hover{
+  cursor: pointer;
+  text-decoration: underline;
+}
+.breadcrumb{
+  color: $primary;
+  background: inherit !important;
+  border: none !important;
+}
+.breadcrumb:hover{
+  cursor: pointer;
+  text-decoration: underline; 
+}
+td i{
+  font-size: 16px !important;
+  padding-right: 10px;
+}
+td i:hover{
+  cursor: pointer;
+  color: $primary !important; 
+}
+
+</style>
 <script>
 import ROUTER from './router'
 import AUTH from './services/auth'
@@ -64,6 +206,7 @@ export default {
   },
   components: {
     'login-header': () => import('modules/home/Landing/Header.vue'),
+    'login-header-normal': () => import('modules/home/Landing/HeaderNormal.vue'),
     'system-header': () => import('modules/frame/Header.vue'),
     'system-sidebar': () => import('modules/frame/Sidebar.vue'),
     'system-content': () => import('modules/frame/Content.vue'),
@@ -80,22 +223,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.half-width{
-  width: 50%
-}
-.push-half-right{
-  margin-left: 50%
-}
-.nav a{
-  font-size: 15px
-}
-.dropdown-menu li a{
-  padding: 10px;
-}
-.container {
-   min-height:100%;
-   position:relative;
-}
-</style>

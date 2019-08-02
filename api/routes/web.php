@@ -84,12 +84,14 @@ Route::post($route.'/retrieve', "PartnerController@retrieve");
 
 //Templates
 $route = env('PACKAGE_ROUTE', '').'/templates';
-Route::post($route.'/create', "TemplateController@create");
-Route::post($route.'/retrieve', "TemplateController@retrieve");
-Route::post($route.'/update', "TemplateController@update");
-Route::post($route.'/delete', "TemplateController@delete");
-Route::get($route.'/test', 'TemplateController@test');
-Route::post($route.'/retrieve_templates_only', 'TemplateController@retriveTemplateOnly');
+$controller = 'TemplateController@';
+Route::post($route.'/create', $controller."create");
+Route::post($route.'/retrieve',  $controller."retrieve");
+Route::post($route.'/update',  $controller."update");
+Route::post($route.'/delete',  $controller."delete");
+Route::get($route.'/test',  $controller.'test');
+Route::post($route.'/retrieve_templates_only',  $controller.'retriveTemplateOnly');
+Route::post($route.'/retrieve_categories',  $controller.'retrieveCategories');
 
 
 //Objects
@@ -259,4 +261,18 @@ Route::post($route.'retrieve', $controller."retrieve");
 Route::post($route.'update', $controller."update");
 Route::post($route.'delete', $controller."delete");
 
+// Educations Controller
+$route = env('PACKAGE_ROUTE', '').'/educations/';  
+$controller = 'EducationController@';
+Route::post($route.'create', $controller."create");
+Route::post($route.'retrieve', $controller."retrieve");
+Route::post($route.'update', $controller."update");
+Route::post($route.'delete', $controller."delete");
 
+// Works Controller
+$route = env('PACKAGE_ROUTE', '').'/works/';  
+$controller = 'WorkController@';
+Route::post($route.'create', $controller."create");
+Route::post($route.'retrieve', $controller."retrieve");
+Route::post($route.'update', $controller."update");
+Route::post($route.'delete', $controller."delete");
