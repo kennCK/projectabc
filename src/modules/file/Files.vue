@@ -6,7 +6,7 @@
         :activeSortingIndex="0"
         @changeSortEvent="retrieve($event.sort, $event.filter)"
         @changeStyle="manageGrid($event)"
-        :grid="['list', 'th', 'th-large']">
+        :grid="['th', 'th-large', 'list']">
     </generic-filter>
       <div class="container-files" v-if="categoryParameter === null">
            <ul v-if="folders !== null" v-for="(item, index) in folders" :key="index" :class="`folder ${listStyle}`">
@@ -121,7 +121,7 @@ export default {
       folders: null,
       selectedFolder: null,
       categoryParameter: this.$route.params.category ? this.$route.params.category : null,
-      listStyle: 'list-style'
+      listStyle: 'three-columns'
     }
   },
   components: {

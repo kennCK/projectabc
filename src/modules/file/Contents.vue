@@ -1,7 +1,7 @@
 <template>
   <div class="contents-wrapper" v-if="data !== null">
-    <div :class="`content-item ${listStyle}`" v-for="(item, index) in data" :key="index">
-      <div class="item-content" @click="redirect('/editor/v2/' + item.code)">
+    <div :class="`content-item ${listStyle}`" v-for="(item, index) in data" :key="index" @click="redirect('/editor/v2/' + item.code)">
+      <div class="item-content">
       </div>
       <div class="item-title">
         {{item.title}}
@@ -49,23 +49,24 @@
   cursor: pointer;
   border: solid 1px $gray;
   background: $gray;
-  .item-title {
-    color: $primary;
+  .item-title{
+    background: white;
   }
 }
 .item-title{ 
   float: left;
   text-align: center;
-  color: $primary;
+  color: black;
   width: 100%;
-  height: 50px;
-  line-height: 135px;
+  padding-top: 13px;
+  min-height: 50px !important;
+  border-top: solid 1px $gray;
 }
 .item-content{
   float: left;
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 250px;
 }
 @media (max-width: 991px){
   .contents-wrapper{
@@ -88,7 +89,7 @@
   .item-title{ 
     float: left;
     text-align: center;
-    color: $primary;
+    color: black;
     width: 100%;
     height: 50px;
     line-height: 50px;
