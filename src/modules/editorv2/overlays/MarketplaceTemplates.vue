@@ -2,8 +2,6 @@
   <div class="profile-wrapper">
     <div class="header">
       {{global.template.contents.overlay.description}}
-      <!-- <i class="fa fa-phone pull-right" @click="auth.triggerAudioCall(2, global.template.contents.overlay.payload_value)"></i>
-      <i class="fas fa-envelope pull-right"  @click="redirect('/messenger/' + global.template.contents.overlay.description)"></i> -->
     </div>
     <div class="gallery" v-if="data !== null">
       <div class="gallery-item" v-for="(template, index) in templates" :key="index" @click="redirect('/editor/v2/' + template.code)">

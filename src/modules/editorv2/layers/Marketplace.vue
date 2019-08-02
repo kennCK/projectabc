@@ -121,7 +121,6 @@ export default {
     },
     searchCategoryHandler(event){
       this.searchCategory = event.target.value
-      console.log('Categories: ', this.categories, 'SortedCat: ', this.sortedCategories)
     }
   },
   computed: {

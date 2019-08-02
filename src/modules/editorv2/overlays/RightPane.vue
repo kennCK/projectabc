@@ -2,7 +2,7 @@
   <div class="right-page-holder">
     <div class="filter">
       <i class="fas fa-search"></i>
-      <input type="text" class="form-control" placeholder="Search">
+      <input type="text" class="form-control" placeholder="Search" @keyup="searchValueHandler">
       <i class="fas fa-close" @click="global.template.contents.overlay.title = null"></i>
     </div>
     <div class="result-holder">
@@ -79,12 +79,18 @@ import GLOBAL from 'src/modules/editorv2/global.js'
 export default {
   data () {
     return {
-      global: GLOBAL
+      global: GLOBAL,
+      searchValue: ''
     }
   },
   components: {
     'profile': require('modules/editorv2/overlays/Profile.vue'),
     'marketplace-templates': require('modules/editorv2/overlays/MarketplaceTemplates.vue')
+  },
+  methods: {
+    searchValueHandler(event){
+      this.searchValue = event.target.value
+    }
   }
 }
 </script>
