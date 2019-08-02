@@ -150,7 +150,7 @@ export default {
       console.log(sort)
       let parameter = {
         sort: sort.title,
-        account_id: this.user.userID,
+        value: this.user.userID,
         column: 'account_id'
       }
       $('#loading').css({display: 'block'})
