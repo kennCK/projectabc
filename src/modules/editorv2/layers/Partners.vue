@@ -5,16 +5,16 @@
       <input type="text" class="form-control" placeholder="Search">
     </div>
     <span class="user-item" v-bind:class="{'active': index === selected}" v-for="(item, index) in users" :key="index" @click="makeActive(item, index)">
-      <span class="image" v-if="item.account_profile !== null">
-        <img :src="config.BACKEND_URL + item.account_profile.url">
+      <span class="image" v-if="item.profile !== null">
+        <img :src="config.BACKEND_URL + item.profile">
       </span>
-      <span class="image" v-else>
+      <span class="image" v-if="item.profile === null">
         <i class="fas fa-user-circle text-primary"></i>
       </span>
       <label class="title">
-        {{item.username}}
+        {{item.name}}
       </label>
-      <i class="fas fa-circle pull-right" style="padding-right: 5px; line-height: 30px; font-size: 6px;" v-bind:class="{'text-primary': item.login_status === true}"></i>
+      <i class="fas fa-circle pull-right"  style="padding-right: 5px; line-height: 30px; font-size: 6px;" v-bind:class="{'text-primary': item.status === true}"></i>
     </span>
   </div>
 </template>
@@ -80,8 +80,8 @@
 }
 
 .user-item .image img{
-  width: 25px;
-  height: 16.5px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   padding: 0px 5px;
 }
@@ -99,34 +99,28 @@
 
 .active{
   background: $gray;
-  color: $primary;
+  color: white;
 }
 </style>
 <script>
 import CONFIG from 'src/config.js'
 import GLOBAL from 'src/modules/editorv2/global.js'
 export default {
-  mounted(){
-    this.retrieve()
-  },
   data () {
     return{
-      users: null,
-      config: CONFIG,
-      global: GLOBAL,
-      selected: null
+     //
     }
   },
   methods: {
     retrieve(){
       let parameter = {
         condition: [{
-          value: 'DESIGNER',
-          column: 'account_type',
+          value: 'PARTNERS',
+          column: 'account_id',
           clause: '='
         }]
       }
-      this.APIRequest('accounts/retrieve', parameter).then(response => {
+      this.APIRequest('merchants/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.users = response.data
         }else{
@@ -135,9 +129,9 @@ export default {
       })
     },
     makeActive(item, index){
-      GLOBAL.template.contents.overlay.title = 'designer'
-      GLOBAL.template.contents.overlay.description = item.username
-      GLOBAL.template.contents.overlay.payload = 'account_id'
+      GLOBAL.template.contents.overlay.title = 'partners'
+      GLOBAL.template.contents.overlay.description = item.name
+      GLOBAL.template.contents.overlay.payload = 'id'
       GLOBAL.template.contents.overlay.payload_value = item.id
       this.selected = index
     }

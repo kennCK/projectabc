@@ -25,12 +25,12 @@
     width: 23%;
     float: left;
     min-height: 200px;
-    border: solid 1px $secondary;
+    border: solid 1px $darkPrimary;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px; 
     margin-right: 1%;
     margin-left: 1%;
-    background: $secondary;
+    background: $darkPrimary;
     color: white;
     overflow-y: hidden;
     padding: 0px 5px;

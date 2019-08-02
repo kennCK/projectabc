@@ -43,7 +43,7 @@ i{
 }
 
 .editor-menu li:hover{
-  color: $secondary;
+  color: $primary;
   cursor: pointer;
 }
 </style>

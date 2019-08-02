@@ -12,7 +12,7 @@
         <label class="text-danger action-link" v-on:click="redirect('/store/'+ item.code)"><i class="fas fa-store"></i>View Store</label>
       </div>
       <div class="partner-reviews">
-<!--         <label class="input-group">
+          <!--        <label class="input-group">
           <input type="text" style="border-top-right-radius: 0px;border-bottom-right-radius: 0px;" v-bind:id="'code' + item.id" class="form-control" v-model="item.code">
           <button class="btn btn-primary" @click="copy('code' + item.id)" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;"><i class="fa fa-copy"></i></button>
         </label> -->

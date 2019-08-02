@@ -435,6 +435,7 @@ class APIController extends Controller
       $result[0]['profile'] =  app('Increment\Account\Http\AccountProfileController')->getAccountProfile($accountId);
       $result[0]['information'] = app('Increment\Account\Http\AccountInformationController')->getAccountInformation($accountId);
       $result[0]['billing'] = app('Increment\Account\Http\BillingInformationController')->getBillingInformation($accountId);
+      $result[0]['login_status'] = app('App\Http\Controllers\AccountLoginStatusController')->getStatus($accountId);
       return $result[0];
     }else{
       return null;
@@ -450,6 +451,7 @@ class APIController extends Controller
     $result['checkout'] = app('Increment\Marketplace\Http\CheckoutController')->getCheckoutItemByAccountId($accountId);
     $result['plan'] = app('Increment\Plan\Http\PlanController')->getCurrentPlan($accountId, $result['created_at']);
     $result['notification_settings'] = app('App\Http\Controllers\NotificationSettingController')->getNotificationSettings($accountId);
+    $result['login_status'] = app('App\Http\Controllers\AccountLoginStatusController')->getStatus($accountId);
     return $result;
   }
 

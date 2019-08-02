@@ -1,10 +1,11 @@
 <template>
   <div class="contents-wrapper" v-if="data !== null">
-    <div :class="`content-item ${listStyle}`" v-for="(item, index) in data" :key="index">
+    <div :class="`content-item ${listStyle}`" v-for="(template, index) in templates" :key="index" @click="redirect('/editor/v2/' + template.code)">
       <div class="item-content">
+        <thumbnail :template="template" :zoom="50"></thumbnail>
       </div>
-      <div class="item-title" @click="redirect('/editor/v2/' + item.code)">
-        {{item.title}}
+      <div class="item-title">
+        {{template.title}}
       </div>
     </div>
   </div>
@@ -45,19 +46,28 @@
   margin-right: 40px;
   margin-bottom: 40px;
 }
+.content-item:hover{
+  cursor: pointer;
+  border: solid 1px $gray;
+  background: $gray;
+  .item-title{
+    background: white;
+  }
+}
 .item-title{ 
   float: left;
   text-align: center;
-  color: $primary;
+  color: black;
   width: 100%;
-  height: 50px;
-  line-height: 135px;
+  padding-top: 13px;
+  min-height: 50px !important;
+  border-top: solid 1px $gray;
 }
 .item-content{
   float: left;
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 250px;
 }
 @media (max-width: 991px){
   .contents-wrapper{
@@ -74,13 +84,13 @@
     min-height: 50px;
     overflow-y: hidden;
     margin-right: 50%;
-    margin-left: 15%;
+    margin-left: 10%;
     margin-bottom: 10px;
 }
   .item-title{ 
     float: left;
     text-align: center;
-    color: $primary;
+    color: black;
     width: 100%;
     height: 50px;
     line-height: 50px;
@@ -107,20 +117,22 @@ export default{
   data () {
     return {
       user: AUTH.user,
-      data: null
+      data: null,
+      templates: []
     }
   },
   props: ['category', 'listStyle'],
   components: {
     'dynamic-empty': require('components/increment/generic/empty/EmptyDynamicIcon.vue'),
-    'generic-filter': require('components/increment/ecommerce/marketplace/Filter.vue')
+    'generic-filter': require('components/increment/ecommerce/marketplace/Filter.vue'),
+    'thumbnail': require('modules/editorv2/page/Thumbnail.vue')
   },
   methods: {
     redirect(parameter){
-      ROUTER.push(parameter)
       if(parameter === '/editor/v2'){
         AUTH.mode = 1
       }
+      ROUTER.push(parameter)
     },
     retrieve(){
       let parameter = {
@@ -140,6 +152,10 @@ export default{
         }else{
           this.data = null
         }
+        for(let i = 0; i < response.data.length; i++){
+          this.templates.push({ ...this.data[i], contents: JSON.parse(this.data[i].contents) })
+        }
+        console.log(this.templates)
       })
     }
   }

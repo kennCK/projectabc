@@ -51,7 +51,7 @@
   position: relative;
 }
 .editor-menu li:hover{
-  color: $secondary;
+  color: $primary;
   cursor: pointer;
 }
 </style>
@@ -152,6 +152,21 @@ export default{
           GLOBAL.template.contents.leftPane.title = 'Printing'
           GLOBAL.template.contents.leftPane.index = 2
           GLOBAL.template.contents.overlay.title = null
+          break
+        case 'publish':
+          GLOBAL.template.status = 'pending'
+          GLOBAL.save()
+          GLOBAL.template.contents.prompts = {
+            title: 'Publish Request',
+            message: 'Your template has been sent to be validated',
+            btn: {
+              yes: 'Okay'
+            },
+            payload: 'notify'
+          }
+          setTimeout(() => {
+            $('#promptMessage').modal('show')
+          }, 1000)
           break
       }
     },

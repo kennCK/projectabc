@@ -4,7 +4,7 @@
       <li class="pages-item">
         <i class="fas fa-plus pull-right" @click="global.addPage()"></i>
         <i class="fa fa-trash text-danger pull-right"></i>
-        <i class="fa fa-clone text-primary pull-right"></i>
+        <i class="fa fa-clone text-primary pull-right" @click="copy()"></i>
       </li>
       <li class="pages-item" v-for="(item, index) in global.template.contents.content.pages" :key="index" @click="makeActive(item, index)" v-bind:class="{'active': global.template.contents.content.selected_page === index}">
         <i class="fa" v-bind:class="{'fa-eye': item.eye === true,  'fa-eye-slash': item.eye === false}" @click="item.eye = !item.eye"></i>
@@ -85,6 +85,10 @@ export default {
       GLOBAL.template.contents.activePageIndex = index
       GLOBAL.template.contents.objectSettings = item.style
       this.$emit('scrollEvent', index)
+    },
+    copy(index){
+      let copy = JSON.parse(JSON.stringify(GLOBAL.template.contents.content.pages[GLOBAL.template.contents.content.selected_page]))
+      GLOBAL.template.contents.content.pages.push(copy)
     }
   }
 }

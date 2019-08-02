@@ -4,7 +4,7 @@
       <li class="layer-item">
         <i class="fas fa-plus pull-right" @click="global.addLayer()"></i>
         <i class="fa fa-trash text-danger pull-right" @click="remove(global.template.contents.content.pages[activePageIndex].selected_layer)"></i>
-        <i class="fa fa-clone text-primary pull-right" @click="duplicate(global.template.contents.content.pages[activePageIndex].selected_layer)"></i>
+        <i class="fa fa-clone text-primary pull-right" @click="duplicate()"></i>
       </li>
       <li class="layer-item" v-for="(layer, layerIndex) in global.template.contents.content.pages[activePageIndex].layers" :key="layerIndex" v-bind:class="{'active': global.template.contents.content.pages[activePageIndex].selected_layer === layerIndex && layer.show === false}" @click="makeActive(layer, layerIndex)">
 
@@ -99,15 +99,24 @@ export default {
   },
   methods: {
     remove(index){
-      GLOBAL.template.contents.content.pages[this.activePageIndex].layers.splice(index, 1)
+      GLOBAL.template.contents.content.pages[GLOBAL.template.contents.activePageIndex].layers.splice(index, 1)
     },
     duplicate(index){
-      let copy = this.page.layers[index]
-      GLOBAL.template.contents.content.pages[this.activePageIndex].layers.push(copy)
+      let activePageIndex = GLOBAL.template.contents.activePageIndex
+      let activeLayerIndex = GLOBAL.template.contents.activeLayerIndex
+      if(GLOBAL.template.contents.selectedTopMenu === 'Object'){
+        let index = GLOBAL.template.contents.content.pages[activePageIndex].layers[activeLayerIndex].selected_object
+        let copy = JSON.parse(JSON.stringify(GLOBAL.template.contents.content.pages[activePageIndex].layers[activeLayerIndex].objects[index]))
+        GLOBAL.template.contents.content.pages[activePageIndex].layers[activeLayerIndex].objects.push(copy)
+      }else{
+        let index = GLOBAL.template.contents.content.pages[activePageIndex].selected_layer
+        let copy = JSON.parse(JSON.stringify(GLOBAL.template.contents.content.pages[activePageIndex].layers[index]))
+        GLOBAL.template.contents.content.pages[activePageIndex].layers.push(copy)
+      }
     },
     makeActive(item, index){
       if(this.clickFlag === false){
-        GLOBAL.template.contents.content.pages[this.activePageIndex].selected_layer = index
+        GLOBAL.template.contents.content.pages[GLOBAL.template.contents.activePageIndex].selected_layer = index
         GLOBAL.template.contents.activeLayerIndex = index
         GLOBAL.template.contents.objectSettings = item.style
         GLOBAL.template.contents.selectedTopMenu = 'Layers'

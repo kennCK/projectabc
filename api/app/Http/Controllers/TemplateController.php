@@ -41,7 +41,7 @@ class TemplateController extends APIController
 
   public function retrieveCategories(Request $request){
     $data = $request->all();
-    $result = Template::where('account_id', '=', $data['account_id'])->orderBy('category', $data['sort'])->get(['category'])->groupBy('category');
+    $result = Template::where($data['column'], '=', $data['value'])->orderBy('category', $data['sort'])->get(['category'])->groupBy('category');
 
     $keys = array();
 

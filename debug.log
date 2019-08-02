@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [0731/135531.567:ERROR:file_io.cc(134)] WriteFile: The pipe is being closed. (0xE8)
+=======
+[0729/104757.842:ERROR:file_io.cc(89)] ReadExactly: expected 36, observed 0
+>>>>>>> ebc1861d46a6dead4a6089d3d31a742c3f4010dd
