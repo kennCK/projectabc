@@ -84,11 +84,14 @@ import ROUTER from 'src/router'
 import AUTH from 'src/services/auth'
 export default {
   mounted(){
-    this.retrieve()
+    this.retrieve(this.searchVal)
   },
   watch: {
     'global.template.contents.overlay.payload_value': function(){
       this.retrieve()
+    },
+    'searchValue': function(){
+      this.retrieve(this.searchValue)
     }
   },
   data() {
@@ -99,6 +102,7 @@ export default {
       templates: []
     }
   },
+  props: ['searchValue'],
   components: {
     'dynamic-empty': require('components/increment/generic/empty/EmptyDynamicIcon.vue'),
     'thumbnail': require('modules/editorv2/page/Thumbnail.vue')
@@ -108,13 +112,17 @@ export default {
       this.auth.mode = 0
       ROUTER.push(params)
     },
-    retrieve(){
+    retrieve(searchVal = ''){
       this.templates = []
       let parameter = {
         condition: [{
           column: 'account_id',
           value: this.global.template.contents.overlay.payload_value,
           clause: '='
+        }, {
+          column: 'title',
+          value: `%${searchVal}%`,
+          clause: 'like'
         }]
       }
       this.APIRequest('templates/retrieve', parameter).then(response => {
