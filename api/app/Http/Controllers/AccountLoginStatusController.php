@@ -51,4 +51,10 @@ class AccountLoginStatusController extends APIController
         'timestamps' => Carbon::now()
       ));
     }
+
+    public function getStatus($accountId){
+      $result = AccountLoginStatus::where('account_id', '=', $accountId)->get();
+      
+      return sizeof($result) > 0 && intval($result[0]['status']) === 1 ? true : false;
+    }
 }
