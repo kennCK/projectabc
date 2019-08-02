@@ -2,12 +2,12 @@
   <div class="right-page-holder">
     <div class="filter">
       <i class="fas fa-search"></i>
-      <input type="text" class="form-control" placeholder="Search" @keyup="searchValueHandler">
+      <input type="text" class="form-control" placeholder="Search" @keypress="keypressHandler">
       <i class="fas fa-close" @click="global.template.contents.overlay.title = null"></i>
     </div>
     <div class="result-holder">
-      <profile v-if="global.template.contents.overlay.title === 'designer'" ></profile>
-      <marketplace-templates v-if="global.template.contents.overlay.title === 'marketplace'" ></marketplace-templates>
+      <profile :searchValue="searchValue" v-if="global.template.contents.overlay.title === 'designer'" ></profile>
+      <marketplace-templates :searchValue="searchValue" v-if="global.template.contents.overlay.title === 'marketplace'" ></marketplace-templates>
     </div>
   </div>
 </template>
@@ -88,8 +88,11 @@ export default {
     'marketplace-templates': require('modules/editorv2/overlays/MarketplaceTemplates.vue')
   },
   methods: {
-    searchValueHandler(event){
-      this.searchValue = event.target.value
+    keypressHandler(event){
+      if(event.charCode === 13){
+        this.searchValue = event.target.value
+        console.log(this.searchValue)
+      }
     }
   }
 }

@@ -104,7 +104,6 @@ export default {
       $('#loading').css({display: 'block'})
       this.APIRequest('templates/retrieve_categories', parameter).then(response => {
         $('#loading').css({display: 'none'})
-        console.log(response)
         if(response.data.length > 0){
           this.categories = response.data
         }else{
