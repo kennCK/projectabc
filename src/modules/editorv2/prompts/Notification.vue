@@ -4,7 +4,6 @@
       <p>{{global.template.contents.prompts.message}}</p>
     </div>
     <div class="modal-footer">
-      <button  type="button" class="btn btn-danger" @click="hide()">{{global.template.contents.prompts.btn.no}}</button>
       <button type="button" class="btn btn-primary" @click="yes()">{{global.template.contents.prompts.btn.yes}}</button>
     </div>
   </div>
@@ -31,20 +30,8 @@ export default {
       $('#promptMessage').modal('hide')
     },
     yes(){
-      if(GLOBAL.template.contents.prompts.title === 'Unsave Template'){
+      if(GLOBAL.template.contents.prompts.title === 'Publish Request'){
         this.hide()
-        GLOBAL.template.contents.prompts = {
-          title: 'New Template Setup',
-          message: null,
-          btn: {
-            yes: 'Create',
-            no: 'Cancel'
-          },
-          payload: 'new_template'
-        }
-        setTimeout(() => {
-          $('#promptMessage').modal('show')
-        }, 1000)
       }
     }
   }
