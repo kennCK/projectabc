@@ -1,7 +1,7 @@
 <template>
   <div class="audioModal" v-bind:style="initialPosition" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="drag($event)" v-on:drag="drag($event)" id="audio-call">
     <span class="holder" v-if="auth.audio.status === 0">   <!--  Ringing,Receiver -->
-      <div class="call-animation" v-if="auth.audio.senderUser.profile.url !== null">
+      <div class="call-animation" v-if="auth.audio.senderUser.profile !== null && auth.audio.senderUser.profile.url !== null">
           <img class="img-circle" :src="config.BACKEND_URL + auth.audio.senderUser.profile.url" alt="" width="120"/>
       </div>
       <div class="call-animation" v-else>
@@ -27,6 +27,17 @@
         <h6 style="margin-top: 10px" class="text-center text-white">{{auth.audio.timeDisplay}}</h6>
     </span>
      <span class="holder" v-if="auth.audio.status === 2">   <!--  Calling, Sender -->
+      <div class="">
+          <vue-webrtc ref="webrtc"
+                      width="100%"
+                      :roomId="roomId"
+                      <!-- v-on:joined-room="logEvent"
+                      v-on:left-room="logEvent"
+                      v-on:open-room="logEvent"
+                      v-on:share-started="logEvent"
+                      v-on:share-stopped="logEvent"
+                      @error="onError" /> -->
+        </div>
       <div class="call-animation" v-if="auth.audio.receiverUser.profile.url !== null">
         <img class="img-circle pull-right" :src="config.BACKEND_URL + auth.audio.receiverUser.profile.url" alt="" width="120"/>
       </div>
@@ -42,13 +53,18 @@
 <script>
 import AUTH from 'src/services/auth'
 import CONFIG from 'src/config.js'
-import RTCMultiConnection from 'rtcmulticonnection'
 // import Vue from 'vue'
 // import { WebRTC } from 'plugin';
-// import { find, head } from 'lodash';
+// import { find, head } from 'lodash'
 
-// Vue.component(WebRTC.name, WebRTC);
+// Vue.component(WebRTC.name, WebRTC)
+import RTCMultiConnection from 'rtcmulticonnection'
+require('adapterjs')
 export default {
+  name: 'vue-webrtc',
+  components: {
+    RTCMultiConnection
+  },
   data(){
     return{
       rtcmConnection: null,
@@ -78,91 +94,8 @@ export default {
       }
     }
   },
-  props: {
-    roomId: {
-      type: String,
-      default: 'public-room'
-    },
-    socketURL: {
-      type: String,
-      default: 'https://rtcmulticonnection.herokuapp.com:443/'
-    },
-    cameraHeight: {
-      type: [Number, String],
-      default: 160
-    },
-    autoplay: {
-      type: Boolean,
-      default: true
-    },
-    screenshotFormat: {
-      type: String,
-      default: 'image/jpeg'
-    },
-    enableAudio: {
-      type: Boolean,
-      default: true
-    },
-    enableVideo: {
-      type: Boolean,
-      default: true
-    },
-    enableLogs: {
-      type: Boolean,
-      default: false
-    }
-  },
   mounted() {
-    var that = this
-    this.rtcmConnection = new RTCMultiConnection()
-    this.rtcmConnection.socketURL = this.socketURL
-    this.rtcmConnection.autoCreateMediaElement = false
-    this.rtcmConnection.enableLogs = this.enableLogs
-    this.rtcmConnection.session = {
-      audio: this.enableAudio,
-      video: this.enableVideo
-    }
-    this.rtcmConnection.sdpConstraints.mandatory = {
-      OfferToReceiveAudio: this.enableAudio,
-      OfferToReceiveVideo: this.enableVideo
-    }
-    this.rtcmConnection.onstream = function (stream) {
-      let found = that.videoList.find(video => {
-        return video.id === stream.streamid
-      })
-      if (found === undefined) {
-        let video = {
-          id: stream.streamid,
-          muted: stream.type === 'local'
-        }
-
-        that.videoList.push(video)
-
-        if (stream.type === 'local') {
-          that.localVideo = video
-        }
-      }
-
-      setTimeout(function(){
-        for (var i = 0, len = that.$refs.videos.length; i < len; i++) {
-          if (that.$refs.videos[i].id === stream.streamid) {
-            that.$refs.videos[i].srcObject = stream.stream
-            break
-          }
-        }
-      }, 1000)
-      that.$emit('joined-room', stream.streamid)
-    }
-    this.rtcmConnection.onstreamended = function (stream) {
-      var newList = []
-      that.videoList.forEach(function (item) {
-        if (item.id !== stream.streamid) {
-          newList.push(item)
-        }
-      })
-      that.videoList = newList
-      that.$emit('left-room', stream.streamid)
-    }
+    //
   },
   methods: {
     endAudio(){

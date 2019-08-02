@@ -327,22 +327,28 @@ export default {
       })
     }
     this.echo.channel('paprint-call').listen('Call', (response) => {
-      console.log(response)
       let action = parseInt(response.user.action)
       let sender = response.user.sender
       let receiver = response.user.receiver
+      if(this.user.userID !== this.audio.senderUser.id){
+        this.audio.roomId = this.audio.senderUser.id
+      }else{
+        this.audio.roomId = sender.id
+      }
       this.audio.senderUser = sender
       this.audio.receiverUser = receiver
-      this.audio.roomId = sender.profile.account_id
       if(sender.id !== this.user.userID){
         this.audio.receiverId = sender.id
       }
       if(action === 2 && receiver.id === this.user.userID){
+        RTC.initializeRTC()
+        RTC.join(this.audio.roomId)
         this.triggerAudioCall(0, null)
       } else if(action === 1 && receiver.id === this.user.userID){
+        RTC.initializeRTC()
+        RTC.join(this.audio.roomId)
         this.triggerAudioCall(1, null)
         this.startAudioCallTimer()
-        RTC.join()
       } else if(action === 0 && receiver.id === this.user.userID){
         this.endAudioCallTimer()
       }
@@ -382,6 +388,8 @@ export default {
     $('#audio-call').css({'display': 'block'})
     let vue = new Vue()
     this.audio.status = params
+    // RTC.initializeRTC()
+    // RTC.join('public-room')
     if (params === 2){
       let parameter = {
         receiver: receiver,
