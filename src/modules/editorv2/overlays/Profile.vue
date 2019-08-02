@@ -7,7 +7,7 @@
     </div>
     <div class="gallery" v-if="data !== null">
       <div class="gallery-item" v-for="(template, index) in templates" :key="index" @click="redirect('/editor/v2/' + template.code)">
-        <span class="template-title"><center>{{template.title}}</center></span>
+        <span class="template-title"><center>{{`${template.category}/${template.title}`}}</center></span>
         <thumbnail :template="template" :zoom="parseInt((335 / parseInt(template.contents.setting.page.width)) * 100) - 5"></thumbnail>
       </div>
     </div>
