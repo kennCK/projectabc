@@ -7,6 +7,7 @@
     </div>
     <div class="result-holder">
       <profile v-if="global.template.contents.overlay.title === 'designer'" ></profile>
+      <marketplace-templates v-if="global.template.contents.overlay.title === 'marketplace'" ></marketplace-templates>
     </div>
   </div>
 </template>
@@ -82,7 +83,8 @@ export default {
     }
   },
   components: {
-    'profile': require('modules/editorv2/overlays/Profile.vue')
+    'profile': require('modules/editorv2/overlays/Profile.vue'),
+    'marketplace-templates': require('modules/editorv2/overlays/MarketplaceTemplates.vue')
   }
 }
 </script>
