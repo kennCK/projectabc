@@ -141,10 +141,10 @@ export default {
   methods: {
     redirect(parameter, folderName){
       this.selectedFolder = folderName
-      ROUTER.push(parameter)
       if(parameter === 'editor/v2'){
         AUTH.mode = 1
       }
+      ROUTER.push(parameter)
     },
     retrieve(sort){
       console.log(sort)
