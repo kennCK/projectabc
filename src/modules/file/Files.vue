@@ -14,7 +14,7 @@
                 <i id="file" class="fas fa-folder"></i><span id="filename"> {{item}}</span>
               </div>
            </ul>
-          <dynamic-empty v-if="folders === null" :title="'No products yet!'" :action="'Please add new designs.'" :icon="'far fa-smile'" :iconColor="'text-primary'"></dynamic-empty>
+          <dynamic-empty v-if="folders === null" :title="'No Files yet!'" :action="'Click Add Template'" :icon="'far fa-smile'" :iconColor="'text-primary'"></dynamic-empty>
       </div>
     <div v-else class="container-files">
       <li><span @click="redirect('/files')">File Management </span><i class="fas fa-angle-right"></i> {{selectedFolder}}</li>
@@ -150,7 +150,8 @@ export default {
       console.log(sort)
       let parameter = {
         sort: sort.title,
-        account_id: this.user.userID
+        account_id: this.user.userID,
+        column: 'account_id'
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('templates/retrieve_categories', parameter).then(response => {
