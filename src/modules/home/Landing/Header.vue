@@ -105,7 +105,7 @@
   padding: 0.1rem;
 }
 .header-primary-menu .nav-item a{
-  color: #111;
+  color: #fff;
   font-family: MuseoRounded700, sans-serif;
 }
 .header-primary-menu .nav-item .nav-link:hover{
@@ -197,7 +197,7 @@
 
   .navbar-nav .nav-link:hover{
     background: #22b173;
-    color: #fff;
+    color: #111;
   }
 
   .navbar-nav .nav-link{
