@@ -6,7 +6,7 @@
       <i class="fas fa-close" @click="global.template.contents.overlay.title = null"></i>
     </div>
     <div class="result-holder">
-      <profile v-if="global.template.contents.overlay.title === 'designer'"></profile>
+      <profile v-if="global.template.contents.overlay.title === 'designer'" ></profile>
     </div>
   </div>
 </template>

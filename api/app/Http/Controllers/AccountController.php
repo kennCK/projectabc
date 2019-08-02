@@ -182,6 +182,7 @@ class AccountController extends APIController
           $accountProfileResult = AccountProfile::where('account_id', '=', $accountId)->orderBy('created_at', 'DESC')->get();
           $result[$i]['account_information'] = (sizeof($accountInfoResult) > 0) ? $accountInfoResult[0] : null;
           $result[$i]['account_profile'] = (sizeof($accountProfileResult) > 0) ? $accountProfileResult[0] : null;
+          $result[$i]['login_status'] = app('App\Http\Controllers\AccountLoginStatusController')->getStatus($accountId);
           $result[$i]['checkout'] = $this->getCheckoutItem($accountId);
           $result[$i]['plan'] = $this->getCurrentPlan($accountId, $result[$i]['created_at']);
           $result[$i]['notification_settings'] = $this->getNotificationSettings($accountId);
