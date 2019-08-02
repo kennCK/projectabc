@@ -10,6 +10,7 @@
         </div>
         <page-setup v-if="global.template.contents.prompts.payload === 'new_template'"></page-setup>
         <unsave-template v-if="global.template.contents.prompts.payload === 'save'"></unsave-template>
+        <notify v-if="global.template.contents.prompts.payload === 'notify'"></notify>
       </div>
     </div>
   </div>
@@ -30,7 +31,8 @@ export default {
   },
   components: {
     'page-setup': require('modules/editorv2/prompts/TemplateSetup.vue'),
-    'unsave-template': require('modules/editorv2/prompts/UnsaveTemplate.vue')
+    'unsave-template': require('modules/editorv2/prompts/UnsaveTemplate.vue'),
+    'notify': require('modules/editorv2/prompts/Notification.vue')
   },
   methods: {
     hide(){
@@ -38,6 +40,8 @@ export default {
     },
     yes(){
       if(GLOBAL.template.contents.prompts.title === 'Unsave Template'){
+        this.addTemplate()
+      }else if(GLOBAL.template.contents.prompts.title === 'Notification Template'){
         this.addTemplate()
       }
     },
