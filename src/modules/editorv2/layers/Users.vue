@@ -2,9 +2,9 @@
   <div class="users-wrapper">
     <div class="filter">
       <i class="fas fa-search"></i>
-      <input type="text" class="form-control" placeholder="Search">
+      <input type="text" class="form-control" placeholder="Search" @keyup="searchUserHandler">
     </div>
-    <span class="user-item" v-bind:class="{'active': index === selected}" v-for="(item, index) in users" :key="index" @click="makeActive(item, index)">
+    <span class="user-item" v-bind:class="{'active': index === selected}" v-for="(item, index) in sortedUsers" :key="index" @click="makeActive(item, index)">
       <span class="image" v-if="item.account_profile !== null">
         <img :src="config.BACKEND_URL + item.account_profile.url">
       </span>
@@ -114,7 +114,8 @@ export default {
       users: null,
       config: CONFIG,
       global: GLOBAL,
-      selected: null
+      selected: null,
+      searchUser: ''
     }
   },
   methods: {
@@ -140,6 +141,22 @@ export default {
       GLOBAL.template.contents.overlay.payload = 'account_id'
       GLOBAL.template.contents.overlay.payload_value = item.id
       this.selected = index
+    },
+    searchUserHandler(event){
+      this.searchUser = event.target.value
+    }
+  },
+  computed: {
+    sortedUsers(){
+      let sorted = null
+      if(this.users !== null){
+        sorted = this.users.filter(user => {
+          return (
+            user.username.toLowerCase().includes(this.searchUser.toLowerCase())
+          )
+        })
+      }
+      return sorted
     }
   }
 }

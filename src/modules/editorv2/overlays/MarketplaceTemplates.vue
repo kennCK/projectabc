@@ -2,8 +2,6 @@
   <div class="profile-wrapper">
     <div class="header">
       {{global.template.contents.overlay.description}}
-      <i class="fa fa-phone pull-right" @click="auth.triggerAudioCall(2, global.template.contents.overlay.payload_value)"></i>
-      <i class="fas fa-envelope pull-right"  @click="redirect('/messenger/' + global.template.contents.overlay.description)"></i>
     </div>
     <div class="gallery" v-if="data !== null">
       <div class="gallery-item" v-for="(template, index) in templates" :key="index" @click="redirect('/editor/v2/' + template.code)">
@@ -84,7 +82,7 @@ import ROUTER from 'src/router'
 import AUTH from 'src/services/auth'
 export default {
   mounted(){
-    this.retrieve(this.searchVal)
+    this.retrieve()
   },
   watch: {
     'global.template.contents.overlay.payload_value': function(){
@@ -116,7 +114,11 @@ export default {
       this.templates = []
       let parameter = {
         condition: [{
-          column: 'account_id',
+          value: 'published',
+          column: 'status',
+          clause: '='
+        }, {
+          column: 'category',
           value: this.global.template.contents.overlay.payload_value,
           clause: '='
         }, {
