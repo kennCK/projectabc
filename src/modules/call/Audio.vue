@@ -27,17 +27,6 @@
         <h6 style="margin-top: 10px" class="text-center text-white">{{auth.audio.timeDisplay}}</h6>
     </span>
      <span class="holder" v-if="auth.audio.status === 2">   <!--  Calling, Sender -->
-      <div class="">
-          <vue-webrtc ref="webrtc"
-                      width="100%"
-                      :roomId="roomId"
-                      <!-- v-on:joined-room="logEvent"
-                      v-on:left-room="logEvent"
-                      v-on:open-room="logEvent"
-                      v-on:share-started="logEvent"
-                      v-on:share-stopped="logEvent"
-                      @error="onError" /> -->
-        </div>
       <div class="call-animation" v-if="auth.audio.receiverUser.profile.url !== null">
         <img class="img-circle pull-right" :src="config.BACKEND_URL + auth.audio.receiverUser.profile.url" alt="" width="120"/>
       </div>
@@ -53,11 +42,6 @@
 <script>
 import AUTH from 'src/services/auth'
 import CONFIG from 'src/config.js'
-// import Vue from 'vue'
-// import { WebRTC } from 'plugin';
-// import { find, head } from 'lodash'
-
-// Vue.component(WebRTC.name, WebRTC)
 import RTCMultiConnection from 'rtcmulticonnection'
 require('adapterjs')
 export default {
