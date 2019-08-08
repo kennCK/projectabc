@@ -2,11 +2,12 @@
   <div class="right-page-holder">
     <div class="filter">
       <i class="fas fa-search"></i>
-      <input type="text" class="form-control" placeholder="Search">
+      <input type="text" class="form-control" placeholder="Search" @keypress="keypressHandler">
       <i class="fas fa-close" @click="global.template.contents.overlay.title = null"></i>
     </div>
     <div class="result-holder">
-      <profile v-if="global.template.contents.overlay.title === 'designer'" ></profile>
+      <profile :searchValue="searchValue" v-if="global.template.contents.overlay.title === 'designer'" ></profile>
+      <marketplace-templates :searchValue="searchValue" v-if="global.template.contents.overlay.title === 'marketplace'" ></marketplace-templates>
     </div>
   </div>
 </template>
@@ -78,11 +79,21 @@ import GLOBAL from 'src/modules/editorv2/global.js'
 export default {
   data () {
     return {
-      global: GLOBAL
+      global: GLOBAL,
+      searchValue: ''
     }
   },
   components: {
-    'profile': require('modules/editorv2/overlays/Profile.vue')
+    'profile': require('modules/editorv2/overlays/Profile.vue'),
+    'marketplace-templates': require('modules/editorv2/overlays/MarketplaceTemplates.vue')
+  },
+  methods: {
+    keypressHandler(event){
+      if(event.charCode === 13){
+        this.searchValue = event.target.value
+        console.log(this.searchValue)
+      }
+    }
   }
 }
 </script>

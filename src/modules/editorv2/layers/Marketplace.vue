@@ -2,9 +2,9 @@
   <div class="marketplace-wrapper">
     <div class="filter">
       <i class="fas fa-search"></i>
-      <input type="text" class="form-control" placeholder="Search">
+      <input type="text" class="form-control" placeholder="Search" @keyup="searchCategoryHandler">
     </div>
-    <span class="marketplace-item" v-bind:class="{'active': index === selected}" v-for="(item, index) in categories" :key="index" @click="makeActive(item, index)">
+    <span class="marketplace-item" v-bind:class="{'active': index === selected}" v-for="(item, index) in sortedCategories" :key="index" @click="makeActive(item, index)">
       <label class="title">
         {{item}}
       </label>
@@ -75,29 +75,64 @@
 
 .active{
   background: $gray;
-  color: white;
+  color: $primary;
 }
 </style>
 <script>
 import CONFIG from 'src/config.js'
 import GLOBAL from 'src/modules/editorv2/global.js'
 export default {
+  mounted(){
+    this.retrieve({title: 'asc'})
+  },
   data () {
     return{
-      categories: [
-        'Tarpaulin', 'TShirt', 'Calling Cards', 'ID Cards'
-      ],
+      categories: null,
       config: CONFIG,
-      selected: null
+      selected: null,
+      templates: [],
+      searchCategory: ''
     }
   },
   methods: {
+    retrieve(sort){
+      let parameter = {
+        sort: sort.title,
+        value: 'published',
+        column: 'status'
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('templates/retrieve_categories', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.categories = response.data
+        }else{
+          this.categories = null
+        }
+      })
+    },
     makeActive(item, index){
       GLOBAL.template.contents.overlay.title = 'marketplace'
       GLOBAL.template.contents.overlay.description = item
       GLOBAL.template.contents.overlay.payload = 'category'
       GLOBAL.template.contents.overlay.payload_value = item
       this.selected = index
+    },
+    searchCategoryHandler(event){
+      this.searchCategory = event.target.value
+    }
+  },
+  computed: {
+    sortedCategories(){
+      let sorted = null
+      if(this.categories){
+        sorted = this.categories.filter(category => {
+          return (
+            category.toLowerCase().includes(this.searchCategory.toLowerCase())
+          )
+        })
+      }
+      return sorted
     }
   }
 }
