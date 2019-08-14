@@ -5,8 +5,8 @@
       <input type="text" class="form-control" placeholder="Search">
     </div>
     <span class="user-item" v-bind:class="{'active': index === selected}" v-for="(item, index) in users" :key="index" @click="makeActive(item, index)">
-      <span class="image" v-if="item.profile !== null">
-        <img :src="config.BACKEND_URL + item.profile">
+      <span class="image" v-if="item.logo !== null">
+        <img :src="config.BACKEND_URL + item.logo">
       </span>
       <span class="image" v-if="item.profile === null">
         <i class="fas fa-user-circle text-primary"></i>
@@ -14,7 +14,6 @@
       <label class="title">
         {{item.name}}
       </label>
-      <i class="fas fa-circle pull-right"  style="padding-right: 5px; line-height: 30px; font-size: 6px;" v-bind:class="{'text-primary': item.status === true}"></i>
     </span>
   </div>
 </template>
@@ -80,10 +79,10 @@
 }
 
 .user-item .image img{
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  padding: 0px 5px;
+  margin: 2px 5px;
 }
 
 .user-item .image i{
@@ -106,17 +105,21 @@
 import CONFIG from 'src/config.js'
 import GLOBAL from 'src/modules/editorv2/global.js'
 export default {
+  mounted(){
+    this.retrieve()
+  },
   data () {
     return{
-     //
+      users: [],
+      config: CONFIG
     }
   },
   methods: {
     retrieve(){
       let parameter = {
         condition: [{
-          value: 'PARTNERS',
-          column: 'account_id',
+          value: 'verified',
+          column: 'status',
           clause: '='
         }]
       }
@@ -124,12 +127,12 @@ export default {
         if(response.data.length > 0){
           this.users = response.data
         }else{
-          this.users = null
+          this.users = []
         }
       })
     },
     makeActive(item, index){
-      GLOBAL.template.contents.overlay.title = 'partners'
+      GLOBAL.template.contents.overlay.title = 'Printing'
       GLOBAL.template.contents.overlay.description = item.name
       GLOBAL.template.contents.overlay.payload = 'id'
       GLOBAL.template.contents.overlay.payload_value = item.id

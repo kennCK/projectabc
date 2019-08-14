@@ -13,7 +13,7 @@
 			</ul>
 			<div class="option-contents">
         <marketplace v-if="global.template.contents.leftPane.title === 'Marketplace'"></marketplace>
-        <partners v-if="global.template.contents.leftPane.title === 'Partners'"></partners>
+        <printings v-if="global.template.contents.leftPane.title === 'Printing'"></printings>
         <users v-if="global.template.contents.leftPane.title === 'Designers'"></users>
 				<editor-layers v-if="global.template.contents.leftPane.title === 'Layers'"></editor-layers>
 				<editor-assets v-if="global.template.contents.leftPane.title === 'Assets'"></editor-assets>
@@ -210,7 +210,7 @@ export default{
     'page': require('modules/editorv2/page/Page.vue'),
     'users': require('modules/editorv2/layers/Users.vue'),
     'marketplace': require('modules/editorv2/layers/Marketplace.vue'),
-    'partners': require('modules/editorv2/layers/Partners.vue'),
+    'printings': require('modules/editorv2/layers/Printings.vue'),
     draggable
   },
   methods: {
