@@ -132,7 +132,7 @@ export default {
       })
     },
     makeActive(item, index){
-      GLOBAL.template.contents.overlay.title = 'Printing'
+      GLOBAL.template.contents.overlay.title = 'printing'
       GLOBAL.template.contents.overlay.description = item.name
       GLOBAL.template.contents.overlay.payload = 'id'
       GLOBAL.template.contents.overlay.payload_value = item.id
