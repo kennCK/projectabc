@@ -6,6 +6,7 @@ import Vue from 'vue'
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 import Config from '../../config.js'
+import RTC from 'src/services/rtc.js'
 export default {
   audio: {
     status: 0,
@@ -15,8 +16,9 @@ export default {
     hours: 0,
     timer: null,
     receiverId: null,
-    senderUser: null,
-    receiverUser: null
+    senderUser: '',
+    receiverUser: '',
+    roomId: null
   },
   mode: 0,
   user: {
@@ -328,14 +330,23 @@ export default {
       let action = parseInt(response.user.action)
       let sender = response.user.sender
       let receiver = response.user.receiver
+      if(this.user.userID !== this.audio.senderUser.id){
+        this.audio.roomId = this.audio.senderUser.id
+      }else{
+        this.audio.roomId = sender.id
+      }
       this.audio.senderUser = sender
       this.audio.receiverUser = receiver
       if(sender.id !== this.user.userID){
         this.audio.receiverId = sender.id
       }
       if(action === 2 && receiver.id === this.user.userID){
+        RTC.initializeRTC()
+        RTC.join(this.audio.roomId)
         this.triggerAudioCall(0, null)
       } else if(action === 1 && receiver.id === this.user.userID){
+        RTC.initializeRTC()
+        RTC.join(this.audio.roomId)
         this.triggerAudioCall(1, null)
         this.startAudioCallTimer()
       } else if(action === 0 && receiver.id === this.user.userID){
@@ -377,6 +388,8 @@ export default {
     $('#audio-call').css({'display': 'block'})
     let vue = new Vue()
     this.audio.status = params
+    // RTC.initializeRTC()
+    // RTC.join('public-room')
     if (params === 2){
       let parameter = {
         receiver: receiver,
@@ -384,7 +397,6 @@ export default {
         action: 2
       }
       vue.APIRequest('audio_calls/send', parameter, (response) => {
-        //
       })
     } else {
       this.playNotificationSound()
@@ -395,6 +407,7 @@ export default {
     this.audio.seconds = 0
     this.audio.minutes = 0
     this.audio.hours = 0
+    this.audio.timeDisplay = `00:00:00`
     this.audio.timer = setInterval(() => {
       this.audio.seconds++
       if (this.audio.seconds === 60){
