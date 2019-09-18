@@ -5,29 +5,29 @@
         <h1>Experience our Communication Tools.</h1>
       </span>
       <span class="description">
-        <h4>
+        <h3>
           As a customer-first business, we need constant communication to ensure quality prints all the time. Always get in touch and easily connect with the printing partners to make orders, get customer support and find deals through the messenger and comment feature.
-        </h4>
+        </h3>
       </span>
       <span class="feature1">
-        <h4>
+        <h3>
           Get more with Chat Extensions
-        </h4>
+        </h3>
       </span>
       <span class="descriptionFeature1">
-        <h5>
-          Search and find products right in your chatbox for faster enquiries and transactions. 
-        </h5>
-      </span>
-      <span class="feature2">
         <h4>
-          Hop on an Audio Call
+          Search and find products right in your chatbox for faster enquiries and transactions. 
         </h4>
       </span>
+      <span class="feature2">
+        <h3>
+          Hop on an Audio Call
+        </h3>
+      </span>
       <span class="descriptionFeature2">
-        <h5>
+        <h4>
           Too busy to chat? You can hop on our audio call to assist you swiftly.  
-        </h5>
+        </h4>
       </span>
     </div>
     <div class="image">
@@ -39,7 +39,7 @@
 .cw-banner{
   width: 100%;
   float: left;
-  background: #ec3563;
+  background: #4d529f;
   min-height: 150px;
   overflow-y: hidden;
 }
@@ -57,12 +57,7 @@
 .title h1{
   font-size: 40px;
 }
-.feature1 h4{
-  font-size: 1.5rem;
-}
-.feature2 h4{
-  font-size: 1.5rem;
-}
+
 .text .description{
   margin-top: 25px;
   width: 100%;

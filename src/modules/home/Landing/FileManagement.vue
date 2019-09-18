@@ -5,34 +5,37 @@
         <h1>Manage your files Seamlessly</h1>
       </span>
       <span class="description">
-        <h4> 
+        <h3> 
           We always make sure that everything is convenient and efficient for you. 
-        </h4>
+        </h3>
       </span>
       <span class="partners">
-        <h4>
-          To our printing partners, with file management you can organize well your designs and templates and you can also track down all completed transactions easily. Effective file management helps you save time, work smoothly and handle current transactions with no hassle.
-        </h4>
+        <h3>
+          To our printing partners, with file management you can organize well your designs and templates. Tracking down all completed transactions will be easier. Effective file management helps you save time, work smoothly and handle current transactions with no hassle.
+        </h3>
       </span>
       <span class="customers">
-        <h4>
-          To our valued customers, you can also attach and publish your designs and template with file management. Sort and manage all your files in a systematic manner.
-        </h4>
+        <h3>
+          To our valued customers, you can also attach and publish your designs and template and sort your files in a systematic manner.
+        </h3>
       </span>
+    </div>
+    <div class="image">
+       <img src="../../../assets/img/filemanagement.png" style="margin-bottom: 5px;" width="100%">
     </div>
   </div>
 </template>
 <style scoped>
 .cw-banner{
   width: 100%;
-  background: #ffaa81;
+  background: #f4c236;
   min-height: 150px;
   overflow-y: hidden;
 }
 .text{
   width: 45%;
   float: right;
-  margin-top: 70px;
+  margin-top: 50px;
   margin-bottom: 70px;
   margin-right: 5%;
 } 
@@ -64,6 +67,16 @@
   text-align: justify;
 }
 
+.image{
+  width: 40%;
+  margin-right: 5%;
+  margin-left: 5%;
+  float: left;
+  display: block;
+  margin-top: 125px;
+  margin-bottom: 125px;
+}
+
 @media screen and (max-width: 992px){
   .text{
     width: 90%;
@@ -73,6 +86,10 @@
   }
   .title{
     text-align: center;
+  }
+
+  .image{
+    display: none;
   }
 }
 </style>

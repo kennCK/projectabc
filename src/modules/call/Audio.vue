@@ -1,85 +1,58 @@
 <template>
-  <div class="audioModal" v-bind:style="initialPosition" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="drag($event)" v-on:drag="drag($event)" id="audio-call">
+  <div class="audioModal" v-bind:style="position" draggable="true" v-on:dragstart="moveObject($event)" v-on:dragend="dragEnd($event)" id="audio-call">
     <span class="holder" v-if="auth.audio.status === 0">   <!--  Ringing,Receiver -->
-      <div class="call-animation" v-if="auth.audio.senderUser.profile !== null && auth.audio.senderUser.profile.url !== null">
-          <img class="img-circle" :src="config.BACKEND_URL + auth.audio.senderUser.profile.url" alt="" width="120"/>
-      </div>
-      <div class="call-animation" v-else>
-        <i class="fa fa-user-circle-o"></i>
+      <div class="call-animation">
+          <img class="img-circle" v-bind:src="config.BACKEND_URL + auth.audio.senderUser.profile.url" alt="" width="120"/>
       </div>
       <i class="fa fa-phone pull-left bg-danger icons" @click="ignoreAudio"></i>
-      <i class="fa fa-phone pull-right bg-primary icons" @click="acceptCall" id = "call"></i>
+      <i class="fa fa-phone pull-right bg-primary icons" @click="acceptCall"></i>
       <h6 style="margin-top: 10px" class="text-center text-white">Incoming Call</h6>
       <h6 style="margin-top: 10px" class="text-center text-white">{{auth.audio.senderUser.username}}</h6>
     </span>
+
     <span class="holder" v-if="auth.audio.status === 1">   <!--  Ongoing -->
-      <div class="call-animation" v-if="user.username === auth.audio.senderUser.username">
-        <img class="img-circle pull-right" v-if="auth.audio.receiverUser.profile.url !== null" :src="config.BACKEND_URL + auth.audio.receiverUser.profile.url" alt="" width="120"/>
-        <i class="fa fa-user-circle-o" v-else></i>
+      <div class="call-animation">
+        <img class="img-circle pull-right" src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder.jpg" alt="" width="120"/>
       </div>
-      <div class="call-animation" v-else>
-        <img class="img-circle pull-right" v-if="auth.audio.senderUser.profile.url !== null" :src="config.BACKEND_URL + auth.audio.senderUser.profile.url" alt="" width="120"/>
-        <i class="fa fa-user-circle-o" v-else></i>
-      </div>
-        <i class="fa fa-phone pull-right bg-danger endicon" @click="endAudio"></i>
-        <h6 style="margin-top: 10px" class="text-center text-white">
-          {{user.username === auth.audio.senderUser.username ? auth.audio.receiverUser.username : auth.audio.senderUser.username}}</h6>
-        <h6 style="margin-top: 10px" class="text-center text-white">{{auth.audio.timeDisplay}}</h6>
+      <i class="fa fa-phone pull-right bg-danger endicon" @click="endAudio"></i>
+      <h6 style="margin-top: 10px" class="text-center text-white">{{user.username}}</h6>
+      <h6 style="margin-top: 5px" class="text-center text-white">{{auth.audio.timeDisplay}}</h6>
     </span>
+
      <span class="holder" v-if="auth.audio.status === 2">   <!--  Calling, Sender -->
-      <div class="call-animation" v-if="auth.audio.receiverUser.profile.url !== null">
-        <img class="img-circle pull-right" :src="config.BACKEND_URL + auth.audio.receiverUser.profile.url" alt="" width="120"/>
-      </div>
-      <div class="call-animation" v-else>
-        <i class="fa fa-user-circle-o"></i>
+      <div class="call-animation">
+        <img class="img-circle pull-right" v-bind:src="config.BACKEND_URL + auth.audio.receiverUser.profile.url" alt="" width="120"/>
       </div>
       <i class="fa fa-phone pull-right bg-danger endicon" @click="endAudio"></i>
        <h6 style="margin-top: 10px" class="text-center text-white">Calling</h6>
       <h6 style="margin-top: 10px" class="text-center text-white">{{auth.audio.receiverUser.username}}</h6>
     </span>
+
   </div>
 </template>
 <script>
 import AUTH from 'src/services/auth'
 import CONFIG from 'src/config.js'
-import RTCMultiConnection from 'rtcmulticonnection'
-require('adapterjs')
+// import { setInterval, clearInterval } from 'timers'
 export default {
-  name: 'vue-webrtc',
-  components: {
-    RTCMultiConnection
-  },
   data(){
     return{
-      rtcmConnection: null,
-      localVideo: null,
-      videoList: [],
-      canvas: null,
       user: AUTH.user,
       config: CONFIG,
-      posX: null,
-      posY: null,
-      auth: AUTH,
-      timer: null,
-      selected: null,
       position: {
         top: '0',
-        right: '0',
-        charTop: null,
-        charRight: null
-      },
-      computed: {
-      },
-      watch: {
-      },
-      initialPosition: {
-        top: '0',
         right: '0'
-      }
+      },
+      auth: AUTH,
+      // seconds: 0,
+      // minutes: 0,
+      // hours: 0,
+      timer: null,
+     // timeDisplay: `00:00:00`,
+      posX: 0,
+      posY: 0,
+      selected: null
     }
-  },
-  mounted() {
-    //
   },
   methods: {
     endAudio(){
@@ -96,6 +69,7 @@ export default {
         console.log(response)
       })
       this.auth.audio.status = 0
+      // $('#audio-call').css({'display': 'none'})
       this.auth.endAudioCallTimer()
     },
     acceptCall(){
@@ -128,35 +102,23 @@ export default {
     moveObject(event){
       this.posX = event.x
       this.posY = event.y
-      this.position.top = this.initialPosition.top
-      this.position.right = this.initialPosition.right
-      if(String(this.position.top).indexOf('%') > -1){
-        this.position.top = parseInt(this.position.top.substr(0, this.position.top.length - 1))
-        this.position.charTop = '%'
-      }
-      if(String(this.position.top).indexOf('p') > -1){
-        this.position.top = parseInt(this.position.top.substr(0, this.position.top.length - 2))
-        this.position.charTop = 'px'
-      }
-      if(String(this.position.right).indexOf('%') > -1){
-        this.position.right = parseInt(this.position.right.substr(0, this.position.right.length - 1))
-        this.position.charRight = '%'
-      }
-      if(String(this.position.right).indexOf('p') > -1){
-        this.position.right = parseInt(this.position.right.substr(0, this.position.right.length - 2))
-        this.position.charRight = 'px'
-      }
     },
-    drag(event){
+    dragEnd(event){
       let x = this.posX - event.x
       let y = this.posY - event.y
-      this.changePosition(x, y * -1)
+      this.manageAttributes(x, y * -1)
     },
-    changePosition(x, y){
-      this.position.top = parseInt(this.position.top)
-      this.position.right = parseInt(this.position.right)
-      this.initialPosition.top = (this.position.top + y) + 'px'
-      this.initialPosition.right = (this.position.right + x) + 'px'
+    manageAttributes(x, y){
+      var top = this.position.top
+      var right = this.position.right
+      if(String(top).indexOf('p') > -1){
+        top = parseInt(top.substr(0, top.length - 2))
+      }
+      if(String(right).indexOf('p') > -1){
+        right = parseInt(right.substr(0, right.length - 2))
+      }
+      this.position.top = (top + y) + 'px'
+      this.position.right = (right + x) + 'px'
     }
   }
 }
@@ -166,6 +128,8 @@ export default {
 .audioModal{
   position: fixed;
   background: #555;
+  // top: 60px;
+  // right: 0;
   width: 300px;
   height: 200px;
   z-index: 100000 !important;
@@ -176,6 +140,7 @@ export default {
   display: none;
   padding-right: 10px;
   padding-top: 50px;
+ // right:0;
 }
 .holder{
     float: left;
@@ -184,6 +149,7 @@ export default {
     padding: 0% 10%;
 }
 .icons{
+    // font-size: 3em;
     font-size: 32px;
     height: 50px;
     width: 50px;
@@ -192,8 +158,10 @@ export default {
     line-height: 50px;
     padding: 0%;
     text-align: center;
+    // padding-right: 10px;
 }
 .endicon{
+    // font-size: 3em;
     font-size: 32px;
     height: 50px;
     width: 50px;
@@ -234,16 +202,9 @@ img {
     left: 0px;
     top: 0px;
   }
-video {
-  max-width: 100%;
-  width: 320px;
-}
 #audio-call:hover {
-  cursor: default;
-  cursor: default;
-}
-#audio-call:hover:active {
-  cursor: default;
+  cursor: grabbing;
+  cursor: grab;
 }
 @keyframes play {
 

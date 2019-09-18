@@ -1,11 +1,10 @@
 <template>
   <div class="contents-wrapper" v-if="data !== null">
-    <div :class="`content-item ${listStyle}`" v-for="(template, index) in templates" :key="index" @click="redirect('/editor/v2/' + template.code)">
+    <div :class="`content-item ${listStyle}`" v-for="(item, index) in data" :key="index" @click="redirect('/editor/v2/' + item.code)">
       <div class="item-content">
-        <thumbnail :template="template" :zoom="50"></thumbnail>
       </div>
       <div class="item-title">
-        {{template.title}}
+        {{item.title}}
       </div>
     </div>
   </div>
@@ -117,22 +116,20 @@ export default{
   data () {
     return {
       user: AUTH.user,
-      data: null,
-      templates: []
+      data: null
     }
   },
   props: ['category', 'listStyle'],
   components: {
     'dynamic-empty': require('components/increment/generic/empty/EmptyDynamicIcon.vue'),
-    'generic-filter': require('components/increment/ecommerce/marketplace/Filter.vue'),
-    'thumbnail': require('modules/editorv2/page/Thumbnail.vue')
+    'generic-filter': require('components/increment/ecommerce/marketplace/Filter.vue')
   },
   methods: {
     redirect(parameter){
+      ROUTER.push(parameter)
       if(parameter === '/editor/v2'){
         AUTH.mode = 1
       }
-      ROUTER.push(parameter)
     },
     retrieve(){
       let parameter = {
@@ -152,10 +149,6 @@ export default{
         }else{
           this.data = null
         }
-        for(let i = 0; i < response.data.length; i++){
-          this.templates.push({ ...this.data[i], contents: JSON.parse(this.data[i].contents) })
-        }
-        console.log(this.templates)
       })
     }
   }
