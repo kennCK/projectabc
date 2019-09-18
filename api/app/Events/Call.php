@@ -12,27 +12,27 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class Call implements ShouldBroadcast
 {
-  use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-  /**
-   * Create a new event instance.
-   *
-   * @return void
-   */
-  public $user;
-  public function __construct($user)
-  {
-      $this->user = $user;
-      echo 'hello';
-  }
+    /**
+     * Create a new event instance.
+     *
+     * @return void
+     */
+    public $user;
+    public function __construct($user)
+    {
+        $this->user = $user;
+        echo 'hello';
+    }
 
-  /**
-   * Get the channels the event should broadcast on.
-   *
-   * @return \Illuminate\Broadcasting\Channel|array
-   */
-  public function broadcastOn()
-  {
-      return new Channel('paprint-call');
-  }
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return \Illuminate\Broadcasting\Channel|array
+     */
+    public function broadcastOn()
+    {
+        return new Channel('paprint-call');
+    }
 }

@@ -45,7 +45,7 @@
   min-height: 300px;
   position: relative;
   overflow-y: hidden;
-  background: #ffaa81;
+  background: #ec3563;
 }
 .cw-bizmarketplace img{
   width: 80%;

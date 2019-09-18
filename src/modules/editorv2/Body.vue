@@ -13,7 +13,6 @@
 			</ul>
 			<div class="option-contents">
         <marketplace v-if="global.template.contents.leftPane.title === 'Marketplace'"></marketplace>
-        <printings v-if="global.template.contents.leftPane.title === 'Printing'"></printings>
         <users v-if="global.template.contents.leftPane.title === 'Designers'"></users>
 				<editor-layers v-if="global.template.contents.leftPane.title === 'Layers'"></editor-layers>
 				<editor-assets v-if="global.template.contents.leftPane.title === 'Assets'"></editor-assets>
@@ -170,7 +169,7 @@ import draggable from 'vuedraggable'
 export default{
   data () {
     return {
-      layerTabs: ['Designers', 'Marketplace', 'Printing', 'Pages', 'Layers', 'Assets', 'Partners'],
+      layerTabs: ['Designers', 'Marketplace', 'Printing', 'Pages', 'Layers', 'Assets'],
       settings: [{
         title: 'Color',
         show: false,
@@ -210,7 +209,6 @@ export default{
     'page': require('modules/editorv2/page/Page.vue'),
     'users': require('modules/editorv2/layers/Users.vue'),
     'marketplace': require('modules/editorv2/layers/Marketplace.vue'),
-    'printings': require('modules/editorv2/layers/Printings.vue'),
     draggable
   },
   methods: {

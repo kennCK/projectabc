@@ -4,7 +4,7 @@
       <p>{{global.template.contents.prompts.message}}</p>
     </div>
     <div class="modal-footer">
-      <button  type="button" class="btn btn-danger" @click="hide()">{{global.template.contents.prompts.btn.no}}</button>
+      <button type="button" class="btn btn-danger" @click="hide()">{{global.template.contents.prompts.btn.no}}</button>
       <button type="button" class="btn btn-primary" @click="yes()">{{global.template.contents.prompts.btn.yes}}</button>
     </div>
   </div>
